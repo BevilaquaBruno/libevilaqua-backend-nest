@@ -13,4 +13,12 @@ export class User {
 
   @Column({ select: false, nullable: true })
   password: string;
+
+  toJson() {
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+    };
+  }
 }
