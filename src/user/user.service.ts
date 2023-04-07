@@ -20,7 +20,7 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this.userRepository.findBy({ id });
+    return this.userRepository.findOneBy({ id });
   }
 
   findByEmail(email: string) {
@@ -38,7 +38,7 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.update(id, updateUserDto);
+    return await this.userRepository.update(id, updateUserDto);
   }
 
   async remove(id: number) {
