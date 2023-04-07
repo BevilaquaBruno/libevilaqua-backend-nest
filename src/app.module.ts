@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { GenreModule } from './genre/genre.module';
 
 @Module({
   imports: [
@@ -17,11 +17,12 @@ import { AuthModule } from './auth/auth.module';
       username: process.env['DB_USERNAME'],
       password: process.env['DB_PASSWORD'],
       database: process.env['DB_DATABASE'],
-      entities: [User],
+      autoLoadEntities: true,
       synchronize: false,
     }),
     UserModule,
     AuthModule,
+    GenreModule,
   ],
   controllers: [AppController],
   providers: [AppService],
