@@ -4,6 +4,10 @@ import { UserCreateTable1680738977433 } from './migrations/1680738977433-UserCre
 import { GenreCreateTable1680885361688 } from './migrations/1680885361688-GenreCreateTable';
 
 import * as dotenv from 'dotenv';
+import { AuthorCreateTable1680985947448 } from './migrations/1680985947448-AuthorCreateTable';
+import { AddTimestampAuthor1680990089730 } from './migrations/1680990089730-AddTimestampAuthor';
+import { AddTimestampUser1680990994368 } from './migrations/1680990994368-AddTimestampUser';
+import { AddTimestampGenre1680991025720 } from './migrations/1680991025720-AddTimestampGenre';
 
 dotenv.config();
 
@@ -14,6 +18,10 @@ export const AppDataSource = new DataSource({
   username: process.env['DB_USERNAME'],
   password: process.env['DB_PASSWORD'],
   database: process.env['DB_DATABASE'],
-  migrations: [UserCreateTable1680738977433, GenreCreateTable1680885361688],
+  migrations: [
+    UserCreateTable1680738977433,
+    GenreCreateTable1680885361688,
+    AuthorCreateTable1680985947448,
+  ],
   migrationsTableName: 'migrations',
 });

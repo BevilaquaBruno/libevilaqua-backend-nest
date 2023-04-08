@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { GenreModule } from './genre/genre.module';
+import { AuthorModule } from './author/author.module';
 
 @Module({
   imports: [
@@ -19,10 +20,12 @@ import { GenreModule } from './genre/genre.module';
       database: process.env['DB_DATABASE'],
       autoLoadEntities: true,
       synchronize: false,
+      timezone : "-03:00"
     }),
     UserModule,
     AuthModule,
     GenreModule,
+    AuthorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
