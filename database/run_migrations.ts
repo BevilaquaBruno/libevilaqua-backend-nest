@@ -22,6 +22,9 @@ export const AppDataSource = new DataSource({
     UserCreateTable1680738977433,
     GenreCreateTable1680885361688,
     AuthorCreateTable1680985947448,
+    AddTimestampAuthor1680990089730,
+    AddTimestampUser1680990994368,
+    AddTimestampGenre1680991025720,
   ],
   migrationsTableName: 'migrations',
 });
