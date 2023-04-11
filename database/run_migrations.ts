@@ -9,6 +9,7 @@ import { AddTimestampAuthor1680990089730 } from './migrations/1680990089730-AddT
 import { AddTimestampUser1680990994368 } from './migrations/1680990994368-AddTimestampUser';
 import { AddTimestampGenre1680991025720 } from './migrations/1680991025720-AddTimestampGenre';
 import { PublisherCreateTable1681084447979 } from './migrations/1681084447979-PublisherCreateTable';
+import { TypeCreateTable1681169961900 } from './migrations/1681169961900-TypeCreateTable';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ export const AppDataSource = new DataSource({
     AddTimestampUser1680990994368,
     AddTimestampGenre1680991025720,
     PublisherCreateTable1681084447979,
+    TypeCreateTable1681169961900
   ],
   migrationsTableName: 'migrations',
 });

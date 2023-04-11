@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { GenreModule } from './genre/genre.module';
 import { AuthorModule } from './author/author.module';
 import { PublisherModule } from './publisher/publisher.module';
+import { TypeModule } from './type/type.module';
 
 @Module({
   imports: [
@@ -21,13 +22,14 @@ import { PublisherModule } from './publisher/publisher.module';
       database: process.env['DB_DATABASE'],
       autoLoadEntities: true,
       synchronize: false,
-      timezone : "-03:00"
+      timezone: '-03:00',
     }),
     UserModule,
     AuthModule,
     GenreModule,
     AuthorModule,
     PublisherModule,
+    TypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
