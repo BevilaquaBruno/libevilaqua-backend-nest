@@ -9,6 +9,7 @@ import { GenreModule } from './genre/genre.module';
 import { AuthorModule } from './author/author.module';
 import { PublisherModule } from './publisher/publisher.module';
 import { TypeModule } from './type/type.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TypeModule } from './type/type.module';
     AuthorModule,
     PublisherModule,
     TypeModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
