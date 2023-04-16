@@ -10,6 +10,7 @@ import { AuthorModule } from './author/author.module';
 import { PublisherModule } from './publisher/publisher.module';
 import { TypeModule } from './type/type.module';
 import { TagModule } from './tag/tag.module';
+import { BookModule } from './book/book.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { TagModule } from './tag/tag.module';
     PublisherModule,
     TypeModule,
     TagModule,
+    BookModule,
   ],
   controllers: [AppController],
   providers: [AppService],

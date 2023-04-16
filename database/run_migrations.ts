@@ -11,6 +11,9 @@ import { AddTimestampGenre1680991025720 } from './migrations/1680991025720-AddTi
 import { PublisherCreateTable1681084447979 } from './migrations/1681084447979-PublisherCreateTable';
 import { TypeCreateTable1681169961900 } from './migrations/1681169961900-TypeCreateTable';
 import { TagCreateTable1681252869985 } from './migrations/1681252869985-TagCreateTable';
+import { BookCreateTable1681257837930 } from './migrations/1681257837930-BookCreateTable';
+import { BookAuthorCreateTable1681259133590 } from './migrations/1681259133590-BookAuthorCreateTable';
+import { BookTagCreateTable1681340103839 } from './migrations/1681340103839-BookTagCreateTable';
 
 dotenv.config();
 
@@ -30,7 +33,10 @@ export const AppDataSource = new DataSource({
     AddTimestampGenre1680991025720,
     PublisherCreateTable1681084447979,
     TypeCreateTable1681169961900,
-    TagCreateTable1681252869985
+    TagCreateTable1681252869985,
+    BookCreateTable1681257837930,
+    BookAuthorCreateTable1681259133590,
+    BookTagCreateTable1681340103839,
   ],
   migrationsTableName: 'migrations',
 });
