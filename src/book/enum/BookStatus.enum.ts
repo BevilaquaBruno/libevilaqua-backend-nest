@@ -1,5 +1,5 @@
 export enum BookStatus {
-  Free = 1,
-  Loaned = 2,
-  Lost = 3,
+  FREE = 1,
+  LOANED = 2,
+  LOST = 3,
 }
