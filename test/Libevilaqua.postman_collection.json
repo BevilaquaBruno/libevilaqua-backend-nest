@@ -1036,6 +1036,172 @@
 			]
 		},
 		{
+			"name": "Person",
+			"item": [
+				{
+					"name": "Find All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/person",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find One",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/person/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"person",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Leonardo Sacon\",\r\n    \"cpf\": \"072.043.129-88\",\r\n    \"cep\": \"89700-055\",\r\n    \"state\": \"SC\",\r\n    \"city\": \"Concórdia\",\r\n    \"district\": \"Bairro Petrópolis\",\r\n    \"street\": \"Rua das Laranjeiras\",\r\n    \"number\": \"SNN\",\r\n    \"obs\": \"sdjashdksjhdjashdkjashdjkashdjkahsjkdhsajkdhasjk\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/person",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Leonardo asdasdas\",\r\n    \"cpf\": \"072.043.129-88\",\r\n    \"cep\": \"89700-055\",\r\n    \"state\": \"SC\",\r\n    \"city\": \"Concórdia\",\r\n    \"district\": \"Bairro Petrópolis\",\r\n    \"street\": \"Rua das Laranjeiras\",\r\n    \"number\": \"SN\",\r\n    \"obs\": \"sdjashdksjhdjashdkjashdjkashdjkahsjkdhsajkdhasjk\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/person/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"person",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/person/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"person",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Book",
 			"item": [
 				{

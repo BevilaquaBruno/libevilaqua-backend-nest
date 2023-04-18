@@ -11,6 +11,7 @@ import { PublisherModule } from './publisher/publisher.module';
 import { TypeModule } from './type/type.module';
 import { TagModule } from './tag/tag.module';
 import { BookModule } from './book/book.module';
+import { PersonModule } from './person/person.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { BookModule } from './book/book.module';
     TypeModule,
     TagModule,
     BookModule,
+    PersonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
