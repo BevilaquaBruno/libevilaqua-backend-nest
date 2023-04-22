@@ -10,8 +10,8 @@ export class LoanCreateTable1682086092464 implements MigrationInterface {
             must_return_date DATE DEFAULT NULL,
             loan_date DATE,
 
-            bookId INT,
-            personId INT,
+            bookId INT NOT NULL,
+            personId INT NOT NULL,
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
