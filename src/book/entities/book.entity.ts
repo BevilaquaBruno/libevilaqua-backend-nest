@@ -10,6 +10,7 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -41,15 +42,15 @@ export class Book {
   @Column()
   obs: string;
 
-  @OneToOne(() => Genre, { eager: true })
+  @ManyToOne(() => Genre, { eager: true })
   @JoinColumn({ foreignKeyConstraintName: 'FK_genre_book' })
   genre: Genre | null;
 
-  @OneToOne(() => Publisher, { eager: true })
+  @ManyToOne(() => Publisher, { eager: true })
   @JoinColumn({ foreignKeyConstraintName: 'FK_publisher_book' })
   publisher: Publisher | null;
 
-  @OneToOne(() => Type, { eager: true })
+  @ManyToOne(() => Type, { eager: true })
   @JoinColumn({ foreignKeyConstraintName: 'FK_type_book' })
   type: Type | null;
 

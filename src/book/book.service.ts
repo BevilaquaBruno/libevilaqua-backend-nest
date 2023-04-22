@@ -10,8 +10,8 @@ export class BookService {
   constructor(
     @InjectRepository(Book) private bookServiceRepository: Repository<Book>,
   ) {}
-  async create(createBookDto: CreateBookDto) {
-    this.bookServiceRepository.save(createBookDto);
+  create(createBookDto: CreateBookDto) {
+    return this.bookServiceRepository.save(createBookDto);
   }
 
   findAll() {
