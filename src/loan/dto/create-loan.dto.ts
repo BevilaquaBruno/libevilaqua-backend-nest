@@ -5,6 +5,8 @@ import {
   Matches,
   ValidateIf,
 } from 'class-validator';
+import { CreateBookDto } from 'src/book/dto/create-book.dto';
+import { CreatePersonDto } from 'src/person/dto/create-person.dto';
 
 export class CreateLoanDto {
   @IsString({ message: 'Informe a descrição do empréstimo.' })
@@ -29,12 +31,7 @@ export class CreateLoanDto {
   })
   loan_date: Date;
 
-  @IsNumber({ allowNaN: false }, { message: 'Informe o livro do empréstimo' })
-  bookId: number;
+  book: CreateBookDto;
 
-  @IsNumber(
-    { allowNaN: false },
-    { message: 'Informe a pessoa para o empréstimo' },
-  )
-  personId: number;
+  person: CreatePersonDto;
 }

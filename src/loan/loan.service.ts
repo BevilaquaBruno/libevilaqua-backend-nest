@@ -11,8 +11,6 @@ export class LoanService {
     @InjectRepository(Loan) private loanServiceRepository: Repository<Loan>,
   ) {}
   create(createLoanDto: CreateLoanDto) {
-    console.log(createLoanDto);
-
     return this.loanServiceRepository.save(createLoanDto);
   }
 
