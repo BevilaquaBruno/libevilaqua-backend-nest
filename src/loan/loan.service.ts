@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Loan } from './entities/loan.entity';
 
 @Injectable()
 export class LoanService {
+  constructor(
+    @InjectRepository(Loan) private loanServiceRepository: Repository<Loan>,
+  ) {}
   create(createLoanDto: CreateLoanDto) {
-    return 'This action adds a new loan';
+    console.log(createLoanDto);
+
+    return this.loanServiceRepository.save(createLoanDto);
   }
 
   findAll() {
-    return `This action returns all loan`;
+    return this.loanServiceRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} loan`;
+    return this.loanServiceRepository.findOneBy({ id });
   }
 
-  update(id: number, updateLoanDto: UpdateLoanDto) {
-    return `This action updates a #${id} loan`;
+  async update(id: number, updateLoanDto: UpdateLoanDto) {
+    return await this.loanServiceRepository.update(id, updateLoanDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} loan`;
+  async remove(id: number) {
+    return await this.loanServiceRepository.delete({ id });
   }
 }
