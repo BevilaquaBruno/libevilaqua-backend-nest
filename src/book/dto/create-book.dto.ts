@@ -6,7 +6,10 @@ import {
   IsArray,
 } from 'class-validator';
 import { CreateAuthorDto } from 'src/author/dto/create-author.dto';
+import { CreateGenreDto } from 'src/genre/dto/create-genre.dto';
+import { CreatePublisherDto } from 'src/publisher/dto/create-publisher.dto';
 import { CreateTagDto } from 'src/tag/dto/create-tag.dto';
+import { CreateTypeDto } from 'src/type/dto/create-type.dto';
 
 export class CreateBookDto {
   @IsString({ message: 'Informe o título do livro' })
@@ -45,17 +48,11 @@ export class CreateBookDto {
   @IsString({ message: 'Informe a observação novamente.' })
   obs: string;
 
-  @ValidateIf((thisBook) => thisBook.genreId !== null)
-  @IsNumber({ allowNaN: false }, { message: 'Informe o gênero do livro' })
-  genreId: number;
+  genre: CreateGenreDto | null;
 
-  @ValidateIf((thisBook) => thisBook.publisherId !== null)
-  @IsNumber({ allowNaN: false }, { message: 'Informe a publicadora do livro' })
-  publisherId: number;
+  publisher: CreatePublisherDto | null;
 
-  @ValidateIf((thisBook) => thisBook.typeId !== null)
-  @IsNumber({ allowNaN: false }, { message: 'Informe o tipo do livro' })
-  typeId: number;
+  type: CreateTypeDto | null;
 
   @ValidateIf((thisBook) => thisBook.tags.length > 0)
   @IsArray({ message: 'Informe a lista de tags novamente' })
