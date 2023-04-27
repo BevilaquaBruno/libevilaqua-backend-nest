@@ -12,6 +12,7 @@ import { LoanService } from './loan.service';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { ReturnBookDto } from './dto/return-book.dto';
 
 @Controller('loan')
 export class LoanController {
@@ -45,5 +46,11 @@ export class LoanController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.loanService.remove(+id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('/return/:id')
+  return(@Param('id') id: string, @Body() returnBookDto: ReturnBookDto) {
+    return this.loanService.returnBook(+id, returnBookDto);
   }
 }

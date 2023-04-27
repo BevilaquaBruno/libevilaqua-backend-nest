@@ -4,6 +4,7 @@ import { UpdateLoanDto } from './dto/update-loan.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Loan } from './entities/loan.entity';
+import { ReturnBookDto } from './dto/return-book.dto';
 
 @Injectable()
 export class LoanService {
@@ -28,5 +29,9 @@ export class LoanService {
 
   async remove(id: number) {
     return await this.loanServiceRepository.delete({ id });
+  }
+
+  async returnBook(id: number, returnBookDto: ReturnBookDto) {
+    return await this.loanServiceRepository.update(id, returnBookDto);
   }
 }
