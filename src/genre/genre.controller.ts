@@ -37,13 +37,22 @@ export class GenreController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
-    return this.genreService.update(+id, updateGenreDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateGenreDto: UpdateGenreDto,
+  ) {
+    const updateResult = await this.genreService.update(+id, updateGenreDto);
+    return updateResult.affected != 0
+      ? Object.assign({ id: +id }, updateGenreDto)
+      : { message: 'Ocorreu um erro ao atualizar o gênero' };
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.genreService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const deleteResult = await this.genreService.remove(+id);
+    return deleteResult.affected != 0
+      ? {}
+      : { message: 'Ocorreu um erro ao deletar o gênero' };
   }
 }
