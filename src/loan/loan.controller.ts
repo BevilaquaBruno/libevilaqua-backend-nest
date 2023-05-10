@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { LoanService } from './loan.service';
 import { CreateLoanDto } from './dto/create-loan.dto';
@@ -20,7 +22,16 @@ export class LoanController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createLoanDto: CreateLoanDto) {
+  async create(@Body() createLoanDto: CreateLoanDto) {
+    const isBookLoaned = await this.loanService.findLoanedBook(
+      createLoanDto.book.id,
+    );
+    if (isBookLoaned[1] !== 0) {
+      throw new HttpException(
+        'Este livro já está emprestado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return this.loanService.create(createLoanDto);
   }
 
@@ -52,5 +63,17 @@ export class LoanController {
   @Patch('/return/:id')
   return(@Param('id') id: string, @Body() returnBookDto: ReturnBookDto) {
     return this.loanService.returnBook(+id, returnBookDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/book/:bookId')
+  book(@Param('bookId') bookId: string) {
+    return this.loanService.findCurrentLoanFromBook(+bookId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/book/history/:bookId')
+  bookHistory(@Param('bookId') bookId: string) {
+    return this.loanService.findLoanHistoryFromBook(+bookId);
   }
 }

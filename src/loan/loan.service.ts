@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Loan } from './entities/loan.entity';
 import { ReturnBookDto } from './dto/return-book.dto';
 
@@ -33,5 +33,25 @@ export class LoanService {
 
   async returnBook(id: number, returnBookDto: ReturnBookDto) {
     return await this.loanServiceRepository.update(id, returnBookDto);
+  }
+
+  findLoanedBook(bookId: number) {
+    return this.loanServiceRepository.findAndCountBy({
+      book: { id: bookId },
+      return_date: IsNull(),
+    });
+  }
+
+  findCurrentLoanFromBook(bookId: number) {
+    return this.loanServiceRepository.findOneBy({
+      book: { id: bookId },
+      return_date: IsNull(),
+    });
+  }
+
+  findLoanHistoryFromBook(bookId: number) {
+    return this.loanServiceRepository.findBy({
+      book: { id: bookId },
+    });
   }
 }

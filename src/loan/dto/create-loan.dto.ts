@@ -1,12 +1,6 @@
-import {
-  IsNumber,
-  IsString,
-  Length,
-  Matches,
-  ValidateIf,
-} from 'class-validator';
-import { CreateBookDto } from 'src/book/dto/create-book.dto';
-import { CreatePersonDto } from 'src/person/dto/create-person.dto';
+import { IsString, Length, Matches, ValidateIf } from 'class-validator';
+import { UpdateBookDto } from 'src/book/dto/update-book.dto';
+import { UpdatePersonDto } from 'src/person/dto/update-person.dto';
 
 export class CreateLoanDto {
   @IsString({ message: 'Informe a descrição do empréstimo.' })
@@ -31,7 +25,7 @@ export class CreateLoanDto {
   })
   loan_date: Date;
 
-  book: CreateBookDto;
+  book: UpdateBookDto;
 
-  person: CreatePersonDto;
+  person: UpdatePersonDto;
 }
