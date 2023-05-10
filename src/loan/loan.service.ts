@@ -54,4 +54,10 @@ export class LoanService {
       book: { id: bookId },
     });
   }
+
+  findLoanHistoryFromPerson(personId: number) {
+    return this.loanServiceRepository.findBy({
+      person: { id: personId },
+    });
+  }
 }

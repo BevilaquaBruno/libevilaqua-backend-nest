@@ -16,12 +16,14 @@ import { UpdateLoanDto } from './dto/update-loan.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ReturnBookDto } from './dto/return-book.dto';
 import { BookService } from 'src/book/book.service';
+import { PersonService } from 'src/person/person.service';
 
 @Controller('loan')
 export class LoanController {
   constructor(
     private readonly loanService: LoanService,
     private readonly bookService: BookService,
+    private readonly personService: PersonService,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -101,5 +103,18 @@ export class LoanController {
       );
     }
     return this.loanService.findLoanHistoryFromBook(+bookId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/person/:personId/history')
+  async personHistory(@Param('personId') personId: string) {
+    const person = await this.personService.findOne(+personId);
+    if (person === null) {
+      throw new HttpException(
+        'Não existe uma pessoa com esse código',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return this.loanService.findLoanHistoryFromPerson(+personId);
   }
 }
