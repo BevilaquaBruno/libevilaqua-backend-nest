@@ -29,4 +29,17 @@ export class BookService {
   async remove(id: number) {
     return await this.bookServiceRepository.delete({ id });
   }
+
+  findBooksFromAuthor(authorId: number) {
+    return this.bookServiceRepository
+      .createQueryBuilder('book')
+      .leftJoinAndSelect('book.genre', 'genre')
+      .leftJoinAndSelect('book.publisher', 'publisher')
+      .leftJoinAndSelect('book.type', 'type')
+      .leftJoinAndSelect('book.tags', 'tags')
+      .leftJoinAndSelect('book.authors', 'authors')
+      .leftJoin('book.authors', 'authorsForFilter')
+      .where('authorsForFilter.id IN (:...authors)', { authors: [authorId] })
+      .getMany();
+  }
 }
