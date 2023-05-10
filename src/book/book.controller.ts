@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { BookService } from './book.service';
@@ -31,13 +33,28 @@ export class BookController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const book = await this.bookService.findOne(+id);
+    if (book === null) {
+      throw new HttpException(
+        'Não foi encontrado um livro com este código',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return book;
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+  async update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+    const bookToUpdate = await this.bookService.findOne(+id);
+    if (bookToUpdate === null) {
+      throw new HttpException(
+        'Este livro não existe, tente novamente',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return this.bookService.update(+id, updateBookDto);
   }
 

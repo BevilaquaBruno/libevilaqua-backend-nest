@@ -15,10 +15,14 @@ import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ReturnBookDto } from './dto/return-book.dto';
+import { BookService } from 'src/book/book.service';
 
 @Controller('loan')
 export class LoanController {
-  constructor(private readonly loanService: LoanService) {}
+  constructor(
+    private readonly loanService: LoanService,
+    private readonly bookService: BookService,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Post()
@@ -43,8 +47,16 @@ export class LoanController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.loanService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const loan = await this.loanService.findOne(+id);
+    if (loan === null) {
+      throw new HttpException(
+        'Não existe um empréstimo com esse código',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return loan;
   }
 
   @UseGuards(AuthGuard)
@@ -67,13 +79,27 @@ export class LoanController {
 
   @UseGuards(AuthGuard)
   @Get('/book/:bookId')
-  book(@Param('bookId') bookId: string) {
+  async book(@Param('bookId') bookId: string) {
+    const book = await this.bookService.findOne(+bookId);
+    if (book === null) {
+      throw new HttpException(
+        'Não existe um livro com esse código',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return this.loanService.findCurrentLoanFromBook(+bookId);
   }
 
   @UseGuards(AuthGuard)
-  @Get('/book/history/:bookId')
-  bookHistory(@Param('bookId') bookId: string) {
+  @Get('/book/:bookId/history')
+  async bookHistory(@Param('bookId') bookId: string) {
+    const book = await this.bookService.findOne(+bookId);
+    if (book === null) {
+      throw new HttpException(
+        'Não existe um livro com esse código',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return this.loanService.findLoanHistoryFromBook(+bookId);
   }
 }
