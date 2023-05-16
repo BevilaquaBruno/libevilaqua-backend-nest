@@ -14,51 +14,12 @@ import {
 import { AuthGuard } from 'src/auth/auth.guard';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
+import { FindBookDto } from './dto/find-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
-
-  @UseGuards(AuthGuard)
-  @Get('tags')
-  tags(@Query('ids') tags: string) {
-    const tagList: number[] = tags.split(',').map((v) => {
-      return parseInt(v);
-    });
-
-    return this.bookService.findBooksFromTags(tagList);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get('genres')
-  genres(@Query('ids') genres: string) {
-    const genreList: number[] = genres.split(',').map((v) => {
-      return parseInt(v);
-    });
-
-    return this.bookService.findBooksFromGenres(genreList);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get('publishers')
-  publishers(@Query('ids') publishers: string) {
-    const publisherList: number[] = publishers.split(',').map((v) => {
-      return parseInt(v);
-    });
-
-    return this.bookService.findBooksFromPublishers(publisherList);
-  }
-
-  @UseGuards(AuthGuard)
-  @Get('types')
-  types(@Query('ids') types: string) {
-    const typeList: number[] = types.split(',').map((v) => {
-      return parseInt(v);
-    });
-
-    return this.bookService.findBooksFromTypes(typeList);
-  }
 
   @UseGuards(AuthGuard)
   @Post()
@@ -68,8 +29,88 @@ export class BookController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.bookService.findAll();
+  findAll(
+    @Query('genres') genres: string,
+    @Query('tags') tags: string,
+    @Query('publishers') publishers: string,
+    @Query('types') types: string,
+    @Query('authors') authors: string,
+    @Query('release_year') release_year: string,
+    @Query('number_pages') number_pages: string,
+    @Query('isbn') isbn: string,
+    @Query('edition') edition: string,
+    @Query('title') title: string,
+  ) {
+    const findBook: FindBookDto = {
+      typeList: null,
+      publisherList: null,
+      tagList: null,
+      genreList: null,
+      authorList: null,
+      release_year: null,
+      number_pages: null,
+      isbn: null,
+      edition: null,
+      title: null,
+    };
+
+    //turn typeList in number[]
+    if (types !== undefined) {
+      findBook.typeList = types.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    //turn publisherList in number[]
+    if (publishers !== undefined) {
+      findBook.publisherList = publishers.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    //turn taglist in number[]
+    if (tags !== undefined) {
+      findBook.tagList = tags.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    //turn genderList in number[]
+    if (genres !== undefined) {
+      findBook.genreList = genres.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    //turn authorList in number[]
+    if (authors !== undefined) {
+      findBook.authorList = authors.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    //turn release year in a number
+    if (release_year !== undefined)
+      findBook.release_year = parseInt(release_year);
+
+    //turn number_pages in a array with 0 and 1 position
+    if (number_pages !== undefined) {
+      const npArray: string[] = number_pages.split(',');
+      findBook.number_pages = [];
+      findBook.number_pages[0] = parseInt(npArray[0]);
+      findBook.number_pages[1] = parseInt(npArray[1]);
+    }
+
+    // get isbn
+    if (isbn !== undefined) findBook.isbn = isbn;
+
+    // get isbn
+    if (edition !== undefined) findBook.edition = parseInt(edition);
+
+    //get title
+    if (title !== undefined) findBook.title = title;
+
+    return this.bookService.findAll(findBook);
   }
 
   @UseGuards(AuthGuard)

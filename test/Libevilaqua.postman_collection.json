@@ -736,6 +736,36 @@
 					"response": []
 				},
 				{
+					"name": "Find Books From Author",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/author/1/books",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"author",
+								"1",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Find One",
 					"request": {
 						"auth": {
@@ -1465,6 +1495,37 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Loan History From Person",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/loan/person/1/history",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"loan",
+								"person",
+								"1",
+								"history"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1494,6 +1555,66 @@
 							"port": "3000",
 							"path": [
 								"book"
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "1,2",
+									"disabled": true
+								},
+								{
+									"key": "authors",
+									"value": "1,2",
+									"description": "All the books with the authorId 1 or 2",
+									"disabled": true
+								},
+								{
+									"key": "types",
+									"value": "1,2",
+									"description": "All the books with the typeId 1 or 2",
+									"disabled": true
+								},
+								{
+									"key": "publishers",
+									"value": "1,2",
+									"description": "All the books with the publisherId 1 or 2",
+									"disabled": true
+								},
+								{
+									"key": "genres",
+									"value": "1,2",
+									"description": "All the books with the genreId 1 or 2",
+									"disabled": true
+								},
+								{
+									"key": "release_year",
+									"value": "2023",
+									"description": "All the books with the given release_year",
+									"disabled": true
+								},
+								{
+									"key": "number_pages",
+									"value": "0,500",
+									"description": "All the books with the number pages between the given pages",
+									"disabled": true
+								},
+								{
+									"key": "isbn",
+									"value": "1234567891236",
+									"description": "All the books with the given isbn",
+									"disabled": true
+								},
+								{
+									"key": "edition",
+									"value": "2",
+									"description": "All the books with the given edition",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "Test",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -1515,14 +1636,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/book/99",
+							"raw": "localhost:3000/book/1",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"book",
-								"99"
+								"1"
 							]
 						}
 					},

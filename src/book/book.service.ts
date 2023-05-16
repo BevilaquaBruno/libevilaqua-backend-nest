@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Raw, Repository } from 'typeorm';
+import { find } from 'rxjs';
+import { Between, In, Like, Raw, Repository } from 'typeorm';
 import { CreateBookDto } from './dto/create-book.dto';
+import { FindBookDto } from './dto/find-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
 
@@ -14,8 +16,69 @@ export class BookService {
     return this.bookServiceRepository.save(createBookDto);
   }
 
-  findAll() {
-    return this.bookServiceRepository.find();
+  findAll(findBook: FindBookDto) {
+    // initiate the query var and get all the book data
+    const query = this.bookServiceRepository
+      .createQueryBuilder('book')
+      .leftJoinAndSelect('book.genre', 'genre')
+      .leftJoinAndSelect('book.publisher', 'publisher')
+      .leftJoinAndSelect('book.type', 'type')
+      .leftJoinAndSelect('book.tags', 'tags')
+      .leftJoinAndSelect('book.authors', 'authors')
+      .where('1 = 1');
+
+    //filter by the tag list - this is called a Gambiarra
+    if (findBook.tagList !== null) {
+      query
+        .leftJoin('book.tags', 'tagsForFilter')
+        .andWhere('tagsForFilter.id IN (:...tags)', { tags: findBook.tagList });
+    }
+
+    //filter by the author list - this is called a Gambiarra
+    if (findBook.authorList !== null) {
+      query
+        .leftJoin('book.authors', 'authorsForFilter')
+        .andWhere('authorsForFilter.id IN (:...authors)', {
+          authors: findBook.authorList,
+        });
+    }
+
+    // filter by publisher id
+    if (findBook.publisherList !== null)
+      query.andWhere({ publisher: In(findBook.publisherList) });
+
+    // filter by type id
+    if (findBook.typeList !== null)
+      query.andWhere({ type: In(findBook.typeList) });
+
+    // filter by genre id
+    if (findBook.genreList !== null)
+      query.andWhere({ genre: In(findBook.genreList) });
+
+    // filter by genre id
+    if (findBook.release_year !== null)
+      query.andWhere({ release_year: findBook.release_year });
+
+    // filter by number pages
+    if (findBook.number_pages !== null)
+      query.andWhere({
+        number_pages: Between(
+          findBook.number_pages[0],
+          findBook.number_pages[1],
+        ),
+      });
+
+    // filter by isbn
+    if (findBook.isbn != null) query.andWhere({ isbn: findBook.isbn });
+
+    // filter by edition
+    if (findBook.edition != null) query.andWhere({ edition: findBook.edition });
+
+    // filter by title
+    if (findBook.title != null)
+      query.andWhere({ title: Like(`%${findBook.title}%`) });
+
+    return query.getMany();
   }
 
   findOne(id: number) {
@@ -41,30 +104,5 @@ export class BookService {
       .leftJoin('book.authors', 'authorsForFilter')
       .where('authorsForFilter.id IN (:...authors)', { authors: [authorId] })
       .getMany();
-  }
-
-  findBooksFromTags(tagList: number[]) {
-    return this.bookServiceRepository
-      .createQueryBuilder('book')
-      .leftJoinAndSelect('book.genre', 'genre')
-      .leftJoinAndSelect('book.publisher', 'publisher')
-      .leftJoinAndSelect('book.type', 'type')
-      .leftJoinAndSelect('book.tags', 'tags')
-      .leftJoinAndSelect('book.authors', 'authors')
-      .leftJoin('book.tags', 'tagsForFilter')
-      .where('tagsForFilter.id IN (:...tags)', { tags: tagList })
-      .getMany();
-  }
-
-  findBooksFromGenres(genreList: number[]) {
-    return this.bookServiceRepository.findBy({ genre: In(genreList) });
-  }
-
-  findBooksFromPublishers(publisherList: number[]) {
-    return this.bookServiceRepository.findBy({ publisher: In(publisherList) });
-  }
-
-  findBooksFromTypes(typeList: number[]) {
-    return this.bookServiceRepository.findBy({ type: In(typeList) });
   }
 }
