@@ -37,9 +37,6 @@ export class Book {
   release_year: number;
 
   @Column()
-  status: number;
-
-  @Column()
   obs: string;
 
   @ManyToOne(() => Genre, { eager: true })

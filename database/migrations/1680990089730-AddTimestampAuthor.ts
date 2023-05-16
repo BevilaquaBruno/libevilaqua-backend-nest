@@ -11,6 +11,8 @@ export class AddTimestampAuthor1680990089730 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE author DROP COLUMN created_at, updated_at;`);
+    await queryRunner.query(
+      `ALTER TABLE author DROP COLUMN created_at, updated_at;`,
+    );
   }
 }

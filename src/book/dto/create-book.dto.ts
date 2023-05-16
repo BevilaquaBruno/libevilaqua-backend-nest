@@ -41,9 +41,6 @@ export class CreateBookDto {
   )
   release_year: number;
 
-  @IsNumber({ allowNaN: false }, { message: 'Informe o status do livro' })
-  status: number;
-
   @ValidateIf((thisBook) => thisBook.obs !== null)
   @IsString({ message: 'Informe a observação novamente.' })
   obs: string;
