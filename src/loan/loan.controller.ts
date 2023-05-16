@@ -79,6 +79,7 @@ export class LoanController {
     return this.loanService.returnBook(+id, returnBookDto);
   }
 
+  // get the current loan for the given book id
   @UseGuards(AuthGuard)
   @Get('/book/:bookId')
   async book(@Param('bookId') bookId: string) {
@@ -92,6 +93,7 @@ export class LoanController {
     return this.loanService.findCurrentLoanFromBook(+bookId);
   }
 
+  // get the loan history for the given book id
   @UseGuards(AuthGuard)
   @Get('/book/:bookId/history')
   async bookHistory(@Param('bookId') bookId: string) {
@@ -105,6 +107,7 @@ export class LoanController {
     return this.loanService.findLoanHistoryFromBook(+bookId);
   }
 
+  // get the loan history for the given person id
   @UseGuards(AuthGuard)
   @Get('/person/:personId/history')
   async personHistory(@Param('personId') personId: string) {
