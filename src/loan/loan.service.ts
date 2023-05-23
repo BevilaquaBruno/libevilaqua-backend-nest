@@ -2,9 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
+import {
+  Between,
+  IsNull,
+  LessThanOrEqual,
+  Like,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { Loan } from './entities/loan.entity';
 import { ReturnBookDto } from './dto/return-book.dto';
+import { FindLoanDto } from './dto/find-loan.dto';
 
 @Injectable()
 export class LoanService {
@@ -15,8 +23,49 @@ export class LoanService {
     return this.loanServiceRepository.save(createLoanDto);
   }
 
-  findAll() {
-    return this.loanServiceRepository.find();
+  findAll(findLoan: FindLoanDto) {
+    const query = this.loanServiceRepository
+      .createQueryBuilder('loan')
+      .leftJoinAndSelect('loan.person', 'person')
+      .leftJoinAndSelect('loan.book', 'book')
+      .leftJoinAndSelect('book.genre', 'genre')
+      .leftJoinAndSelect('book.publisher', 'publisher')
+      .leftJoinAndSelect('book.type', 'type')
+      .leftJoinAndSelect('book.tags', 'tags')
+      .leftJoinAndSelect('book.authors', 'authors')
+      .where('1 = 1');
+
+    //find loan with the between date
+    if (findLoan.start_date !== null && findLoan.end_date !== null)
+      query.andWhere({
+        loan_date: Between(findLoan.start_date, findLoan.end_date),
+      });
+    //find loan with just the start date
+    else if (findLoan.start_date !== null)
+      query.andWhere({
+        loan_date: MoreThanOrEqual(findLoan.start_date),
+      });
+    //find loan with just the end date
+    else if (findLoan.end_date !== null)
+      query.andWhere({
+        loan_date: LessThanOrEqual(findLoan.end_date),
+      });
+
+    //find loan with the book
+    if (findLoan.book !== null) {
+      query.andWhere({ book: findLoan.book });
+    }
+
+    // find loan with the person
+    if (findLoan.person !== null) {
+      query.andWhere({ person: findLoan.person });
+    }
+
+    // find loan with the description
+    if (findLoan.description != null)
+      query.andWhere({ description: Like(`%${findLoan.description}%`) });
+
+    return query.getMany();
   }
 
   findOne(id: number) {

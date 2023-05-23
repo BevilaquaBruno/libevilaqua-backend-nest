@@ -9,6 +9,7 @@ import {
   UseGuards,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { LoanService } from './loan.service';
 import { CreateLoanDto } from './dto/create-loan.dto';
@@ -17,6 +18,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { ReturnBookDto } from './dto/return-book.dto';
 import { BookService } from 'src/book/book.service';
 import { PersonService } from 'src/person/person.service';
+import { FindLoanDto } from './dto/find-loan.dto';
 
 @Controller('loan')
 export class LoanController {
@@ -43,8 +45,32 @@ export class LoanController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.loanService.findAll();
+  findAll(
+    @Query('start_date') start_date: string,
+    @Query('end_date') end_date: string,
+    @Query('book') book: string,
+    @Query('person') person: string,
+    @Query('description') description: string,
+  ) {
+    const findLoan: FindLoanDto = {
+      start_date: null,
+      end_date: null,
+      book: null,
+      person: null,
+      description: null,
+    };
+
+    if (start_date !== undefined) findLoan.start_date = start_date;
+
+    if (end_date !== undefined) findLoan.end_date = end_date;
+
+    if (book !== undefined) findLoan.book = parseInt(book);
+
+    if (person !== undefined) findLoan.person = parseInt(person);
+
+    if (description !== undefined) findLoan.description = description;
+
+    return this.loanService.findAll(findLoan);
   }
 
   @UseGuards(AuthGuard)
@@ -90,7 +116,13 @@ export class LoanController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return this.loanService.findCurrentLoanFromBook(+bookId);
+    const loan = await this.loanService.findCurrentLoanFromBook(+bookId);
+    if (loan === null)
+      throw new HttpException(
+        'Não foi encontrado nenhum empréstimo para o livro',
+        HttpStatus.BAD_REQUEST,
+      );
+    else return loan;
   }
 
   // get the loan history for the given book id
