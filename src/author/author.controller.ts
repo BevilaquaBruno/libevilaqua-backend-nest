@@ -9,11 +9,13 @@ import {
   UseGuards,
   HttpStatus,
   HttpException,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { BookService } from 'src/book/book.service';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
+import { FindAuthorDto } from './dto/find-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 
 @Controller('author')
@@ -31,8 +33,17 @@ export class AuthorController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.authorService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findAuthor: FindAuthorDto = {
+      page: null,
+      limit: null,
+    };
+
+    findAuthor.limit = limit == undefined ? 0 : parseInt(limit);
+    findAuthor.page =
+      page == undefined ? 1 : findAuthor.limit * (parseInt(page) - 1);
+
+    return this.authorService.findAll(findAuthor);
   }
 
   @UseGuards(AuthGuard)

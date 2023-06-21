@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAuthorDto } from './dto/create-author.dto';
+import { FindAuthorDto } from './dto/find-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { Author } from './entities/author.entity';
 
@@ -16,8 +17,11 @@ export class AuthorService {
     return this.authorServiceRepository.save(createAuthorDto);
   }
 
-  findAll() {
-    return this.authorServiceRepository.find();
+  findAll(findAuthor: FindAuthorDto) {
+    return this.authorServiceRepository.find({
+      take: findAuthor.limit,
+      skip: findAuthor.page,
+    });
   }
 
   findOne(id: number) {
