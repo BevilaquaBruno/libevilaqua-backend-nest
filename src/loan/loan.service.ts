@@ -65,7 +65,7 @@ export class LoanService {
     if (findLoan.description != null)
       query.andWhere({ description: Like(`%${findLoan.description}%`) });
 
-    return query.getMany();
+    return query.take(findLoan.limit).skip(findLoan.page).getMany();
   }
 
   findOne(id: number) {

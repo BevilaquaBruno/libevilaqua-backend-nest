@@ -51,6 +51,8 @@ export class LoanController {
     @Query('book') book: string,
     @Query('person') person: string,
     @Query('description') description: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
   ) {
     const findLoan: FindLoanDto = {
       start_date: null,
@@ -58,6 +60,8 @@ export class LoanController {
       book: null,
       person: null,
       description: null,
+      limit: null,
+      page: null,
     };
 
     if (start_date !== undefined) findLoan.start_date = start_date;
@@ -69,6 +73,10 @@ export class LoanController {
     if (person !== undefined) findLoan.person = parseInt(person);
 
     if (description !== undefined) findLoan.description = description;
+
+    findLoan.limit = limit == undefined ? 5 : parseInt(limit);
+    findLoan.page =
+      page == undefined ? 0 : findLoan.limit * (parseInt(page) - 1);
 
     return this.loanService.findAll(findLoan);
   }

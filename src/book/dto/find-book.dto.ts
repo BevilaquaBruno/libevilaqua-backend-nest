@@ -18,4 +18,8 @@ export class FindBookDto {
   edition: number | null;
 
   title: string | null;
+
+  page: number;
+
+  limit: number;
 }

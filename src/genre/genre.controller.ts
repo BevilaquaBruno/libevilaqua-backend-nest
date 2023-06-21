@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { GenreService } from './genre.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { FindGenreDto } from './dto/find-genre.dto';
 
 @Controller('genre')
 export class GenreController {
@@ -25,8 +27,17 @@ export class GenreController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.genreService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findGenre: FindGenreDto = {
+      limit: null,
+      page: null,
+    };
+
+    findGenre.limit = limit == undefined ? 5 : parseInt(limit);
+    findGenre.page =
+      page == undefined ? 0 : findGenre.limit * (parseInt(page) - 1);
+
+    return this.genreService.findAll(findGenre);
   }
 
   @UseGuards(AuthGuard)

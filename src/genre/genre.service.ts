@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { Genre } from './entities/genre.entity';
+import { FindGenreDto } from './dto/find-genre.dto';
 
 @Injectable()
 export class GenreService {
@@ -14,8 +15,11 @@ export class GenreService {
     return this.genreServiceRepository.save(createGenreDto);
   }
 
-  findAll() {
-    return this.genreServiceRepository.find();
+  findAll(findGenre: FindGenreDto) {
+    return this.genreServiceRepository.find({
+      take: findGenre.limit,
+      skip: findGenre.page,
+    });
   }
 
   findOne(id: number) {
