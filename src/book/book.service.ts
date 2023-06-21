@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { find } from 'rxjs';
+import { FindAuthorBooksDto } from 'src/author/dto/find-author-books.dto';
 import { Between, In, Like, Raw, Repository } from 'typeorm';
 import { CreateBookDto } from './dto/create-book.dto';
 import { FindBookDto } from './dto/find-book.dto';
@@ -93,7 +94,7 @@ export class BookService {
     return await this.bookServiceRepository.delete({ id });
   }
 
-  findBooksFromAuthor(authorId: number) {
+  findBooksFromAuthor(findAuthorBooks: FindAuthorBooksDto) {
     return this.bookServiceRepository
       .createQueryBuilder('book')
       .leftJoinAndSelect('book.genre', 'genre')
@@ -102,7 +103,11 @@ export class BookService {
       .leftJoinAndSelect('book.tags', 'tags')
       .leftJoinAndSelect('book.authors', 'authors')
       .leftJoin('book.authors', 'authorsForFilter')
-      .where('authorsForFilter.id IN (:...authors)', { authors: [authorId] })
+      .where('authorsForFilter.id IN (:...authors)', {
+        authors: [findAuthorBooks.authorId],
+      })
+      .take(findAuthorBooks.limit)
+      .skip(findAuthorBooks.page)
       .getMany();
   }
 }

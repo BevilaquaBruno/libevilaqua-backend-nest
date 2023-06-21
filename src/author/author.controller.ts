@@ -16,6 +16,7 @@ import { BookService } from 'src/book/book.service';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { FindAuthorDto } from './dto/find-author.dto';
+import { FindAuthorBooksDto } from './dto/find-author-books.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 
 @Controller('author')
@@ -39,9 +40,9 @@ export class AuthorController {
       limit: null,
     };
 
-    findAuthor.limit = limit == undefined ? 0 : parseInt(limit);
+    findAuthor.limit = limit == undefined ? 5 : parseInt(limit);
     findAuthor.page =
-      page == undefined ? 1 : findAuthor.limit * (parseInt(page) - 1);
+      page == undefined ? 0 : findAuthor.limit * (parseInt(page) - 1);
 
     return this.authorService.findAll(findAuthor);
   }
@@ -66,7 +67,17 @@ export class AuthorController {
 
   @UseGuards(AuthGuard)
   @Get('/:authorId/books')
-  async books(@Param('authorId') authorId: string) {
+  async books(
+    @Param('authorId') authorId: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
+    const findAuthorBooks: FindAuthorBooksDto = {
+      page: null,
+      limit: null,
+      authorId: null,
+    };
+
     const author = await this.authorService.findOne(+authorId);
     if (author === null) {
       throw new HttpException(
@@ -74,6 +85,11 @@ export class AuthorController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return this.bookService.findBooksFromAuthor(+authorId);
+    findAuthorBooks.authorId = +authorId;
+    findAuthorBooks.limit = limit == undefined ? 5 : parseInt(limit);
+    findAuthorBooks.page =
+      page == undefined ? 0 : findAuthorBooks.limit * (parseInt(page) - 1);
+
+    return this.bookService.findBooksFromAuthor(findAuthorBooks);
   }
 }
