@@ -1,3 +1,4 @@
+import { FindLoanHistoryDto } from './dto/find-loan-history.dto';
 import { Injectable } from '@nestjs/common';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
@@ -65,7 +66,7 @@ export class LoanService {
     if (findLoan.description != null)
       query.andWhere({ description: Like(`%${findLoan.description}%`) });
 
-    return query.getMany();
+    return query.take(findLoan.limit).skip(findLoan.page).getMany();
   }
 
   findOne(id: number) {
@@ -98,15 +99,29 @@ export class LoanService {
     });
   }
 
-  findLoanHistoryFromBook(bookId: number) {
-    return this.loanServiceRepository.findBy({
-      book: { id: bookId },
+  findLoanHistoryFromBook(
+    bookId: number,
+    findLoanHistoryDto: FindLoanHistoryDto,
+  ) {
+    return this.loanServiceRepository.find({
+      where: {
+        book: { id: bookId },
+      },
+      take: findLoanHistoryDto.limit,
+      skip: findLoanHistoryDto.page,
     });
   }
 
-  findLoanHistoryFromPerson(personId: number) {
-    return this.loanServiceRepository.findBy({
-      person: { id: personId },
+  findLoanHistoryFromPerson(
+    personId: number,
+    findLoanHistoryDto: FindLoanHistoryDto,
+  ) {
+    return this.loanServiceRepository.find({
+      where: {
+        person: { id: personId },
+      },
+      take: findLoanHistoryDto.limit,
+      skip: findLoanHistoryDto.page,
     });
   }
 }

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateTypeDto } from './dto/create-type.dto';
 import { UpdateTypeDto } from './dto/update-type.dto';
 import { Type } from './entities/type.entity';
+import { FindTypeDto } from './dto/find-type.dto';
 
 @Injectable()
 export class TypeService {
@@ -14,8 +15,11 @@ export class TypeService {
     return this.typeServiceRepository.save(createTypeDto);
   }
 
-  findAll() {
-    return this.typeServiceRepository.find();
+  findAll(findType: FindTypeDto) {
+    return this.typeServiceRepository.find({
+      take: findType.limit,
+      skip: findType.page,
+    });
   }
 
   findOne(id: number) {

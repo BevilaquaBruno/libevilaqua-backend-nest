@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { FindPersonDto } from './dto/find-person.dto';
 
 @Controller('person')
 export class PersonController {
@@ -25,8 +27,17 @@ export class PersonController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.personService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findPerson: FindPersonDto = {
+      page: null,
+      limit: null,
+    };
+
+    findPerson.limit = limit == undefined ? 5 : parseInt(limit);
+    findPerson.page =
+      page == undefined ? 0 : findPerson.limit * (parseInt(page) - 1);
+
+    return this.personService.findAll(findPerson);
   }
 
   @UseGuards(AuthGuard)

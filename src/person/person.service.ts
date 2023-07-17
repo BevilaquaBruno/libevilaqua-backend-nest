@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { Person } from './entities/person.entity';
+import { FindPersonDto } from './dto/find-person.dto';
 
 @Injectable()
 export class PersonService {
@@ -15,8 +16,11 @@ export class PersonService {
     return this.personServiceRepository.save(createPersonDto);
   }
 
-  findAll() {
-    return this.personServiceRepository.find();
+  findAll(findPersonDto: FindPersonDto) {
+    return this.personServiceRepository.find({
+      take: findPersonDto.limit,
+      skip: findPersonDto.page,
+    });
   }
 
   findOne(id: number) {

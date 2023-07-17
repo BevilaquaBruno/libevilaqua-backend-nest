@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './entities/tag.entity';
+import { FindTagDto } from './dto/find-tag.dto';
 
 @Injectable()
 export class TagService {
@@ -14,8 +15,11 @@ export class TagService {
     return this.tagServiceRepository.save(createTagDto);
   }
 
-  findAll() {
-    return this.tagServiceRepository.find();
+  findAll(findTag: FindTagDto) {
+    return this.tagServiceRepository.find({
+      take: findTag.limit,
+      skip: findTag.page,
+    });
   }
 
   findOne(id: number) {

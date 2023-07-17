@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { TypeService } from './type.service';
 import { CreateTypeDto } from './dto/create-type.dto';
 import { UpdateTypeDto } from './dto/update-type.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { FindTypeDto } from './dto/find-type.dto';
 
 @Controller('type')
 export class TypeController {
@@ -25,8 +27,17 @@ export class TypeController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.typeService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findType: FindTypeDto = {
+      page: null,
+      limit: null,
+    };
+
+    findType.limit = limit == undefined ? 5 : parseInt(limit);
+    findType.page =
+      page == undefined ? 0 : findType.limit * (parseInt(page) - 1);
+
+    return this.typeService.findAll(findType);
   }
 
   @UseGuards(AuthGuard)

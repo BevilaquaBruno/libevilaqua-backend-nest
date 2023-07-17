@@ -40,6 +40,8 @@ export class BookController {
     @Query('isbn') isbn: string,
     @Query('edition') edition: string,
     @Query('title') title: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
   ) {
     const findBook: FindBookDto = {
       typeList: null,
@@ -52,6 +54,8 @@ export class BookController {
       isbn: null,
       edition: null,
       title: null,
+      limit: null,
+      page: null,
     };
 
     //turn typeList in number[]
@@ -109,6 +113,10 @@ export class BookController {
 
     //get title
     if (title !== undefined) findBook.title = title;
+
+    findBook.limit = limit == undefined ? 5 : parseInt(limit);
+    findBook.page =
+      page == undefined ? 0 : findBook.limit * (parseInt(page) - 1);
 
     return this.bookService.findAll(findBook);
   }

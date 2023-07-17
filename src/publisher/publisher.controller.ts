@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PublisherService } from './publisher.service';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { FindPublisherDto } from './dto/find-publisher.dto';
 
 @Controller('publisher')
 export class PublisherController {
@@ -25,8 +27,17 @@ export class PublisherController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.publisherService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findPublisher: FindPublisherDto = {
+      page: null,
+      limit: null,
+    };
+
+    findPublisher.limit = limit == undefined ? 5 : parseInt(limit);
+    findPublisher.page =
+      page == undefined ? 0 : findPublisher.limit * (parseInt(page) - 1);
+
+    return this.publisherService.findAll(findPublisher);
   }
 
   @UseGuards(AuthGuard)

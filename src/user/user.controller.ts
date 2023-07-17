@@ -9,12 +9,14 @@ import {
   UseGuards,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import * as bcrypt from 'bcrypt';
+import { FindUserDto } from './dto/find-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -38,8 +40,17 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findUser: FindUserDto = {
+      page: null,
+      limit: null,
+    };
+
+    findUser.limit = limit == undefined ? 5 : parseInt(limit);
+    findUser.page =
+      page == undefined ? 0 : findUser.limit * (parseInt(page) - 1);
+
+    return this.userService.findAll(findUser);
   }
 
   @UseGuards(AuthGuard)

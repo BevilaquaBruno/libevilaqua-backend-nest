@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { FindTagDto } from './dto/find-tag.dto';
 
 @Controller('tag')
 export class TagController {
@@ -25,8 +27,16 @@ export class TagController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.tagService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const findTag: FindTagDto = {
+      page: null,
+      limit: null,
+    };
+
+    findTag.limit = limit == undefined ? 5 : parseInt(limit);
+    findTag.page = page == undefined ? 0 : findTag.limit * (parseInt(page) - 1);
+
+    return this.tagService.findAll(findTag);
   }
 
   @UseGuards(AuthGuard)

@@ -8,4 +8,8 @@ export class FindLoanDto {
   person: number | null;
 
   description: string | null;
+
+  page: number;
+
+  limit: number;
 }

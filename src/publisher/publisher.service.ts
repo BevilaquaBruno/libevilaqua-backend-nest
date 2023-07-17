@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
 import { Publisher } from './entities/publisher.entity';
+import { FindPublisherDto } from './dto/find-publisher.dto';
 
 @Injectable()
 export class PublisherService {
@@ -15,8 +16,11 @@ export class PublisherService {
     return this.publisherServiceRepository.save(createPublisherDto);
   }
 
-  findAll() {
-    return this.publisherServiceRepository.find();
+  findAll(findPublisher: FindPublisherDto) {
+    return this.publisherServiceRepository.find({
+      take: findPublisher.limit,
+      skip: findPublisher.page,
+    });
   }
 
   findOne(id: number) {

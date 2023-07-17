@@ -19,6 +19,7 @@ import { ReturnBookDto } from './dto/return-book.dto';
 import { BookService } from 'src/book/book.service';
 import { PersonService } from 'src/person/person.service';
 import { FindLoanDto } from './dto/find-loan.dto';
+import { FindLoanHistoryDto } from './dto/find-loan-history.dto';
 
 @Controller('loan')
 export class LoanController {
@@ -51,6 +52,8 @@ export class LoanController {
     @Query('book') book: string,
     @Query('person') person: string,
     @Query('description') description: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
   ) {
     const findLoan: FindLoanDto = {
       start_date: null,
@@ -58,6 +61,8 @@ export class LoanController {
       book: null,
       person: null,
       description: null,
+      limit: null,
+      page: null,
     };
 
     if (start_date !== undefined) findLoan.start_date = start_date;
@@ -69,6 +74,10 @@ export class LoanController {
     if (person !== undefined) findLoan.person = parseInt(person);
 
     if (description !== undefined) findLoan.description = description;
+
+    findLoan.limit = limit == undefined ? 5 : parseInt(limit);
+    findLoan.page =
+      page == undefined ? 0 : findLoan.limit * (parseInt(page) - 1);
 
     return this.loanService.findAll(findLoan);
   }
@@ -128,7 +137,11 @@ export class LoanController {
   // get the loan history for the given book id
   @UseGuards(AuthGuard)
   @Get('/book/:bookId/history')
-  async bookHistory(@Param('bookId') bookId: string) {
+  async bookHistory(
+    @Param('bookId') bookId: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     const book = await this.bookService.findOne(+bookId);
     if (book === null) {
       throw new HttpException(
@@ -136,13 +149,27 @@ export class LoanController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return this.loanService.findLoanHistoryFromBook(+bookId);
+
+    const findLoanHistory: FindLoanHistoryDto = {
+      page: null,
+      limit: null,
+    };
+
+    findLoanHistory.limit = limit == undefined ? 5 : parseInt(limit);
+    findLoanHistory.page =
+      page == undefined ? 0 : findLoanHistory.limit * (parseInt(page) - 1);
+
+    return this.loanService.findLoanHistoryFromBook(+bookId, findLoanHistory);
   }
 
   // get the loan history for the given person id
   @UseGuards(AuthGuard)
   @Get('/person/:personId/history')
-  async personHistory(@Param('personId') personId: string) {
+  async personHistory(
+    @Param('personId') personId: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     const person = await this.personService.findOne(+personId);
     if (person === null) {
       throw new HttpException(
@@ -150,6 +177,19 @@ export class LoanController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return this.loanService.findLoanHistoryFromPerson(+personId);
+
+    const findLoanHistory: FindLoanHistoryDto = {
+      page: null,
+      limit: null,
+    };
+
+    findLoanHistory.limit = limit == undefined ? 5 : parseInt(limit);
+    findLoanHistory.page =
+      page == undefined ? 0 : findLoanHistory.limit * (parseInt(page) - 1);
+
+    return this.loanService.findLoanHistoryFromPerson(
+      +personId,
+      findLoanHistory,
+    );
   }
 }
