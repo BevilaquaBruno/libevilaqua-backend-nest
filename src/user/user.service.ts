@@ -48,4 +48,8 @@ export class UserService {
   async remove(id: number) {
     return await this.userRepository.delete({ id });
   }
+
+  async count() {
+    return await this.userRepository.count();
+  }
 }
