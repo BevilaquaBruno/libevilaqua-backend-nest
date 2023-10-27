@@ -31,6 +31,16 @@ export class UserController {
         HttpStatus.BAD_REQUEST,
       );
     }
+    const userAlreadyExists = await this.userService.findByEmail(
+      createUserDto.email,
+    );
+
+    if (userAlreadyExists.email != undefined) {
+      throw new HttpException(
+        'Já existe um usuário com esse e-mail cadastrado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     const newUser = await this.userService.create(createUserDto);
