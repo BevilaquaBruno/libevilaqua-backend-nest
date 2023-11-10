@@ -33,4 +33,8 @@ export class TypeService {
   async remove(id: number) {
     return await this.typeServiceRepository.delete({ id });
   }
+
+  async count() {
+    return await this.typeServiceRepository.count();
+  }
 }

@@ -17,7 +17,7 @@ import { FindTypeDto } from './dto/find-type.dto';
 
 @Controller('type')
 export class TypeController {
-  constructor(private readonly typeService: TypeService) {}
+  constructor(private readonly typeService: TypeService) { }
 
   @UseGuards(AuthGuard)
   @Post()
@@ -27,7 +27,7 @@ export class TypeController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
     const findType: FindTypeDto = {
       page: null,
       limit: null,
@@ -37,7 +37,10 @@ export class TypeController {
     findType.page =
       page == undefined ? 0 : findType.limit * (parseInt(page) - 1);
 
-    return this.typeService.findAll(findType);
+    return {
+      data: await this.typeService.findAll(findType),
+      count: await this.typeService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)
