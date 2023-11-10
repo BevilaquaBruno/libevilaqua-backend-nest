@@ -35,7 +35,7 @@ export class UserController {
       createUserDto.email,
     );
 
-    if (userAlreadyExists.email != undefined) {
+    if (userAlreadyExists?.email != undefined) {
       throw new HttpException(
         'Já existe um usuário com esse e-mail cadastrado',
         HttpStatus.BAD_REQUEST,
