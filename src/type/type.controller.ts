@@ -17,7 +17,7 @@ import { FindTypeDto } from './dto/find-type.dto';
 
 @Controller('type')
 export class TypeController {
-  constructor(private readonly typeService: TypeService) { }
+  constructor(private readonly typeService: TypeService) {}
 
   @UseGuards(AuthGuard)
   @Post()

@@ -33,4 +33,8 @@ export class TagService {
   async remove(id: number) {
     return await this.tagServiceRepository.delete({ id });
   }
+
+  async count() {
+    return await this.tagServiceRepository.count();
+  }
 }

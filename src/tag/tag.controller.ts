@@ -27,7 +27,7 @@ export class TagController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
     const findTag: FindTagDto = {
       page: null,
       limit: null,
@@ -36,7 +36,10 @@ export class TagController {
     findTag.limit = limit == undefined ? 5 : parseInt(limit);
     findTag.page = page == undefined ? 0 : findTag.limit * (parseInt(page) - 1);
 
-    return this.tagService.findAll(findTag);
+    return {
+      data: await this.tagService.findAll(findTag),
+      count: await this.tagService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)
