@@ -51,14 +51,8 @@ export class GenreController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateGenreDto: UpdateGenreDto,
-  ) {
-    const updateResult = await this.genreService.update(+id, updateGenreDto);
-    return updateResult.affected != 0
-      ? Object.assign({ id: +id }, updateGenreDto)
-      : { message: 'Ocorreu um erro ao atualizar o gênero' };
+  update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
+    return this.genreService.update(+id, updateGenreDto);
   }
 
   @UseGuards(AuthGuard)
