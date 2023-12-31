@@ -33,4 +33,8 @@ export class GenreService {
   async remove(id: number) {
     return await this.genreServiceRepository.delete(id);
   }
+
+  async count() {
+    return await this.genreServiceRepository.count();
+  }
 }

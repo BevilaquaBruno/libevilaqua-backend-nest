@@ -27,7 +27,7 @@ export class GenreController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
     const findGenre: FindGenreDto = {
       limit: null,
       page: null,
@@ -37,7 +37,10 @@ export class GenreController {
     findGenre.page =
       page == undefined ? 0 : findGenre.limit * (parseInt(page) - 1);
 
-    return this.genreService.findAll(findGenre);
+    return {
+      data: await this.genreService.findAll(findGenre),
+      count: await this.genreService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)
