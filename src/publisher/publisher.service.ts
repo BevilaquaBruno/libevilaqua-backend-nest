@@ -34,4 +34,8 @@ export class PublisherService {
   async remove(id: number) {
     return await this.publisherServiceRepository.delete({ id });
   }
+
+  async count() {
+    return await this.publisherServiceRepository.count();
+  }
 }

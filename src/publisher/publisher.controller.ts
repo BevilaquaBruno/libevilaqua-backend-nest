@@ -27,7 +27,7 @@ export class PublisherController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
     const findPublisher: FindPublisherDto = {
       page: null,
       limit: null,
@@ -37,7 +37,10 @@ export class PublisherController {
     findPublisher.page =
       page == undefined ? 0 : findPublisher.limit * (parseInt(page) - 1);
 
-    return this.publisherService.findAll(findPublisher);
+    return {
+      data: await this.publisherService.findAll(findPublisher),
+      count: await this.publisherService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)
