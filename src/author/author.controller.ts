@@ -1,3 +1,4 @@
+import { Length } from 'class-validator';
 import {
   Controller,
   Get,
@@ -64,8 +65,18 @@ export class AuthorController {
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authorService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const books = await this.bookService.findBooksFromAuthor({
+      page: 1,
+      limit: 1,
+      authorId: +id,
+    });
+    if (books.length === 0) return this.authorService.remove(+id);
+    else
+      throw new HttpException(
+        'Existem livros vinculados a esse autor, não é possível excluir.',
+        HttpStatus.NOT_FOUND,
+      );
   }
 
   @UseGuards(AuthGuard)
