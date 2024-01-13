@@ -34,7 +34,7 @@ export class AuthorController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
     const findAuthor: FindAuthorDto = {
       page: null,
       limit: null,
@@ -44,7 +44,10 @@ export class AuthorController {
     findAuthor.page =
       page == undefined ? 0 : findAuthor.limit * (parseInt(page) - 1);
 
-    return this.authorService.findAll(findAuthor);
+    return {
+      data: await this.authorService.findAll(findAuthor),
+      count: await this.authorService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)

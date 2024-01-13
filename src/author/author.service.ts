@@ -35,4 +35,8 @@ export class AuthorService {
   async remove(id: number) {
     return await this.authorServiceRepository.delete(id);
   }
+
+  async count() {
+    return await this.authorServiceRepository.count();
+  }
 }
