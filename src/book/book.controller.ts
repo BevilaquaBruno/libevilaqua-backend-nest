@@ -29,7 +29,7 @@ export class BookController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(
+  async findAll(
     @Query('genres') genres: string,
     @Query('tags') tags: string,
     @Query('publishers') publishers: string,
@@ -118,7 +118,10 @@ export class BookController {
     findBook.page =
       page == undefined ? 0 : findBook.limit * (parseInt(page) - 1);
 
-    return this.bookService.findAll(findBook);
+    return {
+      data: await this.bookService.findAll(findBook),
+      count: await this.bookService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)

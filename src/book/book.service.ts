@@ -110,4 +110,8 @@ export class BookService {
       .skip(findAuthorBooks.page)
       .getMany();
   }
+
+  async count() {
+    return await this.bookServiceRepository.count();
+  }
 }
