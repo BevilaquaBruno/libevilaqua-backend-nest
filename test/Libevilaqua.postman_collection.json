@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "52d8e45b-3624-4f24-b947-e86bfb600d03",
+		"_postman_id": "c7286304-f02f-4794-a6e0-53c875698183",
 		"name": "Libevilaqua",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "2856755",
-		"_collection_link": "https://brunobevilaqua.postman.co/workspace/Team-Workspace~a60bf8aa-16a0-4e2b-89f0-24e506cdbe72/collection/2856755-52d8e45b-3624-4f24-b947-e86bfb600d03?action=share&creator=2856755&source=collection_link"
+		"_exporter_id": "2856755"
 	},
 	"item": [
 		{
@@ -59,13 +58,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/user",
+							"raw": "localhost:3000/user?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -225,13 +234,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/genre",
+							"raw": "localhost:3000/genre?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"genre"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -391,13 +410,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/type",
+							"raw": "localhost:3000/type?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"type"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -557,13 +586,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/tag",
+							"raw": "localhost:3000/tag?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"tag"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -723,13 +762,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/author",
+							"raw": "localhost:3000/author?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"author"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -751,7 +800,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/author/1/books",
+							"raw": "localhost:3000/author/1/books?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -760,6 +809,16 @@
 								"author",
 								"1",
 								"books"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -919,13 +978,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/publisher",
+							"raw": "localhost:3000/publisher?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"publisher"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -1085,13 +1154,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/person",
+							"raw": "localhost:3000/person?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"person"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -1251,13 +1330,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/loan",
+							"raw": "localhost:3000/loan?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"loan"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -1548,7 +1637,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/book",
+							"raw": "localhost:3000/book?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -1558,13 +1647,21 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
 									"key": "tags",
 									"value": "1,2",
 									"disabled": true
 								},
 								{
 									"key": "authors",
-									"value": "1,2",
+									"value": "21",
 									"description": "All the books with the authorId 1 or 2",
 									"disabled": true
 								},
