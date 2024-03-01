@@ -87,6 +87,7 @@ export class BookService {
   }
 
   async update(id: number, updateBookDto: UpdateBookDto) {
+    updateBookDto.id = id;
     return await this.bookServiceRepository.save(updateBookDto);
   }
 
