@@ -99,19 +99,6 @@ export class LoanService {
     });
   }
 
-  findLoanHistoryFromBook(
-    bookId: number,
-    findLoanHistoryDto: FindLoanHistoryDto,
-  ) {
-    return this.loanServiceRepository.find({
-      where: {
-        book: { id: bookId },
-      },
-      take: findLoanHistoryDto.limit,
-      skip: findLoanHistoryDto.page,
-    });
-  }
-
   findLoanHistoryFromPerson(
     personId: number,
     findLoanHistoryDto: FindLoanHistoryDto,

@@ -134,34 +134,6 @@ export class LoanController {
     else return loan;
   }
 
-  // get the loan history for the given book id
-  @UseGuards(AuthGuard)
-  @Get('/book/:bookId/history')
-  async bookHistory(
-    @Param('bookId') bookId: string,
-    @Query('page') page: string,
-    @Query('limit') limit: string,
-  ) {
-    const book = await this.bookService.findOne(+bookId);
-    if (book === null) {
-      throw new HttpException(
-        'Não existe um livro com esse código',
-        HttpStatus.NOT_FOUND,
-      );
-    }
-
-    const findLoanHistory: FindLoanHistoryDto = {
-      page: null,
-      limit: null,
-    };
-
-    findLoanHistory.limit = limit == undefined ? 5 : parseInt(limit);
-    findLoanHistory.page =
-      page == undefined ? 0 : findLoanHistory.limit * (parseInt(page) - 1);
-
-    return this.loanService.findLoanHistoryFromBook(+bookId, findLoanHistory);
-  }
-
   // get the loan history for the given person id
   @UseGuards(AuthGuard)
   @Get('/person/:personId/history')
