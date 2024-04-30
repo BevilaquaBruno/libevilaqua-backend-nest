@@ -34,4 +34,8 @@ export class PersonService {
   async remove(id: number) {
     return await this.personServiceRepository.delete({ id });
   }
+
+  async count() {
+    return await this.personServiceRepository.count();
+  }
 }

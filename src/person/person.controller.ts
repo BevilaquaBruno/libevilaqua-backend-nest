@@ -27,7 +27,7 @@ export class PersonController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
     const findPerson: FindPersonDto = {
       page: null,
       limit: null,
@@ -37,7 +37,10 @@ export class PersonController {
     findPerson.page =
       page == undefined ? 0 : findPerson.limit * (parseInt(page) - 1);
 
-    return this.personService.findAll(findPerson);
+    return {
+      data: await this.personService.findAll(findPerson),
+      count: await this.personService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)
