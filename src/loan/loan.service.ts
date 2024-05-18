@@ -9,6 +9,7 @@ import {
   LessThanOrEqual,
   Like,
   MoreThanOrEqual,
+  Not,
   Repository,
 } from 'typeorm';
 import { Loan } from './entities/loan.entity';
@@ -66,6 +67,13 @@ export class LoanService {
     if (findLoan.description != null)
       query.andWhere({ description: Like(`%${findLoan.description}%`) });
 
+    // find loan with the returned parameter
+    if (findLoan.returned != null)
+      if(findLoan.returned == false)
+        query.andWhere({ return_date: IsNull() });
+      else
+        query.andWhere({ return_date: Not(IsNull()) });
+
     return query.take(findLoan.limit).skip(findLoan.page).getMany();
   }
 
@@ -104,6 +112,23 @@ export class LoanService {
     findLoanHistoryDto: FindLoanHistoryDto,
   ) {
     return this.loanServiceRepository.find({
+      where: {
+        person: { id: personId },
+      },
+      take: findLoanHistoryDto.limit,
+      skip: findLoanHistoryDto.page,
+    });
+  }
+
+  async count() {
+    return await this.loanServiceRepository.count();
+  }
+
+  findAndCountLoanHistoryFromPerson(
+    personId: number,
+    findLoanHistoryDto: FindLoanHistoryDto,
+  ) {
+    return this.loanServiceRepository.count({
       where: {
         person: { id: personId },
       },

@@ -12,4 +12,6 @@ export class FindLoanDto {
   page: number;
 
   limit: number;
+
+  returned: boolean;
 }

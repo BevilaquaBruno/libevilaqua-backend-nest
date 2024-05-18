@@ -20,6 +20,7 @@ import { BookService } from 'src/book/book.service';
 import { PersonService } from 'src/person/person.service';
 import { FindLoanDto } from './dto/find-loan.dto';
 import { FindLoanHistoryDto } from './dto/find-loan-history.dto';
+import { find } from 'rxjs';
 
 @Controller('loan')
 export class LoanController {
@@ -27,7 +28,7 @@ export class LoanController {
     private readonly loanService: LoanService,
     private readonly bookService: BookService,
     private readonly personService: PersonService,
-  ) {}
+  ) { }
 
   @UseGuards(AuthGuard)
   @Post()
@@ -46,12 +47,13 @@ export class LoanController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(
+  async findAll(
     @Query('start_date') start_date: string,
     @Query('end_date') end_date: string,
     @Query('book') book: string,
     @Query('person') person: string,
     @Query('description') description: string,
+    @Query('returned') returned: string,
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
@@ -61,6 +63,7 @@ export class LoanController {
       book: null,
       person: null,
       description: null,
+      returned: null,
       limit: null,
       page: null,
     };
@@ -74,12 +77,21 @@ export class LoanController {
     if (person !== undefined) findLoan.person = parseInt(person);
 
     if (description !== undefined) findLoan.description = description;
+    
+    if (returned !== undefined)
+      if (returned == '1')
+        findLoan.returned = true;
+      else
+        findLoan.returned = false;
 
     findLoan.limit = limit == undefined ? 5 : parseInt(limit);
     findLoan.page =
       page == undefined ? 0 : findLoan.limit * (parseInt(page) - 1);
 
-    return this.loanService.findAll(findLoan);
+    return {
+      data: await this.loanService.findAll(findLoan),
+      count: await this.loanService.count(),
+    };
   }
 
   @UseGuards(AuthGuard)
@@ -159,9 +171,15 @@ export class LoanController {
     findLoanHistory.page =
       page == undefined ? 0 : findLoanHistory.limit * (parseInt(page) - 1);
 
-    return this.loanService.findLoanHistoryFromPerson(
-      +personId,
-      findLoanHistory,
-    );
+    return {
+      data: await this.loanService.findLoanHistoryFromPerson(
+        +personId,
+        findLoanHistory,
+      ),
+      count: await this.loanService.findAndCountLoanHistoryFromPerson(
+        +personId,
+        findLoanHistory,
+      ),
+    };
   }
 }
