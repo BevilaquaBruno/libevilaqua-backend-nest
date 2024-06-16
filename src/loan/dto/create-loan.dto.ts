@@ -25,7 +25,7 @@ export class CreateLoanDto {
   })
   loan_date: Date;
 
-  book: UpdateBookDto;
+  bookId: number;
 
-  person: UpdatePersonDto;
+  personId: number;
 }

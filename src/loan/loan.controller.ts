@@ -34,7 +34,7 @@ export class LoanController {
   @Post()
   async create(@Body() createLoanDto: CreateLoanDto) {
     const isBookLoaned = await this.loanService.findLoanedBook(
-      createLoanDto.book.id,
+      createLoanDto.bookId,
     );
     if (isBookLoaned[1] !== 0) {
       throw new HttpException(
