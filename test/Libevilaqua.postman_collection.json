@@ -24,7 +24,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/auth/signin",
+							"raw": "{{URL}}/auth/signin",
 							"host": [
 								"localhost"
 							],
@@ -58,7 +58,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/user?page=1&limit=10",
+							"raw": "{{URL}}/user?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -96,7 +96,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/user/1",
+							"raw": "{{URL}}/user/1",
 							"host": [
 								"localhost"
 							],
@@ -134,7 +134,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/user",
+							"raw": "{{URL}}/user",
 							"host": [
 								"localhost"
 							],
@@ -171,7 +171,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/user/7",
+							"raw": "{{URL}}/user/7",
 							"host": [
 								"localhost"
 							],
@@ -200,7 +200,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/user/6",
+							"raw": "{{URL}}/user/6",
 							"host": [
 								"localhost"
 							],
@@ -234,7 +234,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/genre?page=1&limit=10",
+							"raw": "{{URL}}/genre?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -272,7 +272,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/genre/1",
+							"raw": "{{URL}}/genre/1",
 							"host": [
 								"localhost"
 							],
@@ -310,7 +310,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/genre",
+							"raw": "{{URL}}/genre",
 							"host": [
 								"localhost"
 							],
@@ -347,7 +347,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/genre/4",
+							"raw": "{{URL}}/genre/4",
 							"host": [
 								"localhost"
 							],
@@ -376,7 +376,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/genre/6",
+							"raw": "{{URL}}/genre/6",
 							"host": [
 								"localhost"
 							],
@@ -410,7 +410,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/type?page=1&limit=10",
+							"raw": "{{URL}}/type?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -448,7 +448,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/type/1",
+							"raw": "{{URL}}/type/1",
 							"host": [
 								"localhost"
 							],
@@ -486,7 +486,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/type",
+							"raw": "{{URL}}/type",
 							"host": [
 								"localhost"
 							],
@@ -523,7 +523,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/type/1",
+							"raw": "{{URL}}/type/1",
 							"host": [
 								"localhost"
 							],
@@ -552,7 +552,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/type/3",
+							"raw": "{{URL}}/type/3",
 							"host": [
 								"localhost"
 							],
@@ -586,7 +586,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/tag?page=1&limit=10",
+							"raw": "{{URL}}/tag?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -624,7 +624,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/tag/1",
+							"raw": "{{URL}}/tag/1",
 							"host": [
 								"localhost"
 							],
@@ -662,7 +662,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/tag",
+							"raw": "{{URL}}/tag",
 							"host": [
 								"localhost"
 							],
@@ -699,7 +699,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/tag/2",
+							"raw": "{{URL}}/tag/2",
 							"host": [
 								"localhost"
 							],
@@ -728,7 +728,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/tag/2",
+							"raw": "{{URL}}/tag/2",
 							"host": [
 								"localhost"
 							],
@@ -762,7 +762,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/author?page=1&limit=10",
+							"raw": "{{URL}}/author?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -800,7 +800,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/author/1/books?page=1&limit=10",
+							"raw": "{{URL}}/author/1/books?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -840,7 +840,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/author/1",
+							"raw": "{{URL}}/author/1",
 							"host": [
 								"localhost"
 							],
@@ -878,7 +878,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/author",
+							"raw": "{{URL}}/author",
 							"host": [
 								"localhost"
 							],
@@ -915,7 +915,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/author/21",
+							"raw": "{{URL}}/author/21",
 							"host": [
 								"localhost"
 							],
@@ -944,7 +944,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/author/20",
+							"raw": "{{URL}}/author/20",
 							"host": [
 								"localhost"
 							],
@@ -978,7 +978,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/publisher?page=1&limit=10",
+							"raw": "{{URL}}/publisher?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -1016,7 +1016,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/publisher/1",
+							"raw": "{{URL}}/publisher/1",
 							"host": [
 								"localhost"
 							],
@@ -1054,7 +1054,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/publisher",
+							"raw": "{{URL}}/publisher",
 							"host": [
 								"localhost"
 							],
@@ -1091,7 +1091,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/publisher/2",
+							"raw": "{{URL}}/publisher/2",
 							"host": [
 								"localhost"
 							],
@@ -1120,7 +1120,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/publisher/2",
+							"raw": "{{URL}}/publisher/2",
 							"host": [
 								"localhost"
 							],
@@ -1154,7 +1154,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/person?page=1&limit=10",
+							"raw": "{{URL}}/person?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -1192,7 +1192,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/person/1",
+							"raw": "{{URL}}/person/1",
 							"host": [
 								"localhost"
 							],
@@ -1230,7 +1230,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/person",
+							"raw": "{{URL}}/person",
 							"host": [
 								"localhost"
 							],
@@ -1267,7 +1267,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/person/2",
+							"raw": "{{URL}}/person/2",
 							"host": [
 								"localhost"
 							],
@@ -1296,7 +1296,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/person/3",
+							"raw": "{{URL}}/person/3",
 							"host": [
 								"localhost"
 							],
@@ -1330,7 +1330,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/loan?page=1&limit=10",
+							"raw": "{{URL}}/loan?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -1368,7 +1368,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/loan/1",
+							"raw": "{{URL}}/loan/1",
 							"host": [
 								"localhost"
 							],
@@ -1406,7 +1406,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/loan",
+							"raw": "{{URL}}/loan",
 							"host": [
 								"localhost"
 							],
@@ -1443,7 +1443,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/loan/3",
+							"raw": "{{URL}}/loan/3",
 							"host": [
 								"localhost"
 							],
@@ -1481,7 +1481,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/loan/return/1",
+							"raw": "{{URL}}/loan/return/1",
 							"host": [
 								"localhost"
 							],
@@ -1511,7 +1511,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/loan/3",
+							"raw": "{{URL}}/loan/3",
 							"host": [
 								"localhost"
 							],
@@ -1540,7 +1540,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/loan/book/5",
+							"raw": "{{URL}}/loan/book/5",
 							"host": [
 								"localhost"
 							],
@@ -1570,7 +1570,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/loan/book/5/history",
+							"raw": "{{URL}}/loan/book/5/history",
 							"host": [
 								"localhost"
 							],
@@ -1601,7 +1601,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/loan/person/1/history",
+							"raw": "{{URL}}/loan/person/1/history",
 							"host": [
 								"localhost"
 							],
@@ -1637,7 +1637,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/book?page=1&limit=10",
+							"raw": "{{URL}}/book?page=1&limit=10",
 							"host": [
 								"localhost"
 							],
@@ -1733,7 +1733,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/book/1",
+							"raw": "{{URL}}/book/1",
 							"host": [
 								"localhost"
 							],
@@ -1771,7 +1771,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/book",
+							"raw": "{{URL}}/book",
 							"host": [
 								"localhost"
 							],
@@ -1808,7 +1808,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/book/3",
+							"raw": "{{URL}}/book/3",
 							"host": [
 								"localhost"
 							],
@@ -1837,7 +1837,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/book/3",
+							"raw": "{{URL}}/book/3",
 							"host": [
 								"localhost"
 							],
@@ -1877,6 +1877,11 @@
 		{
 			"key": "Token",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "URL",
+			"value": "localhost:3000",
 			"type": "string"
 		}
 	]
