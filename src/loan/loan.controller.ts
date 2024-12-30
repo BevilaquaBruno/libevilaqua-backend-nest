@@ -33,10 +33,12 @@ export class LoanController {
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createLoanDto: CreateLoanDto) {
+    
     const isBookLoaned = await this.loanService.findLoanedBook(
       createLoanDto.bookId,
     );
-    if (isBookLoaned[1] !== 0) {
+    
+    if (isBookLoaned[1] != 0) {
       throw new HttpException(
         'Este livro já está emprestado',
         HttpStatus.BAD_REQUEST,
@@ -110,8 +112,16 @@ export class LoanController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
-    return this.loanService.update(+id, updateLoanDto);
+  async update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
+    let bookUpdated = await this.loanService.update(+id, updateLoanDto);
+
+    if(1 == bookUpdated.affected)
+      return this.loanService.findOne(+id);
+    else
+      throw new HttpException(
+        'Ocorreu um erro para atualizar o empréstimo, entre em contato com o suporte',
+        HttpStatus.BAD_REQUEST
+      );
   }
 
   @UseGuards(AuthGuard)
@@ -122,8 +132,16 @@ export class LoanController {
 
   @UseGuards(AuthGuard)
   @Patch('/return/:id')
-  return(@Param('id') id: string, @Body() returnBookDto: ReturnBookDto) {
-    return this.loanService.returnBook(+id, returnBookDto);
+  async return(@Param('id') id: string, @Body() returnBookDto: ReturnBookDto) {
+    let bookUpdated = await this.loanService.returnBook(+id, returnBookDto);
+
+    if(1 == bookUpdated.affected)
+      return this.loanService.findOne(+id);
+    else
+      throw new HttpException(
+        'Ocorreu um erro para atualizar o empréstimo, entre em contato com o suporte',
+        HttpStatus.BAD_REQUEST
+      );
   }
 
   // get the current loan for the given book id

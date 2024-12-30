@@ -1,6 +1,4 @@
 import { IsString, Length, Matches, ValidateIf } from 'class-validator';
-import { UpdateBookDto } from 'src/book/dto/update-book.dto';
-import { UpdatePersonDto } from 'src/person/dto/update-person.dto';
 
 export class CreateLoanDto {
   @IsString({ message: 'Informe a descrição do empréstimo.' })

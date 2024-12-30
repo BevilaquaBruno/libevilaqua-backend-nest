@@ -21,8 +21,19 @@ export class LoanService {
   constructor(
     @InjectRepository(Loan) private loanServiceRepository: Repository<Loan>,
   ) {}
+
   create(createLoanDto: CreateLoanDto) {
-    return this.loanServiceRepository.save(createLoanDto);
+
+    console.log(createLoanDto);
+    
+    return this.loanServiceRepository.save({
+      description: createLoanDto.description,
+      loan_date: createLoanDto.loan_date,
+      must_return_date: createLoanDto.must_return_date,
+      return_date: createLoanDto.return_date,
+      book: { id: createLoanDto.bookId },
+      person: { id: createLoanDto.personId },
+    });
   }
 
   findAll(findLoan: FindLoanDto) {
@@ -82,7 +93,14 @@ export class LoanService {
   }
 
   async update(id: number, updateLoanDto: UpdateLoanDto) {
-    return await this.loanServiceRepository.update(id, updateLoanDto);
+    return await this.loanServiceRepository.update(id, {
+      description: updateLoanDto.description,
+      loan_date: updateLoanDto.loan_date,
+      must_return_date: updateLoanDto.must_return_date,
+      return_date: updateLoanDto.return_date,
+      book: { id: updateLoanDto.bookId },
+      person: { id: updateLoanDto.personId },
+    });
   }
 
   async remove(id: number) {
