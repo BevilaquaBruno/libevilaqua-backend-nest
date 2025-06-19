@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Not, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -10,7 +10,7 @@ import { FindUserDto } from './dto/find-user.dto';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
@@ -27,7 +27,7 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
-  findByEmail(email: string) {
+  findOneWithPassword(id: number){
     return this.userRepository.findOne({
       select: {
         id: true,
@@ -36,8 +36,31 @@ export class UserService {
         password: true,
       },
       where: {
-        email: email,
+        id: id
       },
+    });
+  }
+
+  findByEmail(email: string, excludeId: number = null) {
+    let dynamicWhere: FindOptionsWhere<User> = {
+      email: email,
+    };
+
+    if (null != excludeId) {
+      dynamicWhere = {
+        ...dynamicWhere,
+        id: Not(excludeId)
+      }
+    }
+
+    return this.userRepository.findOne({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+      },
+      where: dynamicWhere,
     });
   }
 
