@@ -86,6 +86,14 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    let user: User = await this.userService.findOne(+id);
+    if (null == user) {
+      throw new HttpException(
+        'Usuário não encontrado. Código do usuário: ' + id + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
     // verifica o e-mail
     const userAlreadyExists = await this.userService.findByEmail(
       updateUserDto.email,
@@ -163,8 +171,8 @@ export class UserController {
       );
     }
 
-    let userDeleted = await this.userService.remove(+id);
-    if (userDeleted.affected == 1) {
+    let deletedUser = await this.userService.remove(+id);
+    if (deletedUser.affected == 1) {
       throw new HttpException(
         'Usuário deletado com sucesso.',
         HttpStatus.OK
