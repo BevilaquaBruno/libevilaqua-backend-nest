@@ -148,7 +148,7 @@ export class UserController {
     const updatedUser = await this.userService.update(+id, updateUserDto);
     if (updatedUser.affected == 1) {
       return {
-        id: id,
+        id: +id,
         name: updateUserDto.name,
         email: updateUserDto.email
       };

@@ -77,7 +77,7 @@ export class GenreController {
     const updatedGenre = await this.genreService.update(+id, updateGenreDto);
     if (updatedGenre.affected == 1) {
       return {
-        id: id,
+        id: +id,
         description: updateGenreDto.description
       };
     } else {

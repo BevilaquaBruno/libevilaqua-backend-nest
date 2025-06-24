@@ -78,7 +78,7 @@ export class TypeController {
     const updatedType = await this.typeService.update(+id, updateTypeDto);
     if (updatedType.affected == 1) {
       return {
-        id: id,
+        id: +id,
         description: updateTypeDto.description
       };
     } else {

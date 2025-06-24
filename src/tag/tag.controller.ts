@@ -76,7 +76,7 @@ export class TagController {
     const updatedTag = await this.tagService.update(+id, updateTagDto);
     if (updatedTag.affected == 1) {
       return {
-        id: id,
+        id: +id,
         description: updateTagDto.description
       };
     } else {
