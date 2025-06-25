@@ -17,7 +17,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"email\": \"bruno.f.bevilaqua@gmail.com\",\n  \"password\": \"123\"\n}",
+              "json": "{\n  \"email\": \"bruno.f.bevilaqua@gmail.com\",\n  \"password\": \"-\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -162,7 +162,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"ABC123\",\n  \"password\": \"123\",\n  \"verify_password\": \"123\"\n}",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"-\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -751,7 +751,7 @@
       "auth": {
         "mode": "bearer",
         "bearer": {
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJydW5vLmYuYmV2aWxhcXVhQGdtYWlsLmNvbSIsInN1YiI6MSwiaWF0IjoxNzUwODA1NjkxLCJleHAiOjE3NTA4OTIwOTF9.ROc9SRtca7cHTxzAzAxYi1nsDAHQMIHS6RK7HQFL34o"
+          "token": "-"
         }
       },
       "vars": {
