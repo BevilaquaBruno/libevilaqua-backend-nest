@@ -8,21 +8,29 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { GenreService } from './genre.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FindGenreDto } from './dto/find-genre.dto';
+import { Genre } from './entities/genre.entity';
 
 @Controller('genre')
 export class GenreController {
-  constructor(private readonly genreService: GenreService) {}
+  constructor(private readonly genreService: GenreService) { }
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createGenreDto: CreateGenreDto) {
-    return this.genreService.create(createGenreDto);
+  async create(@Body() createGenreDto: CreateGenreDto) {
+    const newGenre = await this.genreService.create(createGenreDto);
+
+    return {
+      id: newGenre.id,
+      description: newGenre.description
+    };
   }
 
   @UseGuards(AuthGuard)
@@ -45,22 +53,62 @@ export class GenreController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.genreService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    let genre: Genre = await this.genreService.findOne(+id);
+
+    if (null == genre)
+      throw new HttpException(
+        'Gênero não encontrado. Código do gênero: ' + id + '.',
+        HttpStatus.NOT_FOUND
+      );
+    return genre;
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
-    return this.genreService.update(+id, updateGenreDto);
+  async update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
+    let genre: Genre = await this.genreService.findOne(+id);
+    if (null == genre)
+      throw new HttpException(
+        'Gênero não encontrado. Código do gênero: ' + id + '.',
+        HttpStatus.NOT_FOUND
+      );
+
+    const updatedGenre = await this.genreService.update(+id, updateGenreDto);
+    if (updatedGenre.affected == 1) {
+      return {
+        id: +id,
+        description: updateGenreDto.description
+      };
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro com a atualização do gênero.',
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    const deleteResult = await this.genreService.remove(+id);
-    return deleteResult.affected != 0
-      ? {}
-      : { message: 'Ocorreu um erro ao deletar o gênero' };
+    let genre: Genre = await this.genreService.findOne(+id);
+    if (null == genre)
+      throw new HttpException(
+        'Gênero não encontrado. Código do gênero: ' + id + '.',
+        HttpStatus.NOT_FOUND
+      );
+
+    let deletedGenre = await this.genreService.remove(+id);
+    if (deletedGenre.affected == 1) {
+      throw new HttpException(
+        'Gênero deletado com sucesso.',
+        HttpStatus.OK
+      );
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro ao deletar o gênero.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
