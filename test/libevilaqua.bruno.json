@@ -162,7 +162,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"-\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"\",\n  \"password\": \"\",\n  \"verify_password\": \"\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -751,7 +751,7 @@
       "auth": {
         "mode": "bearer",
         "bearer": {
-          "token": "-"
+          "token": ""
         }
       },
       "vars": {
