@@ -17,7 +17,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"email\": \"bruno.f.bevilaqua@gmail.com\",\n  \"password\": \"-\"\n}",
+              "json": "{\n  \"email\": \"bruno.f.bevilaqua@gmail.com\",\n  \"password\": \"\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -36,38 +36,6 @@
       "type": "folder",
       "name": "user",
       "items": [
-        {
-          "type": "http",
-          "name": "Get one",
-          "seq": 3,
-          "request": {
-            "url": "{{BASE_URL}}/user/{{id}}",
-            "method": "GET",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "1",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
         {
           "type": "http",
           "name": "Delete",
@@ -153,6 +121,62 @@
         },
         {
           "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/user/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/user",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua2@gmail.com\",\n  \"password\": \"\",\n  \"verify_password\": \"\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
           "name": "Update",
           "seq": 4,
           "request": {
@@ -177,30 +201,6 @@
                 }
               ]
             },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "New",
-          "seq": 1,
-          "request": {
-            "url": "{{BASE_URL}}/user",
-            "method": "POST",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua2@gmail.com\",\n  \"password\": \"123\",\n  \"verify_password\": \"123\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
             "assertions": [],
             "tests": "",
             "auth": {
@@ -426,38 +426,6 @@
         },
         {
           "type": "http",
-          "name": "Get one",
-          "seq": 3,
-          "request": {
-            "url": "{{BASE_URL}}/tag/{{id}}",
-            "method": "GET",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "2",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
           "name": "Get all",
           "seq": 2,
           "request": {
@@ -509,16 +477,15 @@
         },
         {
           "type": "http",
-          "name": "Update",
-          "seq": 4,
+          "name": "Get one",
+          "seq": 3,
           "request": {
             "url": "{{BASE_URL}}/tag/{{id}}",
-            "method": "PATCH",
+            "method": "GET",
             "headers": [],
             "params": [],
             "body": {
-              "mode": "json",
-              "json": "{\n  \"description\": \"Tag atualizada\"\n}",
+              "mode": "none",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -527,7 +494,7 @@
               "req": [
                 {
                   "name": "id",
-                  "value": "1",
+                  "value": "2",
                   "enabled": true,
                   "local": false
                 }
@@ -563,19 +530,84 @@
               "mode": "inherit"
             }
           }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/tag/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Tag atualizada\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
         }
       ]
     },
     {
       "type": "folder",
-      "name": "genre",
+      "name": "publisher",
       "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/publisher/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "4",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
         {
           "type": "http",
           "name": "Get all",
           "seq": 2,
           "request": {
-            "url": "{{BASE_URL}}/genre?page={{page}}&limit={{limit}}",
+            "url": "{{BASE_URL}}/publisher?page={{page}}&limit={{limit}}",
             "method": "GET",
             "headers": [],
             "params": [
@@ -623,104 +655,15 @@
         },
         {
           "type": "http",
-          "name": "Delete",
-          "seq": 5,
-          "request": {
-            "url": "{{BASE_URL}}/genre/{{id}}",
-            "method": "DELETE",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "4",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
           "name": "Get one",
           "seq": 3,
           "request": {
-            "url": "{{BASE_URL}}/genre/{{id}}",
+            "url": "{{BASE_URL}}/publisher/{{id}}",
             "method": "GET",
             "headers": [],
             "params": [],
             "body": {
               "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "2",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "New",
-          "seq": 1,
-          "request": {
-            "url": "{{BASE_URL}}/genre",
-            "method": "POST",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"description\": \"Genre description\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Update",
-          "seq": 4,
-          "request": {
-            "url": "{{BASE_URL}}/genre/{{id}}",
-            "method": "PATCH",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"description\": \"Genre atualizado\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -741,6 +684,63 @@
               "mode": "inherit"
             }
           }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/publisher/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Publisher\",\n  \"country\": \"Brazil\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "3",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/publisher",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Publisher description\",\n  \"country\": \"Brazil\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
         }
       ]
     }
@@ -751,7 +751,7 @@
       "auth": {
         "mode": "bearer",
         "bearer": {
-          "token": ""
+          "token": "-"
         }
       },
       "vars": {
@@ -761,7 +761,7 @@
             "value": "http://localhost:3000",
             "enabled": true,
             "local": false,
-            "uid": "drx3polTjLUVXyvTvKXMk"
+            "uid": "GuipYGUEyBPeS1zQm1O8O"
           }
         ]
       }
