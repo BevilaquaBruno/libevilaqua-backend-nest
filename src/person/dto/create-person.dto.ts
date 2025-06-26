@@ -1,5 +1,4 @@
 import {
-  IsEmpty,
   IsEnum,
   IsNotEmpty,
   IsString,
@@ -7,7 +6,7 @@ import {
   Matches,
   ValidateIf,
 } from 'class-validator';
-import { States } from '../enum/States.enum';
+import { States } from '../../helpers/enum/States.enum';
 
 export class CreatePersonDto {
   @IsString({ message: 'Informe o nome da pessoa novamente' })
