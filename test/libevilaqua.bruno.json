@@ -17,7 +17,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"email\": \"bruno.f.bevilaqua@gmail.com\",\n  \"password\": \"\"\n}",
+              "json": "{\n  \"email\": \"bruno.f.bevilaqua@gmail.com\",\n  \"password\": \"-\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -162,7 +162,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua2@gmail.com\",\n  \"password\": \"\",\n  \"verify_password\": \"\"\n}",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua2@gmail.com\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -186,7 +186,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"\",\n  \"password\": \"\",\n  \"verify_password\": \"\"\n}",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"-\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -730,6 +730,184 @@
             "body": {
               "mode": "json",
               "json": "{\n  \"name\": \"Publisher description\",\n  \"country\": \"Brazil\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "person",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/person/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "20",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+            "url": "{{BASE_URL}}/person?page={{page}}&limit={{limit}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/person/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "19",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/person/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua 2\",\n  \"cpf\": \"103.411.729-79\",\n  \"cep\": \"89701-875\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia\",\n  \"district\": \"Linha São Paulo\",\n  \"street\": \"Rua Sérgio Galvan\",\n  \"number\": \"15\",\n  \"obs\": null\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "19",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/person",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"cpf\": \"072.043.129-88\",\n  \"cep\": \"89700-055\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia 2\",\n  \"district\": \"Centro\",\n  \"street\": \"Rua Marechal Deodoro\",\n  \"number\": \"1280\",\n  \"obs\": \"Conta pessoal do Bruno Fernando Bevilaqua, teste de texto aqui que é necessário escrever mais\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
