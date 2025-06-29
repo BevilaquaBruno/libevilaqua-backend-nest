@@ -16,6 +16,7 @@ import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { FindBookDto } from './dto/find-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { Book } from './entities/book.entity';
 
 @Controller('book')
 export class BookController {
@@ -23,8 +24,13 @@ export class BookController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createBookDto: CreateBookDto) {
-    return this.bookService.create(createBookDto);
+  async create(@Body() createBookDto: CreateBookDto) {
+    const newBook = await this.bookService.create(createBookDto);
+
+    return {
+      id: newBook.id,
+      ...createBookDto
+    };
   }
 
   @UseGuards(AuthGuard)
@@ -120,17 +126,18 @@ export class BookController {
 
     return {
       data: await this.bookService.findAll(findBook),
-      count: await this.bookService.count(),
+      count: await this.bookService.count(findBook),
     };
   }
 
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const book = await this.bookService.findOne(+id);
-    if (book === null) {
+    const book: Book = await this.bookService.findOne(+id);
+
+    if (null == book) {
       throw new HttpException(
-        'Não foi encontrado um livro com este código',
+        'Livro não encontrado. Código do livro: ' + id + '.',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -141,19 +148,46 @@ export class BookController {
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    const bookToUpdate = await this.bookService.findOne(+id);
-    if (bookToUpdate === null) {
+    const book: Book = await this.bookService.findOne(+id);
+
+    if (null == book) {
       throw new HttpException(
-        'Este livro não existe, tente novamente',
+        'Livro não encontrado. Código do livro: ' + id + '.',
         HttpStatus.NOT_FOUND,
       );
     }
-    return this.bookService.update(+id, updateBookDto);
+
+    const updatedBook = await this.bookService.update(+id, updateBookDto);
+
+    return {
+      id: updatedBook.id,
+      ...updateBookDto
+    };
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookService.remove(+id);
+  async remove(@Param('id') id: string) {
+        const book: Book = await this.bookService.findOne(+id);
+
+    if (null == book) {
+      throw new HttpException(
+        'Livro não encontrado. Código do livro: ' + id + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    let deletedBook = await this.bookService.remove(+id);
+    if (deletedBook.affected == 1) {
+      throw new HttpException(
+        'Livro deletado com sucesso.',
+        HttpStatus.OK
+      );
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro ao deletar o livro.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
