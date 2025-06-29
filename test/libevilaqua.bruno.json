@@ -447,14 +447,14 @@
     },
     {
       "type": "folder",
-      "name": "user",
+      "name": "person",
       "items": [
         {
           "type": "http",
           "name": "Delete",
           "seq": 5,
           "request": {
-            "url": "{{BASE_URL}}/user/{{id}}",
+            "url": "{{BASE_URL}}/person/{{id}}",
             "method": "DELETE",
             "headers": [],
             "params": [],
@@ -468,7 +468,7 @@
               "req": [
                 {
                   "name": "id",
-                  "value": "5",
+                  "value": "20",
                   "enabled": true,
                   "local": false
                 }
@@ -486,7 +486,7 @@
           "name": "Get all",
           "seq": 2,
           "request": {
-            "url": "{{BASE_URL}}/user?page={{page}}&limit={{limit}}",
+            "url": "{{BASE_URL}}/person?page={{page}}&limit={{limit}}",
             "method": "GET",
             "headers": [],
             "params": [
@@ -536,8 +536,16 @@
           "type": "http",
           "name": "Get one",
           "seq": 3,
+<<<<<<< HEAD
           "request": {
             "url": "{{BASE_URL}}/user/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+=======
+          "request": {
+            "url": "{{BASE_URL}}/person/{{id}}",
             "method": "GET",
             "headers": [],
             "params": [],
@@ -551,7 +559,7 @@
               "req": [
                 {
                   "name": "id",
-                  "value": "1",
+                  "value": "19",
                   "enabled": true,
                   "local": false
                 }
@@ -569,13 +577,13 @@
           "name": "New",
           "seq": 1,
           "request": {
-            "url": "{{BASE_URL}}/user",
+            "url": "{{BASE_URL}}/person",
             "method": "POST",
             "headers": [],
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua2@gmail.com\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"cpf\": \"072.043.129-88\",\n  \"cep\": \"89700-055\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia 2\",\n  \"district\": \"Centro\",\n  \"street\": \"Rua Marechal Deodoro\",\n  \"number\": \"1280\",\n  \"obs\": \"Conta pessoal do Bruno Fernando Bevilaqua, teste de texto aqui que é necessário escrever mais\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -593,13 +601,13 @@
           "name": "Update",
           "seq": 4,
           "request": {
-            "url": "{{BASE_URL}}/user/{{id}}",
+            "url": "{{BASE_URL}}/person/{{id}}",
             "method": "PATCH",
             "headers": [],
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"-\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua 2\",\n  \"cpf\": \"103.411.729-79\",\n  \"cep\": \"89701-875\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia\",\n  \"district\": \"Linha São Paulo\",\n  \"street\": \"Rua Sérgio Galvan\",\n  \"number\": \"15\",\n  \"obs\": null\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -608,185 +616,7 @@
               "req": [
                 {
                   "name": "id",
-                  "value": "2",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "folder",
-      "name": "type",
-      "items": [
-        {
-          "type": "http",
-          "name": "Delete",
-          "seq": 5,
-          "request": {
-            "url": "{{BASE_URL}}/type/{{id}}",
-            "method": "DELETE",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "4",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Get all",
-          "seq": 2,
-          "request": {
-            "url": "{{BASE_URL}}/type?page={{page}}&limit={{limit}}",
-            "method": "GET",
-            "headers": [],
-            "params": [
-              {
-                "name": "page",
-                "value": "{{page}}",
-                "type": "query",
-                "enabled": true
-              },
-              {
-                "name": "limit",
-                "value": "{{limit}}",
-                "type": "query",
-                "enabled": true
-              }
-            ],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "page",
-                  "value": "1",
-                  "enabled": true,
-                  "local": false
-                },
-                {
-                  "name": "limit",
-                  "value": "10",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Get one",
-          "seq": 3,
-          "request": {
-            "url": "{{BASE_URL}}/type/{{id}}",
-            "method": "GET",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "5",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "New",
-          "seq": 1,
-          "request": {
-            "url": "{{BASE_URL}}/type",
-            "method": "POST",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"description\": \"Type description\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Update",
-          "seq": 4,
-          "request": {
-            "url": "{{BASE_URL}}/type/{{id}}",
-            "method": "PATCH",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"description\": \"Tipo atualizado\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "5",
+                  "value": "19",
                   "enabled": true,
                   "local": false
                 }
@@ -981,14 +811,14 @@
     },
     {
       "type": "folder",
-      "name": "person",
+      "name": "tag",
       "items": [
         {
           "type": "http",
           "name": "Delete",
           "seq": 5,
           "request": {
-            "url": "{{BASE_URL}}/person/{{id}}",
+            "url": "{{BASE_URL}}/tag/{{id}}",
             "method": "DELETE",
             "headers": [],
             "params": [],
@@ -1002,7 +832,7 @@
               "req": [
                 {
                   "name": "id",
-                  "value": "20",
+                  "value": "4",
                   "enabled": true,
                   "local": false
                 }
@@ -1020,7 +850,7 @@
           "name": "Get all",
           "seq": 2,
           "request": {
-            "url": "{{BASE_URL}}/person?page={{page}}&limit={{limit}}",
+            "url": "{{BASE_URL}}/tag?page={{page}}&limit={{limit}}",
             "method": "GET",
             "headers": [],
             "params": [
@@ -1068,6 +898,614 @@
         },
         {
           "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/tag/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+>>>>>>> origin/10-refatorar-endpoints-da-api
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/tag",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+<<<<<<< HEAD
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua2@gmail.com\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+=======
+              "json": "{\n  \"description\": \"Tag description\"\n}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+<<<<<<< HEAD
+            "url": "{{BASE_URL}}/user/{{id}}",
+=======
+            "url": "{{BASE_URL}}/tag/{{id}}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+<<<<<<< HEAD
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"-\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+=======
+              "json": "{\n  \"description\": \"Tag atualizada\"\n}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+<<<<<<< HEAD
+                  "value": "2",
+=======
+                  "value": "1",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "type",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/type/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "4",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+            "url": "{{BASE_URL}}/type?page={{page}}&limit={{limit}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/type/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "5",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/type",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Type description\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/type/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Tipo atualizado\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "5",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+<<<<<<< HEAD
+      "name": "publisher",
+=======
+      "name": "user",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+<<<<<<< HEAD
+            "url": "{{BASE_URL}}/publisher/{{id}}",
+=======
+            "url": "{{BASE_URL}}/user/{{id}}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+<<<<<<< HEAD
+                  "value": "4",
+=======
+                  "value": "5",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+<<<<<<< HEAD
+            "url": "{{BASE_URL}}/publisher?page={{page}}&limit={{limit}}",
+=======
+            "url": "{{BASE_URL}}/user?page={{page}}&limit={{limit}}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+<<<<<<< HEAD
+            "url": "{{BASE_URL}}/publisher/{{id}}",
+=======
+            "url": "{{BASE_URL}}/user/{{id}}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+<<<<<<< HEAD
+            "url": "{{BASE_URL}}/publisher",
+=======
+            "url": "{{BASE_URL}}/user",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+<<<<<<< HEAD
+              "json": "{\n  \"name\": \"Publisher description\",\n  \"country\": \"Brazil\"\n}",
+=======
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua2@gmail.com\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+<<<<<<< HEAD
+            "url": "{{BASE_URL}}/publisher/{{id}}",
+=======
+            "url": "{{BASE_URL}}/user/{{id}}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+<<<<<<< HEAD
+              "json": "{\n  \"name\": \"Publisher\",\n  \"country\": \"Brazil\"\n}",
+=======
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"-\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+<<<<<<< HEAD
+                  "value": "3",
+=======
+                  "value": "2",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+<<<<<<< HEAD
+      "name": "person",
+=======
+      "name": "author",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+<<<<<<< HEAD
+            "url": "{{BASE_URL}}/person/{{id}}",
+=======
+            "url": "{{BASE_URL}}/author/{{id}}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+<<<<<<< HEAD
+                  "value": "20",
+=======
+                  "value": "1",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+<<<<<<< HEAD
+            "url": "{{BASE_URL}}/person?page={{page}}&limit={{limit}}",
+=======
+            "url": "{{BASE_URL}}/author?page={{page}}&limit={{limit}}",
+>>>>>>> origin/10-refatorar-endpoints-da-api
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+<<<<<<< HEAD
           "name": "Get one",
           "seq": 3,
           "request": {
@@ -1168,6 +1606,37 @@
           "request": {
             "url": "{{BASE_URL}}/book/{{id}}",
             "method": "DELETE",
+=======
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/author",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Author name\",\n  \"birth_date\": \"2025-01-01\",\n  \"death_date\": \"2025-01-01\",\n  \"bio\": \"Bio do autor\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/author/{{id}}",
+            "method": "GET",
+>>>>>>> origin/10-refatorar-endpoints-da-api
             "headers": [],
             "params": [],
             "body": {
@@ -1180,6 +1649,7 @@
               "req": [
                 {
                   "name": "id",
+<<<<<<< HEAD
                   "value": "3",
                   "enabled": true,
                   "local": false
@@ -1213,6 +1683,9 @@
                 {
                   "name": "id",
                   "value": "4",
+=======
+                  "value": "1",
+>>>>>>> origin/10-refatorar-endpoints-da-api
                   "enabled": true,
                   "local": false
                 }
@@ -1227,11 +1700,19 @@
         },
         {
           "type": "http",
+<<<<<<< HEAD
           "name": "Get all",
           "seq": 2,
           "request": {
             "url": "{{BASE_URL}}/book?page={{page}}&limit={{limit}}",
             "method": "GET",
+=======
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/author/{{id}}",
+            "method": "PATCH",
+>>>>>>> origin/10-refatorar-endpoints-da-api
             "headers": [],
             "params": [
               {
@@ -1308,7 +1789,8 @@
               }
             ],
             "body": {
-              "mode": "none",
+              "mode": "json",
+              "json": "{\n  \"name\": \"Author updated\",\n  \"birth_date\": \"2024-12-31\",\n  \"death_date\": \"2025-03-31\",\n  \"bio\": \"Bio do autor aqui\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -1431,21 +1913,68 @@
         },
         {
           "type": "http",
-          "name": "New",
-          "seq": 1,
+          "name": "Get all books",
+          "seq": 6,
           "request": {
+<<<<<<< HEAD
             "url": "{{BASE_URL}}/book",
             "method": "POST",
+=======
+            "url": "{{BASE_URL}}/author/{{author_id}}/books?page={{page}}&limit={{limit}}",
+            "method": "GET",
+>>>>>>> origin/10-refatorar-endpoints-da-api
             "headers": [],
-            "params": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
             "body": {
+<<<<<<< HEAD
               "mode": "json",
               "json": "{\n      \"title\": \"Título do livro\",\n      \"edition\": 1,\n      \"isbn\": \"1234567890908\",\n      \"number_pages\": 250,\n      \"release_year\": 2025,\n      \"obs\": \"Observação do livro vai aqui, tem muito espaço para texto\",\n      \"genre_id\": 1,\n      \"publisher_id\": 1,\n      \"type_id\": 5,\n      \"authors_id\": [1,2],\n      \"tags_id\": [1,2,3]\n}",
+=======
+              "mode": "none",
+>>>>>>> origin/10-refatorar-endpoints-da-api
               "formUrlEncoded": [],
               "multipartForm": []
             },
             "script": {},
+<<<<<<< HEAD
             "vars": {},
+=======
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "author_id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+>>>>>>> origin/10-refatorar-endpoints-da-api
             "assertions": [],
             "tests": "",
             "auth": {
@@ -1472,7 +2001,11 @@
             "value": "http://localhost:3000",
             "enabled": true,
             "local": false,
+<<<<<<< HEAD
             "uid": "89SLcItF9XUuROb5SwMmq"
+=======
+            "uid": "Bx7H5t3sQhlN4lDMmFsQa"
+>>>>>>> origin/10-refatorar-endpoints-da-api
           }
         ]
       }
