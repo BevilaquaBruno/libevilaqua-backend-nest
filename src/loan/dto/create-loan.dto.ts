@@ -7,7 +7,7 @@ export class CreateLoanDto {
   })
   description: string;
 
-  @ValidateIf((thisLoan) => thisLoan.return_date !== null || thisLoan.return_date !== undefined || thisLoan.return_date !== '')
+  @ValidateIf((thisLoan) => thisLoan.return_date !== null && thisLoan.return_date !== undefined && thisLoan.return_date !== '')
   @Matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, {
     message: 'Informe uma data de devolução válida.',
   })
@@ -26,7 +26,7 @@ export class CreateLoanDto {
   @IsNumber({}, {message: 'Selecione o livro novamente'})
   bookId: number;
 
-  @ValidateIf((thisLoan) => thisLoan.personId !== null || thisLoan.personId !== undefined || thisLoan.personId !== '')
+  @ValidateIf((thisLoan) => thisLoan.personId !== null && thisLoan.personId !== undefined && thisLoan.personId !== '')
   @IsNumber({}, {message: 'Selecione a pessoa novamente'})
   personId: number;
 }

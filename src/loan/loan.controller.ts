@@ -20,7 +20,9 @@ import { BookService } from 'src/book/book.service';
 import { PersonService } from 'src/person/person.service';
 import { FindLoanDto } from './dto/find-loan.dto';
 import { FindLoanHistoryDto } from './dto/find-loan-history.dto';
-import moment from 'moment';
+import * as moment from 'moment';
+import { Book } from 'src/book/entities/book.entity';
+import { Person } from 'src/person/entities/person.entity';
 
 @Controller('loan')
 export class LoanController {
@@ -33,6 +35,25 @@ export class LoanController {
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createLoanDto: CreateLoanDto) {
+
+    let book: Book = await this.bookService.findOne(createLoanDto.bookId);
+    if (null == book) {
+      throw new HttpException(
+        'Livro selecionado não encontrado. Código do livro: ' + createLoanDto.bookId + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (null != createLoanDto.personId) {
+      let person: Person = await this.personService.findOne(createLoanDto.personId);
+      if (null == person) {
+        throw new HttpException(
+          'Pessoa selecionada não encontrada. Código da pessoa: ' + createLoanDto.personId + '.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+    }
+
     const isBookLoaned = await this.loanService.findLoanedBook(
       createLoanDto.bookId,
     );
