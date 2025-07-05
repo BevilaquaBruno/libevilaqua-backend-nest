@@ -162,7 +162,7 @@ export class LoanController {
     if (description !== undefined) findLoan.description = description;
 
     if (returned !== undefined)
-      if (returned == '1')
+      if (returned == 'true')
         findLoan.returned = true;
       else
         findLoan.returned = false;
@@ -173,7 +173,7 @@ export class LoanController {
 
     return {
       data: await this.loanService.findAll(findLoan),
-      count: await this.loanService.count(),
+      count: await this.loanService.count(findLoan),
     };
   }
 

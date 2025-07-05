@@ -138,8 +138,56 @@ export class LoanService {
     });
   }
 
-  async count() {
-    return await this.loanServiceRepository.count();
+  async count(findLoan: FindLoanDto) {
+        const query = this.loanServiceRepository
+      .createQueryBuilder('loan')
+      .leftJoinAndSelect('loan.person', 'person')
+      .leftJoinAndSelect('loan.book', 'book')
+      .leftJoinAndSelect('book.genre', 'genre')
+      .leftJoinAndSelect('book.publisher', 'publisher')
+      .leftJoinAndSelect('book.type', 'type')
+      .leftJoinAndSelect('book.tags', 'tags')
+      .leftJoinAndSelect('book.authors', 'authors')
+      .where('1 = 1');
+
+    //find loan with the between date
+    if (findLoan.start_date !== null && findLoan.end_date !== null)
+      query.andWhere({
+        loan_date: Between(findLoan.start_date, findLoan.end_date),
+      });
+    //find loan with just the start date
+    else if (findLoan.start_date !== null)
+      query.andWhere({
+        loan_date: MoreThanOrEqual(findLoan.start_date),
+      });
+    //find loan with just the end date
+    else if (findLoan.end_date !== null)
+      query.andWhere({
+        loan_date: LessThanOrEqual(findLoan.end_date),
+      });
+
+    //find loan with the book
+    if (findLoan.book !== null) {
+      query.andWhere({ book: findLoan.book });
+    }
+
+    // find loan with the person
+    if (findLoan.person !== null) {
+      query.andWhere({ person: findLoan.person });
+    }
+
+    // find loan with the description
+    if (findLoan.description != null)
+      query.andWhere({ description: Like(`%${findLoan.description}%`) });
+
+    // find loan with the returned parameter
+    if (findLoan.returned != null)
+      if(findLoan.returned == false)
+        query.andWhere({ return_date: IsNull() });
+      else
+        query.andWhere({ return_date: Not(IsNull()) });
+
+    return query.getCount();
   }
 
   findAndCountLoanHistoryFromPerson(
