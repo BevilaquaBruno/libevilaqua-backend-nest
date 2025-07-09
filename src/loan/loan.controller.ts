@@ -23,6 +23,7 @@ import { FindLoanHistoryDto } from './dto/find-loan-history.dto';
 import * as moment from 'moment';
 import { Book } from 'src/book/entities/book.entity';
 import { Person } from 'src/person/entities/person.entity';
+import { Loan } from './entities/loan.entity';
 
 @Controller('loan')
 export class LoanController {
@@ -194,35 +195,172 @@ export class LoanController {
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
-    let bookUpdated = await this.loanService.update(+id, updateLoanDto);
 
-    if (1 == bookUpdated.affected)
-      return this.loanService.findOne(+id);
-    else
+    let currentLoan: Loan = await this.loanService.findOne(+id);
+    if (null == currentLoan) {
       throw new HttpException(
-        'Ocorreu um erro para atualizar o empréstimo, entre em contato com o suporte',
+        'Empréstimo não encontrado. Código do Empréstimo: ' + id + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    let book: Book = await this.bookService.findOne(updateLoanDto.bookId);
+    if (null == book) {
+      throw new HttpException(
+        'Livro selecionado não encontrado. Código do livro: ' + updateLoanDto.bookId + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (null != updateLoanDto.personId) {
+      let person: Person = await this.personService.findOne(updateLoanDto.personId);
+      if (null == person) {
+        throw new HttpException(
+          'Pessoa selecionada não encontrada. Código da pessoa: ' + updateLoanDto.personId + '.',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+    }
+
+    const isBookLoaned = await this.loanService.findLoanedBook(updateLoanDto.bookId, +id);
+    if (isBookLoaned[1] != 0) {
+      throw new HttpException(
+        'Este livro já está emprestado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+
+    // valida datas de previsão de devolução e de empréstimo
+    let must_return_date = moment(updateLoanDto.must_return_date);
+    let loan_date = moment(updateLoanDto.loan_date);
+
+    if (null != updateLoanDto.must_return_date) {
+      let is_must_return_date_valid = must_return_date.isValid();
+      if (!is_must_return_date_valid) {
+        throw new HttpException(
+          'Informe uma data de previsão de devolução válida',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    if (null != updateLoanDto.loan_date) {
+      let is_loan_date_valid = loan_date.isValid();
+      if (!is_loan_date_valid) {
+        throw new HttpException(
+          'Informe uma data de empréstimo válida',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    if (must_return_date.isBefore(loan_date)) {
+      throw new HttpException(
+        'Data de previsão de devolução está anterior a data do empréstimo',
         HttpStatus.BAD_REQUEST
       );
+    }
+
+    // valida data de retorno
+    if (null != updateLoanDto.return_date) {
+      let return_date = moment(updateLoanDto.return_date);
+      let is_return_date_valid = return_date.isValid();
+      if (!is_return_date_valid) {
+        throw new HttpException(
+          'Informe uma data de devolução válida',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+
+      if (return_date.isBefore(loan_date)) {
+        throw new HttpException(
+          'Data de devolução está anterior a data do empréstimo',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    const updatedLoan = await this.loanService.update(+id, updateLoanDto);
+    if (updatedLoan.affected == 1) {
+      return {
+        id: +id,
+        description: updateLoanDto.description,
+        loan_date: updateLoanDto.loan_date,
+        must_return_date: updateLoanDto.must_return_date,
+        return_date: updateLoanDto.return_date,
+        book: await this.bookService.findOne(updateLoanDto.bookId),
+        person: await this.personService.findOne(updateLoanDto.personId)
+      };
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro com a atualização do empréstimo.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.loanService.remove(+id);
+  async remove(@Param('id') id: string) {
+    let loan: Loan = await this.loanService.findOne(+id);
+    if (null == loan) {
+      throw new HttpException(
+        'Empréstimo não encontrado. Código do Empréstimo: ' + id + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    let deletedLoan = await this.loanService.remove(+id);
+    if (deletedLoan.affected == 1) {
+      throw new HttpException(
+        'Empréstimo deletado com sucesso.',
+        HttpStatus.OK
+      );
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro ao deletar o Empréstimo.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @UseGuards(AuthGuard)
   @Patch('/return/:id')
   async return(@Param('id') id: string, @Body() returnBookDto: ReturnBookDto) {
-    let bookUpdated = await this.loanService.returnBook(+id, returnBookDto);
-
-    if (1 == bookUpdated.affected)
-      return this.loanService.findOne(+id);
-    else
+    let loan: Loan = await this.loanService.findOne(+id);
+    if (null == loan) {
       throw new HttpException(
-        'Ocorreu um erro para atualizar o empréstimo, entre em contato com o suporte',
-        HttpStatus.BAD_REQUEST
+        'Empréstimo não encontrado. Código do Empréstimo: ' + id + '.',
+        HttpStatus.NOT_FOUND,
       );
+    }
+
+    if(null != loan.return_date){
+      let return_date = moment(loan.return_date);
+      throw new HttpException(
+        'Livro já devolvido no dia '+(return_date.format('DD/MM/YYYY'))+'.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    let bookUpdated = await this.loanService.returnBook(+id, returnBookDto);
+    if (bookUpdated.affected == 1) {
+      return {
+        id: +id,
+        description: loan.description,
+        loan_date: loan.loan_date,
+        must_return_date: loan.must_return_date,
+        return_date: loan.return_date,
+        book: loan.book,
+        person: loan.person
+      };
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro com o retorno do empréstimo.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   // get the current loan for the given book id
@@ -239,7 +377,7 @@ export class LoanController {
     const loan = await this.loanService.findCurrentLoanFromBook(+bookId);
     if (loan === null)
       throw new HttpException(
-        'Não foi encontrado nenhum empréstimo para o livro',
+        'Não foi encontrado nenhum empréstimo em aberto para o livro',
         HttpStatus.BAD_REQUEST,
       );
     else return loan;

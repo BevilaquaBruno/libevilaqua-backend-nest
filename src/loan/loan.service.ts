@@ -5,6 +5,7 @@ import { UpdateLoanDto } from './dto/update-loan.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Between,
+  FindOptionsWhere,
   IsNull,
   LessThanOrEqual,
   Like,
@@ -20,12 +21,12 @@ import { FindLoanDto } from './dto/find-loan.dto';
 export class LoanService {
   constructor(
     @InjectRepository(Loan) private loanServiceRepository: Repository<Loan>,
-  ) {}
+  ) { }
 
   create(createLoanDto: CreateLoanDto) {
 
     console.log(createLoanDto);
-    
+
     return this.loanServiceRepository.save({
       description: createLoanDto.description,
       loan_date: createLoanDto.loan_date,
@@ -80,7 +81,7 @@ export class LoanService {
 
     // find loan with the returned parameter
     if (findLoan.returned != null)
-      if(findLoan.returned == false)
+      if (findLoan.returned == false)
         query.andWhere({ return_date: IsNull() });
       else
         query.andWhere({ return_date: Not(IsNull()) });
@@ -111,11 +112,19 @@ export class LoanService {
     return await this.loanServiceRepository.update(id, returnBookDto);
   }
 
-  findLoanedBook(bookId: number) {
-    return this.loanServiceRepository.findAndCountBy({
+  findLoanedBook(bookId: number, excludeId: number = null) {
+    let dynamicWhere: FindOptionsWhere<Loan> = {
       book: { id: bookId },
       return_date: IsNull(),
-    });
+    };
+
+    if (null != excludeId) {
+      dynamicWhere = {
+        ...dynamicWhere,
+        id: Not(excludeId)
+      }
+    }
+    return this.loanServiceRepository.findAndCountBy(dynamicWhere);
   }
 
   findCurrentLoanFromBook(bookId: number) {
@@ -139,7 +148,7 @@ export class LoanService {
   }
 
   async count(findLoan: FindLoanDto) {
-        const query = this.loanServiceRepository
+    const query = this.loanServiceRepository
       .createQueryBuilder('loan')
       .leftJoinAndSelect('loan.person', 'person')
       .leftJoinAndSelect('loan.book', 'book')
@@ -182,7 +191,7 @@ export class LoanService {
 
     // find loan with the returned parameter
     if (findLoan.returned != null)
-      if(findLoan.returned == false)
+      if (findLoan.returned == false)
         query.andWhere({ return_date: IsNull() });
       else
         query.andWhere({ return_date: Not(IsNull()) });
