@@ -86,7 +86,7 @@ export class LoanService {
       else
         query.andWhere({ return_date: Not(IsNull()) });
 
-    return query.take(findLoan.limit).skip(findLoan.page).getMany();
+    return query.take(findLoan.limit).skip(findLoan.page).orderBy({ 'loan.return_date': 'DESC', 'loan.id': 'DESC' }).getMany();
   }
 
   findOne(id: number) {

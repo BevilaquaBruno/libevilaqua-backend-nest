@@ -100,7 +100,7 @@ export class BookService {
     if (findBook.title != null)
       query.andWhere({ title: Like(`%${findBook.title}%`) });
 
-    return query.take(findBook.limit).skip(findBook.page).getMany();
+    return query.take(findBook.limit).skip(findBook.page).orderBy({ 'book.id': 'DESC' }).getMany();
   }
 
   findOne(id: number) {
@@ -150,6 +150,7 @@ export class BookService {
       })
       .take(findAuthorBooks.limit)
       .skip(findAuthorBooks.page)
+      .orderBy({ 'book.id': 'DESC' })
       .getMany();
   }
 

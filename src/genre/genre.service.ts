@@ -19,6 +19,7 @@ export class GenreService {
     return this.genreServiceRepository.find({
       take: findGenre.limit,
       skip: findGenre.page,
+      order: { id: 'DESC' }
     });
   }
 

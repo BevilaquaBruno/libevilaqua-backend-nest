@@ -21,6 +21,7 @@ export class AuthorService {
     return this.authorServiceRepository.find({
       take: findAuthor.limit,
       skip: findAuthor.page,
+      order: { id: 'DESC' }
     });
   }
 
