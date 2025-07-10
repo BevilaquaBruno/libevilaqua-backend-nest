@@ -142,6 +142,7 @@ export class LoanService {
       where: {
         person: { id: personId },
       },
+      order: { return_date: 'ASC' },
       take: findLoanHistoryDto.limit,
       skip: findLoanHistoryDto.page,
     });
