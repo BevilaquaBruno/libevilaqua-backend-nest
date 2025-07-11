@@ -24,8 +24,6 @@ export class LoanService {
   ) {}
 
   create(createLoanDto: CreateLoanDto) {
-    console.log(createLoanDto);
-
     return this.loanServiceRepository.save({
       description: createLoanDto.description,
       loan_date: createLoanDto.loan_date,
