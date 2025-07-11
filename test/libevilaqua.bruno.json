@@ -4,6 +4,241 @@
   "items": [
     {
       "type": "folder",
+      "name": "author",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/author/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all books",
+          "seq": 6,
+          "request": {
+            "url": "{{BASE_URL}}/author/{{author_id}}/books?page={{page}}&limit={{limit}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "author_id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+            "url": "{{BASE_URL}}/author?page={{page}}&limit={{limit}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/author/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/author",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Author name\",\n  \"birth_date\": \"2025-01-01\",\n  \"death_date\": \"2025-01-01\",\n  \"bio\": \"Bio do autor\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/author/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Author updated\",\n  \"birth_date\": \"2024-12-31\",\n  \"death_date\": \"2025-03-31\",\n  \"bio\": \"Bio do autor aqui\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "2",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
       "name": "auth",
       "items": [
         {
@@ -27,6 +262,304 @@
             "tests": "",
             "auth": {
               "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "book",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/book/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "3",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+            "url": "{{BASE_URL}}/book?page={{page}}&limit={{limit}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "genres",
+                "value": "{{genres}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "tags",
+                "value": "{{tags}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "publishers",
+                "value": "{{publishers}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "types",
+                "value": "{{types}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "authors",
+                "value": "{{authors}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "release_year",
+                "value": "{{release_year}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "number_pages",
+                "value": "{{number_pages}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "isbn",
+                "value": "{{isbn}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "edition",
+                "value": "{{edition}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "title",
+                "value": "{{title}}",
+                "type": "query",
+                "enabled": false
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "genres",
+                  "value": "1,2",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "tags",
+                  "value": "1,2",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "publishers",
+                  "value": "1,2",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "types",
+                  "value": "1,2",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "authors",
+                  "value": "1,2",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "release_year",
+                  "value": "2025",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "number_pages",
+                  "value": "50, 100",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "isbn",
+                  "value": "1234567890123",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "edition",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "title",
+                  "value": "Book title",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/book/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "4",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/book/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n      \"title\": \"Título do livro\",\n      \"edition\": 1,\n      \"isbn\": \"1234567890908\",\n      \"number_pages\": 250,\n      \"release_year\": 2025,\n      \"obs\": \"Observação do livro vai aqui, tem muito espaço para texto\",\n      \"genre_id\": 1,\n      \"publisher_id\": 1,\n      \"type_id\": 5,\n      \"authors_id\": [1,2],\n      \"tags_id\": [1,2,3]\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "4",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/book",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n      \"title\": \"Título do livro\",\n      \"edition\": 1,\n      \"isbn\": \"1234567890908\",\n      \"number_pages\": 250,\n      \"release_year\": 2025,\n      \"obs\": \"Observação do livro vai aqui, tem muito espaço para texto\",\n      \"genre_id\": 1,\n      \"publisher_id\": 1,\n      \"type_id\": 5,\n      \"authors_id\": [1,2],\n      \"tags_id\": [1,2,3]\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
             }
           }
         }
@@ -196,6 +729,887 @@
                 {
                   "name": "id",
                   "value": "2",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "publisher",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/publisher/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "4",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+            "url": "{{BASE_URL}}/publisher?page={{page}}&limit={{limit}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/publisher/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/publisher",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Publisher description\",\n  \"country\": \"Brazil\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/publisher/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Publisher\",\n  \"country\": \"Brazil\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "3",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "loan",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/type/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "4",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/loan?page={{page}}&limit={{limit}}&description={{description}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "description",
+                "value": "{{description}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "person",
+                "value": "{{person}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "book",
+                "value": "{{book}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "returned",
+                "value": "{{returned}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "start_date",
+                "value": "{{start_date}}",
+                "type": "query",
+                "enabled": false
+              },
+              {
+                "name": "end_date",
+                "value": "{{end_date}}",
+                "type": "query",
+                "enabled": false
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "start_date",
+                  "value": "2023-01-01",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "end_date",
+                  "value": "2024-10-01",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "book",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "person",
+                  "value": "23",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "description",
+                  "value": "description",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "returned",
+                  "value": "true",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get current loan from book",
+          "seq": 7,
+          "request": {
+            "url": "{{BASE_URL}}/loan/book/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "4",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/loan",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Loan description\",\n  \"return_date\": null,\n  \"must_return_date\": \"2025-01-04\",\n  \"loan_date\": \"2025-01-03\",\n  \"bookId\": 4,\n  \"personId\": 19\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 2,
+          "request": {
+            "url": "{{BASE_URL}}/loan/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "9",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Return Book",
+          "seq": 6,
+          "request": {
+            "url": "{{BASE_URL}}/loan/return/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"return_date\": \"2025-07-08\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "8",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/loan/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Loan description abc\",\n  \"return_date\": \"2025-01-03\",\n  \"must_return_date\": \"2025-01-04\",\n  \"loan_date\": \"2025-01-03\",\n  \"bookId\": 1,\n  \"personId\": 19\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "7",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get loan history from person",
+          "seq": 8,
+          "request": {
+            "url": "{{BASE_URL}}/loan/person/{{id}}/history",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "23",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "tag",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/tag/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "4",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+            "url": "{{BASE_URL}}/tag?page={{page}}&limit={{limit}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/tag/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/tag",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Tag description\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/tag/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Tag atualizada\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "person",
+      "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/person/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "20",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get all",
+          "seq": 2,
+          "request": {
+            "url": "{{BASE_URL}}/person?page={{page}}&limit={{limit}}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "page",
+                  "value": "1",
+                  "enabled": true,
+                  "local": false
+                },
+                {
+                  "name": "limit",
+                  "value": "10",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Get one",
+          "seq": 3,
+          "request": {
+            "url": "{{BASE_URL}}/person/{{id}}",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "19",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/person",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"cpf\": \"072.043.129-88\",\n  \"cep\": \"89700-055\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia 2\",\n  \"district\": \"Centro\",\n  \"street\": \"Rua Marechal Deodoro\",\n  \"number\": \"1280\",\n  \"obs\": \"Conta pessoal do Bruno Fernando Bevilaqua, teste de texto aqui que é necessário escrever mais\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/person/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua 2\",\n  \"cpf\": \"103.411.729-79\",\n  \"cep\": \"89701-875\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia\",\n  \"district\": \"Linha São Paulo\",\n  \"street\": \"Rua Sérgio Galvan\",\n  \"number\": \"15\",\n  \"obs\": null\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "19",
                   "enabled": true,
                   "local": false
                 }
@@ -390,362 +1804,6 @@
     },
     {
       "type": "folder",
-      "name": "tag",
-      "items": [
-        {
-          "type": "http",
-          "name": "Delete",
-          "seq": 5,
-          "request": {
-            "url": "{{BASE_URL}}/tag/{{id}}",
-            "method": "DELETE",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "4",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Get all",
-          "seq": 2,
-          "request": {
-            "url": "{{BASE_URL}}/tag?page={{page}}&limit={{limit}}",
-            "method": "GET",
-            "headers": [],
-            "params": [
-              {
-                "name": "page",
-                "value": "{{page}}",
-                "type": "query",
-                "enabled": true
-              },
-              {
-                "name": "limit",
-                "value": "{{limit}}",
-                "type": "query",
-                "enabled": true
-              }
-            ],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "page",
-                  "value": "1",
-                  "enabled": true,
-                  "local": false
-                },
-                {
-                  "name": "limit",
-                  "value": "10",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Get one",
-          "seq": 3,
-          "request": {
-            "url": "{{BASE_URL}}/tag/{{id}}",
-            "method": "GET",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "2",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "New",
-          "seq": 1,
-          "request": {
-            "url": "{{BASE_URL}}/tag",
-            "method": "POST",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"description\": \"Tag description\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Update",
-          "seq": 4,
-          "request": {
-            "url": "{{BASE_URL}}/tag/{{id}}",
-            "method": "PATCH",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"description\": \"Tag atualizada\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "1",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "folder",
-      "name": "publisher",
-      "items": [
-        {
-          "type": "http",
-          "name": "Delete",
-          "seq": 5,
-          "request": {
-            "url": "{{BASE_URL}}/publisher/{{id}}",
-            "method": "DELETE",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "4",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Get all",
-          "seq": 2,
-          "request": {
-            "url": "{{BASE_URL}}/publisher?page={{page}}&limit={{limit}}",
-            "method": "GET",
-            "headers": [],
-            "params": [
-              {
-                "name": "page",
-                "value": "{{page}}",
-                "type": "query",
-                "enabled": true
-              },
-              {
-                "name": "limit",
-                "value": "{{limit}}",
-                "type": "query",
-                "enabled": true
-              }
-            ],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "page",
-                  "value": "1",
-                  "enabled": true,
-                  "local": false
-                },
-                {
-                  "name": "limit",
-                  "value": "10",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Get one",
-          "seq": 3,
-          "request": {
-            "url": "{{BASE_URL}}/publisher/{{id}}",
-            "method": "GET",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "none",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "1",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "Update",
-          "seq": 4,
-          "request": {
-            "url": "{{BASE_URL}}/publisher/{{id}}",
-            "method": "PATCH",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"name\": \"Publisher\",\n  \"country\": \"Brazil\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {
-              "req": [
-                {
-                  "name": "id",
-                  "value": "3",
-                  "enabled": true,
-                  "local": false
-                }
-              ]
-            },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "New",
-          "seq": 1,
-          "request": {
-            "url": "{{BASE_URL}}/publisher",
-            "method": "POST",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"name\": \"Publisher description\",\n  \"country\": \"Brazil\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "folder",
       "name": "person",
       "items": [
         {
@@ -833,10 +1891,67 @@
         },
         {
           "type": "http",
+          "name": "New",
+          "seq": 1,
+          "request": {
+            "url": "{{BASE_URL}}/genre",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Genre description\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Update",
+          "seq": 4,
+          "request": {
+            "url": "{{BASE_URL}}/genre/{{id}}",
+            "method": "PATCH",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"description\": \"Gênero atualizado 2\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "6",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
           "name": "Get one",
           "seq": 3,
           "request": {
-            "url": "{{BASE_URL}}/person/{{id}}",
+            "url": "{{BASE_URL}}/genre/{{id}}",
             "method": "GET",
             "headers": [],
             "params": [],
@@ -850,7 +1965,7 @@
               "req": [
                 {
                   "name": "id",
-                  "value": "19",
+                  "value": "2",
                   "enabled": true,
                   "local": false
                 }
@@ -865,16 +1980,15 @@
         },
         {
           "type": "http",
-          "name": "Update",
-          "seq": 4,
+          "name": "Delete",
+          "seq": 5,
           "request": {
-            "url": "{{BASE_URL}}/person/{{id}}",
-            "method": "PATCH",
+            "url": "{{BASE_URL}}/genre/{{id}}",
+            "method": "DELETE",
             "headers": [],
             "params": [],
             "body": {
-              "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua 2\",\n  \"cpf\": \"103.411.729-79\",\n  \"cep\": \"89701-875\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia\",\n  \"district\": \"Linha São Paulo\",\n  \"street\": \"Rua Sérgio Galvan\",\n  \"number\": \"15\",\n  \"obs\": null\n}",
+              "mode": "none",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -883,36 +1997,12 @@
               "req": [
                 {
                   "name": "id",
-                  "value": "19",
+                  "value": "6",
                   "enabled": true,
                   "local": false
                 }
               ]
             },
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "inherit"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "New",
-          "seq": 1,
-          "request": {
-            "url": "{{BASE_URL}}/person",
-            "method": "POST",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"cpf\": \"072.043.129-88\",\n  \"cep\": \"89700-055\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia 2\",\n  \"district\": \"Centro\",\n  \"street\": \"Rua Marechal Deodoro\",\n  \"number\": \"1280\",\n  \"obs\": \"Conta pessoal do Bruno Fernando Bevilaqua, teste de texto aqui que é necessário escrever mais\"\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
             "assertions": [],
             "tests": "",
             "auth": {
@@ -939,7 +2029,7 @@
             "value": "http://localhost:3000",
             "enabled": true,
             "local": false,
-            "uid": "GuipYGUEyBPeS1zQm1O8O"
+            "uid": "JlFfxoZhkPVP48Ax882vP"
           }
         ]
       }

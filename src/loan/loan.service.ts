@@ -5,6 +5,7 @@ import { UpdateLoanDto } from './dto/update-loan.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Between,
+  FindOptionsWhere,
   IsNull,
   LessThanOrEqual,
   Like,
@@ -20,12 +21,12 @@ import { FindLoanDto } from './dto/find-loan.dto';
 export class LoanService {
   constructor(
     @InjectRepository(Loan) private loanServiceRepository: Repository<Loan>,
-  ) {}
+  ) { }
 
   create(createLoanDto: CreateLoanDto) {
 
     console.log(createLoanDto);
-    
+
     return this.loanServiceRepository.save({
       description: createLoanDto.description,
       loan_date: createLoanDto.loan_date,
@@ -80,12 +81,12 @@ export class LoanService {
 
     // find loan with the returned parameter
     if (findLoan.returned != null)
-      if(findLoan.returned == false)
+      if (findLoan.returned == false)
         query.andWhere({ return_date: IsNull() });
       else
         query.andWhere({ return_date: Not(IsNull()) });
 
-    return query.take(findLoan.limit).skip(findLoan.page).getMany();
+    return query.take(findLoan.limit).skip(findLoan.page).orderBy({ 'loan.return_date': 'DESC', 'loan.id': 'DESC' }).getMany();
   }
 
   findOne(id: number) {
@@ -111,11 +112,19 @@ export class LoanService {
     return await this.loanServiceRepository.update(id, returnBookDto);
   }
 
-  findLoanedBook(bookId: number) {
-    return this.loanServiceRepository.findAndCountBy({
+  findLoanedBook(bookId: number, excludeId: number = null) {
+    let dynamicWhere: FindOptionsWhere<Loan> = {
       book: { id: bookId },
       return_date: IsNull(),
-    });
+    };
+
+    if (null != excludeId) {
+      dynamicWhere = {
+        ...dynamicWhere,
+        id: Not(excludeId)
+      }
+    }
+    return this.loanServiceRepository.findAndCountBy(dynamicWhere);
   }
 
   findCurrentLoanFromBook(bookId: number) {
@@ -133,13 +142,62 @@ export class LoanService {
       where: {
         person: { id: personId },
       },
+      order: { return_date: 'ASC' },
       take: findLoanHistoryDto.limit,
       skip: findLoanHistoryDto.page,
     });
   }
 
-  async count() {
-    return await this.loanServiceRepository.count();
+  async count(findLoan: FindLoanDto) {
+    const query = this.loanServiceRepository
+      .createQueryBuilder('loan')
+      .leftJoinAndSelect('loan.person', 'person')
+      .leftJoinAndSelect('loan.book', 'book')
+      .leftJoinAndSelect('book.genre', 'genre')
+      .leftJoinAndSelect('book.publisher', 'publisher')
+      .leftJoinAndSelect('book.type', 'type')
+      .leftJoinAndSelect('book.tags', 'tags')
+      .leftJoinAndSelect('book.authors', 'authors')
+      .where('1 = 1');
+
+    //find loan with the between date
+    if (findLoan.start_date !== null && findLoan.end_date !== null)
+      query.andWhere({
+        loan_date: Between(findLoan.start_date, findLoan.end_date),
+      });
+    //find loan with just the start date
+    else if (findLoan.start_date !== null)
+      query.andWhere({
+        loan_date: MoreThanOrEqual(findLoan.start_date),
+      });
+    //find loan with just the end date
+    else if (findLoan.end_date !== null)
+      query.andWhere({
+        loan_date: LessThanOrEqual(findLoan.end_date),
+      });
+
+    //find loan with the book
+    if (findLoan.book !== null) {
+      query.andWhere({ book: findLoan.book });
+    }
+
+    // find loan with the person
+    if (findLoan.person !== null) {
+      query.andWhere({ person: findLoan.person });
+    }
+
+    // find loan with the description
+    if (findLoan.description != null)
+      query.andWhere({ description: Like(`%${findLoan.description}%`) });
+
+    // find loan with the returned parameter
+    if (findLoan.returned != null)
+      if (findLoan.returned == false)
+        query.andWhere({ return_date: IsNull() });
+      else
+        query.andWhere({ return_date: Not(IsNull()) });
+
+    return query.getCount();
   }
 
   findAndCountLoanHistoryFromPerson(

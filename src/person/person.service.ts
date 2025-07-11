@@ -20,6 +20,7 @@ export class PersonService {
     return this.personServiceRepository.find({
       take: findPersonDto.limit,
       skip: findPersonDto.page,
+      order: { id: 'DESC' }
     });
   }
 

@@ -10,7 +10,7 @@ import { FindTypeDto } from './dto/find-type.dto';
 export class TypeService {
   constructor(
     @InjectRepository(Type) private typeServiceRepository: Repository<Type>,
-  ) {}
+  ) { }
   create(createTypeDto: CreateTypeDto) {
     return this.typeServiceRepository.save(createTypeDto);
   }
@@ -19,6 +19,7 @@ export class TypeService {
     return this.typeServiceRepository.find({
       take: findType.limit,
       skip: findType.page,
+      order: { id: 'DESC' }
     });
   }
 

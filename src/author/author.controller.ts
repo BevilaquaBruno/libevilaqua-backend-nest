@@ -19,18 +19,56 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import { FindAuthorDto } from './dto/find-author.dto';
 import { FindAuthorBooksDto } from './dto/find-author-books.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
+import * as moment from 'moment';
+import { Author } from './entities/author.entity';
 
 @Controller('author')
 export class AuthorController {
   constructor(
     private readonly authorService: AuthorService,
     private readonly bookService: BookService,
-  ) {}
+  ) { }
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorService.create(createAuthorDto);
+  async create(@Body() createAuthorDto: CreateAuthorDto) {
+    if (null != createAuthorDto.birth_date) {
+      let isBirthDateValid = moment(createAuthorDto.birth_date).isValid();
+      if (!isBirthDateValid) {
+        throw new HttpException(
+          'Informe uma data de nascimento válida',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    if (null != createAuthorDto.death_date) {
+      let isDeathDateValid = moment(createAuthorDto.death_date).isValid();
+      if (!isDeathDateValid) {
+        throw new HttpException(
+          'Informe uma data de falecimento válida',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    let birth_moment = moment(createAuthorDto.birth_date);
+    let death_moment = moment(createAuthorDto.death_date);
+    if (birth_moment.isAfter(death_moment)) {
+      throw new HttpException(
+        'Data de nascimento está maior que a data de falecimento',
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
+    const newAuthor = await this.authorService.create(createAuthorDto);
+    return {
+      id: newAuthor.id,
+      name: newAuthor.name,
+      birth_date: newAuthor.birth_date,
+      death_date: newAuthor.death_date,
+      bio: newAuthor.bio
+    };
   }
 
   @UseGuards(AuthGuard)
@@ -53,30 +91,109 @@ export class AuthorController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authorService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    let author: Author = await this.authorService.findOne(+id);
+
+    if (null == author)
+      throw new HttpException(
+        'Autor não encontrado. Código do autor: ' + id + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    return author;
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
-    return this.authorService.update(+id, updateAuthorDto);
+  async update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
+    let author: Author = await this.authorService.findOne(+id);
+    if (null == author) {
+      throw new HttpException(
+        'Autor não encontrado. Código do autor: ' + id + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (null != updateAuthorDto.birth_date) {
+      let isBirthDateValid = moment(updateAuthorDto.birth_date).isValid();
+      if (!isBirthDateValid) {
+        throw new HttpException(
+          'Informe uma data de nascimento válida',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    if (null != updateAuthorDto.death_date) {
+      let isDeathDateValid = moment(updateAuthorDto.death_date).isValid();
+      if (!isDeathDateValid) {
+        throw new HttpException(
+          'Informe uma data de falecimento válida',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    let birth_moment = moment(updateAuthorDto.birth_date);
+    let death_moment = moment(updateAuthorDto.death_date);
+    if (birth_moment.isAfter(death_moment)) {
+      throw new HttpException(
+        'Data de nascimento está maior que a data de falecimento',
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
+    const updatedAuthor = await this.authorService.update(+id, updateAuthorDto);
+    if (updatedAuthor.affected == 1) {
+      return {
+        id: +id,
+        name: updateAuthorDto.name,
+        birth_date: updateAuthorDto.birth_date,
+        death_date: updateAuthorDto.death_date,
+        bio: updateAuthorDto.bio
+      };
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro com a atualização do autor.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    let author: Author = await this.authorService.findOne(+id);
+    if (null == author) {
+      throw new HttpException(
+        'Autor não encontrado. Código do autor: ' + id + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
     const books = await this.bookService.findBooksFromAuthor({
       page: 1,
       limit: 1,
       authorId: +id,
     });
-    if (books.length === 0) return this.authorService.remove(+id);
-    else
+    if (books.length > 0) {
       throw new HttpException(
         'Existem livros vinculados a esse autor, não é possível excluir.',
         HttpStatus.NOT_FOUND,
       );
+    }
+
+    let deletedAuthor = await this.authorService.remove(+id);
+    if (deletedAuthor.affected == 1) {
+      throw new HttpException(
+        'Autor deletado com sucesso.',
+        HttpStatus.OK
+      );
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro ao deletar o Autor.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @UseGuards(AuthGuard)
@@ -86,19 +203,20 @@ export class AuthorController {
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
+    let author: Author = await this.authorService.findOne(+authorId);
+    if (null == author) {
+      throw new HttpException(
+        'Autor não encontrado. Código do autor: ' + authorId + '.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
     const findAuthorBooks: FindAuthorBooksDto = {
       page: null,
       limit: null,
       authorId: null,
     };
 
-    const author = await this.authorService.findOne(+authorId);
-    if (author === null) {
-      throw new HttpException(
-        'Não existe um author com esse código',
-        HttpStatus.NOT_FOUND,
-      );
-    }
     findAuthorBooks.authorId = +authorId;
     findAuthorBooks.limit = limit == undefined ? 5 : parseInt(limit);
     findAuthorBooks.page =
