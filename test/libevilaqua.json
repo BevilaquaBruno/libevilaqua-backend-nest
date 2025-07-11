@@ -1,0 +1,1641 @@
+{
+  "info": {
+    "name": "libevilaqua",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "bruno",
+      "event": []
+    },
+    {
+      "name": "author",
+      "item": [
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/author/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "author",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all books",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/author/{{author_id}}/books?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "author",
+                "{{author_id}}",
+                "books?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/author?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "author?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/author/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "author",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/author",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "author"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Author name\",\n  \"birth_date\": \"2025-01-01\",\n  \"death_date\": \"2025-01-01\",\n  \"bio\": \"Bio do autor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/author/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "author",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Author updated\",\n  \"birth_date\": \"2024-12-31\",\n  \"death_date\": \"2025-03-31\",\n  \"bio\": \"Bio do autor aqui\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "Sign in",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/auth/signin",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "signin"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"bruno.f.bevilaqua@gmail.com\",\n  \"password\": \"-\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "book",
+      "item": [
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/book/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "book",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/book?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "book?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                },
+                {
+                  "key": "genres",
+                  "value": "{{genres}}"
+                },
+                {
+                  "key": "tags",
+                  "value": "{{tags}}"
+                },
+                {
+                  "key": "publishers",
+                  "value": "{{publishers}}"
+                },
+                {
+                  "key": "types",
+                  "value": "{{types}}"
+                },
+                {
+                  "key": "authors",
+                  "value": "{{authors}}"
+                },
+                {
+                  "key": "release_year",
+                  "value": "{{release_year}}"
+                },
+                {
+                  "key": "number_pages",
+                  "value": "{{number_pages}}"
+                },
+                {
+                  "key": "isbn",
+                  "value": "{{isbn}}"
+                },
+                {
+                  "key": "edition",
+                  "value": "{{edition}}"
+                },
+                {
+                  "key": "title",
+                  "value": "{{title}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/book/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "book",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/book/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "book",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n      \"title\": \"Título do livro\",\n      \"edition\": 1,\n      \"isbn\": \"1234567890908\",\n      \"number_pages\": 250,\n      \"release_year\": 2025,\n      \"obs\": \"Observação do livro vai aqui, tem muito espaço para texto\",\n      \"genre_id\": 1,\n      \"publisher_id\": 1,\n      \"type_id\": 5,\n      \"authors_id\": [1,2],\n      \"tags_id\": [1,2,3]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/book",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "book"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n      \"title\": \"Título do livro\",\n      \"edition\": 1,\n      \"isbn\": \"1234567890908\",\n      \"number_pages\": 250,\n      \"release_year\": 2025,\n      \"obs\": \"Observação do livro vai aqui, tem muito espaço para texto\",\n      \"genre_id\": 1,\n      \"publisher_id\": 1,\n      \"type_id\": 5,\n      \"authors_id\": [1,2],\n      \"tags_id\": [1,2,3]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/user/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/user?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/user/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/user",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua2@gmail.com\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/user/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "user",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"email\": \"bruno.f.bevilaqua1@gmail.com\",\n  \"update_password\": false,\n  \"current_password\": \"-\",\n  \"password\": \"-\",\n  \"verify_password\": \"-\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "publisher",
+      "item": [
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/publisher/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "publisher",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/publisher?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "publisher?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/publisher/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "publisher",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/publisher",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "publisher"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Publisher description\",\n  \"country\": \"Brazil\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/publisher/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "publisher",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Publisher\",\n  \"country\": \"Brazil\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "loan",
+      "item": [
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/type/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "type",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/loan?page={{page}}&limit={{limit}}&description={{description}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "loan?page={{page}}&limit={{limit}}&description={{description}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                },
+                {
+                  "key": "description",
+                  "value": "{{description}}"
+                },
+                {
+                  "key": "person",
+                  "value": "{{person}}"
+                },
+                {
+                  "key": "book",
+                  "value": "{{book}}"
+                },
+                {
+                  "key": "returned",
+                  "value": "{{returned}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "{{start_date}}"
+                },
+                {
+                  "key": "end_date",
+                  "value": "{{end_date}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get current loan from book",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/loan/book/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "loan",
+                "book",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/loan",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "loan"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Loan description\",\n  \"return_date\": null,\n  \"must_return_date\": \"2025-01-04\",\n  \"loan_date\": \"2025-01-03\",\n  \"bookId\": 4,\n  \"personId\": 19\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/loan/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "loan",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Return Book",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/loan/return/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "loan",
+                "return",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"return_date\": \"2025-07-08\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/loan/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "loan",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Loan description abc\",\n  \"return_date\": \"2025-01-03\",\n  \"must_return_date\": \"2025-01-04\",\n  \"loan_date\": \"2025-01-03\",\n  \"bookId\": 1,\n  \"personId\": 19\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get loan history from person",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/loan/person/{{id}}/history",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "loan",
+                "person",
+                "{{id}}",
+                "history"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "tag",
+      "item": [
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/tag/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "tag",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/tag?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "tag?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/tag/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "tag",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/tag",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "tag"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Tag description\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/tag/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "tag",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Tag atualizada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "person",
+      "item": [
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/person/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "person",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/person?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "person?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/person/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "person",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/person",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "person"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bruno Fernando Bevilaqua\",\n  \"cpf\": \"072.043.129-88\",\n  \"cep\": \"89700-055\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia 2\",\n  \"district\": \"Centro\",\n  \"street\": \"Rua Marechal Deodoro\",\n  \"number\": \"1280\",\n  \"obs\": \"Conta pessoal do Bruno Fernando Bevilaqua, teste de texto aqui que é necessário escrever mais\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/person/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "person",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bruno Fernando Bevilaqua 2\",\n  \"cpf\": \"103.411.729-79\",\n  \"cep\": \"89701-875\",\n  \"state\": \"SC\",\n  \"city\": \"Concórdia\",\n  \"district\": \"Linha São Paulo\",\n  \"street\": \"Rua Sérgio Galvan\",\n  \"number\": \"15\",\n  \"obs\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "type",
+      "item": [
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/type/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "type",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/type?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "type?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/type/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "type",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/type",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "type"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Type description\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/type/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "type",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Tipo atualizado\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "genre",
+      "item": [
+        {
+          "name": "Get all",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/genre?page={{page}}&limit={{limit}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "genre?page={{page}}&limit={{limit}}"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{page}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "New",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/genre",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "genre"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Genre description\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/genre/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "genre",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Gênero atualizado 2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get one",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/genre/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "genre",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": null,
+            "description": "",
+            "url": {
+              "raw": "{{BASE_URL}}/genre/{{id}}",
+              "protocol": "",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "genre",
+                "{{id}}"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "id",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "author_id",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "page",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "limit",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "genres",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "tags",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "publishers",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "types",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "authors",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "release_year",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "number_pages",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "isbn",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "edition",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "title",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "description",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "person",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "book",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "returned",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "start_date",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "end_date",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
