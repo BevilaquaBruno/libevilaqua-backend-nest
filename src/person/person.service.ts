@@ -11,7 +11,7 @@ export class PersonService {
   constructor(
     @InjectRepository(Person)
     private personServiceRepository: Repository<Person>,
-  ) { }
+  ) {}
   create(createPersonDto: CreatePersonDto) {
     return this.personServiceRepository.save(createPersonDto);
   }
@@ -20,7 +20,7 @@ export class PersonService {
     return this.personServiceRepository.find({
       take: findPersonDto.limit,
       skip: findPersonDto.page,
-      order: { id: 'DESC' }
+      order: { id: 'DESC' },
     });
   }
 
@@ -48,8 +48,8 @@ export class PersonService {
     if (null != excludeId) {
       dynamicWhere = {
         ...dynamicWhere,
-        id: Not(excludeId)
-      }
+        id: Not(excludeId),
+      };
     }
 
     return this.personServiceRepository.findOneBy(dynamicWhere);

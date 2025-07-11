@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { find } from 'rxjs';
 import { FindAuthorBooksDto } from 'src/author/dto/find-author-books.dto';
-import { Between, In, Like, Raw, Repository } from 'typeorm';
+import { Between, In, Like, Repository } from 'typeorm';
 import { CreateBookDto } from './dto/create-book.dto';
 import { FindBookDto } from './dto/find-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -12,15 +11,15 @@ import { Book } from './entities/book.entity';
 export class BookService {
   constructor(
     @InjectRepository(Book) private bookServiceRepository: Repository<Book>,
-  ) { }
+  ) {}
   create(createBookDto: CreateBookDto) {
-    let tempCreateBookDto = {
+    const tempCreateBookDto = {
       ...createBookDto,
       type: { id: createBookDto.type_id },
       publisher: { id: createBookDto.publisher_id },
       genre: { id: createBookDto.genre_id },
       authors: [],
-      tags: []
+      tags: [],
     };
 
     tempCreateBookDto.authors = [];
@@ -100,7 +99,11 @@ export class BookService {
     if (findBook.title != null)
       query.andWhere({ title: Like(`%${findBook.title}%`) });
 
-    return query.take(findBook.limit).skip(findBook.page).orderBy({ 'book.id': 'DESC' }).getMany();
+    return query
+      .take(findBook.limit)
+      .skip(findBook.page)
+      .orderBy({ 'book.id': 'DESC' })
+      .getMany();
   }
 
   findOne(id: number) {
@@ -108,14 +111,14 @@ export class BookService {
   }
 
   async update(id: number, updateBookDto: UpdateBookDto) {
-    let tempUpdateBookDto = {
+    const tempUpdateBookDto = {
       id: id,
       ...updateBookDto,
       type: { id: updateBookDto.type_id },
       publisher: { id: updateBookDto.publisher_id },
       genre: { id: updateBookDto.genre_id },
       authors: [],
-      tags: []
+      tags: [],
     };
 
     tempUpdateBookDto.authors = [];

@@ -20,7 +20,7 @@ import { Publisher } from './entities/publisher.entity';
 
 @Controller('publisher')
 export class PublisherController {
-  constructor(private readonly publisherService: PublisherService) { }
+  constructor(private readonly publisherService: PublisherService) {}
 
   @UseGuards(AuthGuard)
   @Post()
@@ -30,7 +30,7 @@ export class PublisherController {
     return {
       id: newPublisher.id,
       name: newPublisher.name,
-      country: newPublisher.country
+      country: newPublisher.country,
     };
   }
 
@@ -55,12 +55,12 @@ export class PublisherController {
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    let publisher: Publisher = await this.publisherService.findOne(+id);
+    const publisher: Publisher = await this.publisherService.findOne(+id);
 
     if (null == publisher)
       throw new HttpException(
         'Editora não encontrada. Código da editora ' + id + '.',
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     return publisher;
   }
@@ -71,25 +71,28 @@ export class PublisherController {
     @Param('id') id: string,
     @Body() updatePublisherDto: UpdatePublisherDto,
   ) {
-    let publisher: Publisher = await this.publisherService.findOne(+id);
+    const publisher: Publisher = await this.publisherService.findOne(+id);
     if (null == publisher)
       throw new HttpException(
         'Editora não encontrada. Código da editora ' + id + '.',
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
 
-    const updatedPublisher = await this.publisherService.update(+id, updatePublisherDto);
+    const updatedPublisher = await this.publisherService.update(
+      +id,
+      updatePublisherDto,
+    );
     if (updatedPublisher.affected == 1) {
-      let returnData: UpdatePublisherDto = {
+      const returnData: UpdatePublisherDto = {
         id: +id,
         name: updatePublisherDto.name,
-        country: updatePublisherDto.country
+        country: updatePublisherDto.country,
       };
       return returnData;
     } else {
       throw new HttpException(
         'Ocorreu algum erro com a atualização da editora.',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
   }
@@ -97,18 +100,15 @@ export class PublisherController {
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    let publisher: Publisher = await this.publisherService.findOne(+id);
+    const publisher: Publisher = await this.publisherService.findOne(+id);
     if (null == publisher)
       throw new HttpException(
         'Editora não encontrada. Código da editora ' + id + '.',
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
-     let deletedPublisher = await this.publisherService.remove(+id);
+    const deletedPublisher = await this.publisherService.remove(+id);
     if (deletedPublisher.affected == 1) {
-      throw new HttpException(
-        'Editora deletada com sucesso.',
-        HttpStatus.OK
-      );
+      throw new HttpException('Editora deletada com sucesso.', HttpStatus.OK);
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar a editora.',

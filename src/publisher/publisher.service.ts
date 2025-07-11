@@ -11,7 +11,7 @@ export class PublisherService {
   constructor(
     @InjectRepository(Publisher)
     private publisherServiceRepository: Repository<Publisher>,
-  ) { }
+  ) {}
   create(createPublisherDto: CreatePublisherDto) {
     return this.publisherServiceRepository.save(createPublisherDto);
   }
@@ -20,7 +20,7 @@ export class PublisherService {
     return this.publisherServiceRepository.find({
       take: findPublisher.limit,
       skip: findPublisher.page,
-      order: { id: 'DESC' }
+      order: { id: 'DESC' },
     });
   }
 

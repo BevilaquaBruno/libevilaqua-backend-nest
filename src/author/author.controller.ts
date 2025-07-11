@@ -1,4 +1,3 @@
-import { Length } from 'class-validator';
 import {
   Controller,
   Get,
@@ -27,37 +26,37 @@ export class AuthorController {
   constructor(
     private readonly authorService: AuthorService,
     private readonly bookService: BookService,
-  ) { }
+  ) {}
 
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createAuthorDto: CreateAuthorDto) {
     if (null != createAuthorDto.birth_date) {
-      let isBirthDateValid = moment(createAuthorDto.birth_date).isValid();
+      const isBirthDateValid = moment(createAuthorDto.birth_date).isValid();
       if (!isBirthDateValid) {
         throw new HttpException(
           'Informe uma data de nascimento válida',
-          HttpStatus.BAD_REQUEST
+          HttpStatus.BAD_REQUEST,
         );
       }
     }
 
     if (null != createAuthorDto.death_date) {
-      let isDeathDateValid = moment(createAuthorDto.death_date).isValid();
+      const isDeathDateValid = moment(createAuthorDto.death_date).isValid();
       if (!isDeathDateValid) {
         throw new HttpException(
           'Informe uma data de falecimento válida',
-          HttpStatus.BAD_REQUEST
+          HttpStatus.BAD_REQUEST,
         );
       }
     }
 
-    let birth_moment = moment(createAuthorDto.birth_date);
-    let death_moment = moment(createAuthorDto.death_date);
+    const birth_moment = moment(createAuthorDto.birth_date);
+    const death_moment = moment(createAuthorDto.death_date);
     if (birth_moment.isAfter(death_moment)) {
       throw new HttpException(
         'Data de nascimento está maior que a data de falecimento',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -67,7 +66,7 @@ export class AuthorController {
       name: newAuthor.name,
       birth_date: newAuthor.birth_date,
       death_date: newAuthor.death_date,
-      bio: newAuthor.bio
+      bio: newAuthor.bio,
     };
   }
 
@@ -92,7 +91,7 @@ export class AuthorController {
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    let author: Author = await this.authorService.findOne(+id);
+    const author: Author = await this.authorService.findOne(+id);
 
     if (null == author)
       throw new HttpException(
@@ -104,8 +103,11 @@ export class AuthorController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
-    let author: Author = await this.authorService.findOne(+id);
+  async update(
+    @Param('id') id: string,
+    @Body() updateAuthorDto: UpdateAuthorDto,
+  ) {
+    const author: Author = await this.authorService.findOne(+id);
     if (null == author) {
       throw new HttpException(
         'Autor não encontrado. Código do autor: ' + id + '.',
@@ -114,31 +116,31 @@ export class AuthorController {
     }
 
     if (null != updateAuthorDto.birth_date) {
-      let isBirthDateValid = moment(updateAuthorDto.birth_date).isValid();
+      const isBirthDateValid = moment(updateAuthorDto.birth_date).isValid();
       if (!isBirthDateValid) {
         throw new HttpException(
           'Informe uma data de nascimento válida',
-          HttpStatus.BAD_REQUEST
+          HttpStatus.BAD_REQUEST,
         );
       }
     }
 
     if (null != updateAuthorDto.death_date) {
-      let isDeathDateValid = moment(updateAuthorDto.death_date).isValid();
+      const isDeathDateValid = moment(updateAuthorDto.death_date).isValid();
       if (!isDeathDateValid) {
         throw new HttpException(
           'Informe uma data de falecimento válida',
-          HttpStatus.BAD_REQUEST
+          HttpStatus.BAD_REQUEST,
         );
       }
     }
 
-    let birth_moment = moment(updateAuthorDto.birth_date);
-    let death_moment = moment(updateAuthorDto.death_date);
+    const birth_moment = moment(updateAuthorDto.birth_date);
+    const death_moment = moment(updateAuthorDto.death_date);
     if (birth_moment.isAfter(death_moment)) {
       throw new HttpException(
         'Data de nascimento está maior que a data de falecimento',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -149,7 +151,7 @@ export class AuthorController {
         name: updateAuthorDto.name,
         birth_date: updateAuthorDto.birth_date,
         death_date: updateAuthorDto.death_date,
-        bio: updateAuthorDto.bio
+        bio: updateAuthorDto.bio,
       };
     } else {
       throw new HttpException(
@@ -162,7 +164,7 @@ export class AuthorController {
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    let author: Author = await this.authorService.findOne(+id);
+    const author: Author = await this.authorService.findOne(+id);
     if (null == author) {
       throw new HttpException(
         'Autor não encontrado. Código do autor: ' + id + '.',
@@ -182,12 +184,9 @@ export class AuthorController {
       );
     }
 
-    let deletedAuthor = await this.authorService.remove(+id);
+    const deletedAuthor = await this.authorService.remove(+id);
     if (deletedAuthor.affected == 1) {
-      throw new HttpException(
-        'Autor deletado com sucesso.',
-        HttpStatus.OK
-      );
+      throw new HttpException('Autor deletado com sucesso.', HttpStatus.OK);
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o Autor.',
@@ -203,7 +202,7 @@ export class AuthorController {
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
-    let author: Author = await this.authorService.findOne(+authorId);
+    const author: Author = await this.authorService.findOne(+authorId);
     if (null == author) {
       throw new HttpException(
         'Autor não encontrado. Código do autor: ' + authorId + '.',

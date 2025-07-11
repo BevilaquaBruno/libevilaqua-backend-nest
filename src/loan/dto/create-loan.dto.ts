@@ -1,4 +1,10 @@
-import { IsNumber, IsString, Length, Matches, ValidateIf } from 'class-validator';
+import {
+  IsNumber,
+  IsString,
+  Length,
+  Matches,
+  ValidateIf,
+} from 'class-validator';
 
 export class CreateLoanDto {
   @IsString({ message: 'Informe a descrição do empréstimo.' })
@@ -7,7 +13,12 @@ export class CreateLoanDto {
   })
   description: string;
 
-  @ValidateIf((thisLoan) => thisLoan.return_date !== null && thisLoan.return_date !== undefined && thisLoan.return_date !== '')
+  @ValidateIf(
+    (thisLoan) =>
+      thisLoan.return_date !== null &&
+      thisLoan.return_date !== undefined &&
+      thisLoan.return_date !== '',
+  )
   @Matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, {
     message: 'Informe uma data de devolução válida.',
   })
@@ -23,10 +34,15 @@ export class CreateLoanDto {
   })
   loan_date: Date;
 
-  @IsNumber({}, {message: 'Selecione o livro novamente'})
+  @IsNumber({}, { message: 'Selecione o livro novamente' })
   bookId: number;
 
-  @ValidateIf((thisLoan) => thisLoan.personId !== null && thisLoan.personId !== undefined && thisLoan.personId !== '')
-  @IsNumber({}, {message: 'Selecione a pessoa novamente'})
+  @ValidateIf(
+    (thisLoan) =>
+      thisLoan.personId !== null &&
+      thisLoan.personId !== undefined &&
+      thisLoan.personId !== '',
+  )
+  @IsNumber({}, { message: 'Selecione a pessoa novamente' })
   personId: number;
 }

@@ -21,10 +21,9 @@ import { FindLoanDto } from './dto/find-loan.dto';
 export class LoanService {
   constructor(
     @InjectRepository(Loan) private loanServiceRepository: Repository<Loan>,
-  ) { }
+  ) {}
 
   create(createLoanDto: CreateLoanDto) {
-
     console.log(createLoanDto);
 
     return this.loanServiceRepository.save({
@@ -81,12 +80,14 @@ export class LoanService {
 
     // find loan with the returned parameter
     if (findLoan.returned != null)
-      if (findLoan.returned == false)
-        query.andWhere({ return_date: IsNull() });
-      else
-        query.andWhere({ return_date: Not(IsNull()) });
+      if (findLoan.returned == false) query.andWhere({ return_date: IsNull() });
+      else query.andWhere({ return_date: Not(IsNull()) });
 
-    return query.take(findLoan.limit).skip(findLoan.page).orderBy({ 'loan.return_date': 'DESC', 'loan.id': 'DESC' }).getMany();
+    return query
+      .take(findLoan.limit)
+      .skip(findLoan.page)
+      .orderBy({ 'loan.return_date': 'DESC', 'loan.id': 'DESC' })
+      .getMany();
   }
 
   findOne(id: number) {
@@ -121,8 +122,8 @@ export class LoanService {
     if (null != excludeId) {
       dynamicWhere = {
         ...dynamicWhere,
-        id: Not(excludeId)
-      }
+        id: Not(excludeId),
+      };
     }
     return this.loanServiceRepository.findAndCountBy(dynamicWhere);
   }
@@ -192,10 +193,8 @@ export class LoanService {
 
     // find loan with the returned parameter
     if (findLoan.returned != null)
-      if (findLoan.returned == false)
-        query.andWhere({ return_date: IsNull() });
-      else
-        query.andWhere({ return_date: Not(IsNull()) });
+      if (findLoan.returned == false) query.andWhere({ return_date: IsNull() });
+      else query.andWhere({ return_date: Not(IsNull()) });
 
     return query.getCount();
   }

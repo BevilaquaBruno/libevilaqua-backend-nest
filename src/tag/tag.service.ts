@@ -10,7 +10,7 @@ import { FindTagDto } from './dto/find-tag.dto';
 export class TagService {
   constructor(
     @InjectRepository(Tag) private tagServiceRepository: Repository<Tag>,
-  ) { }
+  ) {}
   create(createTagDto: CreateTagDto) {
     return this.tagServiceRepository.save(createTagDto);
   }
@@ -19,7 +19,7 @@ export class TagService {
     return this.tagServiceRepository.find({
       take: findTag.limit,
       skip: findTag.page,
-      order: { id: 'DESC' }
+      order: { id: 'DESC' },
     });
   }
 

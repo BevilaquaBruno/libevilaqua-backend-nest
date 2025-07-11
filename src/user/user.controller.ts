@@ -21,7 +21,7 @@ import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @UseGuards(AuthGuard)
   @Post()
@@ -49,7 +49,7 @@ export class UserController {
     return {
       id: newUser.id,
       name: newUser.name,
-      email: newUser.email
+      email: newUser.email,
     };
   }
 
@@ -74,7 +74,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    let user: User = await this.userService.findOne(+id);
+    const user: User = await this.userService.findOne(+id);
     if (null == user)
       throw new HttpException(
         'Usuário não encontrado. Código do usuário: ' + id + '.',
@@ -86,7 +86,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    let user: User = await this.userService.findOne(+id);
+    const user: User = await this.userService.findOne(+id);
     if (null == user) {
       throw new HttpException(
         'Usuário não encontrado. Código do usuário: ' + id + '.',
@@ -97,7 +97,7 @@ export class UserController {
     // verifica o e-mail
     const userAlreadyExists = await this.userService.findByEmail(
       updateUserDto.email,
-      +id
+      +id,
     );
 
     if (userAlreadyExists?.email != undefined) {
@@ -110,20 +110,27 @@ export class UserController {
     //verifica se tem alteração de senha
     if (updateUserDto.update_password) {
       // verifica se tem todos os campos preenchidos
-      if (updateUserDto.current_password == '' || updateUserDto.password == '' || updateUserDto.verify_password == '') {
+      if (
+        updateUserDto.current_password == '' ||
+        updateUserDto.password == '' ||
+        updateUserDto.verify_password == ''
+      ) {
         throw new HttpException(
           'Para atualizar a senha, preencha os campos de a senha atual, nova senha e confirmação da nova senha.',
-          HttpStatus.BAD_REQUEST
+          HttpStatus.BAD_REQUEST,
         );
       }
 
       // valida a senha atual informada
       const user = await this.userService.findOneWithPassword(+id);
-      const isValid = await bcrypt.compare(updateUserDto.current_password, user.password);
+      const isValid = await bcrypt.compare(
+        updateUserDto.current_password,
+        user.password,
+      );
       if (!isValid) {
         throw new HttpException(
           'A senha atual está incorreta.',
-          HttpStatus.BAD_REQUEST
+          HttpStatus.BAD_REQUEST,
         );
       }
 
@@ -131,7 +138,7 @@ export class UserController {
       if (updateUserDto.password != updateUserDto.verify_password) {
         throw new HttpException(
           'A nova senha e a confirmação da nova senha devem ser iguais.',
-          HttpStatus.BAD_REQUEST
+          HttpStatus.BAD_REQUEST,
         );
       }
 
@@ -150,7 +157,7 @@ export class UserController {
       return {
         id: +id,
         name: updateUserDto.name,
-        email: updateUserDto.email
+        email: updateUserDto.email,
       };
     } else {
       throw new HttpException(
@@ -163,7 +170,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    let user: User = await this.userService.findOne(+id);
+    const user: User = await this.userService.findOne(+id);
     if (null == user) {
       throw new HttpException(
         'Usuário não encontrado. Código do usuário: ' + id + '.',
@@ -171,12 +178,9 @@ export class UserController {
       );
     }
 
-    let deletedUser = await this.userService.remove(+id);
+    const deletedUser = await this.userService.remove(+id);
     if (deletedUser.affected == 1) {
-      throw new HttpException(
-        'Usuário deletado com sucesso.',
-        HttpStatus.OK
-      );
+      throw new HttpException('Usuário deletado com sucesso.', HttpStatus.OK);
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o usuário.',

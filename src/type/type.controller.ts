@@ -20,7 +20,7 @@ import { Type } from './entities/type.entity';
 
 @Controller('type')
 export class TypeController {
-  constructor(private readonly typeService: TypeService) { }
+  constructor(private readonly typeService: TypeService) {}
 
   @UseGuards(AuthGuard)
   @Post()
@@ -29,7 +29,7 @@ export class TypeController {
 
     return {
       id: newType.id,
-      description: newType.description
+      description: newType.description,
     };
   }
 
@@ -54,7 +54,7 @@ export class TypeController {
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    let type: Type = await this.typeService.findOne(+id);
+    const type: Type = await this.typeService.findOne(+id);
 
     if (null == type)
       throw new HttpException(
@@ -67,7 +67,7 @@ export class TypeController {
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateTypeDto: UpdateTypeDto) {
-    let type: Type = await this.typeService.findOne(+id);
+    const type: Type = await this.typeService.findOne(+id);
     if (null == type) {
       throw new HttpException(
         'Tipo não encontrado. Código do tipo: ' + id + '.',
@@ -79,7 +79,7 @@ export class TypeController {
     if (updatedType.affected == 1) {
       return {
         id: +id,
-        description: updateTypeDto.description
+        description: updateTypeDto.description,
       };
     } else {
       throw new HttpException(
@@ -92,7 +92,7 @@ export class TypeController {
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    let type: Type = await this.typeService.findOne(+id);
+    const type: Type = await this.typeService.findOne(+id);
     if (null == type) {
       throw new HttpException(
         'Tipo não encontrado. Código do tipo: ' + id + '.',
@@ -100,12 +100,9 @@ export class TypeController {
       );
     }
 
-    let deletedType = await this.typeService.remove(+id);
+    const deletedType = await this.typeService.remove(+id);
     if (deletedType.affected == 1) {
-      throw new HttpException(
-        'Tipo deletado com sucesso.',
-        HttpStatus.OK
-      );
+      throw new HttpException('Tipo deletado com sucesso.', HttpStatus.OK);
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o tipo.',

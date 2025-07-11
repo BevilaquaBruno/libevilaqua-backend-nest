@@ -10,7 +10,7 @@ import { FindUserDto } from './dto/find-user.dto';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) { }
+  ) {}
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
@@ -27,7 +27,7 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
-  findOneWithPassword(id: number){
+  findOneWithPassword(id: number) {
     return this.userRepository.findOne({
       select: {
         id: true,
@@ -36,7 +36,7 @@ export class UserService {
         password: true,
       },
       where: {
-        id: id
+        id: id,
       },
     });
   }
@@ -49,8 +49,8 @@ export class UserService {
     if (null != excludeId) {
       dynamicWhere = {
         ...dynamicWhere,
-        id: Not(excludeId)
-      }
+        id: Not(excludeId),
+      };
     }
 
     return this.userRepository.findOne({

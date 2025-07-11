@@ -29,7 +29,7 @@ export class BookController {
 
     return {
       id: newBook.id,
-      ...createBookDto
+      ...createBookDto,
     };
   }
 
@@ -161,14 +161,14 @@ export class BookController {
 
     return {
       id: updatedBook.id,
-      ...updateBookDto
+      ...updateBookDto,
     };
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-        const book: Book = await this.bookService.findOne(+id);
+    const book: Book = await this.bookService.findOne(+id);
 
     if (null == book) {
       throw new HttpException(
@@ -177,12 +177,9 @@ export class BookController {
       );
     }
 
-    let deletedBook = await this.bookService.remove(+id);
+    const deletedBook = await this.bookService.remove(+id);
     if (deletedBook.affected == 1) {
-      throw new HttpException(
-        'Livro deletado com sucesso.',
-        HttpStatus.OK
-      );
+      throw new HttpException('Livro deletado com sucesso.', HttpStatus.OK);
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o livro.',
