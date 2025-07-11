@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Not, Repository } from 'typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { Person } from './entities/person.entity';
@@ -38,5 +38,20 @@ export class PersonService {
 
   async count() {
     return await this.personServiceRepository.count();
+  }
+
+  async findByCPF(cpf: string, excludeId: number = null) {
+    let dynamicWhere: FindOptionsWhere<Person> = {
+      cpf: cpf,
+    };
+
+    if (null != excludeId) {
+      dynamicWhere = {
+        ...dynamicWhere,
+        id: Not(excludeId)
+      }
+    }
+
+    return this.personServiceRepository.findOneBy(dynamicWhere);
   }
 }

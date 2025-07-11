@@ -1374,7 +1374,7 @@
               "req": [
                 {
                   "name": "id",
-                  "value": "2",
+                  "value": "1",
                   "enabled": true,
                   "local": false
                 }
@@ -1804,14 +1804,46 @@
     },
     {
       "type": "folder",
-      "name": "genre",
+      "name": "person",
       "items": [
+        {
+          "type": "http",
+          "name": "Delete",
+          "seq": 5,
+          "request": {
+            "url": "{{BASE_URL}}/person/{{id}}",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {
+              "req": [
+                {
+                  "name": "id",
+                  "value": "20",
+                  "enabled": true,
+                  "local": false
+                }
+              ]
+            },
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
         {
           "type": "http",
           "name": "Get all",
           "seq": 2,
           "request": {
-            "url": "{{BASE_URL}}/genre?page={{page}}&limit={{limit}}",
+            "url": "{{BASE_URL}}/person?page={{page}}&limit={{limit}}",
             "method": "GET",
             "headers": [],
             "params": [
@@ -1987,7 +2019,7 @@
       "auth": {
         "mode": "bearer",
         "bearer": {
-          "token": ""
+          "token": "-"
         }
       },
       "vars": {

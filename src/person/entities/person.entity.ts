@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { States } from '../enum/States.enum';
+import { States } from '../../helpers/enum/States.enum';
 
 @Entity()
 export class Person {

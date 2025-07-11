@@ -8,21 +8,30 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { PublisherService } from './publisher.service';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FindPublisherDto } from './dto/find-publisher.dto';
+import { Publisher } from './entities/publisher.entity';
 
 @Controller('publisher')
 export class PublisherController {
-  constructor(private readonly publisherService: PublisherService) {}
+  constructor(private readonly publisherService: PublisherService) { }
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createPublisherDto: CreatePublisherDto) {
-    return this.publisherService.create(createPublisherDto);
+  async create(@Body() createPublisherDto: CreatePublisherDto) {
+    const newPublisher = await this.publisherService.create(createPublisherDto);
+
+    return {
+      id: newPublisher.id,
+      name: newPublisher.name,
+      country: newPublisher.country
+    };
   }
 
   @UseGuards(AuthGuard)
@@ -45,22 +54,66 @@ export class PublisherController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.publisherService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    let publisher: Publisher = await this.publisherService.findOne(+id);
+
+    if (null == publisher)
+      throw new HttpException(
+        'Editora não encontrada. Código da editora ' + id + '.',
+        HttpStatus.NOT_FOUND
+      );
+    return publisher;
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updatePublisherDto: UpdatePublisherDto,
   ) {
-    return this.publisherService.update(+id, updatePublisherDto);
+    let publisher: Publisher = await this.publisherService.findOne(+id);
+    if (null == publisher)
+      throw new HttpException(
+        'Editora não encontrada. Código da editora ' + id + '.',
+        HttpStatus.NOT_FOUND
+      );
+
+    const updatedPublisher = await this.publisherService.update(+id, updatePublisherDto);
+    if (updatedPublisher.affected == 1) {
+      let returnData: UpdatePublisherDto = {
+        id: +id,
+        name: updatePublisherDto.name,
+        country: updatePublisherDto.country
+      };
+      return returnData;
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro com a atualização da editora.',
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.publisherService.remove(+id);
+  async remove(@Param('id') id: string) {
+    let publisher: Publisher = await this.publisherService.findOne(+id);
+    if (null == publisher)
+      throw new HttpException(
+        'Editora não encontrada. Código da editora ' + id + '.',
+        HttpStatus.NOT_FOUND
+      );
+     let deletedPublisher = await this.publisherService.remove(+id);
+    if (deletedPublisher.affected == 1) {
+      throw new HttpException(
+        'Editora deletada com sucesso.',
+        HttpStatus.OK
+      );
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro ao deletar a editora.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
