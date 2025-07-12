@@ -22,6 +22,7 @@ import { Tag } from './entities/tag.entity';
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
+  // Cria uma tag
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createTagDto: CreateTagDto) {
@@ -33,14 +34,17 @@ export class TagController {
     };
   }
 
+  // Retorna as tags
   @UseGuards(AuthGuard)
   @Get()
   async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    // Cria a paginação
     const findTag: FindTagDto = {
       page: null,
       limit: null,
     };
 
+    // Define a paginação
     findTag.limit = limit == undefined ? 5 : parseInt(limit);
     findTag.page = page == undefined ? 0 : findTag.limit * (parseInt(page) - 1);
 
@@ -50,11 +54,12 @@ export class TagController {
     };
   }
 
+  // Retorna uma tag
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
+    // Verifica se a tag existe
     const tag: Tag = await this.tagService.findOne(+id);
-
     if (null == tag)
       throw new HttpException(
         'Tag não encontrada. Código da tag: ' + id + '.',
@@ -63,9 +68,11 @@ export class TagController {
     return tag;
   }
 
+  // Cria uma tag
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+    // Verifica se a tag existe
     const tag: Tag = await this.tagService.findOne(+id);
     if (null == tag)
       throw new HttpException(
@@ -73,6 +80,7 @@ export class TagController {
         HttpStatus.NOT_FOUND,
       );
 
+    // Atualiza a tag
     const updatedTag = await this.tagService.update(+id, updateTagDto);
     if (updatedTag.affected == 1) {
       return {
@@ -87,9 +95,11 @@ export class TagController {
     }
   }
 
+  // Deleta a tag
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    // Verifica se a tag existe
     const tag: Tag = await this.tagService.findOne(+id);
     if (null == tag)
       throw new HttpException(
@@ -97,6 +107,7 @@ export class TagController {
         HttpStatus.NOT_FOUND,
       );
 
+    // Deleta a tag
     const deletedTag = await this.tagService.remove(+id);
     if (deletedTag.affected == 1) {
       throw new HttpException('Tag deletada com sucesso.', HttpStatus.OK);

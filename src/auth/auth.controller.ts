@@ -25,6 +25,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Get('isValid')
   create() {
+    // Sempre retorna true porque se ele chegar aqui é porque está autenticado.
     return { isValid: true };
   }
 }

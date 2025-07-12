@@ -7,9 +7,9 @@ import {
 } from 'class-validator';
 
 export class CreateBookDto {
-  @IsString({ message: 'Informe o título do livro' })
+  @IsString({ message: 'Informe o título do livro.' })
   @Length(1, 250, {
-    message: 'O título do livro deve ter entre 1 e 250 caracteres',
+    message: 'O título do livro deve ter entre 1 e 250 caracteres.',
   })
   title: string;
 
@@ -19,7 +19,7 @@ export class CreateBookDto {
       thisBook.edition !== undefined &&
       thisBook.edition !== '',
   )
-  @IsNumber({ allowNaN: false }, { message: 'Informe a edição do livro' })
+  @IsNumber({ allowNaN: false }, { message: 'Informe a edição do livro.' })
   edition: number;
 
   @ValidateIf(
@@ -28,8 +28,8 @@ export class CreateBookDto {
       thisBook.isbn !== undefined &&
       thisBook.isbn !== '',
   )
-  @IsString({ message: 'Informe o ISBN do livro' })
-  @Length(13, 13, { message: 'O ISBN deve ter 13 dígitos' })
+  @IsString({ message: 'Informe o ISBN do livro.' })
+  @Length(13, 13, { message: 'O ISBN deve ter 13 dígitos.' })
   isbn: string;
 
   @ValidateIf(
@@ -40,7 +40,7 @@ export class CreateBookDto {
   )
   @IsNumber(
     { allowNaN: false },
-    { message: 'Informe o número de páginas do livro' },
+    { message: 'Informe o número de páginas do livro.' },
   )
   number_pages: number;
 
@@ -52,7 +52,7 @@ export class CreateBookDto {
   )
   @IsNumber(
     { allowNaN: false },
-    { message: 'Informe o ano de lançamento do livro' },
+    { message: 'Informe o ano de lançamento do livro.' },
   )
   release_year: number;
 
@@ -71,7 +71,7 @@ export class CreateBookDto {
       thisBook.genre !== undefined &&
       thisBook.genre !== '',
   )
-  @IsNumber({ allowNaN: false }, { message: 'Informe o gênero do livro' })
+  @IsNumber({ allowNaN: false }, { message: 'Informe o gênero do livro.' })
   genre_id: number | null;
 
   @ValidateIf(
@@ -80,7 +80,7 @@ export class CreateBookDto {
       thisBook.publisher !== undefined &&
       thisBook.publisher !== '',
   )
-  @IsNumber({ allowNaN: false }, { message: 'Informe a editora do livro' })
+  @IsNumber({ allowNaN: false }, { message: 'Informe a editora do livro.' })
   publisher_id: number | null;
 
   @ValidateIf(
@@ -89,14 +89,14 @@ export class CreateBookDto {
       thisBook.type !== undefined &&
       thisBook.type !== '',
   )
-  @IsNumber({ allowNaN: false }, { message: 'Informe o tipo do livro' })
+  @IsNumber({ allowNaN: false }, { message: 'Informe o tipo do livro.' })
   type_id: number | null;
 
   @ValidateIf((thisBook) => thisBook.tags_id.length > 0)
-  @IsArray({ message: 'Informe a lista de tags novamente' })
+  @IsArray({ message: 'Informe a lista de tags novamente.' })
   tags_id: number[];
 
   @ValidateIf((thisBook) => thisBook.authors_id.length > 0)
-  @IsArray({ message: 'Informe a lista de autores novamente' })
+  @IsArray({ message: 'Informe a lista de autores novamente.' })
   authors_id: number[];
 }

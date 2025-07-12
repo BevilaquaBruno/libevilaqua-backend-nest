@@ -16,6 +16,7 @@ export class TagService {
   }
 
   findAll(findTag: FindTagDto) {
+    // Retorna a lista de tags paginada ordenada pelo id descrescente
     return this.tagServiceRepository.find({
       take: findTag.limit,
       skip: findTag.page,

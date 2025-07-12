@@ -33,9 +33,11 @@ export class LoanController {
     private readonly personService: PersonService,
   ) {}
 
+  // Cria um empréstimo
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createLoanDto: CreateLoanDto) {
+    // Consulta o livro e retorna erro se não encontrado
     const book: Book = await this.bookService.findOne(createLoanDto.bookId);
     if (null == book) {
       throw new HttpException(
@@ -46,6 +48,7 @@ export class LoanController {
       );
     }
 
+    // Consulta a pessoa e retorna erro se não encontrada
     if (null != createLoanDto.personId) {
       const person: Person = await this.personService.findOne(
         createLoanDto.personId,
@@ -60,66 +63,71 @@ export class LoanController {
       }
     }
 
+    // Consulta se o livro já está emprestado
     const isBookLoaned = await this.loanService.findLoanedBook(
       createLoanDto.bookId,
     );
     if (isBookLoaned[1] != 0) {
       throw new HttpException(
-        'Este livro já está emprestado',
+        'Este livro já está emprestado.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    // valida datas de previsão de devolução e de empréstimo
+    // Valida datas
     const must_return_date = moment(createLoanDto.must_return_date);
     const loan_date = moment(createLoanDto.loan_date);
-
+    // Valida se a data de previsão é válida
     if (null != createLoanDto.must_return_date) {
       const is_must_return_date_valid = must_return_date.isValid();
       if (!is_must_return_date_valid) {
         throw new HttpException(
-          'Informe uma data de previsão de devolução válida',
+          'Informe uma data de previsão de devolução válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
     }
 
+    // Valida se a data de empréstimo é válida
     if (null != createLoanDto.loan_date) {
       const is_loan_date_valid = loan_date.isValid();
       if (!is_loan_date_valid) {
         throw new HttpException(
-          'Informe uma data de empréstimo válida',
+          'Informe uma data de empréstimo válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
     }
 
+    // Valida se a data de previsão de retorno é anterior a data do empréstimo, se for retorna erro
     if (must_return_date.isBefore(loan_date)) {
       throw new HttpException(
-        'Data de previsão de devolução está anterior a data do empréstimo',
+        'Data de previsão de devolução está anterior a data do empréstimo.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    // valida data de retorno
+    // Valida a data de retorno
     if (null != createLoanDto.return_date) {
       const return_date = moment(createLoanDto.return_date);
       const is_return_date_valid = return_date.isValid();
       if (!is_return_date_valid) {
         throw new HttpException(
-          'Informe uma data de devolução válida',
+          'Informe uma data de devolução válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
 
+      // Valida se a data de retorno é anterior a data do empréstimo, se for retorna erro
       if (return_date.isBefore(loan_date)) {
         throw new HttpException(
-          'Data de devolução está anterior a data do empréstimo',
+          'Data de devolução está anterior a data do empréstimo.',
           HttpStatus.BAD_REQUEST,
         );
       }
     }
 
+    // Cria o empréstimo e retorna
     const newLoan = await this.loanService.create(createLoanDto);
 
     return {
@@ -133,6 +141,7 @@ export class LoanController {
     };
   }
 
+  // Retorna todos os empréstimos
   @UseGuards(AuthGuard)
   @Get()
   async findAll(
@@ -145,6 +154,7 @@ export class LoanController {
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
+    // Cria o filtro do empréstimop
     const findLoan: FindLoanDto = {
       start_date: null,
       end_date: null,
@@ -156,6 +166,7 @@ export class LoanController {
       page: null,
     };
 
+    // Define os filtros com base no que veio na URL
     if (start_date !== undefined) findLoan.start_date = start_date;
 
     if (end_date !== undefined) findLoan.end_date = end_date;
@@ -166,10 +177,17 @@ export class LoanController {
 
     if (description !== undefined) findLoan.description = description;
 
+    /**
+     * Valida o retorno do livr
+     * returned = true - Apenas livros retornados
+     * returned = true - Apenas livros não retornados
+     * returned = undefined - Todos os livros
+     */
     if (returned !== undefined)
       if (returned == 'true') findLoan.returned = true;
       else findLoan.returned = false;
 
+    // Define a paginação
     findLoan.limit = limit == undefined ? 5 : parseInt(limit);
     findLoan.page =
       page == undefined ? 0 : findLoan.limit * (parseInt(page) - 1);
@@ -180,13 +198,15 @@ export class LoanController {
     };
   }
 
+  // Retorna um empréstimo
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
+    // Verifica se existe o empréstimo e retorna
     const loan = await this.loanService.findOne(+id);
     if (loan === null) {
       throw new HttpException(
-        'Não existe um empréstimo com esse código',
+        'Não existe um empréstimo com esse código.',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -194,9 +214,11 @@ export class LoanController {
     return loan;
   }
 
+  // Atualiza o empréstimo
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
+    // Consulta se o empréstimo existe
     const currentLoan: Loan = await this.loanService.findOne(+id);
     if (null == currentLoan) {
       throw new HttpException(
@@ -205,6 +227,7 @@ export class LoanController {
       );
     }
 
+    // Consulta o livro e retorna erro se não encontrado
     const book: Book = await this.bookService.findOne(updateLoanDto.bookId);
     if (null == book) {
       throw new HttpException(
@@ -215,6 +238,7 @@ export class LoanController {
       );
     }
 
+    // Consulta a pessoa e retorna erro se não encontrada
     if (null != updateLoanDto.personId) {
       const person: Person = await this.personService.findOne(
         updateLoanDto.personId,
@@ -229,67 +253,72 @@ export class LoanController {
       }
     }
 
+    // Consulta se o livro já está emprestado - excluí o id do empréstimo atual na consulta
     const isBookLoaned = await this.loanService.findLoanedBook(
       updateLoanDto.bookId,
       +id,
     );
     if (isBookLoaned[1] != 0) {
       throw new HttpException(
-        'Este livro já está emprestado',
+        'Este livro já está emprestado.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    // valida datas de previsão de devolução e de empréstimo
+    // Valida datas
     const must_return_date = moment(updateLoanDto.must_return_date);
     const loan_date = moment(updateLoanDto.loan_date);
-
+    // Valida se a data de previsão é válida
     if (null != updateLoanDto.must_return_date) {
       const is_must_return_date_valid = must_return_date.isValid();
       if (!is_must_return_date_valid) {
         throw new HttpException(
-          'Informe uma data de previsão de devolução válida',
+          'Informe uma data de previsão de devolução válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
     }
-
+  
+    // Valida se a data de empréstimo é válida
     if (null != updateLoanDto.loan_date) {
       const is_loan_date_valid = loan_date.isValid();
       if (!is_loan_date_valid) {
         throw new HttpException(
-          'Informe uma data de empréstimo válida',
+          'Informe uma data de empréstimo válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
     }
 
+    // Valida se a data de previsão de retorno é anterior a data do empréstimo, se for retorna erro
     if (must_return_date.isBefore(loan_date)) {
       throw new HttpException(
-        'Data de previsão de devolução está anterior a data do empréstimo',
+        'Data de previsão de devolução está anterior a data do empréstimo.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    // valida data de retorno
+    // Valida a data de retorno
     if (null != updateLoanDto.return_date) {
       const return_date = moment(updateLoanDto.return_date);
       const is_return_date_valid = return_date.isValid();
       if (!is_return_date_valid) {
         throw new HttpException(
-          'Informe uma data de devolução válida',
+          'Informe uma data de devolução válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
 
+      // Valida se a data de retorno é anterior a data do empréstimo, se for retorna erro
       if (return_date.isBefore(loan_date)) {
         throw new HttpException(
-          'Data de devolução está anterior a data do empréstimo',
+          'Data de devolução está anterior a data do empréstimo.',
           HttpStatus.BAD_REQUEST,
         );
       }
     }
 
+    // Atualiza o empréstimo e retorna erro ou os dados do empréstimo
     const updatedLoan = await this.loanService.update(+id, updateLoanDto);
     if (updatedLoan.affected == 1) {
       return {
@@ -309,9 +338,11 @@ export class LoanController {
     }
   }
 
+  // Deleta um empréstimo
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    // Verifica se o empréstimo existe
     const loan: Loan = await this.loanService.findOne(+id);
     if (null == loan) {
       throw new HttpException(
@@ -320,6 +351,7 @@ export class LoanController {
       );
     }
 
+    // Deleta ou não o empréstimo
     const deletedLoan = await this.loanService.remove(+id);
     if (deletedLoan.affected == 1) {
       throw new HttpException(
@@ -334,9 +366,11 @@ export class LoanController {
     }
   }
 
+  // Retorna o livro (atualiza o returnd_date do empréstimo)
   @UseGuards(AuthGuard)
   @Patch('/return/:id')
   async return(@Param('id') id: string, @Body() returnBookDto: ReturnBookDto) {
+    // Verifica se o empréstimo existe
     const loan: Loan = await this.loanService.findOne(+id);
     if (null == loan) {
       throw new HttpException(
@@ -345,6 +379,7 @@ export class LoanController {
       );
     }
 
+    // Verifica se o livro já foi devolvido ou não
     if (null != loan.return_date) {
       const return_date = moment(loan.return_date);
       throw new HttpException(
@@ -353,6 +388,7 @@ export class LoanController {
       );
     }
 
+    // Atualiza o empréstimo com a data de retorno - Retorna o empréstimo ou erro
     const bookUpdated = await this.loanService.returnBook(+id, returnBookDto);
     if (bookUpdated.affected == 1) {
       return {
@@ -372,27 +408,30 @@ export class LoanController {
     }
   }
 
-  // get the current loan for the given book id
+  // Retorna o empréstimo em aberto do livro
   @UseGuards(AuthGuard)
   @Get('/book/:bookId')
   async book(@Param('bookId') bookId: string) {
+    // Verifica se o livro existe
     const book = await this.bookService.findOne(+bookId);
     if (book === null) {
       throw new HttpException(
-        'Não existe um livro com esse código',
+        'Não existe um livro com esse código.',
         HttpStatus.NOT_FOUND,
       );
     }
+
+    // Consulta o empréstimo em aberto do livro
     const loan = await this.loanService.findCurrentLoanFromBook(+bookId);
     if (loan === null)
       throw new HttpException(
-        'Não foi encontrado nenhum empréstimo em aberto para o livro',
+        'Não foi encontrado nenhum empréstimo em aberto para o livro.',
         HttpStatus.BAD_REQUEST,
       );
     else return loan;
   }
 
-  // get the loan history for the given person id
+  // Retorna o histórico de empréstimo da pessoa
   @UseGuards(AuthGuard)
   @Get('/person/:personId/history')
   async personHistory(
@@ -400,23 +439,27 @@ export class LoanController {
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
+    // Verifica se a pessoa existe
     const person = await this.personService.findOne(+personId);
     if (person === null) {
       throw new HttpException(
-        'Não existe uma pessoa com esse código',
+        'Não existe uma pessoa com esse código.',
         HttpStatus.NOT_FOUND,
       );
     }
 
+    // Cria a paginação
     const findLoanHistory: FindLoanHistoryDto = {
       page: null,
       limit: null,
     };
 
+    // Define a paginação
     findLoanHistory.limit = limit == undefined ? 5 : parseInt(limit);
     findLoanHistory.page =
       page == undefined ? 0 : findLoanHistory.limit * (parseInt(page) - 1);
 
+    // Retorna a lista de livros da pessoa
     return {
       data: await this.loanService.findLoanHistoryFromPerson(
         +personId,

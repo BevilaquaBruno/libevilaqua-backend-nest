@@ -23,19 +23,22 @@ import { User } from './entities/user.entity';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // Cria o usuário
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
+    // Valida se as senhas informadas são iguais
     if (createUserDto.password != createUserDto.verify_password) {
       throw new HttpException(
         'As senhas devem ser iguais.',
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    // Valida se o usuário (email) já existe, se existe retorna erro
     const userAlreadyExists = await this.userService.findByEmail(
       createUserDto.email,
     );
-
     if (userAlreadyExists?.email != undefined) {
       throw new HttpException(
         'Já existe um usuário com esse e-mail cadastrado.',
@@ -43,6 +46,7 @@ export class UserController {
       );
     }
 
+    // Faz um hash da senha do usuário
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     const newUser = await this.userService.create(createUserDto);
 
@@ -53,14 +57,17 @@ export class UserController {
     };
   }
 
+  // Retorna todos os usuários
   @UseGuards(AuthGuard)
   @Get()
   async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    // Cria a paginação
     const findUser: FindUserDto = {
       page: null,
       limit: null,
     };
 
+    // Define a paginação
     findUser.limit = limit == undefined ? 5 : parseInt(limit);
     findUser.page =
       page == undefined ? 0 : findUser.limit * (parseInt(page) - 1);
@@ -71,9 +78,11 @@ export class UserController {
     };
   }
 
+  // Retorna um usuário
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
+    // Consulta se o usuário existe
     const user: User = await this.userService.findOne(+id);
     if (null == user)
       throw new HttpException(
@@ -83,9 +92,11 @@ export class UserController {
     return user;
   }
 
+  // Edita o usuário
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    // Verifica se o usuário existe
     const user: User = await this.userService.findOne(+id);
     if (null == user) {
       throw new HttpException(
@@ -94,12 +105,11 @@ export class UserController {
       );
     }
 
-    // verifica o e-mail
+    // Verifica se o usuário (email) já existe, excluindo o usuário atual
     const userAlreadyExists = await this.userService.findByEmail(
       updateUserDto.email,
       +id,
     );
-
     if (userAlreadyExists?.email != undefined) {
       throw new HttpException(
         'Já existe um usuário com esse e-mail cadastrado.',
@@ -107,9 +117,9 @@ export class UserController {
       );
     }
 
-    //verifica se tem alteração de senha
+    // Verifica se tem alteração de senha
     if (updateUserDto.update_password) {
-      // verifica se tem todos os campos preenchidos
+      // Verifica se tem todos os campos preenchidos
       if (
         updateUserDto.current_password == '' ||
         updateUserDto.password == '' ||
@@ -121,7 +131,7 @@ export class UserController {
         );
       }
 
-      // valida a senha atual informada
+      // Valida a senha atual informada
       const user = await this.userService.findOneWithPassword(+id);
       const isValid = await bcrypt.compare(
         updateUserDto.current_password,
@@ -134,7 +144,7 @@ export class UserController {
         );
       }
 
-      // valida se as novas senhas informadas estão iguais
+      // Valida se as novas senhas informadas estão iguais
       if (updateUserDto.password != updateUserDto.verify_password) {
         throw new HttpException(
           'A nova senha e a confirmação da nova senha devem ser iguais.',
@@ -142,16 +152,18 @@ export class UserController {
         );
       }
 
-      // cria a nova senha
+      // Cria a nova senha
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
     } else {
+      // Remove para retornar o response
       delete updateUserDto.password;
     }
+    // Remove para retornar o response
     delete updateUserDto.verify_password;
     delete updateUserDto.update_password;
     delete updateUserDto.current_password;
 
-    // atualiza o usuário
+    // Atualiza o usuário
     const updatedUser = await this.userService.update(+id, updateUserDto);
     if (updatedUser.affected == 1) {
       return {
@@ -167,9 +179,11 @@ export class UserController {
     }
   }
 
+  // Deleta o usuário
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    // Verifica se o usuário existe
     const user: User = await this.userService.findOne(+id);
     if (null == user) {
       throw new HttpException(
@@ -178,6 +192,7 @@ export class UserController {
       );
     }
 
+    // Deleta o usuário
     const deletedUser = await this.userService.remove(+id);
     if (deletedUser.affected == 1) {
       throw new HttpException('Usuário deletado com sucesso.', HttpStatus.OK);

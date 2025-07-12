@@ -22,9 +22,11 @@ import { Book } from './entities/book.entity';
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
+  // Cria um livro
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createBookDto: CreateBookDto) {
+    // Não tem outras validações além das contidas no DTO do livro, apenas cria ele
     const newBook = await this.bookService.create(createBookDto);
 
     return {
@@ -33,6 +35,7 @@ export class BookController {
     };
   }
 
+  // Retorna todos os livros
   @UseGuards(AuthGuard)
   @Get()
   async findAll(
@@ -49,6 +52,7 @@ export class BookController {
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
+    // Cria a lista de filtros e paginação do livro
     const findBook: FindBookDto = {
       typeList: null,
       publisherList: null,
@@ -64,46 +68,47 @@ export class BookController {
       page: null,
     };
 
-    //turn typeList in number[]
+    // Transforma os itens passados na URL
+    // Transforma a typeList em number[]
     if (types !== undefined) {
       findBook.typeList = types.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
-    //turn publisherList in number[]
+    // Transforma a publisherList em number[]
     if (publishers !== undefined) {
       findBook.publisherList = publishers.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
-    //turn taglist in number[]
+    // Transforma a taglist em number[]
     if (tags !== undefined) {
       findBook.tagList = tags.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
-    //turn genderList in number[]
+    // Transforma a genderList em number[]
     if (genres !== undefined) {
       findBook.genreList = genres.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
-    //turn authorList in number[]
+    // Transforma a authorList em number[]
     if (authors !== undefined) {
       findBook.authorList = authors.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
-    //turn release year in a number
+    // Transforma o release_year em number
     if (release_year !== undefined)
       findBook.release_year = parseInt(release_year);
 
-    //turn number_pages in a array with 0 and 1 position
+    // Transforma o number_pages em array com as posições 0 e 1
     if (number_pages !== undefined) {
       const npArray: string[] = number_pages.split(',');
       findBook.number_pages = [];
@@ -111,28 +116,32 @@ export class BookController {
       findBook.number_pages[1] = parseInt(npArray[1]);
     }
 
-    // get isbn
+    // Pega o isbn
     if (isbn !== undefined) findBook.isbn = isbn;
 
-    // get isbn
+    // Pega a edição
     if (edition !== undefined) findBook.edition = parseInt(edition);
 
-    //get title
+    // Pega o título
     if (title !== undefined) findBook.title = title;
 
+    // Define a paginação
     findBook.limit = limit == undefined ? 5 : parseInt(limit);
     findBook.page =
       page == undefined ? 0 : findBook.limit * (parseInt(page) - 1);
 
+    // Consulta no banco com os filtros passados, tanto no count quando nos dados
     return {
       data: await this.bookService.findAll(findBook),
       count: await this.bookService.count(findBook),
     };
   }
 
+  // Retorna um livro
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
+    // Consulta o livro, retorna se existe ou retorna erro
     const book: Book = await this.bookService.findOne(+id);
 
     if (null == book) {
@@ -145,9 +154,11 @@ export class BookController {
     return book;
   }
 
+  // Atualiza o livro
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+    // Consulta se o livro existe, se existe atualiza
     const book: Book = await this.bookService.findOne(+id);
 
     if (null == book) {
@@ -165,9 +176,11 @@ export class BookController {
     };
   }
 
+  // Deleta um livro
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    // Consulta se o livro existe
     const book: Book = await this.bookService.findOne(+id);
 
     if (null == book) {
@@ -177,6 +190,7 @@ export class BookController {
       );
     }
 
+    // Deleta o livro, retorna com sucesso ou não
     const deletedBook = await this.bookService.remove(+id);
     if (deletedBook.affected == 1) {
       throw new HttpException('Livro deletado com sucesso.', HttpStatus.OK);

@@ -17,6 +17,7 @@ export class PersonService {
   }
 
   findAll(findPersonDto: FindPersonDto) {
+    // Retorna a lista de pessoas paginada ordenada pelo id decrescente
     return this.personServiceRepository.find({
       take: findPersonDto.limit,
       skip: findPersonDto.page,
