@@ -4,7 +4,13 @@ import { CreateValidationPipe } from './common/pipes/validation-pipe/create-vali
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new CreateValidationPipe());
+  /**
+   * Pipes:
+   * CreateValidationPipe: Altera dados do class-validator
+   */
+  app.useGlobalPipes(
+    new CreateValidationPipe()
+  );
   await app.listen(3000);
 }
 bootstrap();

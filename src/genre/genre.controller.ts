@@ -22,9 +22,11 @@ import { Genre } from './entities/genre.entity';
 export class GenreController {
   constructor(private readonly genreService: GenreService) {}
 
+  // Cria um gênero
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createGenreDto: CreateGenreDto) {
+    // Cria o gênero novo e retorna o corpo
     const newGenre = await this.genreService.create(createGenreDto);
 
     return {
@@ -33,14 +35,17 @@ export class GenreController {
     };
   }
 
+  // Retorna todos os gêneros
   @UseGuards(AuthGuard)
   @Get()
   async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    // Cria a paginação
     const findGenre: FindGenreDto = {
       limit: null,
       page: null,
     };
 
+    // Define a paginação
     findGenre.limit = limit == undefined ? 5 : parseInt(limit);
     findGenre.page =
       page == undefined ? 0 : findGenre.limit * (parseInt(page) - 1);
@@ -51,9 +56,11 @@ export class GenreController {
     };
   }
 
+  // Retorna um gênero
   @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
+    // Consulta o gênero e retorna erro se não encontrou
     const genre: Genre = await this.genreService.findOne(+id);
 
     if (null == genre)
@@ -64,12 +71,14 @@ export class GenreController {
     return genre;
   }
 
+  // Atualiza um gênero
   @UseGuards(AuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateGenreDto: UpdateGenreDto,
   ) {
+    // Consulta o gênero e retorna erro se não encontrou
     const genre: Genre = await this.genreService.findOne(+id);
     if (null == genre)
       throw new HttpException(
@@ -77,6 +86,7 @@ export class GenreController {
         HttpStatus.NOT_FOUND,
       );
 
+    // Atualiza o gênero e retorna erro ou sucesso
     const updatedGenre = await this.genreService.update(+id, updateGenreDto);
     if (updatedGenre.affected == 1) {
       return {
@@ -91,9 +101,11 @@ export class GenreController {
     }
   }
 
+  // Deleta um gênero
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    // Consulta o gênero e retorna erro se não encontrou
     const genre: Genre = await this.genreService.findOne(+id);
     if (null == genre)
       throw new HttpException(
@@ -101,6 +113,7 @@ export class GenreController {
         HttpStatus.NOT_FOUND,
       );
 
+    // Deleta o gênero e retorna erro ou sucesso
     const deletedGenre = await this.genreService.remove(+id);
     if (deletedGenre.affected == 1) {
       throw new HttpException('Gênero deletado com sucesso.', HttpStatus.OK);

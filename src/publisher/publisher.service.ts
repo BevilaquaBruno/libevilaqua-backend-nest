@@ -17,6 +17,7 @@ export class PublisherService {
   }
 
   findAll(findPublisher: FindPublisherDto) {
+    // Retorna as editoras paginadas
     return this.publisherServiceRepository.find({
       take: findPublisher.limit,
       skip: findPublisher.page,

@@ -18,6 +18,7 @@ export class AuthorService {
   }
 
   findAll(findAuthor: FindAuthorDto) {
+    // Pesquisa o autor ordenando pelo ID descrescente
     return this.authorServiceRepository.find({
       take: findAuthor.limit,
       skip: findAuthor.page,
