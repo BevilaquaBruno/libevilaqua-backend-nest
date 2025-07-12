@@ -16,6 +16,7 @@ export class GenreService {
   }
 
   findAll(findGenre: FindGenreDto) {
+    // Retorna o gênero pelo id decrescente
     return this.genreServiceRepository.find({
       take: findGenre.limit,
       skip: findGenre.page,

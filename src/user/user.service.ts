@@ -17,6 +17,7 @@ export class UserService {
   }
 
   findAll(findUser: FindUserDto) {
+    // Retorna a lista de usuários paginada
     return this.userRepository.find({
       take: findUser.limit,
       skip: findUser.page,
@@ -28,6 +29,7 @@ export class UserService {
   }
 
   findOneWithPassword(id: number) {
+    // Retorna o usuário com a senha dele
     return this.userRepository.findOne({
       select: {
         id: true,
@@ -42,6 +44,7 @@ export class UserService {
   }
 
   findByEmail(email: string, excludeId: number = null) {
+    // Pesquisa o usuário pelo e-mail, excluir um id
     let dynamicWhere: FindOptionsWhere<User> = {
       email: email,
     };
