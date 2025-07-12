@@ -14,15 +14,15 @@ import {
 import { LoanService } from './loan.service';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../../src/auth/auth.guard';
 import { ReturnBookDto } from './dto/return-book.dto';
-import { BookService } from 'src/book/book.service';
-import { PersonService } from 'src/person/person.service';
+import { BookService } from '../../src/book/book.service';
+import { PersonService } from '../../src/person/person.service';
 import { FindLoanDto } from './dto/find-loan.dto';
 import { FindLoanHistoryDto } from './dto/find-loan-history.dto';
 import * as moment from 'moment';
-import { Book } from 'src/book/entities/book.entity';
-import { Person } from 'src/person/entities/person.entity';
+import { Book } from '../../src/book/entities/book.entity';
+import { Person } from '../../src/person/entities/person.entity';
 import { Loan } from './entities/loan.entity';
 
 @Controller('loan')

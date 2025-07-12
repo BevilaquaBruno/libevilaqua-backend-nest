@@ -14,7 +14,7 @@ import {
 import { PublisherService } from './publisher.service';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindPublisherDto } from './dto/find-publisher.dto';
 import { Publisher } from './entities/publisher.entity';
 

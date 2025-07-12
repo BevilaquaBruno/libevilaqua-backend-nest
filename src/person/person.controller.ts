@@ -14,7 +14,7 @@ import {
 import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindPersonDto } from './dto/find-person.dto';
 import { Person } from './entities/person.entity';
 import CPF from 'cpf-check';

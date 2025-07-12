@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindAuthorBooksDto } from 'src/author/dto/find-author-books.dto';
+import { FindAuthorBooksDto } from '../../src/author/dto/find-author-books.dto';
 import { Between, In, Like, Repository } from 'typeorm';
 import { CreateBookDto } from './dto/create-book.dto';
 import { FindBookDto } from './dto/find-book.dto';

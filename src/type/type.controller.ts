@@ -14,7 +14,7 @@ import {
 import { TypeService } from './type.service';
 import { CreateTypeDto } from './dto/create-type.dto';
 import { UpdateTypeDto } from './dto/update-type.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindTypeDto } from './dto/find-type.dto';
 import { Type } from './entities/type.entity';
 

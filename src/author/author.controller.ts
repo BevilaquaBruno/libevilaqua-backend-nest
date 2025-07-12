@@ -11,8 +11,8 @@ import {
   HttpException,
   Query,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { BookService } from 'src/book/book.service';
+import { AuthGuard } from '../../src/auth/auth.guard';
+import { BookService } from '../../src/book/book.service';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { FindAuthorDto } from './dto/find-author.dto';
