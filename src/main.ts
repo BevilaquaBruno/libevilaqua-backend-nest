@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { CreateValidationPipe } from './common/pipes/validation-pipe/create-validation-pipe.pipe';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: false });
   /**
    * Pipes:
    * CreateValidationPipe: Altera dados do class-validator
