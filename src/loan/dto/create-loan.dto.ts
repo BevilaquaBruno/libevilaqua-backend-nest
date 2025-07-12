@@ -9,7 +9,7 @@ import {
 export class CreateLoanDto {
   @IsString({ message: 'Informe a descrição do empréstimo.' })
   @Length(1, 250, {
-    message: 'A descrição do empréstimo deve ter entre 1 e 250 caracteres',
+    message: 'A descrição do empréstimo deve ter entre 1 e 250 caracteres.',
   })
   description: string;
 
@@ -34,7 +34,7 @@ export class CreateLoanDto {
   })
   loan_date: Date;
 
-  @IsNumber({}, { message: 'Selecione o livro novamente' })
+  @IsNumber({}, { message: 'Selecione o livro novamente.' })
   bookId: number;
 
   @ValidateIf(
@@ -43,6 +43,6 @@ export class CreateLoanDto {
       thisLoan.personId !== undefined &&
       thisLoan.personId !== '',
   )
-  @IsNumber({}, { message: 'Selecione a pessoa novamente' })
+  @IsNumber({}, { message: 'Selecione a pessoa novamente.' })
   personId: number;
 }

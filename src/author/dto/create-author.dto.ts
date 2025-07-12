@@ -7,8 +7,8 @@ import {
 } from 'class-validator';
 
 export class CreateAuthorDto {
-  @IsNotEmpty({ message: 'Informe um nome válido' })
-  @Length(1, 60, { message: 'O nome deve ter até 60 caracteres' })
+  @IsNotEmpty({ message: 'Informe um nome válido.' })
+  @Length(1, 60, { message: 'O nome deve ter até 60 caracteres.' })
   name: string;
 
   @ValidateIf(

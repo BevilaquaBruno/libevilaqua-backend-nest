@@ -29,7 +29,7 @@ export class PersonController {
     // valida o CPF
     const isCpfValid = CPF.validate(createPersonDto.cpf);
     if (!isCpfValid) {
-      throw new HttpException('CPF inválido', HttpStatus.BAD_REQUEST);
+      throw new HttpException('CPF inválido.', HttpStatus.BAD_REQUEST);
     }
 
     const isPersonRegistered = await this.personService.findByCPF(
@@ -122,7 +122,7 @@ export class PersonController {
     // valida o CPF
     const isCpfValid = CPF.validate(updatePersonDto.cpf);
     if (!isCpfValid) {
-      throw new HttpException('CPF inválido', HttpStatus.BAD_REQUEST);
+      throw new HttpException('CPF inválido.', HttpStatus.BAD_REQUEST);
     }
 
     const isPersonRegistered = await this.personService.findByCPF(

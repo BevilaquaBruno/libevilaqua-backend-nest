@@ -35,7 +35,7 @@ export class AuthorController {
       const isBirthDateValid = moment(createAuthorDto.birth_date).isValid();
       if (!isBirthDateValid) {
         throw new HttpException(
-          'Informe uma data de nascimento válida',
+          'Informe uma data de nascimento válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -45,7 +45,7 @@ export class AuthorController {
       const isDeathDateValid = moment(createAuthorDto.death_date).isValid();
       if (!isDeathDateValid) {
         throw new HttpException(
-          'Informe uma data de falecimento válida',
+          'Informe uma data de falecimento válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -55,7 +55,7 @@ export class AuthorController {
     const death_moment = moment(createAuthorDto.death_date);
     if (birth_moment.isAfter(death_moment)) {
       throw new HttpException(
-        'Data de nascimento está maior que a data de falecimento',
+        'Data de nascimento está maior que a data de falecimento.',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -119,7 +119,7 @@ export class AuthorController {
       const isBirthDateValid = moment(updateAuthorDto.birth_date).isValid();
       if (!isBirthDateValid) {
         throw new HttpException(
-          'Informe uma data de nascimento válida',
+          'Informe uma data de nascimento válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -129,7 +129,7 @@ export class AuthorController {
       const isDeathDateValid = moment(updateAuthorDto.death_date).isValid();
       if (!isDeathDateValid) {
         throw new HttpException(
-          'Informe uma data de falecimento válida',
+          'Informe uma data de falecimento válida.',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -139,7 +139,7 @@ export class AuthorController {
     const death_moment = moment(updateAuthorDto.death_date);
     if (birth_moment.isAfter(death_moment)) {
       throw new HttpException(
-        'Data de nascimento está maior que a data de falecimento',
+        'Data de nascimento está maior que a data de falecimento.',
         HttpStatus.BAD_REQUEST,
       );
     }
