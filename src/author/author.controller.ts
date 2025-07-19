@@ -207,7 +207,10 @@ export class AuthorController {
     // Deleta o autor e retorna o sucesso ou erro
     const deletedAuthor = await this.authorService.remove(+id);
     if (deletedAuthor.affected == 1) {
-      throw new HttpException('Autor deletado com sucesso.', HttpStatus.OK);
+      return {
+        statusCode: 200,
+        message: 'Autor deletado com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o Autor.',

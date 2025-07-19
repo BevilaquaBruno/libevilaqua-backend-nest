@@ -1,8 +1,8 @@
-import { Type } from 'src/type/entities/type.entity';
-import { Author } from 'src/author/entities/author.entity';
-import { Genre } from 'src/genre/entities/genre.entity';
-import { Publisher } from 'src/publisher/entities/publisher.entity';
-import { Tag } from 'src/tag/entities/tag.entity';
+import { Type } from '../../type/entities/type.entity';
+import { Author } from '../../author/entities/author.entity';
+import { Genre } from '../../genre/entities/genre.entity';
+import { Publisher } from '../../publisher/entities/publisher.entity';
+import { Tag } from '../../tag/entities/tag.entity';
 import {
   Column,
   CreateDateColumn,
