@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { mockJwtService } from '../../test/mocks/jwt.service.mock';
-import { mockAuthService } from '../../test/mocks/auth.service.mock';
+import { mockJwtService } from './mocks/jwt.service.mock';
+import { mockAuthService } from './mocks/auth.service.mock';
 import { UnauthorizedException } from '@nestjs/common';
 
 describe('AuthController', () => {

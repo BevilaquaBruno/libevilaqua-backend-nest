@@ -3,8 +3,8 @@ import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { mockUserService } from '../../test/mocks/user.service.mock';
-import { mockJwtService } from '../../test/mocks/jwt.service.mock';
+import { mockUserService } from '../user/mocks/user.service.mock';
+import { mockJwtService } from './mocks/jwt.service.mock';
 import { UnauthorizedException } from '@nestjs/common';
 
 describe('AuthService', () => {
