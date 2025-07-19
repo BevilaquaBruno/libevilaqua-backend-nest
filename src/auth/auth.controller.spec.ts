@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { mockJwtService } from './mocks/jwt.service.mock';
 import { mockAuthService } from './mocks/auth.service.mock';
 import { UnauthorizedException } from '@nestjs/common';
+import { MainAuthDto } from './dto/main-auth.dto';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -27,7 +28,7 @@ describe('AuthController', () => {
 
   it('Should call signIn and return a token', async () => {
     // Cria o dto do usuário para o controller e o retorno do token
-    const dto = { email: 'bruno.f.bevilaqua@gmail.com', password: '123456' };
+    const dto: MainAuthDto = { email: 'bruno.f.bevilaqua@gmail.com', password: '123456' };
     const token = { access_token: 'jwt-token' };
 
     // Mocka o sign-in do auth service para ele retornar o token criado
