@@ -9,9 +9,7 @@ import { mockBookService } from '../book/mocks/book.service.mock';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { FindAuthorDto } from './dto/find-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { FindAuthorBooksDto } from './dto/find-author-books.dto';
-import { Book } from 'src/book/entities/book.entity';
 
 describe('AuthorController', () => {
   let controller: AuthorController;
@@ -186,7 +184,52 @@ describe('AuthorController', () => {
     };
 
     // Cria o mock e coloca no servico do livro
-    const bookList: Book[] = [];
+    const bookList = [{
+      id: 1,
+      title: 'Book Title',
+      edition: 1,
+      isbn: '1234567890987',
+      number_pages: 250,
+      release_year: 2025,
+      obs: 'Book mock',
+      genre: {
+        id: 1,
+        description: 'Genre test',
+      },
+      publisher: {
+        id: 1,
+        name: 'Publisher 1',
+        country: 'Brazil'
+      },
+      type: {
+        id: 1,
+        descrption: 'Type Test'
+      },
+      tags: [
+        {
+          id: 1,
+          description: 'Tag Test'
+        },
+        {
+          id: 1,
+          description: 'Tag Test 2'
+        },
+      ],
+      authors: [
+        {
+          name: 'New Author name',
+          birth_date: new Date('2000-01-01'),
+          death_date: new Date('2025-01-01'),
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+        },
+        {
+          name: 'New Author name 2',
+          birth_date: new Date('2000-01-01'),
+          death_date: new Date('2025-01-01'),
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
+        }
+      ]
+    }];
     mockBookService.findBooksFromAuthor.mockResolvedValue(bookList);
     mockAuthorService.findOne.mockResolvedValue({
       id: findAuthorBooks.authorId,
