@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Post,
   UseGuards,
@@ -10,14 +11,23 @@ import {
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { MainAuthDto } from './dto/main-auth.dto';
+import { UserService } from 'src/user/user.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) { }
 
   @HttpCode(HttpStatus.OK)
   @Post('signin')
-  signIn(@Body() signInDto: MainAuthDto) {
+  async signIn(@Body() signInDto: MainAuthDto) {
+    const user = await this.userService.findByEmail(signInDto.email);
+    if(null == user){
+      throw new HttpException('Não existe nenhum usuário com este e-mail.', HttpStatus.BAD_REQUEST);
+    }
+
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
