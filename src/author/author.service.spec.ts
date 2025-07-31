@@ -3,7 +3,6 @@ import { AuthorService } from './author.service';
 import { mockAuthorService } from './mocks/author.service.mock';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { Author } from './entities/author.entity';
 import { FindAuthorDto } from './dto/find-author.dto';
 
 describe('AuthorService', () => {
