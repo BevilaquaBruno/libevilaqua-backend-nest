@@ -14,7 +14,7 @@ import {
 import { GenreService } from './genre.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { FindGenreDto } from './dto/find-genre.dto';
 import { Genre } from './entities/genre.entity';
 
