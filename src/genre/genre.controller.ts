@@ -20,7 +20,7 @@ import { Genre } from './entities/genre.entity';
 
 @Controller('genre')
 export class GenreController {
-  constructor(private readonly genreService: GenreService) {}
+  constructor(private readonly genreService: GenreService) { }
 
   // Cria um gênero
   @UseGuards(AuthGuard)
@@ -116,7 +116,10 @@ export class GenreController {
     // Deleta o gênero e retorna erro ou sucesso
     const deletedGenre = await this.genreService.remove(+id);
     if (deletedGenre.affected == 1) {
-      throw new HttpException('Gênero deletado com sucesso.', HttpStatus.OK);
+      return {
+        statusCode: 200,
+        message: 'Gênero deletado com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o gênero.',
