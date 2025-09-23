@@ -31,7 +31,7 @@ export class LoanController {
     private readonly loanService: LoanService,
     private readonly bookService: BookService,
     private readonly personService: PersonService,
-  ) {}
+  ) { }
 
   // Cria um empréstimo
   @UseGuards(AuthGuard)
@@ -42,8 +42,8 @@ export class LoanController {
     if (null == book) {
       throw new HttpException(
         'Livro selecionado não encontrado. Código do livro: ' +
-          createLoanDto.bookId +
-          '.',
+        createLoanDto.bookId +
+        '.',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -56,8 +56,8 @@ export class LoanController {
       if (null == person) {
         throw new HttpException(
           'Pessoa selecionada não encontrada. Código da pessoa: ' +
-            createLoanDto.personId +
-            '.',
+          createLoanDto.personId +
+          '.',
           HttpStatus.NOT_FOUND,
         );
       }
@@ -232,8 +232,8 @@ export class LoanController {
     if (null == book) {
       throw new HttpException(
         'Livro selecionado não encontrado. Código do livro: ' +
-          updateLoanDto.bookId +
-          '.',
+        updateLoanDto.bookId +
+        '.',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -246,8 +246,8 @@ export class LoanController {
       if (null == person) {
         throw new HttpException(
           'Pessoa selecionada não encontrada. Código da pessoa: ' +
-            updateLoanDto.personId +
-            '.',
+          updateLoanDto.personId +
+          '.',
           HttpStatus.NOT_FOUND,
         );
       }
@@ -278,7 +278,7 @@ export class LoanController {
         );
       }
     }
-  
+
     // Valida se a data de empréstimo é válida
     if (null != updateLoanDto.loan_date) {
       const is_loan_date_valid = loan_date.isValid();
@@ -354,10 +354,10 @@ export class LoanController {
     // Deleta ou não o empréstimo
     const deletedLoan = await this.loanService.remove(+id);
     if (deletedLoan.affected == 1) {
-      throw new HttpException(
-        'Empréstimo deletado com sucesso.',
-        HttpStatus.OK,
-      );
+      return {
+        statusCode: 200,
+        message: 'Empréstimo deletado com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o Empréstimo.',

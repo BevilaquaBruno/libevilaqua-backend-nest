@@ -662,4 +662,179 @@ describe('LoanController', () => {
     expect(mockLoanService.update).toHaveBeenCalledWith(loanId, loanDto);
   });
 
+  it('Should remove a loan', async () => {
+    // Cria o id
+    const loanId = 1;
+
+    // Mocka o resultado
+    mockLoanService.remove.mockResolvedValue({
+      raw: [],
+      affected: 1
+    });
+    mockLoanService.findOne.mockResolvedValue({
+      id: 1,
+      description: 'Loan description',
+      return_date: null,
+      must_return_date: new Date('2025-01-02'),
+      loan_date: new Date('2025-01-01'),
+      book: {
+        id: 1,
+        title: 'Book Title',
+        edition: 1,
+        isbn: '1234567890987',
+        number_pages: 250,
+        release_year: 2025,
+        obs: 'Book mock',
+        genre: {
+          id: 1,
+          description: 'Genre test',
+        },
+        publisher: {
+          id: 1,
+          name: 'Publisher 1',
+          country: 'Brazil'
+        },
+        type: {
+          id: 1,
+          descrption: 'Type Test'
+        },
+        tags: [
+          {
+            id: 1,
+            description: 'Tag Test'
+          },
+          {
+            id: 2,
+            description: 'Tag Test 2'
+          },
+        ],
+        authors: [
+          {
+            id: 1,
+            name: 'New Author name',
+            birth_date: new Date('2000-01-01'),
+            death_date: new Date('2025-01-01'),
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+          },
+          {
+            id: 2,
+            name: 'New Author name 2',
+            birth_date: new Date('2000-01-01'),
+            death_date: new Date('2025-01-01'),
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
+          }
+        ]
+      },
+      person: {
+        id: 2,
+        name: 'Bruno Fernando',
+        cpf: '255.182.290-46',
+        cep: '89700-055',
+        state: 'SC',
+        city: 'Concórdia',
+        district: 'Centro',
+        street: 'Rua Marechal Deodoro',
+        number: '1280',
+        obs: 'Observação aqui',
+      }
+    });
+
+    const result = await controller.remove(loanId.toString());
+
+    // Valida os retornos
+    expect(result).toEqual({
+      statusCode: 200,
+      message: 'Empréstimo deletado com sucesso.',
+    });
+    expect(mockLoanService.remove).toHaveBeenCalledWith(loanId);
+  });
+
+  it('Should returned pending loan from book', async () => {
+    // Cria um mock
+    const book = {
+      id: 1,
+      title: 'Book Title',
+      edition: 1,
+      isbn: '1234567890987',
+      number_pages: 250,
+      release_year: 2025,
+      obs: 'Book mock',
+      genre: {
+        id: 1,
+        description: 'Genre test',
+      },
+      publisher: {
+        id: 1,
+        name: 'Publisher 1',
+        country: 'Brazil'
+      },
+      type: {
+        id: 1,
+        descrption: 'Type Test'
+      },
+      tags: [
+        {
+          id: 1,
+          description: 'Tag Test'
+        },
+        {
+          id: 2,
+          description: 'Tag Test 2'
+        },
+      ],
+      authors: [
+        {
+          id: 1,
+          name: 'New Author name',
+          birth_date: new Date('2000-01-01'),
+          death_date: new Date('2025-01-01'),
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+        },
+        {
+          id: 2,
+          name: 'New Author name 2',
+          birth_date: new Date('2000-01-01'),
+          death_date: new Date('2025-01-01'),
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
+        }
+      ]
+    };
+    const loan = {
+      id: 1,
+      description: 'Loan description',
+      return_date: null,
+      must_return_date: new Date('2025-01-02'),
+      loan_date: new Date('2025-01-01'),
+      book: book,
+      person: {
+        id: 2,
+        name: 'Bruno Fernando',
+        cpf: '255.182.290-46',
+        cep: '89700-055',
+        state: 'SC',
+        city: 'Concórdia',
+        district: 'Centro',
+        street: 'Rua Marechal Deodoro',
+        number: '1280',
+        obs: 'Observação aqui',
+      }
+    };
+
+    // Insere os mocks nos serviços
+    mockBookService.findOne.mockResolvedValue(book);
+    mockLoanService.findCurrentLoanFromBook(loan);
+
+    // Cria o mock da consulta e consulta
+    const loanId = 1;
+    const result = await controller.book(loanId.toString());
+
+    // Valida os dados
+    expect(result).toEqual(loan);
+    expect(mockLoanService.findOne).toHaveBeenCalledWith(loanId);
+  });
+
+  it('Should returned loan history from person', async () => {
+    
+  });
+
 });
