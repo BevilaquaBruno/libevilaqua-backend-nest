@@ -11,6 +11,8 @@ import { mockPersonService } from '../person/mocks/person.service.mock';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { FindLoanDto } from './dto/find-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
+import { FindLoanHistoryDto } from './dto/find-loan-history.dto';
+import { count } from 'console';
 
 describe('LoanController', () => {
   let controller: LoanController;
@@ -822,7 +824,7 @@ describe('LoanController', () => {
 
     // Insere os mocks nos serviços
     mockBookService.findOne.mockResolvedValue(book);
-    mockLoanService.findCurrentLoanFromBook(loan);
+    mockLoanService.findCurrentLoanFromBook.mockResolvedValue(loan);
 
     // Cria o mock da consulta e consulta
     const loanId = 1;
@@ -834,7 +836,171 @@ describe('LoanController', () => {
   });
 
   it('Should returned loan history from person', async () => {
-    
+    // Cria os mocks e coloca no retorno
+    const loanList = [
+      {
+        id: 1,
+        description: 'Loan description',
+        return_date: null,
+        must_return_date: new Date('2025-01-02'),
+        loan_date: new Date('2025-01-01'),
+        book: {
+          id: 1,
+          title: 'Book Title',
+          edition: 1,
+          isbn: '1234567890987',
+          number_pages: 250,
+          release_year: 2025,
+          obs: 'Book mock',
+          genre: {
+            id: 1,
+            description: 'Genre test',
+          },
+          publisher: {
+            id: 1,
+            name: 'Publisher 1',
+            country: 'Brazil'
+          },
+          type: {
+            id: 1,
+            descrption: 'Type Test'
+          },
+          tags: [
+            {
+              id: 1,
+              description: 'Tag Test'
+            },
+            {
+              id: 2,
+              description: 'Tag Test 2'
+            },
+          ],
+          authors: [
+            {
+              id: 1,
+              name: 'New Author name',
+              birth_date: new Date('2000-01-01'),
+              death_date: new Date('2025-01-01'),
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            },
+            {
+              id: 2,
+              name: 'New Author name 2',
+              birth_date: new Date('2000-01-01'),
+              death_date: new Date('2025-01-01'),
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
+            }
+          ]
+        },
+        person: {
+          id: 2,
+          name: 'Bruno Fernando',
+          cpf: '255.182.290-46',
+          cep: '89700-055',
+          state: 'SC',
+          city: 'Concórdia',
+          district: 'Centro',
+          street: 'Rua Marechal Deodoro',
+          number: '1280',
+          obs: 'Observação aqui',
+        }
+      },
+      {
+        id: 2,
+        description: 'Loan description 2',
+        return_date: null,
+        must_return_date: new Date('2025-01-02'),
+        loan_date: new Date('2025-01-01'),
+        book: {
+          id: 2,
+          title: 'Book Title',
+          edition: 1,
+          isbn: '1234567890987',
+          number_pages: 250,
+          release_year: 2025,
+          obs: 'Book mock',
+          genre: {
+            id: 1,
+            description: 'Genre test',
+          },
+          publisher: {
+            id: 1,
+            name: 'Publisher 1',
+            country: 'Brazil'
+          },
+          type: {
+            id: 1,
+            descrption: 'Type Test'
+          },
+          tags: [
+            {
+              id: 1,
+              description: 'Tag Test'
+            },
+            {
+              id: 2,
+              description: 'Tag Test 2'
+            },
+          ],
+          authors: [
+            {
+              id: 1,
+              name: 'New Author name',
+              birth_date: new Date('2000-01-01'),
+              death_date: new Date('2025-01-01'),
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            },
+            {
+              id: 2,
+              name: 'New Author name 2',
+              birth_date: new Date('2000-01-01'),
+              death_date: new Date('2025-01-01'),
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
+            }
+          ]
+        },
+        person: {
+          id: 3,
+          name: 'Bruno Fernando',
+          cpf: '255.182.290-46',
+          cep: '89700-055',
+          state: 'SC',
+          city: 'Concórdia',
+          district: 'Centro',
+          street: 'Rua Marechal Deodoro',
+          number: '1280',
+          obs: 'Observação aqui',
+        }
+      }
+    ];
+
+    mockPersonService.findOne.mockResolvedValue(loanList[0].person);
+    mockLoanService.findLoanHistoryFromPerson.mockResolvedValue(loanList);
+    mockLoanService.findAndCountLoanHistoryFromPerson.mockResolvedValue(2);
+
+    const personId = 1;
+    const findLoanHistory: FindLoanHistoryDto = {
+      limit: 5,
+      page: 1
+    }
+    const result = await controller.personHistory(personId.toString(), findLoanHistory.page.toString(), findLoanHistory.limit.toString());
+
+    findLoanHistory.page--;
+    expect(mockLoanService.findLoanHistoryFromPerson).toHaveBeenCalledWith(
+      personId,
+      findLoanHistory
+    );
+    expect(mockLoanService.findAndCountLoanHistoryFromPerson).toHaveBeenCalledWith(
+      personId,
+      findLoanHistory
+    );
+    expect(mockPersonService.findOne).toHaveBeenCalledWith(personId);
+    expect(result).toEqual(
+      {
+        data: loanList,
+        count: 2
+      }
+    );
   });
 
 });
