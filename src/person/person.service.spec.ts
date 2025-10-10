@@ -4,6 +4,7 @@ import { CreatePersonDto } from './dto/create-person.dto';
 import { States } from '../helpers/enum/States.enum';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { mockPersonService } from './mocks/person.service.mock';
+import { FindPersonDto } from './dto/find-person.dto';
 
 describe('PersonService', () => {
   let service: PersonService;
@@ -67,5 +68,47 @@ describe('PersonService', () => {
       number: '15',
       obs: 'Meu próprio cadastro'
     });
+  });
+
+  it('Should return a list with all genres', async () => {
+    // Cria o mock da lista e coloca no resolve
+    const mockList = [
+      {
+        id: 1,
+        name: 'Bruno Fernando Bevilaqua',
+        cpf: '103.411.729-79',
+        cep: '889700-055',
+        state: States.SC,
+        city: 'Concórdia',
+        district: 'Linha São Paulo',
+        street: 'Rua Sérgio Galvan',
+        number: '15',
+        obs: 'Meu próprio cadastro'
+      },
+      {
+        id: 2,
+        name: 'Bruno Fernando Bevilaqua',
+        cpf: '686.845.220-95',
+        cep: '889700-055',
+        state: States.SC,
+        city: 'Concórdia',
+        district: 'Linha São Paulo',
+        street: 'Rua Sérgio Galvan',
+        number: '15',
+        obs: 'Meu próprio cadastro'
+      }
+    ];
+    mockPersonService.findAll.mockResolvedValue(mockList);
+
+    // Cria a paginação e recebe o retorno;
+    const findDto: FindPersonDto = {
+      limit: 2,
+      page: 1
+    };
+    const result = await service.findAll(findDto);
+
+    // Valida os retornos
+    expect(result).toEqual(mockList);
+    expect(mockPersonService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 });
   });
 });
