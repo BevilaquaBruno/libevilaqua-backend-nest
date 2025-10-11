@@ -135,4 +135,50 @@ describe('PersonService', () => {
     expect(mockPersonService.findOne).toHaveBeenCalledWith(1);
   });
 
+  it('Should update a person', async () => {
+    // Cria o mock
+    const mock: UpdatePersonDto = {
+      id: 1,
+      name: 'Bruno Fernando Bevilaqua',
+      cpf: '103.411.729-79',
+      cep: '889700-055',
+      state: States.SC,
+      city: 'Concórdia',
+      district: 'Linha São Paulo',
+      street: 'Rua Sérgio Galvan',
+      number: '15',
+      obs: 'Meu próprio cadastro'
+    };
+    mockPersonService.update.mockResolvedValue(mock);
+
+    // Chama a edição do gênero
+    const result = await service.update(1, {
+      id: 1,
+      name: 'Bruno Fernando Bevilaqua',
+      cpf: '103.411.729-79',
+      cep: '889700-055',
+      state: States.SC,
+      city: 'Concórdia',
+      district: 'Linha São Paulo',
+      street: 'Rua Sérgio Galvan',
+      number: '15',
+      obs: 'Meu próprio cadastro'
+    });
+
+    // Valida o retorno
+    expect(result).toEqual(mock);
+    expect(mockPersonService.update).toHaveBeenCalledWith(1, {
+      id: 1,
+      name: 'Bruno Fernando Bevilaqua',
+      cpf: '103.411.729-79',
+      cep: '889700-055',
+      state: States.SC,
+      city: 'Concórdia',
+      district: 'Linha São Paulo',
+      street: 'Rua Sérgio Galvan',
+      number: '15',
+      obs: 'Meu próprio cadastro'
+    });
+  });
+
 });
