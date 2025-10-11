@@ -111,4 +111,28 @@ describe('PersonService', () => {
     expect(result).toEqual(mockList);
     expect(mockPersonService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 });
   });
+
+  it('Should return a person', async () => {
+    // Cria o mock
+    const mock = {
+      name: 'Bruno Fernando Bevilaqua',
+      cpf: '103.411.729-79',
+      cep: '889700-055',
+      state: States.SC,
+      city: 'Concórdia',
+      district: 'Linha São Paulo',
+      street: 'Rua Sérgio Galvan',
+      number: '15',
+      obs: 'Meu próprio cadastro'
+    };
+    mockPersonService.findOne.mockResolvedValue(mock);
+
+    // Consulta
+    const result = await service.findOne(1);
+
+    // Valida os retornos
+    expect(result).toEqual(mock);
+    expect(mockPersonService.findOne).toHaveBeenCalledWith(1);
+  });
+
 });
