@@ -181,4 +181,31 @@ describe('PersonService', () => {
     });
   });
 
+  it('Should remove a person', async () => {
+    // Cria o mock de retorno e coloca no delete
+    const mockDelete = {
+      raw: [],
+      affected: 1
+    };
+    mockPersonService.remove.mockResolvedValue(mockDelete);
+
+    // Deleta
+    const result = await service.remove(1);
+
+    // Valida os retornos
+    expect(result).toEqual({ raw: [], affected: 1 });
+    expect(mockPersonService.remove).toHaveBeenCalledWith(1);
+  });
+
+  it('Should return a count of people', async () => {
+    // Coloca um mock no count
+    mockPersonService.count.mockResolvedValue(1);
+
+    // Chama o count
+    const result = await service.count();
+
+    // Valida os retornos
+    expect(result).toEqual(1);
+    expect(mockPersonService.count).toHaveBeenCalledWith();
+  });
 });
