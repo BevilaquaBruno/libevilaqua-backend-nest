@@ -21,7 +21,7 @@ describe('PersonService', () => {
     expect(service).toBeDefined();
   });
 
-  it('Should create a gente', async () => {
+  it('Should create a person', async () => {
     // Cria o mock
     const mock: CreatePersonDto = {
       name: 'Bruno Fernando Bevilaqua',
