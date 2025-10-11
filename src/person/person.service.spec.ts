@@ -70,7 +70,7 @@ describe('PersonService', () => {
     });
   });
 
-  it('Should return a list with all genres', async () => {
+  it('Should return a list with all people', async () => {
     // Cria o mock da lista e coloca no resolve
     const mockList = [
       {
