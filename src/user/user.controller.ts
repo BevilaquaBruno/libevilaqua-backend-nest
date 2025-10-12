@@ -21,7 +21,7 @@ import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   // Cria o usuário
   @UseGuards(AuthGuard)
@@ -195,7 +195,10 @@ export class UserController {
     // Deleta o usuário
     const deletedUser = await this.userService.remove(+id);
     if (deletedUser.affected == 1) {
-      throw new HttpException('Usuário deletado com sucesso.', HttpStatus.OK);
+      return {
+        statusCode: 200,
+        message: 'Usuário deletado com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o usuário.',
