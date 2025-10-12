@@ -13,7 +13,7 @@ describe('PublisherController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [],
+      controllers: [PublisherController],
       providers: [
         { provide: JwtService, useValue: mockJwtService },
         { provide: PublisherService, useValue: mockPublisherService }
