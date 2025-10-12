@@ -20,7 +20,7 @@ import { Type } from './entities/type.entity';
 
 @Controller('type')
 export class TypeController {
-  constructor(private readonly typeService: TypeService) {}
+  constructor(private readonly typeService: TypeService) { }
 
   // Cria o tipo
   @UseGuards(AuthGuard)
@@ -114,7 +114,10 @@ export class TypeController {
     // Deleta o tipo e retorna ele
     const deletedType = await this.typeService.remove(+id);
     if (deletedType.affected == 1) {
-      throw new HttpException('Tipo deletado com sucesso.', HttpStatus.OK);
+      return {
+        statusCode: 200,
+        message: 'Tipo deletado com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o tipo.',
