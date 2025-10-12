@@ -21,7 +21,7 @@ import CPF from 'cpf-check';
 
 @Controller('person')
 export class PersonController {
-  constructor(private readonly personService: PersonService) {}
+  constructor(private readonly personService: PersonService) { }
 
   // Cria uma pessoa
   @UseGuards(AuthGuard)
@@ -211,8 +211,12 @@ export class PersonController {
 
     // Deleta e pessoa, retorna sucess ou erro
     const deletePerson = await this.personService.remove(+id);
+
     if (deletePerson.affected == 1) {
-      throw new HttpException('Pessoa deletada com sucesso.', HttpStatus.OK);
+      return {
+        statusCode: 200,
+        message: 'Pessoa deletada com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar a pessoa.',

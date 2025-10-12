@@ -20,7 +20,7 @@ import { Tag } from './entities/tag.entity';
 
 @Controller('tag')
 export class TagController {
-  constructor(private readonly tagService: TagService) {}
+  constructor(private readonly tagService: TagService) { }
 
   // Cria uma tag
   @UseGuards(AuthGuard)
@@ -110,7 +110,10 @@ export class TagController {
     // Deleta a tag
     const deletedTag = await this.tagService.remove(+id);
     if (deletedTag.affected == 1) {
-      throw new HttpException('Tag deletada com sucesso.', HttpStatus.OK);
+      return {
+        statusCode: 200,
+        message: 'Tag deletada com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar a tag.',

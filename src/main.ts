@@ -5,8 +5,8 @@ import { CreateValidationPipe } from './common/pipes/validation-pipe/create-vali
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: ['https://libevilaqua-frontend-angular-production.up.railway.app', 'biblioteca.bevilaqua.dev.br']
-  })
+    origin: ['http://localhost:4200']
+  });
   /**
    * Pipes:
    * CreateValidationPipe: Altera dados do class-validator

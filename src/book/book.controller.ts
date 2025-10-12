@@ -20,7 +20,7 @@ import { Book } from './entities/book.entity';
 
 @Controller('book')
 export class BookController {
-  constructor(private readonly bookService: BookService) {}
+  constructor(private readonly bookService: BookService) { }
 
   // Cria um livro
   @UseGuards(AuthGuard)
@@ -193,7 +193,10 @@ export class BookController {
     // Deleta o livro, retorna com sucesso ou não
     const deletedBook = await this.bookService.remove(+id);
     if (deletedBook.affected == 1) {
-      throw new HttpException('Livro deletado com sucesso.', HttpStatus.OK);
+      return {
+        statusCode: 200,
+        message: 'Livro deletado com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar o livro.',

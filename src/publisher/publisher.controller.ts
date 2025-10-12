@@ -20,7 +20,7 @@ import { Publisher } from './entities/publisher.entity';
 
 @Controller('publisher')
 export class PublisherController {
-  constructor(private readonly publisherService: PublisherService) {}
+  constructor(private readonly publisherService: PublisherService) { }
 
   // Cria uma editora
   @UseGuards(AuthGuard)
@@ -121,7 +121,10 @@ export class PublisherController {
     // Deleta e editora e retorna
     const deletedPublisher = await this.publisherService.remove(+id);
     if (deletedPublisher.affected == 1) {
-      throw new HttpException('Editora deletada com sucesso.', HttpStatus.OK);
+      return {
+        statusCode: 200,
+        message: 'Editora deletada com sucesso.',
+      };
     } else {
       throw new HttpException(
         'Ocorreu algum erro ao deletar a editora.',
