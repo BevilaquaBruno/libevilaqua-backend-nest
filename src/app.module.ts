@@ -11,6 +11,7 @@ import { TagModule } from './tag/tag.module';
 import { BookModule } from './book/book.module';
 import { PersonModule } from './person/person.module';
 import { LoanModule } from './loan/loan.module';
+import { MailService } from './mail/mail.service';
 
 @Module({
   imports: [
@@ -37,5 +38,6 @@ import { LoanModule } from './loan/loan.module';
     PersonModule,
     LoanModule,
   ],
+  providers: [MailService],
 })
 export class AppModule {}
