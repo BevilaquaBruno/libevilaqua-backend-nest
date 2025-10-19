@@ -4,10 +4,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, MailService],
   exports: [AuthService],
   imports: [
     ConfigModule.forRoot(),
