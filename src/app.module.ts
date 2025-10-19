@@ -12,6 +12,7 @@ import { BookModule } from './book/book.module';
 import { PersonModule } from './person/person.module';
 import { LoanModule } from './loan/loan.module';
 import { MailService } from './mail/mail.service';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { MailService } from './mail/mail.service';
     BookModule,
     PersonModule,
     LoanModule,
+    MailModule,
   ],
   providers: [MailService],
 })
