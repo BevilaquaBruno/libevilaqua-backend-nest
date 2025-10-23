@@ -17,6 +17,7 @@ import { BookTagCreateTable1681340103839 } from './migrations/1681340103839-Book
 import { PersonCreateTable1681776270324 } from './migrations/1681776270324-PersonCreateTable';
 import { LoanCreateTable1682086092464 } from './migrations/1682086092464-LoanCreateTable';
 import { RemoveStatusFromBook1684196379939 } from './migrations/1684196379939-RemoveStatusFromBook';
+import { CreateResetTokenTable1760897406985 } from './migrations/1760897406985-create_reset_token_table';
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ export const AppDataSource = new DataSource({
     PersonCreateTable1681776270324,
     LoanCreateTable1682086092464,
     RemoveStatusFromBook1684196379939,
+    CreateResetTokenTable1760897406985,
   ],
   migrationsTableName: 'migrations',
 });

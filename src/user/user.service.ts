@@ -78,4 +78,8 @@ export class UserService {
   async count() {
     return await this.userRepository.count();
   }
+
+  async updatePassword(id: number, password: string) {
+    return await this.userRepository.update(id, { password: password });
+  }
 }
