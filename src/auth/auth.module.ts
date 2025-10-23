@@ -5,6 +5,8 @@ import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { MailService } from 'src/mail/mail.service';
+import { ResetToken } from 'src/reset-token/entities/reset-token.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   controllers: [AuthController],
@@ -18,6 +20,7 @@ import { MailService } from 'src/mail/mail.service';
       secret: process.env['SECRET'],
       signOptions: { expiresIn: '86400s' },
     }),
+    TypeOrmModule.forFeature([ResetToken]),
   ],
 })
 export class AuthModule {}

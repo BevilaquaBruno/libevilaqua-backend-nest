@@ -18,7 +18,7 @@ export class MailService {
   }
 
   async sendResetPasswordRequest(name: string, email: string, token: string) {
-    const url = `google.com?token=${token}`;
+    const url = process.env['FRONT_END_URL'] + `?token=${token}`;
 
     await this.mailerService.sendMail({
       to: email,
