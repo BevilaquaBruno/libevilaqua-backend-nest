@@ -6,6 +6,7 @@ import { User } from 'src/user/entities/user.entity';
 import { ResetToken } from 'src/reset-token/entities/reset-token.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PayloadAuthDto } from './dto/payload-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +25,7 @@ export class AuthService {
     if (!isValid) {
       throw new UnauthorizedException();
     }
-    const payload = { username: user.email, sub: user.id };
+    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: true };
     // Retorna um token com base no payload
     return {
       access_token: await this.jwtService.signAsync(payload),
@@ -33,7 +34,8 @@ export class AuthService {
   }
 
   async generateResetToken(user: User) {
-    const token = this.jwtService.sign({ username: user.email, sub: user.id }, { expiresIn: '12h' });
+    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: false };
+    const token = this.jwtService.sign(payload, { expiresIn: '12h' });
     
     await this.resetTokenRepository.save({
       userId: user.id.toString(),

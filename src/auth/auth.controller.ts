@@ -15,6 +15,7 @@ import { MainAuthDto } from './dto/main-auth.dto';
 import { UserService } from 'src/user/user.service';
 import { MailService } from 'src/mail/mail.service';
 import * as bcrypt from 'bcrypt';
+import { PayloadAuthDto } from './dto/payload-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -81,7 +82,12 @@ export class AuthController {
     if (resetPasswordDto.newPassword != resetPasswordDto.confirmNewPassword)
       throw new HttpException('As senhas estão diferentes.', HttpStatus.BAD_REQUEST);
 
-    const currentUser: { username: string, sub: string } = req['user'];
+    const currentUser: PayloadAuthDto = req['user'];
+    // Se for um token de login, não deixa alterar a senha
+    if(currentUser.logged){
+      throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+    }
+
     // Valida o e-mail
     if ('' == currentUser.username)
       throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
@@ -128,7 +134,12 @@ export class AuthController {
     }
 
     // Valida o e-mail informado e o e-mail do token
-    const reqUser: { username: string, sub: string } = req['user'];
+    const reqUser: PayloadAuthDto = req['user'];
+        // Se for um token de login, não deixa alterar a senha
+    if(reqUser.logged){
+      throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+    }
+    
     if(reqUser.username != email){
       throw new HttpException('Token inválido para o e-mail informado.', HttpStatus.BAD_REQUEST);
     }
