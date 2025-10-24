@@ -71,10 +71,12 @@ export class AuthController {
 
     // Pega o resetToken
     const resetToken = await this.authService.findOneToken(token);
+    if(!resetToken)
+      throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
 
-    if(resetToken.used)
-      throw new HttpException('Token já usado, tente novamente', HttpStatus.BAD_REQUEST);
-  
+    if (resetToken.used)
+      throw new HttpException('Token já usado, tente novamente.', HttpStatus.BAD_REQUEST);
+
     // Valida as senhas
     if (resetPasswordDto.newPassword != resetPasswordDto.confirmNewPassword)
       throw new HttpException('As senhas estão diferentes.', HttpStatus.BAD_REQUEST);
@@ -101,6 +103,53 @@ export class AuthController {
     } else {
       throw new HttpException(
         'Ocorreu algum erro com a atualização da senha, tente novamente.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('confirm-email')
+  async confirmEmail(@Req() req: Request, @Body() data: { email: string }) {
+    // Valida se o token foi usado
+    const [type, token] = req.headers['authorization'].split(' ') ?? [];
+    // Pega o resetToken
+    const resetToken = await this.authService.findOneToken(token);
+    if(!resetToken)
+      throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+
+    if (resetToken.used)
+      throw new HttpException('Token já usado, tente novamente.', HttpStatus.BAD_REQUEST);
+
+    // Valida o e-mail
+    const email = data.email;
+    if (!email || '' == email) {
+      throw new HttpException('E-mail inválido.', HttpStatus.BAD_REQUEST);
+    }
+
+    // Valida o e-mail informado e o e-mail do token
+    const reqUser: { username: string, sub: string } = req['user'];
+    if(reqUser.username != email){
+      throw new HttpException('Token inválido para o e-mail informado.', HttpStatus.BAD_REQUEST);
+    }
+
+    // Valida se existe um usuário com o e-mail
+    let user = await this.userService.findByEmail(email);
+    if(!user){
+      throw new HttpException('Não existe um usuário com esse e-mail.', HttpStatus.BAD_REQUEST);
+    }
+
+    this.authService.updateResetToken(+resetToken.id, true);
+    const updatedUser = await this.userService.confirmEmail(user.id);
+    if (updatedUser.affected == 1) {
+      // Atualiza o token como used
+      return {
+        statusCode: 200,
+        message: 'E-mail verificado com sucesso.',
+      };
+    } else {
+      throw new HttpException(
+        'Ocorreu algum erro com a verificação do e-mail, tente novamente.',
         HttpStatus.BAD_REQUEST,
       );
     }

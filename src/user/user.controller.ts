@@ -18,10 +18,16 @@ import { AuthGuard } from '../../src/auth/auth.guard';
 import * as bcrypt from 'bcrypt';
 import { FindUserDto } from './dto/find-user.dto';
 import { User } from './entities/user.entity';
+import { MailService } from 'src/mail/mail.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(
+    private readonly userService: UserService,
+    private readonly mailService: MailService,
+    private readonly authService: AuthService,
+  ) { }
 
   // Cria o usuário
   @UseGuards(AuthGuard)
@@ -50,6 +56,10 @@ export class UserController {
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     const newUser = await this.userService.create(createUserDto);
 
+    // envia o e-mail
+    const token = await this.authService.generateResetToken(newUser);
+    this.mailService.sendUserConfirmation(newUser.email, token);
+    
     return {
       id: newUser.id,
       name: newUser.name,

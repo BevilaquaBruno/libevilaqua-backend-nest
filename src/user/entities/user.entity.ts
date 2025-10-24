@@ -20,6 +20,9 @@ export class User {
   @Column({ select: false, nullable: true })
   password: string;
 
+  @Column({ select: false, nullable: true })
+  email_verified_at: Date;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
   createdAt: Date;
 
