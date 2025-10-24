@@ -1,31 +1,52 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { existsSync, readFileSync } from 'fs';
+import { join } from 'path';
 
 @Injectable()
 export class MailService {
   constructor(private readonly mailerService: MailerService) { }
 
   async sendUserConfirmation(email: string, token: string) {
-    const url = `https://meuapp.com/confirm?token=${token}`;
+    const url = process.env['FRONT_END_URL'] + `/confirmar-acesso?token=${token}`;
+    const template = readFileSync(this.getTemplatePath('sendUserConfirmation.template.html'), 'utf-8');
+
+    const sendUserConfirmationHTML = template
+      .replace(/{{APP_NAME}}/g, process.env['APP_NAME'])
+      .replace(/{{URL}}/g, url);
 
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Libevilaqua: Confirme seu cadastro',
-      text: `Por favor, confirme seu cadastro acessando: ${url}`,
-      html: `<p>Por favor, confirme seu cadastro acessando o link abaixo:</p>
-             <a href="${url}">${url}</a>`,
+      subject: process.env['APP_NAME'] + ' - Confirme seu cadastro',
+      text: `Por favor, confirme seu cadastro acessando a URL: ${url}`,
+      html: sendUserConfirmationHTML,
     });
   }
 
   async sendResetPasswordRequest(name: string, email: string, token: string) {
-    const url = process.env['FRONT_END_URL'] + `?token=${token}`;
+    const url = process.env['FRONT_END_URL'] + `/resetar-senha?token=${token}`;
+    const template = readFileSync(this.getTemplatePath('sendResetPasswordRequest.template.html'), 'utf-8');
+
+    const sendResetPasswordRequestHTML = template
+      .replace(/{{APP_NAME}}/g, process.env['APP_NAME'])
+      .replace(/{{URL}}/g, url);
 
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Libevilaqua: Resete sua senha',
+      subject: process.env['APP_NAME'] + ' - Resete sua senha',
       text: `Olá ${name}. Acesse o link abaixo para resetar sua senha: ${url}`,
-      html: `<p>Olá ${name}</p><p>Acesse o link abaixo para resetar sua senha:</p>
-        <a href="${url}">${url}</a>`,
+      html: sendResetPasswordRequestHTML,
     });
+  }
+
+  private getTemplatePath(filename: string): string {
+    const distPath = join(__dirname, 'templates', filename);
+    const srcPath = join(process.cwd(), 'src', 'mail', 'templates', filename);
+
+    if (existsSync(distPath)) {
+      return distPath;
+    }
+
+    return srcPath;
   }
 }

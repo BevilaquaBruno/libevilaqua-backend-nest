@@ -82,4 +82,8 @@ export class UserService {
   async updatePassword(id: number, password: string) {
     return await this.userRepository.update(id, { password: password });
   }
+
+  async confirmEmail(id: number) {
+    return await this.userRepository.update(id, { email_verified_at: new Date() });
+  }
 }
