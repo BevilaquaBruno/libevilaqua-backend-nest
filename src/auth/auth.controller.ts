@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Post,
   Req,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
@@ -16,13 +17,15 @@ import { UserService } from 'src/user/user.service';
 import { MailService } from 'src/mail/mail.service';
 import * as bcrypt from 'bcrypt';
 import { PayloadAuthDto } from './dto/payload-auth.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private mailService: MailService
+    private mailService: MailService,
+    private jwtService: JwtService,
   ) { }
 
   @HttpCode(HttpStatus.OK)
@@ -55,7 +58,7 @@ export class AuthController {
     if (null == user)
       throw new HttpException('Não existe nenhum usuário com este e-mail.', HttpStatus.BAD_REQUEST);
 
-    const token = await this.authService.generateResetToken(user);
+    const token = await this.authService.generateResetToken(user, 'S');
     await this.mailService.sendResetPasswordRequest(user.name, user.email, token);
 
     return {
@@ -64,105 +67,132 @@ export class AuthController {
     };
   }
 
-  @UseGuards(AuthGuard)
   @Post('reset-password')
   async resetPassword(@Req() req: Request, @Body() resetPasswordDto: { newPassword: string, confirmNewPassword: string }) {
     // O token é um "Bearer XXX", separa ele e retorna o token se ele for um Bearer
     const [type, token] = req.headers['authorization'].split(' ') ?? [];
 
-    // Pega o resetToken
-    const resetToken = await this.authService.findOneToken(token);
-    if(!resetToken)
-      throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+    try {
+      const payload: PayloadAuthDto = await this.jwtService.verifyAsync(token, {
+        secret: process.env['SECRET'],
+      });
 
-    if (resetToken.used)
-      throw new HttpException('Token já usado, tente novamente.', HttpStatus.BAD_REQUEST);
+      const currentUser: PayloadAuthDto = payload;
 
-    // Valida as senhas
-    if (resetPasswordDto.newPassword != resetPasswordDto.confirmNewPassword)
-      throw new HttpException('As senhas estão diferentes.', HttpStatus.BAD_REQUEST);
+      // Pega o resetToken
+      const resetToken = await this.authService.findOneToken(token);
+      if (!resetToken)
+        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
 
-    const currentUser: PayloadAuthDto = req['user'];
-    // Se for um token de login, não deixa alterar a senha
-    if(currentUser.logged){
-      throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
-    }
+      if (resetToken.used)
+        throw new HttpException('Token já usado, tente novamente.', HttpStatus.BAD_REQUEST);
 
-    // Valida o e-mail
-    if ('' == currentUser.username)
-      throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
+      if ('S' != resetToken.type)
+        throw new HttpException('Token inválidos.', HttpStatus.BAD_REQUEST);
+      // Valida as senhas
+      if (resetPasswordDto.newPassword != resetPasswordDto.confirmNewPassword)
+        throw new HttpException('As senhas estão diferentes.', HttpStatus.BAD_REQUEST);
 
-    // Verifica se usuário existe
-    const user = await this.userService.findByEmail(currentUser.username);
-    if (null == user)
-      throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
+      // Se for um token de login, não deixa alterar a senha
+      if (currentUser.logged) {
+        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+      }
 
-    const encriptedPasword = await bcrypt.hash(resetPasswordDto.newPassword, 10);
-    const updatedUser = await this.userService.updatePassword(user.id, encriptedPasword);
-    if (updatedUser.affected == 1) {
-      // Atualiza o token como used
-      await this.authService.updateResetToken(+resetToken.id, true);
-      return {
-        statusCode: 200,
-        message: 'Senha atualizada com sucesso.',
-      };
-    } else {
-      throw new HttpException(
-        'Ocorreu algum erro com a atualização da senha, tente novamente.',
-        HttpStatus.BAD_REQUEST,
-      );
+      // Valida o e-mail
+      if ('' == currentUser.username)
+        throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
+
+      // Verifica se usuário existe
+      const user = await this.userService.findByEmail(currentUser.username);
+      if (null == user)
+        throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
+
+      const encriptedPasword = await bcrypt.hash(resetPasswordDto.newPassword, 10);
+      const updatedUser = await this.userService.updatePassword(user.id, encriptedPasword);
+      if (updatedUser.affected == 1) {
+        // Atualiza o token como used
+        await this.authService.updateResetToken(+resetToken.id, true);
+        return {
+          statusCode: 200,
+          message: 'Senha atualizada com sucesso.',
+        };
+      } else {
+        throw new HttpException(
+          'Ocorreu algum erro com a atualização da senha, tente novamente.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } catch (error) {
+      if (error.response && error.message)
+        throw new HttpException(error.response, error.status);
+      else
+        throw new UnauthorizedException
     }
   }
 
-  @UseGuards(AuthGuard)
   @Post('confirm-email')
   async confirmEmail(@Req() req: Request, @Body() data: { email: string }) {
     // Valida se o token foi usado
     const [type, token] = req.headers['authorization'].split(' ') ?? [];
-    // Pega o resetToken
-    const resetToken = await this.authService.findOneToken(token);
-    if(!resetToken)
-      throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
 
-    if (resetToken.used)
-      throw new HttpException('Token já usado, tente novamente.', HttpStatus.BAD_REQUEST);
+    try {
+      const payload: PayloadAuthDto = await this.jwtService.verifyAsync(token, {
+        secret: process.env['SECRET'],
+      });
+      const reqUser: PayloadAuthDto = payload;
 
-    // Valida o e-mail
-    const email = data.email;
-    if (!email || '' == email) {
-      throw new HttpException('E-mail inválido.', HttpStatus.BAD_REQUEST);
-    }
+      // Pega o resetToken
+      const resetToken = await this.authService.findOneToken(token);
+      if (!resetToken)
+        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
 
-    // Valida o e-mail informado e o e-mail do token
-    const reqUser: PayloadAuthDto = req['user'];
-        // Se for um token de login, não deixa alterar a senha
-    if(reqUser.logged){
-      throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
-    }
-    
-    if(reqUser.username != email){
-      throw new HttpException('Token inválido para o e-mail informado.', HttpStatus.BAD_REQUEST);
-    }
+      if (resetToken.used)
+        throw new HttpException('Token já usado, tente novamente.', HttpStatus.BAD_REQUEST);
 
-    // Valida se existe um usuário com o e-mail
-    let user = await this.userService.findByEmail(email);
-    if(!user){
-      throw new HttpException('Não existe um usuário com esse e-mail.', HttpStatus.BAD_REQUEST);
-    }
+      if ('E' != resetToken.type)
+        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
 
-    this.authService.updateResetToken(+resetToken.id, true);
-    const updatedUser = await this.userService.confirmEmail(user.id);
-    if (updatedUser.affected == 1) {
-      // Atualiza o token como used
-      return {
-        statusCode: 200,
-        message: 'E-mail verificado com sucesso.',
-      };
-    } else {
-      throw new HttpException(
-        'Ocorreu algum erro com a verificação do e-mail, tente novamente.',
-        HttpStatus.BAD_REQUEST,
-      );
+      // Valida o e-mail
+      const email = data.email;
+      if (!email || '' == email) {
+        throw new HttpException('E-mail inválido.', HttpStatus.BAD_REQUEST);
+      }
+
+      // Valida o e-mail informado e o e-mail do token
+      // Se for um token de login, não deixa alterar a senha
+      if (reqUser.logged) {
+        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+      }
+
+      if (reqUser.username != email) {
+        throw new HttpException('Token inválido para o e-mail informado.', HttpStatus.BAD_REQUEST);
+      }
+
+      // Valida se existe um usuário com o e-mail
+      let user = await this.userService.findByEmail(email);
+      if (!user) {
+        throw new HttpException('Não existe um usuário com esse e-mail.', HttpStatus.BAD_REQUEST);
+      }
+
+      this.authService.updateResetToken(+resetToken.id, true);
+      const updatedUser = await this.userService.confirmEmail(user.id);
+      if (updatedUser.affected == 1) {
+        // Atualiza o token como used
+        return {
+          statusCode: 200,
+          message: 'E-mail verificado com sucesso.',
+        };
+      } else {
+        throw new HttpException(
+          'Ocorreu algum erro com a verificação do e-mail, tente novamente.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } catch (error) {
+      if (error.response && error.message)
+        throw new HttpException(error.response, error.status);
+      else
+        throw new UnauthorizedException
     }
   }
 }

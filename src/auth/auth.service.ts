@@ -33,7 +33,7 @@ export class AuthService {
     
   }
 
-  async generateResetToken(user: User) {
+  async generateResetToken(user: User, tokenType: 'E' | 'S') {
     const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: false };
     const token = this.jwtService.sign(payload, { expiresIn: '12h' });
     
@@ -41,6 +41,7 @@ export class AuthService {
       userId: user.id.toString(),
       token,
       expiresAt: new Date(Date.now() + 12 * 60 * 60 * 1000),
+      type: tokenType,
     });
 
     return token;
