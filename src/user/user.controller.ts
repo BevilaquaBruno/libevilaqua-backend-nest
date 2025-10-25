@@ -57,7 +57,7 @@ export class UserController {
     const newUser = await this.userService.create(createUserDto);
 
     // envia o e-mail
-    const token = await this.authService.generateResetToken(newUser);
+    const token = await this.authService.generateResetToken(newUser, 'E');
     this.mailService.sendUserConfirmation(newUser.email, token);
     
     return {

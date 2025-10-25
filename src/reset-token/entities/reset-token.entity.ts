@@ -16,4 +16,8 @@ export class ResetToken {
 
   @Column({ default: false })
   used: boolean;
+
+  // E significa que o token é de confirmação de e-mail, S é para reset de senha
+  @Column()
+  type: 'E' | 'S';
 }
