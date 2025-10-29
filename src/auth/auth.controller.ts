@@ -41,13 +41,14 @@ export class AuthController {
 
     const logged = await this.authService.signIn(signInDto.email, signInDto.password);
 
+    const libraries = await this.libraryService.getLibrariesFromuser(user.id);
     if (logged) {
       return {
         id: user.id,
         name: user.name,
         email: user.email,
         password: user.password,
-        libraries: user.libraries,
+        libraries: libraries,
       };
     } else {
       throw new UnauthorizedException();
@@ -78,6 +79,17 @@ export class AuthController {
     const userHasLibrary = await this.userService.userHasLibrary(user.id, selectedLibrary.libraryId);
     if (0 == userHasLibrary[1]) {
       throw new HttpException('Esse usuário não tem acesso à biblioteca selecionada.', HttpStatus.BAD_REQUEST);
+    }
+
+    const libraryUser = await this.userService.getLibraryUser(user.id, selectedLibrary.libraryId);
+    if (!libraryUser) {
+      throw new HttpException('Vínculo entre usuário e biblioteca não encontrado.', HttpStatus.BAD_REQUEST);
+    }
+
+    if (null == libraryUser.email_verified_at) {
+      const token = await this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
+      this.mailService.sendUserConfirmation(user.email, token);
+      throw new HttpException('Usuário ainda não verificado nesta biblioteca, token de verificação reenviado.', HttpStatus.BAD_REQUEST);
     }
 
     return await this.authService.generateLoginToken(user, selectedLibrary.libraryId);

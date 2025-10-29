@@ -63,8 +63,7 @@ export class UserService {
         id: true,
         name: true,
         email: true,
-        password: true,
-        libraries: true,
+        password: true
       },
       where: dynamicWhere,
     });
@@ -103,24 +102,16 @@ export class UserService {
     return this.libraryUserRepository.update(libraryUser.id, libraryUser);
   }
 
-  async userHasLibrary(id: number, libraryId: number) {
-    return await this.userRepository.findAndCountBy({ id: id, libraries: { id: libraryId } });
-  }
-
-  async getUserLibraries(id: number) {
-    return await this.userRepository.findOne({
-      select: {
-        id: false,
-        email: false,
-        name: false,
-        libraries: true,
-      },
-      where: { id: id }
-    });
+  async userHasLibrary(userId: number, libraryId: number) {
+    return await this.userRepository.findAndCountBy({ id: userId, libraries: { library: { id: libraryId } } });
   }
 
   createLibraryUser(userId: number, libraryid: number) {
     return this.libraryUserRepository.save({ library: { id: libraryid }, user: { id: userId } });
+  }
+
+  getLibraryUser(userId: number, libraryid: number) {
+    return this.libraryUserRepository.findOneBy({ library: { id: libraryid }, user: { id: userId } });
   }
 
 }

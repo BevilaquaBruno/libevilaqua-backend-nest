@@ -39,4 +39,10 @@ export class LibraryService {
   async count() {
     return await this.libraryServiceRepository.count();
   }
+
+  getLibrariesFromuser(userId: number) {
+    return this.libraryServiceRepository.find({
+      where: { users: { user: { id: userId } } }
+    });
+  }
 }
