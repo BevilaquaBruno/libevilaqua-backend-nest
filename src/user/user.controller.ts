@@ -20,6 +20,8 @@ import { FindUserDto } from './dto/find-user.dto';
 import { User } from './entities/user.entity';
 import { MailService } from 'src/mail/mail.service';
 import { AuthService } from 'src/auth/auth.service';
+import { CreateUserWithLibraryDto } from './dto/create-user-with-library.dto';
+import { LibraryService } from 'src/library/library.service';
 
 @Controller('user')
 export class UserController {
@@ -27,6 +29,7 @@ export class UserController {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly authService: AuthService,
+    private readonly libraryService: LibraryService,
   ) { }
 
   // Cria o usuário
@@ -59,11 +62,74 @@ export class UserController {
     // envia o e-mail
     const token = await this.authService.generateResetToken(newUser, 'E');
     this.mailService.sendUserConfirmation(newUser.email, token);
-    
+
     return {
       id: newUser.id,
       name: newUser.name,
       email: newUser.email,
+    };
+  }
+
+  @Post('/with-library')
+  async createUserWithLibrary(@Body() createUserWithLibrary: CreateUserWithLibraryDto) {
+    const createUserDto = createUserWithLibrary.user;
+    const createLibraryDto = createUserWithLibrary.library;
+
+    // Valida se as senhas informadas são iguais
+    if (createUserDto.password != createUserDto.verify_password) {
+      throw new HttpException(
+        'As senhas devem ser iguais.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // Valida se o usuário (email) já existe, se existe retorna erro
+    const userAlreadyExists = await this.userService.findByEmail(
+      createUserDto.email,
+    );
+    if (userAlreadyExists?.email != undefined) {
+      throw new HttpException(
+        'Já existe um usuário com esse e-mail cadastrado.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const newLibrary = await this.libraryService.create(createLibraryDto);
+    if (!newLibrary) {
+      throw new HttpException(
+        'Ocorreu algum erro no registro da biblioteca, tente novamente.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+    const newUser = await this.userService.create(createUserDto);
+    if (!newUser) {
+      throw new HttpException(
+        'Ocorreu algum erro no registro do usuário, tente novamente.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const newLibraryUser = this.userService.createLibraryUser(newUser.id, newLibrary.id);
+    if (!newLibraryUser) {
+      throw new HttpException(
+        'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    // envia o e-mail
+    const token = await this.authService.generateResetToken(newUser, 'E', newLibrary.id);
+    this.mailService.sendUserConfirmation(newUser.email, token);
+
+    return {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      library: {
+        id: newLibrary.id,
+        description: newLibrary.description,
+      }
     };
   }
 

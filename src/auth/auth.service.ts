@@ -43,8 +43,8 @@ export class AuthService {
     };
   }
 
-  async generateResetToken(user: User, tokenType: 'E' | 'S') {
-    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: false, libraryId: 11111111111 };
+  async generateResetToken(user: User, tokenType: 'E' | 'S', libraryId = 0) {
+    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: false, libraryId: libraryId };
     const token = this.jwtService.sign(payload, { expiresIn: '12h' });
 
     await this.resetTokenRepository.save({

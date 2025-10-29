@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Not, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { FindUserDto } from './dto/find-user.dto';
+import { LibraryUser } from './entities/library-user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(LibraryUser) private libraryUserRepository: Repository<LibraryUser>,
   ) { }
 
   create(createUserDto: CreateUserDto) {
@@ -84,15 +86,28 @@ export class UserService {
     return await this.userRepository.update(id, { password: password });
   }
 
-  async confirmEmail(id: number) {
-    return await this.userRepository.update(id, {});
+  async confirmEmail(userId: number, libraryId: number) {
+    const libraryUser = await this.libraryUserRepository.findOne({
+      where: {
+        user: { id: userId },
+        library: { id: libraryId },
+      },
+    });
+
+    if (!libraryUser) {
+      throw new NotFoundException('Relação entre usuário e biblioteca não encontrada');
+    }
+
+    libraryUser.email_verified_at = new Date();
+
+    return this.libraryUserRepository.update(libraryUser.id, libraryUser);
   }
 
   async userHasLibrary(id: number, libraryId: number) {
     return await this.userRepository.findAndCountBy({ id: id, libraries: { id: libraryId } });
   }
 
-  async getUserLibraries(id: number){
+  async getUserLibraries(id: number) {
     return await this.userRepository.findOne({
       select: {
         id: false,
@@ -103,4 +118,9 @@ export class UserService {
       where: { id: id }
     });
   }
+
+  createLibraryUser(userId: number, libraryid: number) {
+    return this.libraryUserRepository.save({ library: { id: libraryid }, user: { id: userId } });
+  }
+
 }

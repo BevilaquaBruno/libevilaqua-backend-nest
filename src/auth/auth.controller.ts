@@ -219,7 +219,7 @@ export class AuthController {
       }
 
       this.authService.updateResetToken(+resetToken.id, true);
-      const updatedUser = await this.userService.confirmEmail(user.id);
+      const updatedUser = await this.userService.confirmEmail(user.id, reqUser.libraryId);
       if (updatedUser.affected == 1) {
         // Atualiza o token como used
         return {
