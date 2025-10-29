@@ -10,6 +10,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,6 +23,7 @@ import { MailService } from 'src/mail/mail.service';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserWithLibraryDto } from './dto/create-user-with-library.dto';
 import { LibraryService } from 'src/library/library.service';
+import { PayloadAuthDto } from 'src/auth/dto/payload-auth.dto';
 
 @Controller('user')
 export class UserController {
@@ -35,7 +37,9 @@ export class UserController {
   // Cria o usuário
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Req() req: Request, @Body() createUserDto: CreateUserDto) {
+    const reqUser: PayloadAuthDto = req['user'];
+  
     // Valida se as senhas informadas são iguais
     if (createUserDto.password != createUserDto.verify_password) {
       throw new HttpException(
@@ -51,16 +55,30 @@ export class UserController {
     if (userAlreadyExists?.email != undefined) {
       throw new HttpException(
         'Já existe um usuário com esse e-mail cadastrado.',
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.BAD_REQUEST, 
       );
     }
 
     // Faz um hash da senha do usuário
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     const newUser = await this.userService.create(createUserDto);
+    if (!newUser) {
+      throw new HttpException(
+        'Ocorreu algum erro no registro do usuário, tente novamente.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const newLibraryUser = this.userService.createLibraryUser(newUser.id, reqUser.libraryId);
+    if (!newLibraryUser) {
+      throw new HttpException(
+        'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
     // envia o e-mail
-    const token = await this.authService.generateResetToken(newUser, 'E');
+    const token = await this.authService.generateResetToken(newUser, 'E', reqUser.libraryId);
     this.mailService.sendUserConfirmation(newUser.email, token);
 
     return {
