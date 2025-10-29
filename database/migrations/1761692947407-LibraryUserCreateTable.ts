@@ -12,8 +12,8 @@ export class LibraryUserCreateTable1761692947407 implements MigrationInterface {
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
                 CONSTRAINT PK_library PRIMARY KEY (id),
-                CONSTRAINT FK_library_user FOREIGN KEY (libraryId) references library(id),
-                CONSTRAINT FK_user_library FOREIGN KEY (userId) references user(id)
+                CONSTRAINT FK_library_user FOREIGN KEY (libraryId) references library(id) ON DELETE CASCADE ON UPDATE CASCADE,
+                CONSTRAINT FK_user_library FOREIGN KEY (userId) references user(id) ON DELETE CASCADE ON UPDATE CASCADE
             );`);
     }
 

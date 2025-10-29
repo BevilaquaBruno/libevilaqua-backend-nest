@@ -39,7 +39,7 @@ export class UserController {
   @Post()
   async create(@Req() req: Request, @Body() createUserDto: CreateUserDto) {
     const reqUser: PayloadAuthDto = req['user'];
-  
+
     // Valida se as senhas informadas são iguais
     if (createUserDto.password != createUserDto.verify_password) {
       throw new HttpException(
@@ -51,11 +51,12 @@ export class UserController {
     // Valida se o usuário (email) já existe, se existe retorna erro
     const userAlreadyExists = await this.userService.findByEmail(
       createUserDto.email,
+      reqUser.libraryId
     );
     if (userAlreadyExists?.email != undefined) {
       throw new HttpException(
         'Já existe um usuário com esse e-mail cadastrado.',
-        HttpStatus.BAD_REQUEST, 
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -101,17 +102,6 @@ export class UserController {
       );
     }
 
-    // Valida se o usuário (email) já existe, se existe retorna erro
-    const userAlreadyExists = await this.userService.findByEmail(
-      createUserDto.email,
-    );
-    if (userAlreadyExists?.email != undefined) {
-      throw new HttpException(
-        'Já existe um usuário com esse e-mail cadastrado.',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
     const newLibrary = await this.libraryService.create(createLibraryDto);
     if (!newLibrary) {
       throw new HttpException(
@@ -120,16 +110,26 @@ export class UserController {
       );
     }
 
-    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-    const newUser = await this.userService.create(createUserDto);
-    if (!newUser) {
-      throw new HttpException(
-        'Ocorreu algum erro no registro do usuário, tente novamente.',
-        HttpStatus.BAD_REQUEST,
-      );
+    // Valida se o usuário (email) já existe, se existe retorna erro
+    const userAlreadyExists = await this.userService.findByEmail(
+      createUserDto.email
+    );
+
+    let currentUser: User | null = null;
+    if (userAlreadyExists?.id != undefined) {
+      currentUser = userAlreadyExists;
+    } else {
+      createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+      currentUser = await this.userService.create(createUserDto);
+      if (!currentUser) {
+        throw new HttpException(
+          'Ocorreu algum erro no registro do usuário, tente novamente.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
 
-    const newLibraryUser = this.userService.createLibraryUser(newUser.id, newLibrary.id);
+    const newLibraryUser = this.userService.createLibraryUser(currentUser.id, newLibrary.id);
     if (!newLibraryUser) {
       throw new HttpException(
         'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
@@ -137,13 +137,13 @@ export class UserController {
       );
     }
     // envia o e-mail
-    const token = await this.authService.generateResetToken(newUser, 'E', newLibrary.id);
-    this.mailService.sendUserConfirmation(newUser.email, token);
+    const token = await this.authService.generateResetToken(currentUser, 'E', newLibrary.id);
+    this.mailService.sendUserConfirmation(currentUser.email, token);
 
     return {
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
+      id: currentUser.id,
+      name: currentUser.name,
+      email: currentUser.email,
       library: {
         id: newLibrary.id,
         description: newLibrary.description,
@@ -154,7 +154,8 @@ export class UserController {
   // Retorna todos os usuários
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findUser: FindUserDto = {
       page: null,
@@ -167,17 +168,19 @@ export class UserController {
       page == undefined ? 0 : findUser.limit * (parseInt(page) - 1);
 
     return {
-      data: await this.userService.findAll(findUser),
-      count: await this.userService.count(),
+      data: await this.userService.findAll(findUser, reqUser.libraryId),
+      count: await this.userService.count(reqUser.libraryId),
     };
   }
 
   // Retorna um usuário
   @UseGuards(AuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
+
     // Consulta se o usuário existe
-    const user: User = await this.userService.findOne(+id);
+    const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user)
       throw new HttpException(
         'Usuário não encontrado. Código do usuário: ' + id + '.',
@@ -189,9 +192,10 @@ export class UserController {
   // Edita o usuário
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Req() req: Request, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o usuário existe
-    const user: User = await this.userService.findOne(+id);
+    const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user) {
       throw new HttpException(
         'Usuário não encontrado. Código do usuário: ' + id + '.',
@@ -202,7 +206,8 @@ export class UserController {
     // Verifica se o usuário (email) já existe, excluindo o usuário atual
     const userAlreadyExists = await this.userService.findByEmail(
       updateUserDto.email,
-      +id,
+      reqUser.libraryId,
+      +id
     );
     if (userAlreadyExists?.email != undefined) {
       throw new HttpException(
@@ -226,7 +231,7 @@ export class UserController {
       }
 
       // Valida a senha atual informada
-      const user = await this.userService.findOneWithPassword(+id);
+      const user = await this.userService.findOneWithPassword(+id, reqUser.libraryId);
       const isValid = await bcrypt.compare(
         updateUserDto.current_password,
         user.password,
@@ -276,9 +281,11 @@ export class UserController {
   // Deleta o usuário
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
+
     // Verifica se o usuário existe
-    const user: User = await this.userService.findOne(+id);
+    const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user) {
       throw new HttpException(
         'Usuário não encontrado. Código do usuário: ' + id + '.',

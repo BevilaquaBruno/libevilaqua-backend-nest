@@ -164,7 +164,7 @@ export class AuthController {
         throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
 
       const encriptedPasword = await bcrypt.hash(resetPasswordDto.newPassword, 10);
-      const updatedUser = await this.userService.updatePassword(user.id, encriptedPasword);
+      const updatedUser = await this.userService.updatePassword(user.id, encriptedPasword, currentUser.libraryId);
       if (updatedUser.affected == 1) {
         // Atualiza o token como used
         await this.authService.updateResetToken(+resetToken.id, true);

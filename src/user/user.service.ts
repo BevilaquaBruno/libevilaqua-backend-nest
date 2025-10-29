@@ -18,19 +18,29 @@ export class UserService {
     return this.userRepository.save(createUserDto);
   }
 
-  findAll(findUser: FindUserDto) {
+  findAll(findUser: FindUserDto, libraryId: number) {
     // Retorna a lista de usuários paginada
     return this.userRepository.find({
       take: findUser.limit,
       skip: findUser.page,
+      where: {
+        libraries: {
+          library: { id: libraryId }
+        }
+      }
     });
   }
 
-  findOne(id: number) {
-    return this.userRepository.findOneBy({ id });
+  findOne(id: number, libraryId: number) {
+    return this.userRepository.findOneBy({
+      id: id,
+      libraries: {
+        library: { id: libraryId }
+      }
+    });
   }
 
-  findOneWithPassword(id: number) {
+  findOneWithPassword(id: number, libraryId: number) {
     // Retorna o usuário com a senha dele
     return this.userRepository.findOne({
       select: {
@@ -41,14 +51,26 @@ export class UserService {
       },
       where: {
         id: id,
+        libraries: {
+          library: { id: libraryId }
+        }
       },
     });
   }
 
-  findByEmail(email: string, excludeId: number = null) {
+  findByEmail(email: string, libraryId: number = null, excludeId: number = null) {
     // Pesquisa o usuário pelo e-mail, excluir um id
+    let librariesWhere: {};
+    if (libraryId) {
+      librariesWhere = {
+        libraries: {
+          library: { id: libraryId }
+        }
+      }
+    }
     let dynamicWhere: FindOptionsWhere<User> = {
       email: email,
+      ...librariesWhere
     };
 
     if (null != excludeId) {
@@ -77,12 +99,23 @@ export class UserService {
     return await this.userRepository.delete({ id });
   }
 
-  async count() {
-    return await this.userRepository.count();
+  async count(libraryId: number) {
+    return await this.userRepository.count({
+      where: {
+        libraries: {
+          library: { id: libraryId }
+        }
+      }
+    });
   }
 
-  async updatePassword(id: number, password: string) {
-    return await this.userRepository.update(id, { password: password });
+  async updatePassword(id: number, password: string, libraryId: number) {
+    return await this.userRepository.update({
+      id: id,
+      libraries: {
+        library: { id: libraryId }
+      }
+    }, { password: password });
   }
 
   async confirmEmail(userId: number, libraryId: number) {
