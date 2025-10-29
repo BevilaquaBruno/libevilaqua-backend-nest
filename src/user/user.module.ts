@@ -4,8 +4,9 @@ import { UserController } from './user.controller';
 import { User } from './entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailService } from '../mail/mail.service';
-import { AuthService } from 'src/auth/auth.service';
-import { ResetToken } from 'src/reset-token/entities/reset-token.entity';
+import { AuthService } from '../auth/auth.service';
+import { ResetToken } from '../reset-token/entities/reset-token.entity';
+import { Library } from '../library/entities/library.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, ResetToken])],

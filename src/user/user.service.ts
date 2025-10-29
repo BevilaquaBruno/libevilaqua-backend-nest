@@ -10,7 +10,7 @@ import { FindUserDto } from './dto/find-user.dto';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
@@ -62,6 +62,7 @@ export class UserService {
         name: true,
         email: true,
         password: true,
+        libraries: true,
       },
       where: dynamicWhere,
     });
@@ -84,6 +85,22 @@ export class UserService {
   }
 
   async confirmEmail(id: number) {
-    return await this.userRepository.update(id, { email_verified_at: new Date() });
+    return await this.userRepository.update(id, {});
+  }
+
+  async userHasLibrary(id: number, libraryId: number) {
+    return await this.userRepository.findAndCountBy({ id: id, libraries: { id: libraryId } });
+  }
+
+  async getUserLibraries(id: number){
+    return await this.userRepository.findOne({
+      select: {
+        id: false,
+        email: false,
+        name: false,
+        libraries: true,
+      },
+      where: { id: id }
+    });
   }
 }

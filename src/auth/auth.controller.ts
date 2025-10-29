@@ -18,6 +18,8 @@ import { MailService } from 'src/mail/mail.service';
 import * as bcrypt from 'bcrypt';
 import { PayloadAuthDto } from './dto/payload-auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { SelectLibraryDto } from './dto/select-library.dto';
+import { LibraryService } from 'src/library/library.service';
 
 @Controller('auth')
 export class AuthController {
@@ -26,6 +28,7 @@ export class AuthController {
     private userService: UserService,
     private mailService: MailService,
     private jwtService: JwtService,
+    private libraryService: LibraryService,
   ) { }
 
   @HttpCode(HttpStatus.OK)
@@ -36,7 +39,48 @@ export class AuthController {
       throw new HttpException('Não existe nenhum usuário com este e-mail.', HttpStatus.BAD_REQUEST);
     }
 
-    return this.authService.signIn(signInDto.email, signInDto.password);
+    const logged = await this.authService.signIn(signInDto.email, signInDto.password);
+
+    if (logged) {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        libraries: user.libraries,
+      };
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
+  @Post('select-library')
+  async selectLibrary(@Body() selectedLibrary: SelectLibraryDto) {
+    // Verifica se o usuário existe
+    const user = await this.userService.findByEmail(selectedLibrary.email);
+    if (!user) {
+      throw new HttpException('Usuário informado é inexistente.', HttpStatus.BAD_REQUEST);
+    }
+
+    // Verifica se a senha trazida está correta
+    const encriptedPassword = true;
+    const logged = await this.authService.signIn(selectedLibrary.email, selectedLibrary.password, encriptedPassword);
+    if (!logged) {
+      throw new UnauthorizedException();
+    }
+
+    // Verifica se a biblioteca existe
+    const library = await this.libraryService.findOne(selectedLibrary.libraryId);
+    if (!library) {
+      throw new HttpException('Biblioteca selecionada é inexistente.', HttpStatus.BAD_REQUEST);
+    }
+
+    const userHasLibrary = await this.userService.userHasLibrary(user.id, selectedLibrary.libraryId);
+    if (0 == userHasLibrary[1]) {
+      throw new HttpException('Esse usuário não tem acesso à biblioteca selecionada.', HttpStatus.BAD_REQUEST);
+    }
+
+    return await this.authService.generateLoginToken(user, selectedLibrary.libraryId);
   }
 
   @UseGuards(AuthGuard)

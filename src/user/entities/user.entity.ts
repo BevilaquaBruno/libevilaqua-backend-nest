@@ -1,7 +1,10 @@
+import { Library } from '../../library/entities/library.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -20,8 +23,9 @@ export class User {
   @Column({ select: false, nullable: true })
   password: string;
 
-  @Column({ select: false, nullable: true })
-  email_verified_at: Date;
+  @ManyToMany(() => Library, '', { eager: true })
+  @JoinTable({ name: 'library_user' })
+  libraries: Library[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
   createdAt: Date;

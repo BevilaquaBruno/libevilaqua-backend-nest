@@ -7,10 +7,12 @@ import { AuthService } from './auth.service';
 import { MailService } from 'src/mail/mail.service';
 import { ResetToken } from 'src/reset-token/entities/reset-token.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LibraryService } from 'src/library/library.service';
+import { Library } from 'src/library/entities/library.entity';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, MailService],
+  providers: [AuthService, MailService, LibraryService],
   exports: [AuthService],
   imports: [
     ConfigModule.forRoot(),
@@ -20,7 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       secret: process.env['SECRET'],
       signOptions: { expiresIn: '21600s' },
     }),
-    TypeOrmModule.forFeature([ResetToken]),
+    TypeOrmModule.forFeature([ResetToken, Library]),
   ],
 })
 export class AuthModule {}
