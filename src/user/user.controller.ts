@@ -49,28 +49,44 @@ export class UserController {
     }
 
     // Valida se o usuário (email) já existe, se existe retorna erro
-    const userAlreadyExists = await this.userService.findByEmail(
+    const userAlreadyExistsInLibrary = await this.userService.findByEmail(
       createUserDto.email,
       reqUser.libraryId
     );
-    if (userAlreadyExists?.email != undefined) {
+    if (userAlreadyExistsInLibrary?.email != undefined) {
       throw new HttpException(
         'Já existe um usuário com esse e-mail cadastrado.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    // Faz um hash da senha do usuário
-    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-    const newUser = await this.userService.create(createUserDto);
-    if (!newUser) {
+    // Valida se o usuário (email) já existe, se existe retorna erro
+    const userEmailAlreadyExists = await this.userService.findByEmail(
+      createUserDto.email
+    );
+
+    let currentUser: User | null = null;
+    if (userEmailAlreadyExists?.id != undefined) {
+      currentUser = userEmailAlreadyExists;
+    } else {
+      createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+      currentUser = await this.userService.create(createUserDto);
+      if (!currentUser) {
+        throw new HttpException(
+          'Ocorreu algum erro no registro do usuário, tente novamente.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+
+    if (!currentUser) {
       throw new HttpException(
         'Ocorreu algum erro no registro do usuário, tente novamente.',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const newLibraryUser = this.userService.createLibraryUser(newUser.id, reqUser.libraryId);
+    const newLibraryUser = this.userService.createLibraryUser(currentUser.id, reqUser.libraryId);
     if (!newLibraryUser) {
       throw new HttpException(
         'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
@@ -79,13 +95,13 @@ export class UserController {
     }
 
     // envia o e-mail
-    const token = await this.authService.generateResetToken(newUser, 'E', reqUser.libraryId);
-    this.mailService.sendUserConfirmation(newUser.email, token);
+    const token = await this.authService.generateResetToken(currentUser, 'E', reqUser.libraryId);
+    this.mailService.sendUserConfirmation(currentUser.email, token);
 
     return {
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
+      id: currentUser.id,
+      name: currentUser.name,
+      email: currentUser.email,
     };
   }
 
@@ -204,14 +220,14 @@ export class UserController {
     }
 
     // Verifica se o usuário (email) já existe, excluindo o usuário atual
-    const userAlreadyExists = await this.userService.findByEmail(
+    const userAlreadyExistsInLibrary = await this.userService.findByEmail(
       updateUserDto.email,
       reqUser.libraryId,
       +id
     );
-    if (userAlreadyExists?.email != undefined) {
+    if (userAlreadyExistsInLibrary?.email != undefined) {
       throw new HttpException(
-        'Já existe um usuário com esse e-mail cadastrado.',
+        'Já existe um usuário com esse e-mail cadastrado na biblioteca.',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -261,6 +277,28 @@ export class UserController {
     delete updateUserDto.verify_password;
     delete updateUserDto.update_password;
     delete updateUserDto.current_password;
+
+    const userExists = await this.userService.findByEmail(
+      updateUserDto.email,
+      null,
+      +id
+    );
+    if(userExists){
+      throw new HttpException(
+        'Não é possível utilizar este e-mail pois ele já é um usuário em outra biblioteca.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // Se o e-mail que veio no corpo da requisição for diferente do e-mail do banco de dados, manda uma confirmação
+    if (updateUserDto.email != user.email) {
+      // envia o e-mail
+      let userToToken: User = user;
+      userToToken.name = updateUserDto.name;
+      userToToken.email = updateUserDto.email;
+      const token = await this.authService.generateResetToken(userToToken, 'E', reqUser.libraryId);
+      this.mailService.sendUserConfirmation(userToToken.email, token);
+    }
 
     // Atualiza o usuário
     const updatedUser = await this.userService.update(+id, updateUserDto);
