@@ -283,7 +283,7 @@ export class UserController {
       null,
       +id
     );
-    if(userExists){
+    if (userExists) {
       throw new HttpException(
         'Não é possível utilizar este e-mail pois ele já é um usuário em outra biblioteca.',
         HttpStatus.BAD_REQUEST,
@@ -291,7 +291,8 @@ export class UserController {
     }
 
     // Se o e-mail que veio no corpo da requisição for diferente do e-mail do banco de dados, manda uma confirmação
-    if (updateUserDto.email != user.email) {
+    const isEmailChanged = (updateUserDto.email != user.email) ? true : false;
+    if (isEmailChanged) {
       // envia o e-mail
       let userToToken: User = user;
       userToToken.name = updateUserDto.name;
@@ -303,6 +304,9 @@ export class UserController {
     // Atualiza o usuário
     const updatedUser = await this.userService.update(+id, updateUserDto);
     if (updatedUser.affected == 1) {
+      if (isEmailChanged) {
+        this.userService.setLibraryUserUnconfirmed(+id, reqUser.libraryId);
+      }
       return {
         id: +id,
         name: updateUserDto.name,

@@ -139,12 +139,23 @@ export class UserService {
     return await this.userRepository.findAndCountBy({ id: userId, libraries: { library: { id: libraryId } } });
   }
 
-  createLibraryUser(userId: number, libraryid: number) {
-    return this.libraryUserRepository.save({ library: { id: libraryid }, user: { id: userId } });
+  createLibraryUser(userId: number, libraryId: number) {
+    return this.libraryUserRepository.save({ library: { id: libraryId }, user: { id: userId } });
   }
 
-  getLibraryUser(userId: number, libraryid: number) {
-    return this.libraryUserRepository.findOneBy({ library: { id: libraryid }, user: { id: userId } });
+  getLibraryUser(userId: number, libraryId: number) {
+    return this.libraryUserRepository.findOneBy({ library: { id: libraryId }, user: { id: userId } });
+  }
+
+  async setLibraryUserUnconfirmed(userId: number, libraryId: number) {
+    return await this.libraryUserRepository.update({
+      library: {
+        id: libraryId
+      },
+      user: {
+        id: userId
+      }
+    }, { email_verified_at: null });
   }
 
 }
