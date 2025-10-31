@@ -20,6 +20,10 @@ export class TypeService {
 
   findAll(findType: FindTypeDto, libraryId: number) {
     return this.typeServiceRepository.find({
+      select: {
+        id: true,
+        description: true
+      },
       take: findType.limit,
       skip: findType.page,
       where: { libraryId: libraryId },
@@ -28,7 +32,16 @@ export class TypeService {
   }
 
   findOne(id: number, libraryId: number) {
-    return this.typeServiceRepository.findOneBy({ id: id, libraryId: libraryId });
+    return this.typeServiceRepository.findOne({
+      select: {
+        id: true,
+        description: true
+      },
+      where: {
+        id: id,
+        libraryId: libraryId
+      }
+    });
   }
 
   async update(id: number, updateTypeDto: UpdateTypeDto, libraryId: number) {
