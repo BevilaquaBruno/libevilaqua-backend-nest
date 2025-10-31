@@ -1,4 +1,4 @@
-import { Library } from 'src/library/entities/library.entity';
+import { Library } from '../../library/entities/library.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
