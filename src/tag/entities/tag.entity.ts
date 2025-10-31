@@ -18,7 +18,7 @@ export class Tag {
   description: string;
 
   @ManyToOne(() => Library, { eager: false })
-  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_type' })
+  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_tag' })
   library?: Library;
 
   @Column()
