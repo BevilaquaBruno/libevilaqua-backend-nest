@@ -10,32 +10,39 @@ import { FindTypeDto } from './dto/find-type.dto';
 export class TypeService {
   constructor(
     @InjectRepository(Type) private typeServiceRepository: Repository<Type>,
-  ) {}
-  create(createTypeDto: CreateTypeDto) {
-    return this.typeServiceRepository.save(createTypeDto);
+  ) { }
+  create(createTypeDto: CreateTypeDto, libraryId: number) {
+    return this.typeServiceRepository.save({
+      ...createTypeDto,
+      libraryId: libraryId
+    });
   }
 
-  findAll(findType: FindTypeDto) {
+  findAll(findType: FindTypeDto, libraryId: number) {
     return this.typeServiceRepository.find({
       take: findType.limit,
       skip: findType.page,
+      where: { libraryId: libraryId },
       order: { id: 'DESC' },
     });
   }
 
-  findOne(id: number) {
-    return this.typeServiceRepository.findOneBy({ id });
+  findOne(id: number, libraryId: number) {
+    return this.typeServiceRepository.findOneBy({ id: id, libraryId: libraryId });
   }
 
-  async update(id: number, updateTypeDto: UpdateTypeDto) {
-    return await this.typeServiceRepository.update(id, updateTypeDto);
+  async update(id: number, updateTypeDto: UpdateTypeDto, libraryId: number) {
+    return await this.typeServiceRepository.update({
+      id: id,
+      libraryId: libraryId
+    }, updateTypeDto);
   }
 
-  async remove(id: number) {
-    return await this.typeServiceRepository.delete({ id });
+  async remove(id: number, libraryId: number) {
+    return await this.typeServiceRepository.delete({ id: id, libraryId: libraryId });
   }
 
-  async count() {
-    return await this.typeServiceRepository.count();
+  async count(libraryId: number) {
+    return await this.typeServiceRepository.count({ where: { libraryId: libraryId } });
   }
 }
