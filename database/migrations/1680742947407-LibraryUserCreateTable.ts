@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class LibraryUserCreateTable1761692947407 implements MigrationInterface {
+export class LibraryUserCreateTable1680742947407 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
             CREATE TABLE library_user (
@@ -8,6 +8,7 @@ export class LibraryUserCreateTable1761692947407 implements MigrationInterface {
                 userId INT,
                 libraryId INT,
                 email_verified_at DATETIME default NULL,
+
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 

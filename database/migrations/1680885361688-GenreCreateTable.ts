@@ -6,7 +6,15 @@ export class GenreCreateTable1680885361688 implements MigrationInterface {
         CREATE TABLE genre (
             id INT NOT NULL AUTO_INCREMENT,
             description VARCHAR(50) NOT NULL,
-            CONSTRAINT PK_genre PRIMARY KEY (id)
+
+            libraryId INT NOT NULL,
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            CONSTRAINT PK_genre PRIMARY KEY (id),
+            
+            CONSTRAINT FK_library_genre FOREIGN KEY (libraryId) REFERENCES library(id)
         );`);
   }
 

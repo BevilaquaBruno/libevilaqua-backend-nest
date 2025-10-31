@@ -8,7 +8,15 @@ export class AuthorCreateTable1680985947448 implements MigrationInterface {
             birth_date DATE DEFAULT NULL,
             death_date DATE DEFAULT NULL,
             bio TEXT,
-            CONSTRAINT PK_author PRIMARY KEY (id)
+
+            libraryId INT NOT NULL,
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            CONSTRAINT PK_author PRIMARY KEY (id),
+            
+            CONSTRAINT FK_library_author FOREIGN KEY (libraryId) REFERENCES library(id)
         );`);
   }
 

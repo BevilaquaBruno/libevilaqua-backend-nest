@@ -16,6 +16,7 @@ export class BookCreateTable1681257837930 implements MigrationInterface {
         genreId INT,
         publisherId INT,
         typeId INT,
+        libraryId INT NOT NULL,
 
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -24,7 +25,8 @@ export class BookCreateTable1681257837930 implements MigrationInterface {
 
         CONSTRAINT FK_genre_book FOREIGN KEY (genreId) REFERENCES genre(id),
         CONSTRAINT FK_publisher_book FOREIGN KEY (publisherId) REFERENCES publisher(id),
-        CONSTRAINT FK_type_book FOREIGN KEY (typeId) REFERENCES type(id)
+        CONSTRAINT FK_type_book FOREIGN KEY (typeId) REFERENCES type(id),
+        CONSTRAINT FK_library_book FOREIGN KEY (libraryId) REFERENCES library(id)
     );`);
   }
 
