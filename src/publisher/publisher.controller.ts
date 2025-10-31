@@ -10,6 +10,7 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { PublisherService } from './publisher.service';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
@@ -17,6 +18,7 @@ import { UpdatePublisherDto } from './dto/update-publisher.dto';
 import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindPublisherDto } from './dto/find-publisher.dto';
 import { Publisher } from './entities/publisher.entity';
+import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 
 @Controller('publisher')
 export class PublisherController {
@@ -25,9 +27,10 @@ export class PublisherController {
   // Cria uma editora
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createPublisherDto: CreatePublisherDto) {
+  async create(@Req() req: Request, @Body() createPublisherDto: CreatePublisherDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Cria a editora
-    const newPublisher = await this.publisherService.create(createPublisherDto);
+    const newPublisher = await this.publisherService.create(createPublisherDto, reqUser.libraryId);
 
     return {
       id: newPublisher.id,
@@ -39,7 +42,8 @@ export class PublisherController {
   // Retorna as editoras
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findPublisher: FindPublisherDto = {
       page: null,
@@ -52,17 +56,18 @@ export class PublisherController {
       page == undefined ? 0 : findPublisher.limit * (parseInt(page) - 1);
 
     return {
-      data: await this.publisherService.findAll(findPublisher),
-      count: await this.publisherService.count(),
+      data: await this.publisherService.findAll(findPublisher, reqUser.libraryId),
+      count: await this.publisherService.count(reqUser.libraryId),
     };
   }
 
   // Retorna uma editora
   @UseGuards(AuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a editora existe
-    const publisher: Publisher = await this.publisherService.findOne(+id);
+    const publisher: Publisher = await this.publisherService.findOne(+id, reqUser.libraryId);
     if (null == publisher)
       throw new HttpException(
         'Editora não encontrada. Código da editora ' + id + '.',
@@ -74,12 +79,10 @@ export class PublisherController {
   // Atualiza a editora
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updatePublisherDto: UpdatePublisherDto,
-  ) {
+  async update(@Req() req: Request, @Param('id') id: string, @Body() updatePublisherDto: UpdatePublisherDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a editora existe
-    const publisher: Publisher = await this.publisherService.findOne(+id);
+    const publisher: Publisher = await this.publisherService.findOne(+id, reqUser.libraryId);
     if (null == publisher)
       throw new HttpException(
         'Editora não encontrada. Código da editora ' + id + '.',
@@ -90,6 +93,7 @@ export class PublisherController {
     const updatedPublisher = await this.publisherService.update(
       +id,
       updatePublisherDto,
+      reqUser.libraryId
     );
     if (updatedPublisher.affected == 1) {
       const returnData: UpdatePublisherDto = {
@@ -109,9 +113,10 @@ export class PublisherController {
   // Deleta e editora
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a editora existe
-    const publisher: Publisher = await this.publisherService.findOne(+id);
+    const publisher: Publisher = await this.publisherService.findOne(+id, reqUser.libraryId);
     if (null == publisher)
       throw new HttpException(
         'Editora não encontrada. Código da editora ' + id + '.',
@@ -119,7 +124,7 @@ export class PublisherController {
       );
 
     // Deleta e editora e retorna
-    const deletedPublisher = await this.publisherService.remove(+id);
+    const deletedPublisher = await this.publisherService.remove(+id, reqUser.libraryId);
     if (deletedPublisher.affected == 1) {
       return {
         statusCode: 200,
