@@ -10,33 +10,62 @@ import { FindGenreDto } from './dto/find-genre.dto';
 export class GenreService {
   constructor(
     @InjectRepository(Genre) private genreServiceRepository: Repository<Genre>,
-  ) {}
-  create(createGenreDto: CreateGenreDto) {
-    return this.genreServiceRepository.save(createGenreDto);
+  ) { }
+  create(createGenreDto: CreateGenreDto, libraryId: number) {
+    return this.genreServiceRepository.save({
+      ...createGenreDto,
+      libraryId: libraryId
+    });
   }
 
-  findAll(findGenre: FindGenreDto) {
+  findAll(findGenre: FindGenreDto, libraryId: number) {
     // Retorna o gênero pelo id decrescente
     return this.genreServiceRepository.find({
+      select: {
+        id: true,
+        description: true,
+      },
       take: findGenre.limit,
       skip: findGenre.page,
+      where: {
+        libraryId: libraryId
+      },
       order: { id: 'DESC' },
     });
   }
 
-  findOne(id: number) {
-    return this.genreServiceRepository.findOneBy({ id });
+  findOne(id: number, libraryId: number) {
+    return this.genreServiceRepository.findOne({
+      select: {
+        id: true,
+        description: true
+      },
+      where: {
+        id: id,
+        libraryId: libraryId
+      }
+    });
   }
 
-  async update(id: number, updateGenreDto: UpdateGenreDto) {
-    return await this.genreServiceRepository.update(id, updateGenreDto);
+  async update(id: number, updateGenreDto: UpdateGenreDto, libraryId: number) {
+    return await this.genreServiceRepository.update({
+      id: id,
+      libraryId: libraryId
+    }, updateGenreDto);
   }
 
-  async remove(id: number) {
-    return await this.genreServiceRepository.delete(id);
+  async remove(id: number, libraryId: number) {
+    return await this.genreServiceRepository.delete({
+      id: id,
+      libraryId: libraryId
+    });
   }
 
-  async count() {
-    return await this.genreServiceRepository.count();
+  async count(libraryId: number) {
+    return await this.genreServiceRepository.count({
+      where: {
+        libraryId: libraryId
+      }
+    });
   }
 }
