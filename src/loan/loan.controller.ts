@@ -10,6 +10,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  Req,
 } from '@nestjs/common';
 import { LoanService } from './loan.service';
 import { CreateLoanDto } from './dto/create-loan.dto';
@@ -24,6 +25,7 @@ import * as moment from 'moment';
 import { Book } from '../../src/book/entities/book.entity';
 import { Person } from '../../src/person/entities/person.entity';
 import { Loan } from './entities/loan.entity';
+import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 
 @Controller('loan')
 export class LoanController {
@@ -36,7 +38,8 @@ export class LoanController {
   // Cria um empréstimo
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createLoanDto: CreateLoanDto) {
+  async create(@Req() req: Request, @Body() createLoanDto: CreateLoanDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Consulta o livro e retorna erro se não encontrado
     const book: Book = await this.bookService.findOne(createLoanDto.bookId);
     if (null == book) {
@@ -52,6 +55,7 @@ export class LoanController {
     if (null != createLoanDto.personId) {
       const person: Person = await this.personService.findOne(
         createLoanDto.personId,
+        reqUser.libraryId
       );
       if (null == person) {
         throw new HttpException(
@@ -217,7 +221,8 @@ export class LoanController {
   // Atualiza o empréstimo
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
+  async update(@Req() req: Request, @Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o empréstimo existe
     const currentLoan: Loan = await this.loanService.findOne(+id);
     if (null == currentLoan) {
@@ -242,6 +247,7 @@ export class LoanController {
     if (null != updateLoanDto.personId) {
       const person: Person = await this.personService.findOne(
         updateLoanDto.personId,
+        reqUser.libraryId
       );
       if (null == person) {
         throw new HttpException(
@@ -328,7 +334,7 @@ export class LoanController {
         must_return_date: updateLoanDto.must_return_date,
         return_date: updateLoanDto.return_date,
         book: await this.bookService.findOne(updateLoanDto.bookId),
-        person: await this.personService.findOne(updateLoanDto.personId),
+        person: await this.personService.findOne(updateLoanDto.personId, reqUser.libraryId),
       };
     } else {
       throw new HttpException(
@@ -434,13 +440,10 @@ export class LoanController {
   // Retorna o histórico de empréstimo da pessoa
   @UseGuards(AuthGuard)
   @Get('/person/:personId/history')
-  async personHistory(
-    @Param('personId') personId: string,
-    @Query('page') page: string,
-    @Query('limit') limit: string,
-  ) {
+  async personHistory(@Req() req: Request, @Param('personId') personId: string, @Query('page') page: string, @Query('limit') limit: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe
-    const person = await this.personService.findOne(+personId);
+    const person = await this.personService.findOne(+personId, reqUser.libraryId);
     if (person === null) {
       throw new HttpException(
         'Não existe uma pessoa com esse código.',
