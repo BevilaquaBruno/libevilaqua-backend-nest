@@ -1,3 +1,4 @@
+import { Library } from '../../library/entities/library.entity';
 import { Book } from '../../book/entities/book.entity';
 import { Person } from '../../person/entities/person.entity';
 import {
@@ -34,6 +35,13 @@ export class Loan {
   @ManyToOne(() => Person, { eager: true })
   @JoinColumn({ foreignKeyConstraintName: 'FK_person_loan' })
   person: Person;
+
+  @ManyToOne(() => Library, { eager: false })
+  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_loan' })
+  library?: Library;
+
+  @Column()
+  libraryId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
   createdAt: Date;

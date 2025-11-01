@@ -21,9 +21,9 @@ import { FindLoanDto } from './dto/find-loan.dto';
 export class LoanService {
   constructor(
     @InjectRepository(Loan) private loanServiceRepository: Repository<Loan>,
-  ) {}
+  ) { }
 
-  create(createLoanDto: CreateLoanDto) {
+  create(createLoanDto: CreateLoanDto, libraryId: number) {
     return this.loanServiceRepository.save({
       description: createLoanDto.description,
       loan_date: createLoanDto.loan_date,
@@ -31,10 +31,11 @@ export class LoanService {
       return_date: createLoanDto.return_date,
       book: { id: createLoanDto.bookId },
       person: { id: createLoanDto.personId },
+      libraryId: libraryId
     });
   }
 
-  findAll(findLoan: FindLoanDto) {
+  findAll(findLoan: FindLoanDto, libraryId: number) {
     const query = this.loanServiceRepository
       .createQueryBuilder('loan')
       .leftJoinAndSelect('loan.person', 'person')
@@ -44,7 +45,7 @@ export class LoanService {
       .leftJoinAndSelect('book.type', 'type')
       .leftJoinAndSelect('book.tags', 'tags')
       .leftJoinAndSelect('book.authors', 'authors')
-      .where('1 = 1');
+      .where(`loan.libraryId = ${libraryId}`);
 
     //find loan with the between date
     if (findLoan.start_date !== null && findLoan.end_date !== null)
@@ -88,12 +89,20 @@ export class LoanService {
       .getMany();
   }
 
-  findOne(id: number) {
-    return this.loanServiceRepository.findOneBy({ id });
+  findOne(id: number, libraryId: number) {
+    return this.loanServiceRepository.findOne({
+      where: {
+        id: id,
+        libraryId: libraryId
+      }
+    });
   }
 
-  async update(id: number, updateLoanDto: UpdateLoanDto) {
-    return await this.loanServiceRepository.update(id, {
+  async update(id: number, updateLoanDto: UpdateLoanDto, libraryId: number) {
+    return await this.loanServiceRepository.update({
+      id: id,
+      libraryId: libraryId
+    }, {
       description: updateLoanDto.description,
       loan_date: updateLoanDto.loan_date,
       must_return_date: updateLoanDto.must_return_date,
@@ -103,18 +112,25 @@ export class LoanService {
     });
   }
 
-  async remove(id: number) {
-    return await this.loanServiceRepository.delete({ id });
+  async remove(id: number, libraryId: number) {
+    return await this.loanServiceRepository.delete({
+      id: id,
+      libraryId: libraryId
+    });
   }
 
-  async returnBook(id: number, returnBookDto: ReturnBookDto) {
-    return await this.loanServiceRepository.update(id, returnBookDto);
+  async returnBook(id: number, returnBookDto: ReturnBookDto, libraryId: number) {
+    return await this.loanServiceRepository.update({
+      id: id,
+      libraryId: libraryId
+    }, returnBookDto);
   }
 
-  findLoanedBook(bookId: number, excludeId: number = null) {
+  findLoanedBook(bookId: number, excludeId: number = null, libraryId: number) {
     let dynamicWhere: FindOptionsWhere<Loan> = {
       book: { id: bookId },
       return_date: IsNull(),
+      libraryId: libraryId
     };
 
     if (null != excludeId) {
@@ -126,20 +142,21 @@ export class LoanService {
     return this.loanServiceRepository.findAndCountBy(dynamicWhere);
   }
 
-  findCurrentLoanFromBook(bookId: number) {
-    return this.loanServiceRepository.findOneBy({
-      book: { id: bookId },
-      return_date: IsNull(),
+  findCurrentLoanFromBook(bookId: number, libraryId: number) {
+    return this.loanServiceRepository.findOne({
+      where: {
+        book: { id: bookId },
+        return_date: IsNull(),
+        libraryId: libraryId
+      }
     });
   }
 
-  findLoanHistoryFromPerson(
-    personId: number,
-    findLoanHistoryDto: FindLoanHistoryDto,
-  ) {
+  findLoanHistoryFromPerson(personId: number, findLoanHistoryDto: FindLoanHistoryDto, libraryId: number) {
     return this.loanServiceRepository.find({
       where: {
         person: { id: personId },
+        libraryId: libraryId
       },
       order: { return_date: 'ASC' },
       take: findLoanHistoryDto.limit,
@@ -147,7 +164,7 @@ export class LoanService {
     });
   }
 
-  async count(findLoan: FindLoanDto) {
+  async count(findLoan: FindLoanDto, libraryId: number) {
     const query = this.loanServiceRepository
       .createQueryBuilder('loan')
       .leftJoinAndSelect('loan.person', 'person')
@@ -157,7 +174,7 @@ export class LoanService {
       .leftJoinAndSelect('book.type', 'type')
       .leftJoinAndSelect('book.tags', 'tags')
       .leftJoinAndSelect('book.authors', 'authors')
-      .where('1 = 1');
+      .where(`loan.libraryId = ${libraryId}`);
 
     //find loan with the between date
     if (findLoan.start_date !== null && findLoan.end_date !== null)
@@ -197,13 +214,11 @@ export class LoanService {
     return query.getCount();
   }
 
-  findAndCountLoanHistoryFromPerson(
-    personId: number,
-    findLoanHistoryDto: FindLoanHistoryDto,
-  ) {
+  findAndCountLoanHistoryFromPerson(personId: number,findLoanHistoryDto: FindLoanHistoryDto,libraryId: number) {
     return this.loanServiceRepository.count({
       where: {
         person: { id: personId },
+        libraryId: libraryId
       },
       take: findLoanHistoryDto.limit,
       skip: findLoanHistoryDto.page,

@@ -1,4 +1,5 @@
 import {
+  IsNotEmpty,
   IsNumber,
   IsString,
   Length,
@@ -34,15 +35,11 @@ export class CreateLoanDto {
   })
   loan_date: Date;
 
+  @IsNotEmpty({ message: 'O livro é obrigatório.' })
   @IsNumber({}, { message: 'Selecione o livro novamente.' })
   bookId: number;
 
-  @ValidateIf(
-    (thisLoan) =>
-      thisLoan.personId !== null &&
-      thisLoan.personId !== undefined &&
-      thisLoan.personId !== '',
-  )
+  @IsNotEmpty({ message: 'A pessoa é obrigatória.' })
   @IsNumber({}, { message: 'Selecione a pessoa novamente.' })
   personId: number;
 }
