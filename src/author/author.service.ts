@@ -11,34 +11,62 @@ export class AuthorService {
   constructor(
     @InjectRepository(Author)
     private authorServiceRepository: Repository<Author>,
-  ) {}
+  ) { }
 
-  create(createAuthorDto: CreateAuthorDto) {
-    return this.authorServiceRepository.save(createAuthorDto);
+  create(createAuthorDto: CreateAuthorDto, libraryId: number) {
+    return this.authorServiceRepository.save({
+      ...createAuthorDto,
+      libraryId: libraryId
+    });
   }
 
-  findAll(findAuthor: FindAuthorDto) {
+  findAll(findAuthor: FindAuthorDto, libraryId: number) {
     // Pesquisa o autor ordenando pelo ID descrescente
     return this.authorServiceRepository.find({
+      select: {
+        id: true,
+        name: true,
+        birth_date: true,
+        bio: true,
+        death_date: true
+      },
       take: findAuthor.limit,
       skip: findAuthor.page,
+      where: {
+        libraryId: libraryId
+      },
       order: { id: 'DESC' },
     });
   }
 
-  findOne(id: number) {
-    return this.authorServiceRepository.findOneBy({ id });
+  findOne(id: number, libraryId: number) {
+    return this.authorServiceRepository.findOne({
+      where: {
+        id: id,
+        libraryId: libraryId
+      }
+    });
   }
 
-  async update(id: number, updateAuthorDto: UpdateAuthorDto) {
-    return await this.authorServiceRepository.update(id, updateAuthorDto);
+  async update(id: number, updateAuthorDto: UpdateAuthorDto, libraryId: number) {
+    return await this.authorServiceRepository.update({
+      id: id,
+      libraryId: libraryId
+    }, updateAuthorDto);
   }
 
-  async remove(id: number) {
-    return await this.authorServiceRepository.delete(id);
+  async remove(id: number, libraryId: number) {
+    return await this.authorServiceRepository.delete({
+      id: id,
+      libraryId: libraryId
+    });
   }
 
-  async count() {
-    return await this.authorServiceRepository.count();
+  async count(libraryId: number) {
+    return await this.authorServiceRepository.count({
+      where: {
+        libraryId: libraryId
+      }
+    });
   }
 }

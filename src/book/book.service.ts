@@ -232,4 +232,23 @@ export class BookService {
     // Retorna a query ordenando pelo id decrescente
     return query.getCount();
   }
+
+  findAndCountBooksFromAuthor(findAuthorBooks: FindAuthorBooksDto) {
+    // Retorna todos os livros do autor
+    return this.bookServiceRepository
+      .createQueryBuilder('book')
+      .leftJoinAndSelect('book.genre', 'genre')
+      .leftJoinAndSelect('book.publisher', 'publisher')
+      .leftJoinAndSelect('book.type', 'type')
+      .leftJoinAndSelect('book.tags', 'tags')
+      .leftJoinAndSelect('book.authors', 'authors')
+      .leftJoin('book.authors', 'authorsForFilter')
+      .where('authorsForFilter.id IN (:...authors)', {
+        authors: [findAuthorBooks.authorId],
+      })
+      .take(findAuthorBooks.limit)
+      .skip(findAuthorBooks.page)
+      .orderBy({ 'book.id': 'DESC' })
+      .getManyAndCount();
+  }
 }
