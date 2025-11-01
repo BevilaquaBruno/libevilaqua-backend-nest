@@ -14,7 +14,7 @@ export class GenreCreateTable1680885361688 implements MigrationInterface {
 
             CONSTRAINT PK_genre PRIMARY KEY (id),
             
-            CONSTRAINT FK_library_genre FOREIGN KEY (libraryId) REFERENCES library(id)
+            CONSTRAINT FK_library_genre FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
         );`);
   }
 

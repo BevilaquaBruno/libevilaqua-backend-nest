@@ -22,7 +22,7 @@ export class PersonCreateTable1681776270324 implements MigrationInterface {
 
         CONSTRAINT PK_person PRIMARY KEY (id),
         
-        CONSTRAINT FK_library_person FOREIGN KEY (libraryId) REFERENCES library(id)
+        CONSTRAINT FK_library_person FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
     );`);
   }
 

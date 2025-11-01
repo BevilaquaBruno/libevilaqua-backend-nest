@@ -19,9 +19,9 @@ export class LoanCreateTable1682086092464 implements MigrationInterface {
 
             CONSTRAINT PK_loan PRIMARY KEY (id),
 
-            CONSTRAINT FK_book_loan FOREIGN KEY (bookId) REFERENCES book(id),
-            CONSTRAINT FK_person_loan FOREIGN KEY (personId) REFERENCES person(id),
-            CONSTRAINT FK_library_loan FOREIGN KEY (libraryId) REFERENCES library(id)
+            CONSTRAINT FK_book_loan FOREIGN KEY (bookId) REFERENCES book(id) ON DELETE CASCADE,
+            CONSTRAINT FK_person_loan FOREIGN KEY (personId) REFERENCES person(id) ON DELETE CASCADE,
+            CONSTRAINT FK_library_loan FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
         );
     `);
   }

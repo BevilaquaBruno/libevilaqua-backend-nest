@@ -10,8 +10,8 @@ export class BookAuthorCreateTable1681259133590 implements MigrationInterface {
 
                 CONSTRAINT PK_book_author PRIMARY KEY (id),
 
-                CONSTRAINT FK_book_author FOREIGN KEY (bookId) references book(id) ON DELETE CASCADE ON UPDATE CASCADE,
-                CONSTRAINT FK_author_book FOREIGN KEY (authorId) references author(id)
+                CONSTRAINT FK_book_author FOREIGN KEY (bookId) references book(id) ON DELETE CASCADE,
+                CONSTRAINT FK_author_book FOREIGN KEY (authorId) references author(id) ON DELETE CASCADE
             );`);
   }
 

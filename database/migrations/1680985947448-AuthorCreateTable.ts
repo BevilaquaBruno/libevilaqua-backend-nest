@@ -16,7 +16,7 @@ export class AuthorCreateTable1680985947448 implements MigrationInterface {
 
             CONSTRAINT PK_author PRIMARY KEY (id),
             
-            CONSTRAINT FK_library_author FOREIGN KEY (libraryId) REFERENCES library(id)
+            CONSTRAINT FK_library_author FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
         );`);
   }
 

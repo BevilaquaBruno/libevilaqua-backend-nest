@@ -15,7 +15,7 @@ export class PublisherCreateTable1681084447979 implements MigrationInterface {
 
           CONSTRAINT PK_publisher PRIMARY KEY (id),
           
-          CONSTRAINT FK_library_publisher FOREIGN KEY (libraryId) REFERENCES library(id)
+          CONSTRAINT FK_library_publisher FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
       );`);
   }
 

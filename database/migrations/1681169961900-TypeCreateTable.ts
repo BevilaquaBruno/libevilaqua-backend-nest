@@ -14,7 +14,7 @@ export class TypeCreateTable1681169961900 implements MigrationInterface {
 
         CONSTRAINT PK_type PRIMARY KEY (id),
         
-        CONSTRAINT FK_library_type FOREIGN KEY (libraryId) REFERENCES library(id)
+        CONSTRAINT FK_library_type FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
       );
     `);
   }
