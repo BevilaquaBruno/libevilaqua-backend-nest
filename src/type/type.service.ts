@@ -44,18 +44,18 @@ export class TypeService {
     });
   }
 
-  async update(id: number, updateTypeDto: UpdateTypeDto, libraryId: number) {
-    return await this.typeServiceRepository.update({
+  update(id: number, updateTypeDto: UpdateTypeDto, libraryId: number) {
+    return this.typeServiceRepository.update({
       id: id,
       libraryId: libraryId
     }, updateTypeDto);
   }
 
-  async remove(id: number, libraryId: number) {
-    return await this.typeServiceRepository.delete({ id: id, libraryId: libraryId });
+  remove(id: number, libraryId: number) {
+    return this.typeServiceRepository.delete({ id: id, libraryId: libraryId });
   }
 
-  async count(libraryId: number) {
-    return await this.typeServiceRepository.count({ where: { libraryId: libraryId } });
+  count(libraryId: number) {
+    return this.typeServiceRepository.count({ where: { libraryId: libraryId } });
   }
 }
