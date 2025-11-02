@@ -47,22 +47,22 @@ export class GenreService {
     });
   }
 
-  async update(id: number, updateGenreDto: UpdateGenreDto, libraryId: number) {
-    return await this.genreServiceRepository.update({
+  update(id: number, updateGenreDto: UpdateGenreDto, libraryId: number) {
+    return this.genreServiceRepository.update({
       id: id,
       libraryId: libraryId
     }, updateGenreDto);
   }
 
-  async remove(id: number, libraryId: number) {
-    return await this.genreServiceRepository.delete({
+  remove(id: number, libraryId: number) {
+    return this.genreServiceRepository.delete({
       id: id,
       libraryId: libraryId
     });
   }
 
-  async count(libraryId: number) {
-    return await this.genreServiceRepository.count({
+  count(libraryId: number) {
+    return this.genreServiceRepository.count({
       where: {
         libraryId: libraryId
       }
