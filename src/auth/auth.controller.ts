@@ -94,7 +94,7 @@ export class AuthController {
 
       if (null == libraryUser.email_verified_at) {
         const token = await this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
-        this.mailService.sendUserConfirmation(user.email, token);
+        this.mailService.sendUserConfirmation(user.email, token, library.description);
         throw new HttpException('Usuário ainda não verificado nesta biblioteca, token de verificação reenviado.', HttpStatus.BAD_REQUEST);
       }
 

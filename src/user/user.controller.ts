@@ -40,6 +40,14 @@ export class UserController {
   async create(@Req() req: Request, @Body() createUserDto: CreateUserDto) {
     const reqUser: PayloadAuthDto = req['user'];
 
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    if (!library) {
+      throw new HttpException(
+        "Biblioteca inválida, tente novamente.",
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
     // Valida se as senhas informadas são iguais
     if (createUserDto.password != createUserDto.verify_password) {
       throw new HttpException(
@@ -96,7 +104,7 @@ export class UserController {
 
     // envia o e-mail
     const token = await this.authService.generateResetToken(currentUser, 'E', reqUser.libraryId);
-    this.mailService.sendUserConfirmation(currentUser.email, token);
+    this.mailService.sendUserConfirmation(currentUser.email, token, library.description);
 
     return {
       id: currentUser.id,
@@ -154,7 +162,7 @@ export class UserController {
     }
     // envia o e-mail
     const token = await this.authService.generateResetToken(currentUser, 'E', newLibrary.id);
-    this.mailService.sendUserConfirmation(currentUser.email, token);
+    this.mailService.sendUserConfirmation(currentUser.email, token, createLibraryDto.description);
 
     return {
       id: currentUser.id,
@@ -210,6 +218,15 @@ export class UserController {
   @Patch(':id')
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const reqUser: PayloadAuthDto = req['user'];
+
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    if (!library) {
+      throw new HttpException(
+        "Biblioteca inválida, tente novamente.",
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
     // Verifica se o usuário existe
     const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user) {
@@ -298,7 +315,7 @@ export class UserController {
       userToToken.name = updateUserDto.name;
       userToToken.email = updateUserDto.email;
       const token = await this.authService.generateResetToken(userToToken, 'E', reqUser.libraryId);
-      this.mailService.sendUserConfirmation(userToToken.email, token);
+      this.mailService.sendUserConfirmation(userToToken.email, token, library.description);
     }
 
     // Atualiza o usuário

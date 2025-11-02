@@ -7,18 +7,19 @@ import { join } from 'path';
 export class MailService {
   constructor(private readonly mailerService: MailerService) { }
 
-  async sendUserConfirmation(email: string, token: string) {
+  async sendUserConfirmation(email: string, token: string, libraryName: string) {
     const url = process.env['FRONT_END_URL'] + `/confirmar-acesso?token=${token}`;
     const template = readFileSync(this.getTemplatePath('sendUserConfirmation.template.html'), 'utf-8');
 
     const sendUserConfirmationHTML = template
       .replace(/{{APP_NAME}}/g, process.env['APP_NAME'])
-      .replace(/{{URL}}/g, url);
+      .replace(/{{URL}}/g, url)
+      .replace(/{{LIBRARY_NAME}}/g, libraryName);
 
     await this.mailerService.sendMail({
       to: email,
       subject: process.env['APP_NAME'] + ' - Confirme seu cadastro',
-      text: `Por favor, confirme seu cadastro acessando a URL: ${url}`,
+      text: `Por favor, confirme seu cadastro a biblioteca ${libraryName} no app ${process.env['APP_NAME']} acessando a URL: ${url}`,
       html: sendUserConfirmationHTML,
     });
   }
