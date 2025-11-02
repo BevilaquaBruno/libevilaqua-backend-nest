@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { FindAuthorDto } from './dto/find-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
@@ -68,5 +68,14 @@ export class AuthorService {
         libraryId: libraryId
       }
     });
+  }
+
+  async getAuthorList(author_id_list: number[], libraryId: number) {
+    return await this.authorServiceRepository.find({
+      where: {
+        id: In(author_id_list),
+        libraryId: libraryId,
+      }
+    })
   }
 }
