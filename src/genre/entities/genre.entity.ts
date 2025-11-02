@@ -21,7 +21,7 @@ export class Genre {
   @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_genre' })
   library?: Library;
 
-  @Column()
+  @Column({ select: false })
   libraryId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })

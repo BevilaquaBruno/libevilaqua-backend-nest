@@ -10,6 +10,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  Req,
 } from '@nestjs/common';
 import { AuthGuard } from '../../src/auth/auth.guard';
 import { BookService } from './book.service';
@@ -17,6 +18,7 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { FindBookDto } from './dto/find-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
+import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 
 @Controller('book')
 export class BookController {
@@ -25,9 +27,10 @@ export class BookController {
   // Cria um livro
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createBookDto: CreateBookDto) {
+  async create(@Req() req: Request, @Body() createBookDto: CreateBookDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Não tem outras validações além das contidas no DTO do livro, apenas cria ele
-    const newBook = await this.bookService.create(createBookDto);
+    const newBook = await this.bookService.create(createBookDto, reqUser.libraryId);
 
     return {
       id: newBook.id,
@@ -39,6 +42,7 @@ export class BookController {
   @UseGuards(AuthGuard)
   @Get()
   async findAll(
+    @Req() req: Request,
     @Query('genres') genres: string,
     @Query('tags') tags: string,
     @Query('publishers') publishers: string,
@@ -52,6 +56,7 @@ export class BookController {
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Cria a lista de filtros e paginação do livro
     const findBook: FindBookDto = {
       typeList: null,
@@ -132,17 +137,18 @@ export class BookController {
 
     // Consulta no banco com os filtros passados, tanto no count quando nos dados
     return {
-      data: await this.bookService.findAll(findBook),
-      count: await this.bookService.count(findBook),
+      data: await this.bookService.findAll(findBook, reqUser.libraryId),
+      count: await this.bookService.count(findBook, reqUser.libraryId),
     };
   }
 
   // Retorna um livro
   @UseGuards(AuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Consulta o livro, retorna se existe ou retorna erro
-    const book: Book = await this.bookService.findOne(+id);
+    const book: Book = await this.bookService.findOne(+id, reqUser.libraryId);
 
     if (null == book) {
       throw new HttpException(
@@ -157,9 +163,10 @@ export class BookController {
   // Atualiza o livro
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+  async update(@Req() req: Request, @Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o livro existe, se existe atualiza
-    const book: Book = await this.bookService.findOne(+id);
+    const book: Book = await this.bookService.findOne(+id, reqUser.libraryId);
 
     if (null == book) {
       throw new HttpException(
@@ -179,9 +186,10 @@ export class BookController {
   // Deleta um livro
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o livro existe
-    const book: Book = await this.bookService.findOne(+id);
+    const book: Book = await this.bookService.findOne(+id, reqUser.libraryId);
 
     if (null == book) {
       throw new HttpException(
@@ -191,7 +199,7 @@ export class BookController {
     }
 
     // Deleta o livro, retorna com sucesso ou não
-    const deletedBook = await this.bookService.remove(+id);
+    const deletedBook = await this.bookService.remove(+id, reqUser.libraryId);
     if (deletedBook.affected == 1) {
       return {
         statusCode: 200,

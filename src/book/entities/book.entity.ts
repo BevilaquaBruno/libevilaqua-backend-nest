@@ -14,6 +14,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Library } from '../../library/entities/library.entity';
 
 @Entity()
 export class Book {
@@ -69,6 +70,13 @@ export class Book {
     joinColumn: { foreignKeyConstraintName: 'FK_book_author' },
   })
   authors: Author[];
+
+  @ManyToOne(() => Library, { eager: false })
+  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_book' })
+  library?: Library;
+
+  @Column({ select: false })
+  libraryId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
   createdAt: Date;

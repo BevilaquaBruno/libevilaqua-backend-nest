@@ -40,7 +40,7 @@ export class Loan {
   @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_loan' })
   library?: Library;
 
-  @Column()
+  @Column({ select: false })
   libraryId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })

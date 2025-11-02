@@ -199,8 +199,8 @@ export class AuthorController {
     const books = await this.bookService.findBooksFromAuthor({
       page: 1,
       limit: 1,
-      authorId: +id,
-    });
+      authorId: +id
+    }, reqUser.libraryId);
     if (books.length > 0) {
       throw new HttpException(
         'Existem livros vinculados a esse autor, não é possível excluir.',
@@ -254,7 +254,7 @@ export class AuthorController {
     findAuthorBooks.page =
       page == undefined ? 0 : findAuthorBooks.limit * (parseInt(page) - 1);
 
-    const allBooks = await this.bookService.findAndCountBooksFromAuthor(findAuthorBooks);
+    const allBooks = await this.bookService.findAndCountBooksFromAuthor(findAuthorBooks, reqUser.libraryId);
     return {
       data: allBooks[0],
       count: allBooks[1]

@@ -41,7 +41,7 @@ export class LoanController {
   async create(@Req() req: Request, @Body() createLoanDto: CreateLoanDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta o livro e retorna erro se não encontrado
-    const book: Book = await this.bookService.findOne(createLoanDto.bookId);
+    const book: Book = await this.bookService.findOne(createLoanDto.bookId, reqUser.libraryId);
     if (null == book) {
       throw new HttpException(
         'Livro selecionado não encontrado. Código do livro: ' +
@@ -237,7 +237,7 @@ export class LoanController {
     }
 
     // Consulta o livro e retorna erro se não encontrado
-    const book: Book = await this.bookService.findOne(updateLoanDto.bookId);
+    const book: Book = await this.bookService.findOne(updateLoanDto.bookId, reqUser.libraryId);
     if (null == book) {
       throw new HttpException(
         'Livro selecionado não encontrado. Código do livro: ' +
@@ -338,7 +338,7 @@ export class LoanController {
         loan_date: updateLoanDto.loan_date,
         must_return_date: updateLoanDto.must_return_date,
         return_date: updateLoanDto.return_date,
-        book: await this.bookService.findOne(updateLoanDto.bookId),
+        book: await this.bookService.findOne(updateLoanDto.bookId, reqUser.libraryId),
         person: await this.personService.findOne(updateLoanDto.personId, reqUser.libraryId),
       };
     } else {
@@ -444,7 +444,7 @@ export class LoanController {
   async book(@Req() req: Request, @Param('bookId') bookId: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o livro existe
-    const book = await this.bookService.findOne(+bookId);
+    const book = await this.bookService.findOne(+bookId, reqUser.libraryId);
     if (book === null) {
       throw new HttpException(
         'Não existe um livro com esse código.',
