@@ -4,10 +4,11 @@ import { mockBookService } from './mocks/book.service.mock';
 import { CreateBookDto } from './dto/create-book.dto';
 import { FindBookDto } from './dto/find-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
-import { FindAuthorBooksDto } from 'src/author/dto/find-author-books.dto';
+import { FindAuthorBooksDto } from '../author/dto/find-author-books.dto';
 
 describe('BookService', () => {
   let service: BookService;
+  const libraryId = 1;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -91,10 +92,10 @@ describe('BookService', () => {
     mockBookService.create.mockResolvedValue(mockBookResolved);
 
     // Chama a criação do livro
-    const result = await service.create(mockBook);
+    const result = await service.create(mockBook, libraryId);
 
     expect(result).toEqual(mockBookResolved);
-    expect(mockBookService.create).toHaveBeenCalledWith(mockBook);
+    expect(mockBookService.create).toHaveBeenCalledWith(mockBook, libraryId);
   });
 
   it('Should return a list with all books', async () => {
@@ -216,11 +217,11 @@ describe('BookService', () => {
       limit: 2
     };
 
-    const result = await service.findAll(findBook);
+    const result = await service.findAll(findBook, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockBookList);
-    expect(mockBookService.findAll).toHaveBeenCalledWith(findBook);
+    expect(mockBookService.findAll).toHaveBeenCalledWith(findBook, libraryId);
   });
 
   it('Should return one book', async () => {
@@ -276,11 +277,11 @@ describe('BookService', () => {
     mockBookService.findOne.mockResolvedValue(mockBook);
 
     //consult
-    const result = await service.findOne(1);
+    const result = await service.findOne(1, libraryId);
 
     // valida os retornos
     expect(result).toEqual(mockBook);
-    expect(mockBookService.findOne).toHaveBeenCalledWith(1);
+    expect(mockBookService.findOne).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should update a book', async () => {
@@ -368,11 +369,11 @@ describe('BookService', () => {
     mockBookService.remove.mockResolvedValue(mockDeleteBook);
 
     // Deleta o livro
-    const result = await service.remove(1);
+    const result = await service.remove(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual({ raw: [], affected: 1 });
-    expect(mockBookService.remove).toHaveBeenCalledWith(1);
+    expect(mockBookService.remove).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should return books from an author', async () => {
@@ -484,11 +485,11 @@ describe('BookService', () => {
     mockBookService.findBooksFromAuthor.mockResolvedValue(mockAuthorBooksResolved);
 
     // Consulta
-    const result = await service.findBooksFromAuthor(mockAuthorBooks);
+    const result = await service.findBooksFromAuthor(mockAuthorBooks, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockAuthorBooksResolved);
-    expect(mockBookService.findBooksFromAuthor).toHaveBeenCalledWith(mockAuthorBooks);
+    expect(mockBookService.findBooksFromAuthor).toHaveBeenCalledWith(mockAuthorBooks, libraryId);
   });
 
   it('Should return a count of books', async () => {
@@ -510,10 +511,10 @@ describe('BookService', () => {
       page: 1,
       limit: 2
     };
-    const result = await service.count(findBook);
+    const result = await service.count(findBook, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(1);
-    expect(mockBookService.count).toHaveBeenCalledWith(findBook);
+    expect(mockBookService.count).toHaveBeenCalledWith(findBook, libraryId);
   });
 });
