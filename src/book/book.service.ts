@@ -154,7 +154,7 @@ export class BookService {
     });
   }
 
-  async update(id: number, updateBookDto: UpdateBookDto) {
+  update(id: number, updateBookDto: UpdateBookDto) {
     // Cria um padrão de inserção no banco para o livro - Validar futuramente para alterar o local desse padrão
     const tempUpdateBookDto = {
       id: id,
@@ -180,11 +180,11 @@ export class BookService {
     }
 
     // Retorna o livro salvo
-    return await this.bookServiceRepository.save(tempUpdateBookDto);
+    return this.bookServiceRepository.save(tempUpdateBookDto);
   }
 
-  async remove(id: number, libraryId: number) {
-    return await this.bookServiceRepository.delete({ id: id, libraryId: libraryId });
+  remove(id: number, libraryId: number) {
+    return this.bookServiceRepository.delete({ id: id, libraryId: libraryId });
   }
 
   findBooksFromAuthor(findAuthorBooks: FindAuthorBooksDto, libraryId: number) {
@@ -207,7 +207,7 @@ export class BookService {
       .getMany();
   }
 
-  async count(findBook: FindBookDto, libraryId: number) {
+  count(findBook: FindBookDto, libraryId: number) {
     // Inicia uma constante para a query com as tabelas
     const query = this.bookServiceRepository
       .createQueryBuilder('book')

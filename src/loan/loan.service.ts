@@ -98,8 +98,8 @@ export class LoanService {
     });
   }
 
-  async update(id: number, updateLoanDto: UpdateLoanDto, libraryId: number) {
-    return await this.loanServiceRepository.update({
+  update(id: number, updateLoanDto: UpdateLoanDto, libraryId: number) {
+    return this.loanServiceRepository.update({
       id: id,
       libraryId: libraryId
     }, {
@@ -112,15 +112,15 @@ export class LoanService {
     });
   }
 
-  async remove(id: number, libraryId: number) {
-    return await this.loanServiceRepository.delete({
+  remove(id: number, libraryId: number) {
+    return this.loanServiceRepository.delete({
       id: id,
       libraryId: libraryId
     });
   }
 
-  async returnBook(id: number, returnBookDto: ReturnBookDto, libraryId: number) {
-    return await this.loanServiceRepository.update({
+  returnBook(id: number, returnBookDto: ReturnBookDto, libraryId: number) {
+    return this.loanServiceRepository.update({
       id: id,
       libraryId: libraryId
     }, returnBookDto);
@@ -164,7 +164,7 @@ export class LoanService {
     });
   }
 
-  async count(findLoan: FindLoanDto, libraryId: number) {
+  count(findLoan: FindLoanDto, libraryId: number) {
     const query = this.loanServiceRepository
       .createQueryBuilder('loan')
       .leftJoinAndSelect('loan.person', 'person')

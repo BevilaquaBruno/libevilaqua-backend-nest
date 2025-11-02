@@ -48,30 +48,30 @@ export class AuthorService {
     });
   }
 
-  async update(id: number, updateAuthorDto: UpdateAuthorDto, libraryId: number) {
-    return await this.authorServiceRepository.update({
+  update(id: number, updateAuthorDto: UpdateAuthorDto, libraryId: number) {
+    return this.authorServiceRepository.update({
       id: id,
       libraryId: libraryId
     }, updateAuthorDto);
   }
 
-  async remove(id: number, libraryId: number) {
-    return await this.authorServiceRepository.delete({
+  remove(id: number, libraryId: number) {
+    return this.authorServiceRepository.delete({
       id: id,
       libraryId: libraryId
     });
   }
 
-  async count(libraryId: number) {
-    return await this.authorServiceRepository.count({
+  count(libraryId: number) {
+    return this.authorServiceRepository.count({
       where: {
         libraryId: libraryId
       }
     });
   }
 
-  async getAuthorList(author_id_list: number[], libraryId: number) {
-    return await this.authorServiceRepository.find({
+  getAuthorList(author_id_list: number[], libraryId: number) {
+    return this.authorServiceRepository.find({
       where: {
         id: In(author_id_list),
         libraryId: libraryId,

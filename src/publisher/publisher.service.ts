@@ -50,18 +50,18 @@ export class PublisherService {
     });
   }
 
-  async update(id: number, updatePublisherDto: UpdatePublisherDto, libraryId: number) {
-    return await this.publisherServiceRepository.update({
+  update(id: number, updatePublisherDto: UpdatePublisherDto, libraryId: number) {
+    return this.publisherServiceRepository.update({
       id: id,
       libraryId: libraryId
     }, updatePublisherDto);
   }
 
-  async remove(id: number, libraryId: number) {
-    return await this.publisherServiceRepository.delete({ id: id, libraryId: libraryId });
+  remove(id: number, libraryId: number) {
+    return this.publisherServiceRepository.delete({ id: id, libraryId: libraryId });
   }
 
-  async count(libraryId: number) {
-    return await this.publisherServiceRepository.count({ where: { libraryId: libraryId } });
+  count(libraryId: number) {
+    return this.publisherServiceRepository.count({ where: { libraryId: libraryId } });
   }
 }

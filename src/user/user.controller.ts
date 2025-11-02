@@ -40,6 +40,14 @@ export class UserController {
   async create(@Req() req: Request, @Body() createUserDto: CreateUserDto) {
     const reqUser: PayloadAuthDto = req['user'];
 
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    if (!library) {
+      throw new HttpException(
+        "Biblioteca inválida, tente novamente.",
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
     // Valida se as senhas informadas são iguais
     if (createUserDto.password != createUserDto.verify_password) {
       throw new HttpException(
@@ -86,7 +94,7 @@ export class UserController {
       );
     }
 
-    const newLibraryUser = this.userService.createLibraryUser(currentUser.id, reqUser.libraryId);
+    const newLibraryUser = await this.userService.createLibraryUser(currentUser.id, reqUser.libraryId);
     if (!newLibraryUser) {
       throw new HttpException(
         'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
@@ -95,8 +103,8 @@ export class UserController {
     }
 
     // envia o e-mail
-    const token = await this.authService.generateResetToken(currentUser, 'E', reqUser.libraryId);
-    this.mailService.sendUserConfirmation(currentUser.email, token);
+    const token = this.authService.generateResetToken(currentUser, 'E', reqUser.libraryId);
+    this.mailService.sendUserConfirmation(currentUser.email, token, library.description);
 
     return {
       id: currentUser.id,
@@ -145,7 +153,7 @@ export class UserController {
       }
     }
 
-    const newLibraryUser = this.userService.createLibraryUser(currentUser.id, newLibrary.id);
+    const newLibraryUser = await this.userService.createLibraryUser(currentUser.id, newLibrary.id);
     if (!newLibraryUser) {
       throw new HttpException(
         'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
@@ -153,8 +161,8 @@ export class UserController {
       );
     }
     // envia o e-mail
-    const token = await this.authService.generateResetToken(currentUser, 'E', newLibrary.id);
-    this.mailService.sendUserConfirmation(currentUser.email, token);
+    const token = this.authService.generateResetToken(currentUser, 'E', newLibrary.id);
+    this.mailService.sendUserConfirmation(currentUser.email, token, createLibraryDto.description);
 
     return {
       id: currentUser.id,
@@ -210,6 +218,15 @@ export class UserController {
   @Patch(':id')
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const reqUser: PayloadAuthDto = req['user'];
+
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    if (!library) {
+      throw new HttpException(
+        "Biblioteca inválida, tente novamente.",
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
     // Verifica se o usuário existe
     const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user) {
@@ -297,15 +314,15 @@ export class UserController {
       let userToToken: User = user;
       userToToken.name = updateUserDto.name;
       userToToken.email = updateUserDto.email;
-      const token = await this.authService.generateResetToken(userToToken, 'E', reqUser.libraryId);
-      this.mailService.sendUserConfirmation(userToToken.email, token);
+      const token = this.authService.generateResetToken(userToToken, 'E', reqUser.libraryId);
+      this.mailService.sendUserConfirmation(userToToken.email, token, library.description);
     }
 
     // Atualiza o usuário
     const updatedUser = await this.userService.update(+id, updateUserDto);
     if (updatedUser.affected == 1) {
       if (isEmailChanged) {
-        this.userService.setLibraryUserUnconfirmed(+id, reqUser.libraryId);
+        await this.userService.setLibraryUserUnconfirmed(+id, reqUser.libraryId);
       }
       return {
         id: +id,

@@ -50,29 +50,29 @@ export class PersonService {
     });
   }
 
-  async update(id: number, updatePersonDto: UpdatePersonDto, libraryId: number) {
-    return await this.personServiceRepository.update({
+  update(id: number, updatePersonDto: UpdatePersonDto, libraryId: number) {
+    return this.personServiceRepository.update({
       id: id,
       libraryId: libraryId
     }, updatePersonDto);
   }
 
-  async remove(id: number, libraryId: number) {
-    return await this.personServiceRepository.delete({
+  remove(id: number, libraryId: number) {
+    return this.personServiceRepository.delete({
       id: id,
       libraryId: libraryId
     });
   }
 
-  async count(libraryId: number) {
-    return await this.personServiceRepository.count({
+  count(libraryId: number) {
+    return this.personServiceRepository.count({
       where: {
         libraryId: libraryId
       }
     });
   }
 
-  async findByCPF(cpf: string, excludeId: number = null, libraryId: number) {
+  findByCPF(cpf: string, excludeId: number = null, libraryId: number) {
     let dynamicWhere: FindOptionsWhere<Person> = {
       cpf: cpf,
       libraryId: libraryId

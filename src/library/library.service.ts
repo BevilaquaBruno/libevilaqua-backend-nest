@@ -36,8 +36,8 @@ export class LibraryService {
     return this.libraryServiceRepository.delete(id);
   }
 
-  async count() {
-    return await this.libraryServiceRepository.count();
+  count() {
+    return this.libraryServiceRepository.count();
   }
 
   getLibrariesFromuser(userId: number) {

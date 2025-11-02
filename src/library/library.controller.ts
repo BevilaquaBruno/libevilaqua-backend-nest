@@ -9,8 +9,8 @@ export class LibraryController {
   constructor(private readonly libraryService: LibraryService) { }
 
   @Post()
-  create(@Body() createLibraryDto: CreateLibraryDto) {
-    return this.libraryService.create(createLibraryDto);
+  async create(@Body() createLibraryDto: CreateLibraryDto) {
+    return await this.libraryService.create(createLibraryDto);
   }
 
   @Get()
@@ -33,17 +33,17 @@ export class LibraryController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.libraryService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.libraryService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLibraryDto: UpdateLibraryDto) {
-    return this.libraryService.update(+id, updateLibraryDto);
+  async update(@Param('id') id: string, @Body() updateLibraryDto: UpdateLibraryDto) {
+    return await this.libraryService.update(+id, updateLibraryDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.libraryService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.libraryService.remove(+id);
   }
 }
