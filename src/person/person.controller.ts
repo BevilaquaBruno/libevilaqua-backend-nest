@@ -10,6 +10,7 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -18,6 +19,7 @@ import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindPersonDto } from './dto/find-person.dto';
 import { Person } from './entities/person.entity';
 import CPF from 'cpf-check';
+import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 
 @Controller('person')
 export class PersonController {
@@ -26,19 +28,25 @@ export class PersonController {
   // Cria uma pessoa
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createPersonDto: CreatePersonDto) {
-    // Valida o CPF
-    const isCpfValid = CPF.validate(createPersonDto.cpf);
-    if (!isCpfValid) {
-      throw new HttpException('CPF inválido.', HttpStatus.BAD_REQUEST);
-    }
+  async create(@Req() req: Request, @Body() createPersonDto: CreatePersonDto) {
+    const reqUser: PayloadAuthDto = req['user'];
 
-    // Valida se a pessoa(CPF) já está cadastrada
-    const isPersonRegistered = await this.personService.findByCPF(
-      createPersonDto.cpf,
-    );
-    if (isPersonRegistered?.cpf != undefined) {
-      throw new HttpException('CPF já cadastrado.', HttpStatus.BAD_REQUEST);
+    // Valida o CPF
+    if (createPersonDto.cpf) {
+      const isCpfValid = CPF.validate(createPersonDto.cpf);
+      if (!isCpfValid) {
+        throw new HttpException('CPF inválido.', HttpStatus.BAD_REQUEST);
+      }
+
+      // Valida se a pessoa(CPF) já está cadastrada
+      const isPersonRegistered = await this.personService.findByCPF(
+        createPersonDto.cpf,
+        null,
+        reqUser.libraryId
+      );
+      if (isPersonRegistered?.cpf != undefined) {
+        throw new HttpException('CPF já cadastrado.', HttpStatus.BAD_REQUEST);
+      }
     }
 
     // Valida campos vazios e os deixa null
@@ -70,7 +78,7 @@ export class PersonController {
         : createPersonDto.obs;
 
     // Cria a pessoa
-    const newPerson: Person = await this.personService.create(createPersonDto);
+    const newPerson: Person = await this.personService.create(createPersonDto, reqUser.libraryId);
 
     // Remove os campos de criação e atualização
     delete newPerson.createdAt;
@@ -82,7 +90,8 @@ export class PersonController {
   // Retorna uma lista de pessoa
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findPerson: FindPersonDto = {
       page: null,
@@ -95,17 +104,18 @@ export class PersonController {
       page == undefined ? 0 : findPerson.limit * (parseInt(page) - 1);
 
     return {
-      data: await this.personService.findAll(findPerson),
-      count: await this.personService.count(),
+      data: await this.personService.findAll(findPerson, reqUser.libraryId),
+      count: await this.personService.count(reqUser.libraryId),
     };
   }
 
   // Retorna uma pessoa
   @UseGuards(AuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe - Retorna erro ou a pessoa
-    const person: Person = await this.personService.findOne(+id);
+    const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
     if (null == person)
       throw new HttpException(
         'Pessoa não encontrada. Código da pessoa: ' + id + '.',
@@ -117,12 +127,10 @@ export class PersonController {
   // Atualiza uma pessoa
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updatePersonDto: UpdatePersonDto,
-  ) {
+  async update(@Req() req: Request, @Param('id') id: string, @Body() updatePersonDto: UpdatePersonDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica e valida se a pessoa existe - Retorna erro se não
-    const person: Person = await this.personService.findOne(+id);
+    const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
     if (null == person)
       throw new HttpException(
         'Pessoa não encontrada. Código da pessoa: ' + id + '.',
@@ -139,6 +147,7 @@ export class PersonController {
     const isPersonRegistered = await this.personService.findByCPF(
       updatePersonDto.cpf,
       +id,
+      reqUser.libraryId
     );
     if (isPersonRegistered?.cpf != undefined) {
       throw new HttpException('CPF já cadastrado.', HttpStatus.BAD_REQUEST);
@@ -173,7 +182,7 @@ export class PersonController {
         : updatePersonDto.obs;
 
     // Atualiza a pessoa e retorna ela ou erro
-    const updatedPerson = await this.personService.update(+id, updatePersonDto);
+    const updatedPerson = await this.personService.update(+id, updatePersonDto, reqUser.libraryId);
     if (updatedPerson.affected == 1) {
       const returnPerson: UpdatePersonDto = {
         id: +id,
@@ -200,9 +209,10 @@ export class PersonController {
   // Deleta uma pessoa
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe e retorna erro
-    const person: Person = await this.personService.findOne(+id);
+    const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
     if (null == person)
       throw new HttpException(
         'Pessoa não encontrada. Código da pessoa: ' + id + '.',
@@ -210,7 +220,7 @@ export class PersonController {
       );
 
     // Deleta e pessoa, retorna sucess ou erro
-    const deletePerson = await this.personService.remove(+id);
+    const deletePerson = await this.personService.remove(+id, reqUser.libraryId);
 
     if (deletePerson.affected == 1) {
       return {

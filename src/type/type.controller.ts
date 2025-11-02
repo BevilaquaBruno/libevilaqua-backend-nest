@@ -10,6 +10,7 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { TypeService } from './type.service';
 import { CreateTypeDto } from './dto/create-type.dto';
@@ -17,6 +18,7 @@ import { UpdateTypeDto } from './dto/update-type.dto';
 import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindTypeDto } from './dto/find-type.dto';
 import { Type } from './entities/type.entity';
+import { PayloadAuthDto } from 'src/auth/dto/payload-auth.dto';
 
 @Controller('type')
 export class TypeController {
@@ -25,9 +27,11 @@ export class TypeController {
   // Cria o tipo
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createTypeDto: CreateTypeDto) {
+  async create(@Req() req: Request, @Body() createTypeDto: CreateTypeDto) {
+    const reqUser: PayloadAuthDto = req['user'];
+    
     // Cria o tipo
-    const newType = await this.typeService.create(createTypeDto);
+    const newType = await this.typeService.create(createTypeDto, reqUser.libraryId);
 
     return {
       id: newType.id,
@@ -38,7 +42,8 @@ export class TypeController {
   // Retorna uma lista de tipos
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findType: FindTypeDto = {
       page: null,
@@ -51,17 +56,19 @@ export class TypeController {
       page == undefined ? 0 : findType.limit * (parseInt(page) - 1);
 
     return {
-      data: await this.typeService.findAll(findType),
-      count: await this.typeService.count(),
+      data: await this.typeService.findAll(findType, reqUser.libraryId),
+      count: await this.typeService.count(reqUser.libraryId),
     };
   }
 
   // Retorna um tipo
   @UseGuards(AuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
+
     // Verifica se o tipo existe e retorna
-    const type: Type = await this.typeService.findOne(+id);
+    const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type)
       throw new HttpException(
         'Tipo não encontrado. Código do tipo: ' + id + '.',
@@ -73,9 +80,10 @@ export class TypeController {
   // Edita o tipo
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateTypeDto: UpdateTypeDto) {
+  async update(@Req() req: Request, @Param('id') id: string, @Body() updateTypeDto: UpdateTypeDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o tipo existe
-    const type: Type = await this.typeService.findOne(+id);
+    const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type) {
       throw new HttpException(
         'Tipo não encontrado. Código do tipo: ' + id + '.',
@@ -84,7 +92,7 @@ export class TypeController {
     }
 
     // Atualiza o tipo
-    const updatedType = await this.typeService.update(+id, updateTypeDto);
+    const updatedType = await this.typeService.update(+id, updateTypeDto, reqUser.libraryId);
     if (updatedType.affected == 1) {
       return {
         id: +id,
@@ -101,9 +109,10 @@ export class TypeController {
   // Exclui o tipo
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o tipo existe
-    const type: Type = await this.typeService.findOne(+id);
+    const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type) {
       throw new HttpException(
         'Tipo não encontrado. Código do tipo: ' + id + '.',
@@ -112,7 +121,7 @@ export class TypeController {
     }
 
     // Deleta o tipo e retorna ele
-    const deletedType = await this.typeService.remove(+id);
+    const deletedType = await this.typeService.remove(+id, reqUser.libraryId);
     if (deletedType.affected == 1) {
       return {
         statusCode: 200,

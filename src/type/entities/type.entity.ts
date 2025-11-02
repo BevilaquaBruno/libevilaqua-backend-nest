@@ -1,9 +1,12 @@
+import { Library } from '../../library/entities/library.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -13,6 +16,13 @@ export class Type {
 
   @Column()
   description: string;
+
+  @ManyToOne(() => Library, { eager: false })
+  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_type' })
+  library?: Library;
+
+  @Column({ select: false })
+  libraryId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
   createdAt: Date;

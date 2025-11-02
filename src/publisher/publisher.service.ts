@@ -11,33 +11,57 @@ export class PublisherService {
   constructor(
     @InjectRepository(Publisher)
     private publisherServiceRepository: Repository<Publisher>,
-  ) {}
-  create(createPublisherDto: CreatePublisherDto) {
-    return this.publisherServiceRepository.save(createPublisherDto);
+  ) { }
+  create(createPublisherDto: CreatePublisherDto, libraryId: number) {
+    return this.publisherServiceRepository.save({
+      ...createPublisherDto,
+      libraryId: libraryId
+    });
   }
 
-  findAll(findPublisher: FindPublisherDto) {
+  findAll(findPublisher: FindPublisherDto, libraryId: number) {
     // Retorna as editoras paginadas
     return this.publisherServiceRepository.find({
+      select: {
+        id: true,
+        name: true,
+        country: true
+      },
       take: findPublisher.limit,
       skip: findPublisher.page,
+      where: {
+        libraryId: libraryId
+      },
       order: { id: 'DESC' },
     });
   }
 
-  findOne(id: number) {
-    return this.publisherServiceRepository.findOneBy({ id });
+  findOne(id: number, libraryId: number) {
+    return this.publisherServiceRepository.findOne({
+      select: {
+        id: true,
+        name: true,
+        country: true
+      },
+      where: {
+        id: id,
+        libraryId: libraryId
+      }
+    });
   }
 
-  async update(id: number, updatePublisherDto: UpdatePublisherDto) {
-    return await this.publisherServiceRepository.update(id, updatePublisherDto);
+  async update(id: number, updatePublisherDto: UpdatePublisherDto, libraryId: number) {
+    return await this.publisherServiceRepository.update({
+      id: id,
+      libraryId: libraryId
+    }, updatePublisherDto);
   }
 
-  async remove(id: number) {
-    return await this.publisherServiceRepository.delete({ id });
+  async remove(id: number, libraryId: number) {
+    return await this.publisherServiceRepository.delete({ id: id, libraryId: libraryId });
   }
 
-  async count() {
-    return await this.publisherServiceRepository.count();
+  async count(libraryId: number) {
+    return await this.publisherServiceRepository.count({ where: { libraryId: libraryId } });
   }
 }

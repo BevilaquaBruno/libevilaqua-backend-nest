@@ -10,6 +10,7 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
@@ -17,6 +18,7 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindTagDto } from './dto/find-tag.dto';
 import { Tag } from './entities/tag.entity';
+import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 
 @Controller('tag')
 export class TagController {
@@ -25,8 +27,10 @@ export class TagController {
   // Cria uma tag
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() createTagDto: CreateTagDto) {
-    const newTag = await this.tagService.create(createTagDto);
+  async create(@Req() req: Request, @Body() createTagDto: CreateTagDto) {
+    const reqUser: PayloadAuthDto = req['user'];
+    
+    const newTag = await this.tagService.create(createTagDto, reqUser.libraryId);
 
     return {
       id: newTag.id,
@@ -37,7 +41,8 @@ export class TagController {
   // Retorna as tags
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(@Query('page') page: string, @Query('limit') limit: string) {
+  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findTag: FindTagDto = {
       page: null,
@@ -49,17 +54,18 @@ export class TagController {
     findTag.page = page == undefined ? 0 : findTag.limit * (parseInt(page) - 1);
 
     return {
-      data: await this.tagService.findAll(findTag),
-      count: await this.tagService.count(),
+      data: await this.tagService.findAll(findTag, reqUser.libraryId),
+      count: await this.tagService.count(reqUser.libraryId),
     };
   }
 
   // Retorna uma tag
   @UseGuards(AuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe
-    const tag: Tag = await this.tagService.findOne(+id);
+    const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
       throw new HttpException(
         'Tag não encontrada. Código da tag: ' + id + '.',
@@ -71,9 +77,10 @@ export class TagController {
   // Cria uma tag
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+  async update(@Req() req: Request, @Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe
-    const tag: Tag = await this.tagService.findOne(+id);
+    const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
       throw new HttpException(
         'Tag não encontrada. Código da tag: ' + id + '.',
@@ -81,7 +88,7 @@ export class TagController {
       );
 
     // Atualiza a tag
-    const updatedTag = await this.tagService.update(+id, updateTagDto);
+    const updatedTag = await this.tagService.update(+id, updateTagDto, reqUser.libraryId);
     if (updatedTag.affected == 1) {
       return {
         id: +id,
@@ -98,9 +105,10 @@ export class TagController {
   // Deleta a tag
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Req() req: Request, @Param('id') id: string) {
+    const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe
-    const tag: Tag = await this.tagService.findOne(+id);
+    const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
       throw new HttpException(
         'Tag não encontrada. Código da tag: ' + id + '.',
@@ -108,7 +116,7 @@ export class TagController {
       );
 
     // Deleta a tag
-    const deletedTag = await this.tagService.remove(+id);
+    const deletedTag = await this.tagService.remove(+id, reqUser.libraryId);
     if (deletedTag.affected == 1) {
       return {
         statusCode: 200,

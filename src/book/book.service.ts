@@ -12,7 +12,7 @@ export class BookService {
   constructor(
     @InjectRepository(Book) private bookServiceRepository: Repository<Book>,
   ) {}
-  create(createBookDto: CreateBookDto) {
+  create(createBookDto: CreateBookDto, libraryId: number) {
     // Cria um padrão de inserção no banco para o livro - Validar futuramente para alterar o local desse padrão
     const tempCreateBookDto = {
       ...createBookDto,
@@ -21,6 +21,7 @@ export class BookService {
       genre: { id: createBookDto.genre_id },
       authors: [],
       tags: [],
+      libraryId: libraryId
     };
 
     // Cria um padrão de inserção para os autores - Validar futuramente para alterar o local desse padrão
@@ -41,7 +42,7 @@ export class BookService {
     return this.bookServiceRepository.save(tempCreateBookDto);
   }
 
-  findAll(findBook: FindBookDto) {
+  findAll(findBook: FindBookDto, libraryId: number) {
     // Inicia uma constante para a query com as tabelas
     const query = this.bookServiceRepository
       .createQueryBuilder('book')
@@ -50,7 +51,7 @@ export class BookService {
       .leftJoinAndSelect('book.type', 'type')
       .leftJoinAndSelect('book.tags', 'tags')
       .leftJoinAndSelect('book.authors', 'authors')
-      .where('1 = 1');
+      .where(`book.libraryId = ${libraryId}`);
 
     // Caso tenha tags na URL - Faz o left join e filtra pelas tags
     if (findBook.tagList !== null) {
@@ -111,8 +112,46 @@ export class BookService {
       .getMany();
   }
 
-  findOne(id: number) {
-    return this.bookServiceRepository.findOneBy({ id });
+  findOne(id: number, libraryId: number) {
+    return this.bookServiceRepository.findOne({
+      select: {
+        id: true,
+        title: true,
+        edition: true,
+        isbn: true,
+        number_pages: true,
+        release_year: true,
+        obs: true,
+        genre: {
+          id: true,
+          description: true
+        },
+        publisher: {
+          id: true,
+          name: true,
+          country: true
+        },
+        type: {
+          id: true,
+          description: true
+        },
+        tags: {
+          id: true,
+          description: true
+        },
+        authors: {
+          id: true,
+          name: true,
+          birth_date: true,
+          death_date: true,
+          bio: true
+        },
+      },
+      where: {
+        id: id,
+        libraryId: libraryId
+      }
+    });
   }
 
   async update(id: number, updateBookDto: UpdateBookDto) {
@@ -144,11 +183,11 @@ export class BookService {
     return await this.bookServiceRepository.save(tempUpdateBookDto);
   }
 
-  async remove(id: number) {
-    return await this.bookServiceRepository.delete({ id });
+  async remove(id: number, libraryId: number) {
+    return await this.bookServiceRepository.delete({ id: id, libraryId: libraryId });
   }
 
-  findBooksFromAuthor(findAuthorBooks: FindAuthorBooksDto) {
+  findBooksFromAuthor(findAuthorBooks: FindAuthorBooksDto, libraryId: number) {
     // Retorna todos os livros do autor
     return this.bookServiceRepository
       .createQueryBuilder('book')
@@ -160,6 +199,7 @@ export class BookService {
       .leftJoin('book.authors', 'authorsForFilter')
       .where('authorsForFilter.id IN (:...authors)', {
         authors: [findAuthorBooks.authorId],
+        libraryId: libraryId
       })
       .take(findAuthorBooks.limit)
       .skip(findAuthorBooks.page)
@@ -167,7 +207,7 @@ export class BookService {
       .getMany();
   }
 
-  async count(findBook: FindBookDto) {
+  async count(findBook: FindBookDto, libraryId: number) {
     // Inicia uma constante para a query com as tabelas
     const query = this.bookServiceRepository
       .createQueryBuilder('book')
@@ -176,7 +216,7 @@ export class BookService {
       .leftJoinAndSelect('book.type', 'type')
       .leftJoinAndSelect('book.tags', 'tags')
       .leftJoinAndSelect('book.authors', 'authors')
-      .where('1 = 1');
+      .where(`book.libraryId = ${libraryId}`);
 
     // Caso tenha tags na URL - Faz o left join e filtra pelas tags
     if (findBook.tagList !== null) {
@@ -231,5 +271,25 @@ export class BookService {
 
     // Retorna a query ordenando pelo id decrescente
     return query.getCount();
+  }
+
+  findAndCountBooksFromAuthor(findAuthorBooks: FindAuthorBooksDto, libraryId: number) {
+    // Retorna todos os livros do autor
+    return this.bookServiceRepository
+      .createQueryBuilder('book')
+      .leftJoinAndSelect('book.genre', 'genre')
+      .leftJoinAndSelect('book.publisher', 'publisher')
+      .leftJoinAndSelect('book.type', 'type')
+      .leftJoinAndSelect('book.tags', 'tags')
+      .leftJoinAndSelect('book.authors', 'authors')
+      .leftJoin('book.authors', 'authorsForFilter')
+      .where('authorsForFilter.id IN (:...authors)', {
+        authors: [findAuthorBooks.authorId],
+        libraryId: libraryId
+      })
+      .take(findAuthorBooks.limit)
+      .skip(findAuthorBooks.page)
+      .orderBy({ 'book.id': 'DESC' })
+      .getManyAndCount();
   }
 }

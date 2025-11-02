@@ -12,14 +12,16 @@ export class LoanCreateTable1682086092464 implements MigrationInterface {
 
             bookId INT NOT NULL,
             personId INT NOT NULL,
+            libraryId INT NOT NULL,
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
             CONSTRAINT PK_loan PRIMARY KEY (id),
 
-            CONSTRAINT FK_book_loan FOREIGN KEY (bookId) REFERENCES book(id),
-            CONSTRAINT FK_person_loan FOREIGN KEY (personId) REFERENCES person(id)
+            CONSTRAINT FK_book_loan FOREIGN KEY (bookId) REFERENCES book(id) ON DELETE CASCADE,
+            CONSTRAINT FK_person_loan FOREIGN KEY (personId) REFERENCES person(id) ON DELETE CASCADE,
+            CONSTRAINT FK_library_loan FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
         );
     `);
   }

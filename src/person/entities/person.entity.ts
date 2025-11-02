@@ -2,10 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { States } from '../../helpers/enum/States.enum';
+import { Library } from '../../library/entities/library.entity';
 
 @Entity()
 export class Person {
@@ -38,6 +41,13 @@ export class Person {
 
   @Column()
   obs: string;
+
+  @ManyToOne(() => Library, { eager: false })
+  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_person' })
+  library?: Library;
+
+  @Column({ select: false })
+  libraryId: number;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
   createdAt: Date;

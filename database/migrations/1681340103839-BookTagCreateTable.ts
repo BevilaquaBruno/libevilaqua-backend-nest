@@ -10,8 +10,8 @@ export class BookTagCreateTable1681340103839 implements MigrationInterface {
 
                 CONSTRAINT PK_book_tag PRIMARY KEY (id),
 
-                CONSTRAINT FK_book_tag FOREIGN KEY (bookId) references book(id) ON DELETE CASCADE ON UPDATE CASCADE,
-                CONSTRAINT FK_tag_book FOREIGN KEY (tagId) references tag(id)
+                CONSTRAINT FK_book_tag FOREIGN KEY (bookId) references book(id) ON DELETE CASCADE,
+                CONSTRAINT FK_tag_book FOREIGN KEY (tagId) references tag(id) ON DELETE CASCADE
             );`);
   }
 

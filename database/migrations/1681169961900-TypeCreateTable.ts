@@ -6,9 +6,15 @@ export class TypeCreateTable1681169961900 implements MigrationInterface {
       CREATE TABLE type(
         id INT NOT NULL AUTO_INCREMENT,
         description VARCHAR(50) NOT NULL,
+
+        libraryId INT NOT NULL,
+
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        CONSTRAINT PK_type PRIMARY KEY (id)
+
+        CONSTRAINT PK_type PRIMARY KEY (id),
+        
+        CONSTRAINT FK_library_type FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
       );
     `);
   }

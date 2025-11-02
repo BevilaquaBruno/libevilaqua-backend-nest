@@ -15,10 +15,14 @@ export class PersonCreateTable1681776270324 implements MigrationInterface {
         number VARCHAR(5),
         obs TEXT,
 
+        libraryId INT NOT NULL,
+
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-        CONSTRAINT PK_person PRIMARY KEY (id)
+        CONSTRAINT PK_person PRIMARY KEY (id),
+        
+        CONSTRAINT FK_library_person FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
     );`);
   }
 

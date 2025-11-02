@@ -18,6 +18,8 @@ import { MailService } from 'src/mail/mail.service';
 import * as bcrypt from 'bcrypt';
 import { PayloadAuthDto } from './dto/payload-auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { SelectLibraryDto } from './dto/select-library.dto';
+import { LibraryService } from 'src/library/library.service';
 
 @Controller('auth')
 export class AuthController {
@@ -26,6 +28,7 @@ export class AuthController {
     private userService: UserService,
     private mailService: MailService,
     private jwtService: JwtService,
+    private libraryService: LibraryService,
   ) { }
 
   @HttpCode(HttpStatus.OK)
@@ -36,7 +39,72 @@ export class AuthController {
       throw new HttpException('Não existe nenhum usuário com este e-mail.', HttpStatus.BAD_REQUEST);
     }
 
-    return this.authService.signIn(signInDto.email, signInDto.password);
+    const logged = await this.authService.signIn(signInDto.email, signInDto.password);
+
+    const libraries = await this.libraryService.getLibrariesFromuser(user.id);
+    if (logged) {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: this.jwtService.sign({ password: user.password }, { expiresIn: '5m' }),
+        libraries: libraries,
+      };
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
+  @Post('select-library')
+  async selectLibrary(@Body() selectedLibrary: SelectLibraryDto) {
+    try {
+      const payload: { password: string } = await this.jwtService.verifyAsync(selectedLibrary.password, {
+        secret: process.env['SECRET'],
+      });
+      selectedLibrary.password = payload.password;
+
+      // Verifica se o usuário existe
+      const user = await this.userService.findByEmail(selectedLibrary.email);
+      if (!user) {
+        throw new HttpException('Usuário informado é inexistente.', HttpStatus.BAD_REQUEST);
+      }
+
+      // Verifica se a senha trazida está correta
+      const encriptedPassword = true;
+      const logged = await this.authService.signIn(selectedLibrary.email, selectedLibrary.password, encriptedPassword);
+      if (!logged) {
+        throw new UnauthorizedException();
+      }
+
+      // Verifica se a biblioteca existe
+      const library = await this.libraryService.findOne(selectedLibrary.libraryId);
+      if (!library) {
+        throw new HttpException('Biblioteca selecionada é inexistente.', HttpStatus.BAD_REQUEST);
+      }
+
+      const userHasLibrary = await this.userService.userHasLibrary(user.id, selectedLibrary.libraryId);
+      if (0 == userHasLibrary[1]) {
+        throw new HttpException('Esse usuário não tem acesso à biblioteca selecionada.', HttpStatus.BAD_REQUEST);
+      }
+
+      const libraryUser = await this.userService.getLibraryUser(user.id, selectedLibrary.libraryId);
+      if (!libraryUser) {
+        throw new HttpException('Vínculo entre usuário e biblioteca não encontrado.', HttpStatus.BAD_REQUEST);
+      }
+
+      if (null == libraryUser.email_verified_at) {
+        const token = await this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
+        this.mailService.sendUserConfirmation(user.email, token);
+        throw new HttpException('Usuário ainda não verificado nesta biblioteca, token de verificação reenviado.', HttpStatus.BAD_REQUEST);
+      }
+
+      return await this.authService.generateLoginToken(user, selectedLibrary.libraryId);
+    } catch (error) {
+      if (error.response && error.message)
+        throw new HttpException(error.response, error.status);
+      else
+        throw new UnauthorizedException
+    }
   }
 
   @UseGuards(AuthGuard)
@@ -108,7 +176,7 @@ export class AuthController {
         throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
 
       const encriptedPasword = await bcrypt.hash(resetPasswordDto.newPassword, 10);
-      const updatedUser = await this.userService.updatePassword(user.id, encriptedPasword);
+      const updatedUser = await this.userService.updatePassword(user.id, encriptedPasword, currentUser.libraryId);
       if (updatedUser.affected == 1) {
         // Atualiza o token como used
         await this.authService.updateResetToken(+resetToken.id, true);
@@ -175,7 +243,7 @@ export class AuthController {
       }
 
       this.authService.updateResetToken(+resetToken.id, true);
-      const updatedUser = await this.userService.confirmEmail(user.id);
+      const updatedUser = await this.userService.confirmEmail(user.id, reqUser.libraryId);
       if (updatedUser.affected == 1) {
         // Atualiza o token como used
         return {

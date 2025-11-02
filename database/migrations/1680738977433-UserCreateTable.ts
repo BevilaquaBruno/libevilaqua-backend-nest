@@ -8,7 +8,10 @@ export class UserCreateTable1680738977433 implements MigrationInterface {
             name VARCHAR(50) NOT NULL,
             email VARCHAR(50) NOT NULL,
             password VARCHAR(100),
-            email_verified_at DATETIME default NULL,
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            
             CONSTRAINT PK_user PRIMARY KEY (id),
             CONSTRAINT UK_user_email UNIQUE (email)
         );`);

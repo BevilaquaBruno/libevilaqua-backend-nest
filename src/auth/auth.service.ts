@@ -16,27 +16,37 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password: string, isPasswordEncripted: boolean = false) {
     // Localiza o usuário pelo e-mail
     const user = await this.userService.findByEmail(email);
 
     // Compara a senha informada com a senha do banco
-    const isValid = await bcrypt.compare(password, user.password);
+    let isValid = true;
+    if (isPasswordEncripted) {
+      isValid = (password == user.password) ? true : false;
+    } else {
+      isValid = await bcrypt.compare(password, user.password);
+    }
     if (!isValid) {
       throw new UnauthorizedException();
     }
-    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: true };
+
+    // retorna as bibliotecas do usuário
+    return isValid;
+  }
+
+  async generateLoginToken(user: User, libraryId: number) {
+    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: true, libraryId: libraryId };
     // Retorna um token com base no payload
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
-    
   }
 
-  async generateResetToken(user: User, tokenType: 'E' | 'S') {
-    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: false };
+  async generateResetToken(user: User, tokenType: 'E' | 'S', libraryId = 0) {
+    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: false, libraryId: libraryId };
     const token = this.jwtService.sign(payload, { expiresIn: '12h' });
-    
+
     await this.resetTokenRepository.save({
       userId: user.id.toString(),
       token,

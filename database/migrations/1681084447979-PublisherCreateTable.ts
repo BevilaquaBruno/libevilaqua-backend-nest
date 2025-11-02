@@ -7,9 +7,15 @@ export class PublisherCreateTable1681084447979 implements MigrationInterface {
           id INT NOT NULL AUTO_INCREMENT,
           name VARCHAR(50) NOT NULL,
           country VARCHAR(30),
+
+          libraryId INT NOT NULL,
+
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          CONSTRAINT PK_publisher PRIMARY KEY (id)
+
+          CONSTRAINT PK_publisher PRIMARY KEY (id),
+          
+          CONSTRAINT FK_library_publisher FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
       );`);
   }
 
