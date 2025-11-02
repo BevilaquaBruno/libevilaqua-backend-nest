@@ -93,12 +93,12 @@ export class AuthController {
       }
 
       if (null == libraryUser.email_verified_at) {
-        const token = await this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
+        const token = this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
         this.mailService.sendUserConfirmation(user.email, token, library.description);
         throw new HttpException('Usuário ainda não verificado nesta biblioteca, token de verificação reenviado.', HttpStatus.BAD_REQUEST);
       }
 
-      return await this.authService.generateLoginToken(user, selectedLibrary.libraryId);
+      return this.authService.generateLoginToken(user, selectedLibrary.libraryId);
     } catch (error) {
       if (error.response && error.message)
         throw new HttpException(error.response, error.status);
@@ -126,7 +126,7 @@ export class AuthController {
     if (null == user)
       throw new HttpException('Não existe nenhum usuário com este e-mail.', HttpStatus.BAD_REQUEST);
 
-    const token = await this.authService.generateResetToken(user, 'S');
+    const token = this.authService.generateResetToken(user, 'S');
     await this.mailService.sendResetPasswordRequest(user.name, user.email, token);
 
     return {
@@ -179,7 +179,7 @@ export class AuthController {
       const updatedUser = await this.userService.updatePassword(user.id, encriptedPasword, currentUser.libraryId);
       if (updatedUser.affected == 1) {
         // Atualiza o token como used
-        await this.authService.updateResetToken(+resetToken.id, true);
+        this.authService.updateResetToken(+resetToken.id, true);
         return {
           statusCode: 200,
           message: 'Senha atualizada com sucesso.',

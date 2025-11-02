@@ -103,7 +103,7 @@ export class UserController {
     }
 
     // envia o e-mail
-    const token = await this.authService.generateResetToken(currentUser, 'E', reqUser.libraryId);
+    const token = this.authService.generateResetToken(currentUser, 'E', reqUser.libraryId);
     this.mailService.sendUserConfirmation(currentUser.email, token, library.description);
 
     return {
@@ -161,7 +161,7 @@ export class UserController {
       );
     }
     // envia o e-mail
-    const token = await this.authService.generateResetToken(currentUser, 'E', newLibrary.id);
+    const token = this.authService.generateResetToken(currentUser, 'E', newLibrary.id);
     this.mailService.sendUserConfirmation(currentUser.email, token, createLibraryDto.description);
 
     return {
@@ -314,7 +314,7 @@ export class UserController {
       let userToToken: User = user;
       userToToken.name = updateUserDto.name;
       userToToken.email = updateUserDto.email;
-      const token = await this.authService.generateResetToken(userToToken, 'E', reqUser.libraryId);
+      const token = this.authService.generateResetToken(userToToken, 'E', reqUser.libraryId);
       this.mailService.sendUserConfirmation(userToToken.email, token, library.description);
     }
 

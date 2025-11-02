@@ -35,19 +35,20 @@ export class AuthService {
     return isValid;
   }
 
-  async generateLoginToken(user: User, libraryId: number) {
+  generateLoginToken(user: User, libraryId: number) {
     const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: true, libraryId: libraryId };
     // Retorna um token com base no payload
+    const token = this.jwtService.sign(payload);
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: token,
     };
   }
 
-  async generateResetToken(user: User, tokenType: 'E' | 'S', libraryId = 0) {
+  generateResetToken(user: User, tokenType: 'E' | 'S', libraryId = 0) {
     const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: false, libraryId: libraryId };
     const token = this.jwtService.sign(payload, { expiresIn: '12h' });
 
-    await this.resetTokenRepository.save({
+    this.resetTokenRepository.save({
       userId: user.id.toString(),
       token,
       expiresAt: new Date(Date.now() + 12 * 60 * 60 * 1000),
@@ -57,11 +58,11 @@ export class AuthService {
     return token;
   }
 
-  async findOneToken(token: string): Promise<ResetToken> {
+  findOneToken(token: string): Promise<ResetToken> {
     return this.resetTokenRepository.findOneBy({ token: token });
   }
 
-  async updateResetToken(id: number, used: boolean) {
-    return await this.resetTokenRepository.update(id, { used: used });
+  updateResetToken(id: number, used: boolean) {
+    return this.resetTokenRepository.update(id, { used: used });
   }
 }
