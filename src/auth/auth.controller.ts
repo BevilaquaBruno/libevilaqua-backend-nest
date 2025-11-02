@@ -47,7 +47,7 @@ export class AuthController {
         id: user.id,
         name: user.name,
         email: user.email,
-        password: user.password,
+        password: this.jwtService.sign({ password: user.password }, { expiresIn: '5m' }),
         libraries: libraries,
       };
     } else {
@@ -57,42 +57,54 @@ export class AuthController {
 
   @Post('select-library')
   async selectLibrary(@Body() selectedLibrary: SelectLibraryDto) {
-    // Verifica se o usuário existe
-    const user = await this.userService.findByEmail(selectedLibrary.email);
-    if (!user) {
-      throw new HttpException('Usuário informado é inexistente.', HttpStatus.BAD_REQUEST);
-    }
+    try {
+      const payload: { password: string } = await this.jwtService.verifyAsync(selectedLibrary.password, {
+        secret: process.env['SECRET'],
+      });
+      selectedLibrary.password = payload.password;
 
-    // Verifica se a senha trazida está correta
-    const encriptedPassword = true;
-    const logged = await this.authService.signIn(selectedLibrary.email, selectedLibrary.password, encriptedPassword);
-    if (!logged) {
-      throw new UnauthorizedException();
-    }
+      // Verifica se o usuário existe
+      const user = await this.userService.findByEmail(selectedLibrary.email);
+      if (!user) {
+        throw new HttpException('Usuário informado é inexistente.', HttpStatus.BAD_REQUEST);
+      }
 
-    // Verifica se a biblioteca existe
-    const library = await this.libraryService.findOne(selectedLibrary.libraryId);
-    if (!library) {
-      throw new HttpException('Biblioteca selecionada é inexistente.', HttpStatus.BAD_REQUEST);
-    }
+      // Verifica se a senha trazida está correta
+      const encriptedPassword = true;
+      const logged = await this.authService.signIn(selectedLibrary.email, selectedLibrary.password, encriptedPassword);
+      if (!logged) {
+        throw new UnauthorizedException();
+      }
 
-    const userHasLibrary = await this.userService.userHasLibrary(user.id, selectedLibrary.libraryId);
-    if (0 == userHasLibrary[1]) {
-      throw new HttpException('Esse usuário não tem acesso à biblioteca selecionada.', HttpStatus.BAD_REQUEST);
-    }
+      // Verifica se a biblioteca existe
+      const library = await this.libraryService.findOne(selectedLibrary.libraryId);
+      if (!library) {
+        throw new HttpException('Biblioteca selecionada é inexistente.', HttpStatus.BAD_REQUEST);
+      }
 
-    const libraryUser = await this.userService.getLibraryUser(user.id, selectedLibrary.libraryId);
-    if (!libraryUser) {
-      throw new HttpException('Vínculo entre usuário e biblioteca não encontrado.', HttpStatus.BAD_REQUEST);
-    }
+      const userHasLibrary = await this.userService.userHasLibrary(user.id, selectedLibrary.libraryId);
+      if (0 == userHasLibrary[1]) {
+        throw new HttpException('Esse usuário não tem acesso à biblioteca selecionada.', HttpStatus.BAD_REQUEST);
+      }
 
-    if (null == libraryUser.email_verified_at) {
-      const token = await this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
-      this.mailService.sendUserConfirmation(user.email, token);
-      throw new HttpException('Usuário ainda não verificado nesta biblioteca, token de verificação reenviado.', HttpStatus.BAD_REQUEST);
-    }
+      const libraryUser = await this.userService.getLibraryUser(user.id, selectedLibrary.libraryId);
+      if (!libraryUser) {
+        throw new HttpException('Vínculo entre usuário e biblioteca não encontrado.', HttpStatus.BAD_REQUEST);
+      }
 
-    return await this.authService.generateLoginToken(user, selectedLibrary.libraryId);
+      if (null == libraryUser.email_verified_at) {
+        const token = await this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
+        this.mailService.sendUserConfirmation(user.email, token);
+        throw new HttpException('Usuário ainda não verificado nesta biblioteca, token de verificação reenviado.', HttpStatus.BAD_REQUEST);
+      }
+
+      return await this.authService.generateLoginToken(user, selectedLibrary.libraryId);
+    } catch (error) {
+      if (error.response && error.message)
+        throw new HttpException(error.response, error.status);
+      else
+        throw new UnauthorizedException
+    }
   }
 
   @UseGuards(AuthGuard)
