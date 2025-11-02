@@ -16,7 +16,7 @@ export class MailService {
       .replace(/{{URL}}/g, url)
       .replace(/{{LIBRARY_NAME}}/g, libraryName);
 
-    await this.mailerService.sendMail({
+    this.mailerService.sendMail({
       to: email,
       subject: process.env['APP_NAME'] + ' - Confirme seu cadastro',
       text: `Por favor, confirme seu cadastro a biblioteca ${libraryName} no app ${process.env['APP_NAME']} acessando a URL: ${url}`,
@@ -32,7 +32,7 @@ export class MailService {
       .replace(/{{APP_NAME}}/g, process.env['APP_NAME'])
       .replace(/{{URL}}/g, url);
 
-    await this.mailerService.sendMail({
+    this.mailerService.sendMail({
       to: email,
       subject: process.env['APP_NAME'] + ' - Resete sua senha',
       text: `Olá ${name}. Acesse o link abaixo para resetar sua senha: ${url}`,
