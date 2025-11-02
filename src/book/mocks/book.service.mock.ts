@@ -6,4 +6,5 @@ export const mockBookService = {
   remove: jest.fn(),
   findBooksFromAuthor: jest.fn(),
   count: jest.fn(),
+  findAndCountBooksFromAuthor: jest.fn(),
 }
