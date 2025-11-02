@@ -14,7 +14,12 @@ export class CreatePersonDto {
   @Length(1, 250, { message: 'Informe um nome com até 250 caracteres.' })
   name: string;
 
-  @IsNotEmpty({ message: 'CPF é obrigatório.' })
+  @ValidateIf(
+    (thisPerson) =>
+      thisPerson.cpf !== undefined &&
+      thisPerson.cpf !== '' &&
+      thisPerson.cpf !== null,
+  )
   @IsString({ message: 'Informe corretamente o CPF da pessoa.' })
   @Matches(/\d{3}.\d{3}.\d{3}-\d{2}/g, { message: 'CPF inválido.' })
   cpf: string;

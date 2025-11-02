@@ -32,19 +32,21 @@ export class PersonController {
     const reqUser: PayloadAuthDto = req['user'];
 
     // Valida o CPF
-    const isCpfValid = CPF.validate(createPersonDto.cpf);
-    if (!isCpfValid) {
-      throw new HttpException('CPF inválido.', HttpStatus.BAD_REQUEST);
-    }
+    if (createPersonDto.cpf) {
+      const isCpfValid = CPF.validate(createPersonDto.cpf);
+      if (!isCpfValid) {
+        throw new HttpException('CPF inválido.', HttpStatus.BAD_REQUEST);
+      }
 
-    // Valida se a pessoa(CPF) já está cadastrada
-    const isPersonRegistered = await this.personService.findByCPF(
-      createPersonDto.cpf,
-      null,
-      reqUser.libraryId
-    );
-    if (isPersonRegistered?.cpf != undefined) {
-      throw new HttpException('CPF já cadastrado.', HttpStatus.BAD_REQUEST);
+      // Valida se a pessoa(CPF) já está cadastrada
+      const isPersonRegistered = await this.personService.findByCPF(
+        createPersonDto.cpf,
+        null,
+        reqUser.libraryId
+      );
+      if (isPersonRegistered?.cpf != undefined) {
+        throw new HttpException('CPF já cadastrado.', HttpStatus.BAD_REQUEST);
+      }
     }
 
     // Valida campos vazios e os deixa null
