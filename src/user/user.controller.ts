@@ -94,7 +94,7 @@ export class UserController {
       );
     }
 
-    const newLibraryUser = this.userService.createLibraryUser(currentUser.id, reqUser.libraryId);
+    const newLibraryUser = await this.userService.createLibraryUser(currentUser.id, reqUser.libraryId);
     if (!newLibraryUser) {
       throw new HttpException(
         'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
@@ -153,7 +153,7 @@ export class UserController {
       }
     }
 
-    const newLibraryUser = this.userService.createLibraryUser(currentUser.id, newLibrary.id);
+    const newLibraryUser = await this.userService.createLibraryUser(currentUser.id, newLibrary.id);
     if (!newLibraryUser) {
       throw new HttpException(
         'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
@@ -322,7 +322,7 @@ export class UserController {
     const updatedUser = await this.userService.update(+id, updateUserDto);
     if (updatedUser.affected == 1) {
       if (isEmailChanged) {
-        this.userService.setLibraryUserUnconfirmed(+id, reqUser.libraryId);
+        await this.userService.setLibraryUserUnconfirmed(+id, reqUser.libraryId);
       }
       return {
         id: +id,

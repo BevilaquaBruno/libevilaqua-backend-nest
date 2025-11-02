@@ -91,16 +91,16 @@ export class UserService {
     });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.userRepository.update(id, updateUserDto);
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return this.userRepository.update(id, updateUserDto);
   }
 
-  async remove(id: number) {
-    return await this.userRepository.delete({ id });
+  remove(id: number) {
+    return this.userRepository.delete({ id });
   }
 
-  async count(libraryId: number) {
-    return await this.userRepository.count({
+  count(libraryId: number) {
+    return this.userRepository.count({
       where: {
         libraries: {
           library: { id: libraryId }
@@ -109,8 +109,8 @@ export class UserService {
     });
   }
 
-  async updatePassword(id: number, password: string, libraryId: number) {
-    return await this.userRepository.update({
+  updatePassword(id: number, password: string, libraryId: number) {
+    return this.userRepository.update({
       id: id,
       libraries: {
         library: { id: libraryId }
@@ -135,8 +135,8 @@ export class UserService {
     return this.libraryUserRepository.update(libraryUser.id, libraryUser);
   }
 
-  async userHasLibrary(userId: number, libraryId: number) {
-    return await this.userRepository.findAndCountBy({ id: userId, libraries: { library: { id: libraryId } } });
+  userHasLibrary(userId: number, libraryId: number) {
+    return this.userRepository.findAndCountBy({ id: userId, libraries: { library: { id: libraryId } } });
   }
 
   createLibraryUser(userId: number, libraryId: number) {
@@ -147,8 +147,8 @@ export class UserService {
     return this.libraryUserRepository.findOneBy({ library: { id: libraryId }, user: { id: userId } });
   }
 
-  async setLibraryUserUnconfirmed(userId: number, libraryId: number) {
-    return await this.libraryUserRepository.update({
+  setLibraryUserUnconfirmed(userId: number, libraryId: number) {
+    return this.libraryUserRepository.update({
       library: {
         id: libraryId
       },
