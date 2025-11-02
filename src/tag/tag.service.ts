@@ -45,23 +45,23 @@ export class TagService {
     });
   }
 
-  async update(id: number, updateTagDto: UpdateTagDto, libraryId: number) {
-    return await this.tagServiceRepository.update({
+  update(id: number, updateTagDto: UpdateTagDto, libraryId: number) {
+    return this.tagServiceRepository.update({
       id: id,
       libraryId: libraryId
     }, updateTagDto);
   }
 
-  async remove(id: number, libraryId: number) {
-    return await this.tagServiceRepository.delete({ id: id, libraryId: libraryId });
+  remove(id: number, libraryId: number) {
+    return this.tagServiceRepository.delete({ id: id, libraryId: libraryId });
   }
 
-  async count(libraryId: number) {
-    return await this.tagServiceRepository.count({ where: { libraryId: libraryId } });
+  count(libraryId: number) {
+    return this.tagServiceRepository.count({ where: { libraryId: libraryId } });
   }
 
-  async getTagList(tag_id_list: number[], libraryId: number) {
-    return await this.tagServiceRepository.find({
+  getTagList(tag_id_list: number[], libraryId: number) {
+    return this.tagServiceRepository.find({
       where: {
         id: In(tag_id_list),
         libraryId: libraryId,
