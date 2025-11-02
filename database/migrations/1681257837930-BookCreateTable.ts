@@ -23,9 +23,9 @@ export class BookCreateTable1681257837930 implements MigrationInterface {
 
         CONSTRAINT PK_book PRIMARY KEY (id),
 
-        CONSTRAINT FK_genre_book FOREIGN KEY (genreId) REFERENCES genre(id) ON DELETE RESTRICT,
-        CONSTRAINT FK_publisher_book FOREIGN KEY (publisherId) REFERENCES publisher(id) ON DELETE RESTRICT,
-        CONSTRAINT FK_type_book FOREIGN KEY (typeId) REFERENCES type(id) ON DELETE RESTRICT,
+        CONSTRAINT FK_genre_book FOREIGN KEY (genreId) REFERENCES genre(id) ON DELETE SET NULL,
+        CONSTRAINT FK_publisher_book FOREIGN KEY (publisherId) REFERENCES publisher(id) ON DELETE SET NULL,
+        CONSTRAINT FK_type_book FOREIGN KEY (typeId) REFERENCES type(id) ON DELETE SET NULL,
         CONSTRAINT FK_library_book FOREIGN KEY (libraryId) REFERENCES library(id) ON DELETE CASCADE
     );`);
   }
