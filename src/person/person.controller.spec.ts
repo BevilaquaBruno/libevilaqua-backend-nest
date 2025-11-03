@@ -11,6 +11,8 @@ import { FindPersonDto } from './dto/find-person.dto';
 
 describe('PersonController', () => {
   let controller: PersonController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -47,13 +49,13 @@ describe('PersonController', () => {
       id: 1,
       ...person
     });
-    const result = await controller.create(person);
+    const result = await controller.create(req, person);
 
     expect(result).toEqual({
       id: 1,
       ...person
     });
-    expect(mockPersonService.create).toHaveBeenCalledWith(person);
+    expect(mockPersonService.create).toHaveBeenCalledWith(person, libraryId);
   });
 
   it('should return all people', async () => {
@@ -97,6 +99,7 @@ describe('PersonController', () => {
     };
 
     const result = await controller.findAll(
+      req,
       FindPersonDto.page.toString(),
       FindPersonDto.limit.toString(),
     );
@@ -107,7 +110,7 @@ describe('PersonController', () => {
       count: quantity
     });
     FindPersonDto.page--;
-    expect(mockPersonService.findAll).toHaveBeenCalledWith(FindPersonDto);
+    expect(mockPersonService.findAll).toHaveBeenCalledWith(FindPersonDto, libraryId);
   });
 
   it('Should return one people', async () => {
@@ -130,11 +133,11 @@ describe('PersonController', () => {
 
     // Cria o mock da consulta e consulta o gênero
     const id = 1;
-    const result = await controller.findOne(id.toString());
+    const result = await controller.findOne(req, id.toString());
 
     // Valida os dados
     expect(result).toEqual(person);
-    expect(mockPersonService.findOne).toHaveBeenCalledWith(id);
+    expect(mockPersonService.findOne).toHaveBeenCalledWith(id, libraryId);
   });
 
   it('Should edit a person', async () => {
@@ -160,10 +163,10 @@ describe('PersonController', () => {
     });
     mockPersonService.findOne.mockResolvedValue(dto);
 
-    const result = await controller.update(id.toString(), dto);
+    const result = await controller.update(req, id.toString(), dto);
 
     expect(result).toEqual(dto);
-    expect(mockPersonService.update).toHaveBeenCalledWith(id, dto);
+    expect(mockPersonService.update).toHaveBeenCalledWith(id, dto, libraryId);
   });
 
   it('Should remove a person', async () => {
@@ -188,13 +191,13 @@ describe('PersonController', () => {
       obs: 'Meu próprio cadastro'
     });
 
-    const result = await controller.remove(id.toString());
+    const result = await controller.remove(req, id.toString());
 
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
       message: 'Pessoa deletada com sucesso.',
     });
-    expect(mockPersonService.remove).toHaveBeenCalledWith(id);
+    expect(mockPersonService.remove).toHaveBeenCalledWith(id, libraryId);
   });
 });
