@@ -7,6 +7,7 @@ import { FindPublisherDto } from './dto/find-publisher.dto';
 
 describe('PublisherService', () => {
   let service: PublisherService;
+  const libraryId = 1
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -39,13 +40,13 @@ describe('PublisherService', () => {
     const result = await service.create({
       name: 'Editora cadastrada',
       country: 'Brasil'
-    });
+    }, libraryId);
 
     expect(result).toEqual(mockResolved)
     expect(mockPublisherService.create).toHaveBeenCalledWith({
       name: 'Editora cadastrada',
       country: 'Brasil'
-    });
+    }, libraryId);
   });
 
   it('Should return a list with all publishers', async () => {
@@ -69,11 +70,11 @@ describe('PublisherService', () => {
       limit: 2,
       page: 1
     };
-    const result = await service.findAll(findDto);
+    const result = await service.findAll(findDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockList);
-    expect(mockPublisherService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 });
+    expect(mockPublisherService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
   });
 
   it('Should return a publisher', async () => {
@@ -85,11 +86,11 @@ describe('PublisherService', () => {
     mockPublisherService.findOne.mockResolvedValue(mock);
 
     // Consulta
-    const result = await service.findOne(1);
+    const result = await service.findOne(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mock);
-    expect(mockPublisherService.findOne).toHaveBeenCalledWith(1);
+    expect(mockPublisherService.findOne).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should update a publisher', async () => {
@@ -106,7 +107,7 @@ describe('PublisherService', () => {
       id: 1,
       name: 'Editora cadastrada',
       country: 'Brasil'
-    });
+    }, libraryId);
 
     // Valida o retorno
     expect(result).toEqual(mock);
@@ -114,7 +115,7 @@ describe('PublisherService', () => {
       id: 1,
       name: 'Editora cadastrada',
       country: 'Brasil'
-    });
+    }, libraryId);
   });
 
   it('Should remove a publisher', async () => {
@@ -126,11 +127,11 @@ describe('PublisherService', () => {
     mockPublisherService.remove.mockResolvedValue(mockDelete);
 
     // Deleta
-    const result = await service.remove(1);
+    const result = await service.remove(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual({ raw: [], affected: 1 });
-    expect(mockPublisherService.remove).toHaveBeenCalledWith(1);
+    expect(mockPublisherService.remove).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should return a count of publishers', async () => {
@@ -138,10 +139,10 @@ describe('PublisherService', () => {
     mockPublisherService.count.mockResolvedValue(1);
 
     // Chama o count
-    const result = await service.count();
+    const result = await service.count(libraryId);
 
     // Valida os retornos
     expect(result).toEqual(1);
-    expect(mockPublisherService.count).toHaveBeenCalledWith();
+    expect(mockPublisherService.count).toHaveBeenCalledWith(libraryId);
   });
 });
