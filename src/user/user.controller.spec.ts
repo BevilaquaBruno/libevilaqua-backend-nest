@@ -8,11 +8,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
 import { MailService } from '../mail/mail.service';
-import { mockMailService } from '../mail/mock/mail.service.mock';
+import { mockMailService } from '../mail/mocks/mail.service.mock';
 import { AuthService } from '../auth/auth.service';
 import { mockAuthService } from '../auth/mocks/auth.service.mock';
 import { LibraryService } from '../library/library.service';
-import { mockLibraryService } from '../library/mock/library.service.mock';
+import { mockLibraryService } from '../library/mocks/library.service.mock';
 
 describe('UserController', () => {
   let controller: UserController;

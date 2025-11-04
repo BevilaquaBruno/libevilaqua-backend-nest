@@ -8,9 +8,9 @@ import { UnauthorizedException } from '@nestjs/common';
 import { MainAuthDto } from './dto/main-auth.dto';
 import { mockUserService } from '../user/mocks/user.service.mock';
 import { UserService } from '../user/user.service';
-import { mockMailService } from '../mail/mock/mail.service.mock';
+import { mockMailService } from '../mail/mocks/mail.service.mock';
 import { MailService } from '../mail/mail.service';
-import { mockLibraryService } from '../library/mock/library.service.mock';
+import { mockLibraryService } from '../library/mocks/library.service.mock';
 import { LibraryService } from '../library/library.service';
 import * as bcrypt from 'bcrypt';
 

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LibraryController } from './library.controller';
 import { LibraryService } from './library.service';
-import { mockLibraryService } from './mock/library.service.mock';
+import { mockLibraryService } from './mocks/library.service.mock';
 import { JwtService } from '@nestjs/jwt';
 import { mockJwtService } from '../auth/mocks/jwt.service.mock';
 import { UpdateLibraryDto } from './dto/update-library.dto';
