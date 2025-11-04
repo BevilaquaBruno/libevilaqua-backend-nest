@@ -7,6 +7,7 @@ import { FindAuthorDto } from './dto/find-author.dto';
 
 describe('AuthorService', () => {
   let service: AuthorService;
+  const libraryId = 1;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -42,7 +43,7 @@ describe('AuthorService', () => {
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
       bio: 'Here is the author bio, a long place to put some text'
-    });
+    }, libraryId);
 
     // Valida o retorno e a chamada
     expect(result).toEqual(mockAuthorResolved);
@@ -51,7 +52,7 @@ describe('AuthorService', () => {
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
       bio: 'Here is the author bio, a long place to put some text'
-    });
+    }, libraryId);
   });
 
   it('Should return a list with all authors', async () => {
@@ -79,11 +80,11 @@ describe('AuthorService', () => {
       limit: 2,
       page: 1
     };
-    const result = await service.findAll(findAuthor);
+    const result = await service.findAll(findAuthor, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockAuthorList);
-    expect(mockAuthorService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 });
+    expect(mockAuthorService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
   });
 
   it('Should return one author', async () => {
@@ -98,11 +99,11 @@ describe('AuthorService', () => {
     mockAuthorService.findOne.mockResolvedValue(mockAuthor);
 
     // Consulta
-    const result = await service.findOne(1);
+    const result = await service.findOne(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockAuthor);
-    expect(mockAuthorService.findOne).toHaveBeenCalledWith(1)
+    expect(mockAuthorService.findOne).toHaveBeenCalledWith(1, libraryId)
   });
 
   it('Should update and author', async () => {
@@ -123,7 +124,7 @@ describe('AuthorService', () => {
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
       bio: 'Here is the author bio, a long place to put some text'
-    });
+    }, libraryId);
 
     // Valida o retorno e a chamada
     expect(result).toEqual(mockAuthor);
@@ -133,7 +134,7 @@ describe('AuthorService', () => {
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
       bio: 'Here is the author bio, a long place to put some text'
-    });
+    }, libraryId);
   });
 
   it('Should remove an author', async () => {
@@ -145,11 +146,11 @@ describe('AuthorService', () => {
     mockAuthorService.remove.mockResolvedValue(mockDeleteAuthor);
 
     // Deleta o autor
-    const result = await service.remove(1);
+    const result = await service.remove(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual({ raw: [], affected: 1 });
-    expect(mockAuthorService.remove).toHaveBeenCalledWith(1);
+    expect(mockAuthorService.remove).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should return a count of authors', async () => {
@@ -157,10 +158,10 @@ describe('AuthorService', () => {
     mockAuthorService.count.mockResolvedValue(1);
 
     // Chama o count
-    const result = await service.count();
+    const result = await service.count(libraryId);
 
     // Valida os retornos
     expect(result).toEqual(1);
-    expect(mockAuthorService.count).toHaveBeenCalledWith();
+    expect(mockAuthorService.count).toHaveBeenCalledWith(libraryId);
   });
 });

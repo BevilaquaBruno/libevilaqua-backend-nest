@@ -8,6 +8,7 @@ import { FindPersonDto } from './dto/find-person.dto';
 
 describe('PersonService', () => {
   let service: PersonService;
+  const libraryId = 1;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -54,7 +55,7 @@ describe('PersonService', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro'
-    });
+    }, libraryId);
 
     expect(result).toEqual(mockResolved)
     expect(mockPersonService.create).toHaveBeenCalledWith({
@@ -67,7 +68,7 @@ describe('PersonService', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro'
-    });
+    }, libraryId);
   });
 
   it('Should return a list with all people', async () => {
@@ -105,11 +106,11 @@ describe('PersonService', () => {
       limit: 2,
       page: 1
     };
-    const result = await service.findAll(findDto);
+    const result = await service.findAll(findDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockList);
-    expect(mockPersonService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 });
+    expect(mockPersonService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
   });
 
   it('Should return a person', async () => {
@@ -128,11 +129,11 @@ describe('PersonService', () => {
     mockPersonService.findOne.mockResolvedValue(mock);
 
     // Consulta
-    const result = await service.findOne(1);
+    const result = await service.findOne(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mock);
-    expect(mockPersonService.findOne).toHaveBeenCalledWith(1);
+    expect(mockPersonService.findOne).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should update a person', async () => {
@@ -163,7 +164,7 @@ describe('PersonService', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro'
-    });
+    }, libraryId);
 
     // Valida o retorno
     expect(result).toEqual(mock);
@@ -178,7 +179,7 @@ describe('PersonService', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro'
-    });
+    }, libraryId);
   });
 
   it('Should remove a person', async () => {
@@ -190,11 +191,11 @@ describe('PersonService', () => {
     mockPersonService.remove.mockResolvedValue(mockDelete);
 
     // Deleta
-    const result = await service.remove(1);
+    const result = await service.remove(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual({ raw: [], affected: 1 });
-    expect(mockPersonService.remove).toHaveBeenCalledWith(1);
+    expect(mockPersonService.remove).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should return a count of people', async () => {
@@ -202,10 +203,10 @@ describe('PersonService', () => {
     mockPersonService.count.mockResolvedValue(1);
 
     // Chama o count
-    const result = await service.count();
+    const result = await service.count(libraryId);
 
     // Valida os retornos
     expect(result).toEqual(1);
-    expect(mockPersonService.count).toHaveBeenCalledWith();
+    expect(mockPersonService.count).toHaveBeenCalledWith(libraryId);
   });
 });

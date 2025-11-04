@@ -10,6 +10,8 @@ import { FindTagDto } from './dto/find-tag.dto';
 
 describe('TagController', () => {
   let controller: TagController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,13 +40,13 @@ describe('TagController', () => {
       id: 1,
       ...publisher
     });
-    const result = await controller.create(publisher);
+    const result = await controller.create(req, publisher);
 
     expect(result).toEqual({
       id: 1,
       ...publisher
     });
-    expect(mockTagService.create).toHaveBeenCalledWith(publisher);
+    expect(mockTagService.create).toHaveBeenCalledWith(publisher, libraryId);
   });
 
   it('should return all tags', async () => {
@@ -72,6 +74,7 @@ describe('TagController', () => {
     };
 
     const result = await controller.findAll(
+      req,
       findDto.page.toString(),
       findDto.limit.toString(),
     );
@@ -82,7 +85,7 @@ describe('TagController', () => {
       count: quantity
     });
     findDto.page--;
-    expect(mockTagService.findAll).toHaveBeenCalledWith(findDto);
+    expect(mockTagService.findAll).toHaveBeenCalledWith(findDto, libraryId);
   });
 
   it('Should return one tag', async () => {
@@ -97,11 +100,11 @@ describe('TagController', () => {
 
     // Cria o mock da consulta e consulta
     const id = 1;
-    const result = await controller.findOne(id.toString());
+    const result = await controller.findOne(req, id.toString());
 
     // Valida os dados
     expect(result).toEqual(publisher);
-    expect(mockTagService.findOne).toHaveBeenCalledWith(id);
+    expect(mockTagService.findOne).toHaveBeenCalledWith(id, libraryId);
   });
 
   it('Should edit a tag', async () => {
@@ -119,10 +122,10 @@ describe('TagController', () => {
     });
     mockTagService.findOne.mockResolvedValue(dto);
 
-    const result = await controller.update(id.toString(), dto);
+    const result = await controller.update(req, id.toString(), dto);
 
     expect(result).toEqual(dto);
-    expect(mockTagService.update).toHaveBeenCalledWith(id, dto);
+    expect(mockTagService.update).toHaveBeenCalledWith(id, dto, libraryId);
   });
 
   it('Should remove a tag', async () => {
@@ -139,13 +142,13 @@ describe('TagController', () => {
       description: 'Tag cadastrada'
     });
 
-    const result = await controller.remove(id.toString());
+    const result = await controller.remove(req, id.toString());
 
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
       message: 'Tag deletada com sucesso.',
     });
-    expect(mockTagService.remove).toHaveBeenCalledWith(id);
+    expect(mockTagService.remove).toHaveBeenCalledWith(id, libraryId);
   });
 });

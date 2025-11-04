@@ -1,4 +1,4 @@
-import { LibraryUser } from "src/user/entities/library-user.entity";
+import { LibraryUser } from "../../user/entities/library-user.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()

@@ -6,6 +6,7 @@ import { FindLoanDto } from './dto/find-loan.dto';
 
 describe('LoanService', () => {
   let service: LoanService;
+  const libraryId = 1;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -104,7 +105,7 @@ describe('LoanService', () => {
     mockLoanService.create.mockResolvedValue(mockLoanResolved);
 
     // Chama e valida
-    const result = await service.create(mockLoan);
+    const result = await service.create(mockLoan, libraryId);
 
     expect(result).toEqual(mockLoanResolved)
     expect(mockLoanService.create).toHaveBeenCalledWith({
@@ -114,7 +115,7 @@ describe('LoanService', () => {
       loan_date: new Date('2025-01-01'),
       bookId: 1,
       personId: 2
-    });
+    }, libraryId);
   });
 
   it('Should return a list with all loans', async () => {
@@ -268,7 +269,7 @@ describe('LoanService', () => {
       description: '',
       returned: false
     };
-    const result = await service.findAll(findLoanDto);
+    const result = await service.findAll(findLoanDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockLoanList);
@@ -281,7 +282,7 @@ describe('LoanService', () => {
       person: 0,
       description: '',
       returned: false
-    });
+    }, libraryId);
   });
 
   it('Should return a loan', async () => {
@@ -356,11 +357,11 @@ describe('LoanService', () => {
     mockLoanService.findOne.mockResolvedValue(mockLoan);
 
     // Consulta
-    const result = await service.findOne(1);
+    const result = await service.findOne(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockLoan);
-    expect(mockLoanService.findOne).toHaveBeenCalledWith(1);
+    expect(mockLoanService.findOne).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should update a loan', async () => {
@@ -443,7 +444,7 @@ describe('LoanService', () => {
       loan_date: new Date('2025-01-01'),
       bookId: 1,
       personId: 2
-    });
+    }, libraryId);
 
     // Valida o retorno
     expect(result).toEqual(mockLoan);
@@ -455,7 +456,7 @@ describe('LoanService', () => {
       loan_date: new Date('2025-01-01'),
       bookId: 1,
       personId: 2
-    });
+    }, libraryId);
   });
 
   it('Should remove a loan', async () => {
@@ -467,11 +468,11 @@ describe('LoanService', () => {
     mockLoanService.remove.mockResolvedValue(mockDeleteLoan);
 
     // Deleta
-    const result = await service.remove(1);
+    const result = await service.remove(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual({ raw: [], affected: 1 });
-    expect(mockLoanService.remove).toHaveBeenCalledWith(1);
+    expect(mockLoanService.remove).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should return a count of loans', async () => {
@@ -490,7 +491,7 @@ describe('LoanService', () => {
     }
 
     // Chama o count
-    const result = await service.count(findLoanDto);
+    const result = await service.count(findLoanDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(1);
@@ -503,6 +504,6 @@ describe('LoanService', () => {
       page: 1,
       limit: 2,
       returned: false
-    });
+    }, libraryId);
   });
 });

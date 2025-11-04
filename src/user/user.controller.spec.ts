@@ -7,16 +7,27 @@ import { mockUserService } from './mocks/user.service.mock';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
+import { MailService } from '../mail/mail.service';
+import { mockMailService } from '../mail/mock/mail.service.mock';
+import { AuthService } from '../auth/auth.service';
+import { mockAuthService } from '../auth/mocks/auth.service.mock';
+import { LibraryService } from '../library/library.service';
+import { mockLibraryService } from '../library/mock/library.service.mock';
 
 describe('UserController', () => {
   let controller: UserController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
         { provide: JwtService, useValue: mockJwtService },
-        { provide: UserService, useValue: mockUserService }
+        { provide: UserService, useValue: mockUserService },
+        { provide: MailService, useValue: mockMailService },
+        { provide: AuthService, useValue: mockAuthService },
+        { provide: LibraryService, useValue: mockLibraryService }
       ],
     }).compile();
 
@@ -42,14 +53,18 @@ describe('UserController', () => {
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com'
     });
-    const result = await controller.create(user);
+    mockLibraryService.findOne.mockResolvedValue({ id: 1, description: "Biblioteca um" });
+    mockUserService.createLibraryUser.mockResolvedValue({ id: 1, library: { id: 1 }, user: { id: 1 } })
+    const result = await controller.create(req, user);
 
     expect(result).toEqual({
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com'
     });
-    expect(mockUserService.create).toHaveBeenCalledWith(user);
+    expect(mockUserService.create).toHaveBeenCalled();
+    expect(mockLibraryService.findOne).toHaveBeenCalledWith(libraryId);
+    expect(mockUserService.createLibraryUser).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('should return all users', async () => {
@@ -79,6 +94,7 @@ describe('UserController', () => {
     };
 
     const result = await controller.findAll(
+      req,
       findDto.page.toString(),
       findDto.limit.toString(),
     );
@@ -89,7 +105,7 @@ describe('UserController', () => {
       count: quantity
     });
     findDto.page--;
-    expect(mockUserService.findAll).toHaveBeenCalledWith(findDto);
+    expect(mockUserService.findAll).toHaveBeenCalledWith(findDto, libraryId);
   });
 
   it('Should return one user', async () => {
@@ -105,11 +121,11 @@ describe('UserController', () => {
 
     // Cria o mock da consulta e consulta
     const id = 1;
-    const result = await controller.findOne(id.toString());
+    const result = await controller.findOne(req, id.toString());
 
     // Valida os dados
     expect(result).toEqual(user);
-    expect(mockUserService.findOne).toHaveBeenCalledWith(id);
+    expect(mockUserService.findOne).toHaveBeenCalledWith(id, libraryId);
   });
 
   it('Should edit a user', async () => {
@@ -128,12 +144,14 @@ describe('UserController', () => {
       raw: [],
       affected: 1
     });
+    mockLibraryService.findOne.mockResolvedValue({ id: 1, description: "Biblioteca um" })
     mockUserService.findOne.mockResolvedValue(dto);
 
-    const result = await controller.update(id.toString(), dto);
+    const result = await controller.update(req, id.toString(), dto);
 
     expect(result).toEqual(dto);
-    expect(mockUserService.update).toHaveBeenCalledWith(id, dto);
+    expect(mockUserService.update).toHaveBeenCalledWith(id, { "id": 1, "email": "bbbevilaqua@gmail.com", "name": "Bruno Fernando Bevilaqua" });
+    expect(mockLibraryService.findOne).toHaveBeenCalledWith(libraryId);
   });
 
   it('Should remove a user', async () => {
@@ -151,7 +169,7 @@ describe('UserController', () => {
       email: 'bbbevilaqua@gmail.com'
     });
 
-    const result = await controller.remove(id.toString());
+    const result = await controller.remove(req, id.toString());
 
     // Valida os retornos
     expect(result).toEqual({

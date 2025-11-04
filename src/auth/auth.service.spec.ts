@@ -6,6 +6,9 @@ import * as bcrypt from 'bcrypt';
 import { mockUserService } from '../user/mocks/user.service.mock';
 import { mockJwtService } from './mocks/jwt.service.mock';
 import { UnauthorizedException } from '@nestjs/common';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { ResetToken } from '../reset-token/entities/reset-token.entity';
+import { mockResetTokenService } from '../reset-token/mock/reset-token.service.mock';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -16,6 +19,10 @@ describe('AuthService', () => {
         AuthService,
         { provide: UserService, useValue: mockUserService },
         { provide: JwtService, useValue: mockJwtService },
+        {
+          provide: getRepositoryToken(ResetToken),
+          useValue: mockResetTokenService,
+        },
       ],
     }).compile();
 
@@ -42,7 +49,7 @@ describe('AuthService', () => {
     const result = await service.signIn('bruno.f.bevilaqua@gmail.com', '123');
 
     // valida os retornos
-    expect(result).toHaveProperty('access_token');
+    expect(result).toBe(true);
     expect(mockUserService.findByEmail).toHaveBeenCalledWith('bruno.f.bevilaqua@gmail.com');
   });
 

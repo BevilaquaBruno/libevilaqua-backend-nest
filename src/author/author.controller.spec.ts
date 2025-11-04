@@ -10,9 +10,12 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import { FindAuthorDto } from './dto/find-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { FindAuthorBooksDto } from './dto/find-author-books.dto';
+import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 
 describe('AuthorController', () => {
   let controller: AuthorController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -45,13 +48,13 @@ describe('AuthorController', () => {
       id: 1,
       ...authorDto
     });
-    const result = await controller.create(authorDto);
+    const result = await controller.create(req, authorDto);
 
     expect(result).toEqual({
       id: 1,
       ...authorDto
     });
-    expect(mockAuthorService.create).toHaveBeenCalledWith(authorDto);
+    expect(mockAuthorService.create).toHaveBeenCalledWith(authorDto, 1);
   });
 
   it('Should return all authors', async () => {
@@ -84,6 +87,7 @@ describe('AuthorController', () => {
       limit: 2,
     };
     const result = await controller.findAll(
+      req,
       findAuthorDto.page.toString(),
       findAuthorDto.limit.toString()
     );
@@ -93,7 +97,8 @@ describe('AuthorController', () => {
       count: authorList.length
     });
     findAuthorDto.page--;
-    expect(mockAuthorService.findAll).toHaveBeenCalledWith(findAuthorDto);
+    expect(mockAuthorService.findAll).toHaveBeenCalledWith(findAuthorDto, libraryId);
+    expect(mockAuthorService.count).toHaveBeenCalledWith(libraryId);
   });
 
   it('Should return one author', async () => {
@@ -111,11 +116,11 @@ describe('AuthorController', () => {
 
     // Cria o mock da consulta e consulta a pessoa
     const authorId = 1;
-    const result = await controller.findOne(authorId.toString());
+    const result = await controller.findOne(req, authorId.toString());
 
     // Valida os dados
     expect(result).toEqual(author);
-    expect(mockAuthorService.findOne).toHaveBeenCalledWith(authorId);
+    expect(mockAuthorService.findOne).toHaveBeenCalledWith(authorId, libraryId);
   });
 
   it('Should edit an author', async () => {
@@ -136,10 +141,10 @@ describe('AuthorController', () => {
     });
     mockAuthorService.findOne.mockResolvedValue(authorDto);
 
-    const result = await controller.update(authorId.toString(), authorDto);
+    const result = await controller.update(req, authorId.toString(), authorDto);
 
     expect(result).toEqual(authorDto);
-    expect(mockAuthorService.update).toHaveBeenCalledWith(authorId, authorDto);
+    expect(mockAuthorService.update).toHaveBeenCalledWith(authorId, authorDto, libraryId);
   });
 
   it('Should remove an author', async () => {
@@ -160,19 +165,19 @@ describe('AuthorController', () => {
       bio: 'abc'
     });
 
-    const result = await controller.remove(authorId.toString());
+    const result = await controller.remove(req, authorId.toString());
 
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
       message: 'Autor deletado com sucesso.',
     });
-    expect(mockAuthorService.remove).toHaveBeenCalledWith(authorId);
+    expect(mockAuthorService.remove).toHaveBeenCalledWith(authorId, libraryId);
     expect(mockBookService.findBooksFromAuthor).toHaveBeenCalledWith({
-      page: 1,
-      limit: 1,
       authorId: authorId,
-    });
+      limit: 1,
+      page: 1
+    }, libraryId);
   });
 
   it('Should return all books from an author', async () => {
@@ -230,7 +235,7 @@ describe('AuthorController', () => {
         }
       ]
     }];
-    mockBookService.findBooksFromAuthor.mockResolvedValue(bookList);
+    mockBookService.findAndCountBooksFromAuthor.mockResolvedValue([bookList, bookList.length]);
     mockAuthorService.findOne.mockResolvedValue({
       id: findAuthorBooks.authorId,
       name: 'a',
@@ -241,15 +246,17 @@ describe('AuthorController', () => {
 
     // Consulta os livros
     const result = await controller.books(
+      req,
       findAuthorBooks.authorId.toString(),
       findAuthorBooks.page.toString(),
       findAuthorBooks.limit.toString()
     );
 
     // Valida os retornos
-    expect(result).toEqual(bookList);
+    expect(result).toEqual({count: bookList.length, data: bookList});
     findAuthorBooks.page--;
-    expect(mockBookService.findBooksFromAuthor).toHaveBeenCalledWith(findAuthorBooks);
+    expect(mockBookService.findAndCountBooksFromAuthor).toHaveBeenCalledWith(findAuthorBooks, libraryId);
+    expect(mockAuthorService.findOne).toHaveBeenCalledWith(findAuthorBooks.authorId, libraryId);
   });
 
 });

@@ -7,4 +7,8 @@ export const mockUserService = {
   update: jest.fn(),
   remove: jest.fn(),
   count: jest.fn(),
+  userHasLibrary: jest.fn(),
+  createLibraryUser: jest.fn(),
+  getLibraryUser: jest.fn(),
+  setLibraryUserUnconfirmed: jest.fn(),
 };

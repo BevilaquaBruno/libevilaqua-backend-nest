@@ -10,6 +10,8 @@ import { FindGenreDto } from './dto/find-genre.dto';
 
 describe('GenreController', () => {
   let controller: GenreController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,13 +40,13 @@ describe('GenreController', () => {
       id: 1,
       ...genreDto
     });
-    const result = await controller.create(genreDto);
+    const result = await controller.create(req, genreDto);
 
     expect(result).toEqual({
       id: 1,
       ...genreDto
     });
-    expect(mockGenreService.create).toHaveBeenCalledWith(genreDto);
+    expect(mockGenreService.create).toHaveBeenCalledWith(genreDto, libraryId);
   });
 
   it('should return all genres', async () => {
@@ -72,6 +74,7 @@ describe('GenreController', () => {
     };
 
     const result = await controller.findAll(
+      req,
       findGenreDto.page.toString(),
       findGenreDto.limit.toString(),
     );
@@ -82,7 +85,7 @@ describe('GenreController', () => {
       count: genreQuantity
     });
     findGenreDto.page--;
-    expect(mockGenreService.findAll).toHaveBeenCalledWith(findGenreDto);
+    expect(mockGenreService.findAll).toHaveBeenCalledWith(findGenreDto, libraryId);
   });
 
   it('Should return one genre', async () => {
@@ -97,11 +100,11 @@ describe('GenreController', () => {
 
     // Cria o mock da consulta e consulta o gênero
     const genreId = 1;
-    const result = await controller.findOne(genreId.toString());
+    const result = await controller.findOne(req, genreId.toString());
 
     // Valida os dados
     expect(result).toEqual(genre);
-    expect(mockGenreService.findOne).toHaveBeenCalledWith(genreId);
+    expect(mockGenreService.findOne).toHaveBeenCalledWith(genreId, libraryId);
   });
 
   it('Should edit a genre', async () => {
@@ -119,10 +122,10 @@ describe('GenreController', () => {
     });
     mockGenreService.findOne.mockResolvedValue(genreDto);
 
-    const result = await controller.update(genreId.toString(), genreDto);
+    const result = await controller.update(req, genreId.toString(), genreDto);
 
     expect(result).toEqual(genreDto);
-    expect(mockGenreService.update).toHaveBeenCalledWith(genreId, genreDto);
+    expect(mockGenreService.update).toHaveBeenCalledWith(genreId, genreDto, libraryId);
   });
 
   it('Should remove a genre', async () => {
@@ -139,13 +142,13 @@ describe('GenreController', () => {
       description: 'New genre'
     });
 
-    const result = await controller.remove(genreId.toString());
+    const result = await controller.remove(req, genreId.toString());
 
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
       message: 'Gênero deletado com sucesso.',
     });
-    expect(mockGenreService.remove).toHaveBeenCalledWith(genreId);
+    expect(mockGenreService.remove).toHaveBeenCalledWith(genreId, libraryId);
   });
 });

@@ -5,19 +5,35 @@ import { mockBookService } from './mocks/book.service.mock';
 import { JwtService } from '@nestjs/jwt';
 import { mockJwtService } from '../auth/mocks/jwt.service.mock';
 import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
 import { FindBookDto } from './dto/find-book.dto';
-import { count } from 'console';
+import { GenreService } from '../genre/genre.service';
+import { mockGenreService } from '../genre/mocks/genre.service.mock';
+import { PublisherService } from '../publisher/publisher.service';
+import { mockPublisherService } from '../publisher/mocks/publisher.service.mock';
+import { TypeService } from '../type/type.service';
+import { mockTypeService } from '../type/mocks/type.service.mock';
+import { AuthorService } from '../author/author.service';
+import { mockAuthorService } from '../author/mocks/author.service.mock';
+import { TagService } from '../tag/tag.service';
+import { mockTagService } from '../tag/mocks/tag.service.mock';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 describe('BookController', () => {
   let controller: BookController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BookController],
       providers: [
         { provide: JwtService, useValue: mockJwtService },
-        { provide: BookService, useValue: mockBookService }
+        { provide: BookService, useValue: mockBookService },
+        { provide: GenreService, useValue: mockGenreService },
+        { provide: PublisherService, useValue: mockPublisherService },
+        { provide: TypeService, useValue: mockTypeService },
+        { provide: AuthorService, useValue: mockAuthorService },
+        { provide: TagService, useValue: mockTagService },
       ],
     }).compile();
 
@@ -40,9 +56,49 @@ describe('BookController', () => {
       genre_id: 1,
       publisher_id: 1,
       type_id: 1,
-      tags_id: [1, 2, 3],
+      tags_id: [1, 2],
       authors_id: [1, 2]
     };
+
+    mockGenreService.findOne.mockResolvedValue({
+      id: 1,
+      description: 'Genre test',
+    });
+    mockPublisherService.findOne.mockResolvedValue({
+      id: 1,
+      name: 'Publisher 1',
+      country: 'Brazil'
+    });
+    mockTypeService.findOne.mockResolvedValue({
+      id: 1,
+      descrption: 'Type Test'
+    });
+    mockAuthorService.getAuthorList.mockResolvedValue([
+      {
+        id: 1,
+        name: 'New Author name',
+        birth_date: new Date('2000-01-01'),
+        death_date: new Date('2025-01-01'),
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+      },
+      {
+        id: 2,
+        name: 'New Author name 2',
+        birth_date: new Date('2000-01-01'),
+        death_date: new Date('2025-01-01'),
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
+      }
+    ]);
+    mockTagService.getTagList.mockResolvedValue([
+      {
+        id: 1,
+        description: 'Tag Test'
+      },
+      {
+        id: 2,
+        description: 'Tag Test 2'
+      },
+    ]);
 
     // Mocka o retorno no service e pega o resultado do controller
     mockBookService.create.mockResolvedValue({
@@ -50,14 +106,20 @@ describe('BookController', () => {
       ...bookDto
     });
 
+
     // cria o livro
-    const result = await controller.create(bookDto);
+    const result = await controller.create(req, bookDto);
 
     expect(result).toEqual({
       id: 1,
       ...bookDto
     });
-    expect(mockBookService.create).toHaveBeenCalledWith(bookDto);
+    expect(mockGenreService.findOne).toHaveBeenCalledWith(bookDto.genre_id, libraryId);
+    expect(mockPublisherService.findOne).toHaveBeenCalledWith(bookDto.publisher_id, libraryId);
+    expect(mockTypeService.findOne).toHaveBeenCalledWith(bookDto.type_id, libraryId);
+    expect(mockAuthorService.getAuthorList).toHaveBeenCalledWith(bookDto.authors_id, libraryId);
+    expect(mockTagService.getTagList).toHaveBeenCalledWith(bookDto.tags_id, libraryId);
+    expect(mockBookService.create).toHaveBeenCalledWith(bookDto, libraryId);
   });
 
   it('Should return all books', async () => {
@@ -182,6 +244,7 @@ describe('BookController', () => {
       limit: 2
     };
     const result = await controller.findAll(
+      req,
       findBookDto.genreList.join(','),
       findBookDto.tagList.join(','),
       findBookDto.publisherList.join(','),
@@ -258,16 +321,30 @@ describe('BookController', () => {
 
     // Cria o mock e consulta o livro
     const bookId = 1;
-    const result = await controller.findOne(bookId.toString());
+    const result = await controller.findOne(req, bookId.toString());
 
     // Valida os dados
     expect(result).toEqual(book);
-    expect(mockBookService.findOne).toHaveBeenCalledWith(bookId);
+    expect(mockBookService.findOne).toHaveBeenCalledWith(bookId, libraryId);
   });
 
   it('Should edit a book', async () => {
     // Cria o dto do livro
     const bookId = 1;
+    const updateBook: UpdateBookDto = {
+      id: bookId,
+      title: 'Livro 1',
+      edition: 1,
+      isbn: '1234567890123',
+      number_pages: 250,
+      release_year: 2025,
+      obs: 'Observações do livro',
+      genre_id: 1,
+      publisher_id: 1,
+      type_id: 1,
+      tags_id: [1, 2],
+      authors_id: [1, 2]
+    };
     const book = {
       id: bookId,
       title: 'Book Title',
@@ -317,6 +394,46 @@ describe('BookController', () => {
       ]
     };
 
+    mockGenreService.findOne.mockResolvedValue({
+      id: 1,
+      description: 'Genre test',
+    });
+    mockPublisherService.findOne.mockResolvedValue({
+      id: 1,
+      name: 'Publisher 1',
+      country: 'Brazil'
+    });
+    mockTypeService.findOne.mockResolvedValue({
+      id: 1,
+      descrption: 'Type Test'
+    });
+    mockAuthorService.getAuthorList.mockResolvedValue([
+      {
+        id: 1,
+        name: 'New Author name',
+        birth_date: new Date('2000-01-01'),
+        death_date: new Date('2025-01-01'),
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+      },
+      {
+        id: 2,
+        name: 'New Author name 2',
+        birth_date: new Date('2000-01-01'),
+        death_date: new Date('2025-01-01'),
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
+      }
+    ]);
+    mockTagService.getTagList.mockResolvedValue([
+      {
+        id: 1,
+        description: 'Tag Test'
+      },
+      {
+        id: 2,
+        description: 'Tag Test 2'
+      },
+    ]);
+
     // Mocka o retorno no service e pega o resultado do controller
     mockBookService.update.mockResolvedValue({
       raw: [],
@@ -324,10 +441,10 @@ describe('BookController', () => {
     });
     mockBookService.findOne.mockResolvedValue(book);
 
-    const result = await controller.update(bookId.toString(), book);
+    const result = await controller.update(req, bookId.toString(), updateBook);
 
-    expect(result).toEqual(book);
-    expect(mockBookService.update).toHaveBeenCalledWith(bookId, book);
+    expect(result).toEqual(updateBook);
+    expect(mockBookService.update).toHaveBeenCalledWith(bookId, updateBook);
   });
 
   it('Should remove a book', async () => {
@@ -390,14 +507,14 @@ describe('BookController', () => {
     mockBookService.findOne.mockResolvedValue(book);
 
 
-    const result = await controller.remove(bookId.toString());
+    const result = await controller.remove(req, bookId.toString());
 
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
       message: 'Livro deletado com sucesso.',
     });
-    expect(mockBookService.remove).toHaveBeenCalledWith(bookId);
-    expect(mockBookService.findOne).toHaveBeenCalledWith(bookId);
+    expect(mockBookService.remove).toHaveBeenCalledWith(bookId, libraryId);
+    expect(mockBookService.findOne).toHaveBeenCalledWith(bookId, libraryId);
   });
 });

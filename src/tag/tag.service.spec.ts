@@ -7,6 +7,7 @@ import { FindTagDto } from './dto/find-tag.dto';
 
 describe('TagService', () => {
   let service: TagService;
+  const libraryId = 1;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -37,12 +38,12 @@ describe('TagService', () => {
     // Chama e valida
     const result = await service.create({
       description: 'Tag description'
-    });
+    }, libraryId);
 
     expect(result).toEqual(mockResolved)
     expect(mockTagService.create).toHaveBeenCalledWith({
       description: 'Tag description'
-    });
+    }, libraryId);
   });
 
   it('Should return a list with all tags', async () => {
@@ -64,11 +65,11 @@ describe('TagService', () => {
       limit: 2,
       page: 1
     };
-    const result = await service.findAll(findDto);
+    const result = await service.findAll(findDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockList);
-    expect(mockTagService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 });
+    expect(mockTagService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
   });
 
   it('Should return a tag', async () => {
@@ -80,11 +81,11 @@ describe('TagService', () => {
     mockTagService.findOne.mockResolvedValue(mock);
 
     // Consulta
-    const result = await service.findOne(1);
+    const result = await service.findOne(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mock);
-    expect(mockTagService.findOne).toHaveBeenCalledWith(1);
+    expect(mockTagService.findOne).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should update a tag', async () => {
@@ -99,14 +100,14 @@ describe('TagService', () => {
     const result = await service.update(1, {
       id: 1,
       description: 'Tag description'
-    });
+    }, libraryId);
 
     // Valida o retorno
     expect(result).toEqual(mock);
     expect(mockTagService.update).toHaveBeenCalledWith(1, {
       id: 1,
       description: 'Tag description'
-    });
+    }, libraryId);
   });
 
   it('Should remove a tag', async () => {
@@ -118,11 +119,11 @@ describe('TagService', () => {
     mockTagService.remove.mockResolvedValue(mockDelete);
 
     // Deleta
-    const result = await service.remove(1);
+    const result = await service.remove(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual({ raw: [], affected: 1 });
-    expect(mockTagService.remove).toHaveBeenCalledWith(1);
+    expect(mockTagService.remove).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should return a count of tags', async () => {
@@ -130,10 +131,10 @@ describe('TagService', () => {
     mockTagService.count.mockResolvedValue(1);
 
     // Chama o count
-    const result = await service.count();
+    const result = await service.count(libraryId);
 
     // Valida os retornos
     expect(result).toEqual(1);
-    expect(mockTagService.count).toHaveBeenCalledWith();
+    expect(mockTagService.count).toHaveBeenCalledWith(libraryId);
   });
 });

@@ -13,13 +13,13 @@ import {
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { MainAuthDto } from './dto/main-auth.dto';
-import { UserService } from 'src/user/user.service';
-import { MailService } from 'src/mail/mail.service';
+import { UserService } from '../user/user.service';
+import { MailService } from '../mail/mail.service';
 import * as bcrypt from 'bcrypt';
 import { PayloadAuthDto } from './dto/payload-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { SelectLibraryDto } from './dto/select-library.dto';
-import { LibraryService } from 'src/library/library.service';
+import { LibraryService } from '../library/library.service';
 
 @Controller('auth')
 export class AuthController {

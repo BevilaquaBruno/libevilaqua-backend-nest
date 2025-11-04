@@ -10,6 +10,8 @@ import { FindPublisherDto } from './dto/find-publisher.dto';
 
 describe('PublisherController', () => {
   let controller: PublisherController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -39,13 +41,13 @@ describe('PublisherController', () => {
       id: 1,
       ...publisher
     });
-    const result = await controller.create(publisher);
+    const result = await controller.create(req, publisher);
 
     expect(result).toEqual({
       id: 1,
       ...publisher
     });
-    expect(mockPublisherService.create).toHaveBeenCalledWith(publisher);
+    expect(mockPublisherService.create).toHaveBeenCalledWith(publisher, libraryId);
   });
 
   it('should return all Publishers', async () => {
@@ -75,6 +77,7 @@ describe('PublisherController', () => {
     };
 
     const result = await controller.findAll(
+      req,
       findDto.page.toString(),
       findDto.limit.toString(),
     );
@@ -85,7 +88,7 @@ describe('PublisherController', () => {
       count: quantity
     });
     findDto.page--;
-    expect(mockPublisherService.findAll).toHaveBeenCalledWith(findDto);
+    expect(mockPublisherService.findAll).toHaveBeenCalledWith(findDto, libraryId);
   });
 
   it('Should return one publisher', async () => {
@@ -101,11 +104,11 @@ describe('PublisherController', () => {
 
     // Cria o mock da consulta e consulta
     const id = 1;
-    const result = await controller.findOne(id.toString());
+    const result = await controller.findOne(req, id.toString());
 
     // Valida os dados
     expect(result).toEqual(publisher);
-    expect(mockPublisherService.findOne).toHaveBeenCalledWith(id);
+    expect(mockPublisherService.findOne).toHaveBeenCalledWith(id, libraryId);
   });
 
   it('Should edit a publisher', async () => {
@@ -124,10 +127,10 @@ describe('PublisherController', () => {
     });
     mockPublisherService.findOne.mockResolvedValue(dto);
 
-    const result = await controller.update(id.toString(), dto);
+    const result = await controller.update(req, id.toString(), dto);
 
     expect(result).toEqual(dto);
-    expect(mockPublisherService.update).toHaveBeenCalledWith(id, dto);
+    expect(mockPublisherService.update).toHaveBeenCalledWith(id, dto, libraryId);
   });
 
   it('Should remove a publisher', async () => {
@@ -145,13 +148,13 @@ describe('PublisherController', () => {
       country: "Brasil"
     });
 
-    const result = await controller.remove(id.toString());
+    const result = await controller.remove(req, id.toString());
 
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
       message: 'Editora deletada com sucesso.',
     });
-    expect(mockPublisherService.remove).toHaveBeenCalledWith(id);
+    expect(mockPublisherService.remove).toHaveBeenCalledWith(id, libraryId);
   });
 });

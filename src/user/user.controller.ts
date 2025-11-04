@@ -19,11 +19,11 @@ import { AuthGuard } from '../../src/auth/auth.guard';
 import * as bcrypt from 'bcrypt';
 import { FindUserDto } from './dto/find-user.dto';
 import { User } from './entities/user.entity';
-import { MailService } from 'src/mail/mail.service';
-import { AuthService } from 'src/auth/auth.service';
+import { MailService } from '../mail/mail.service';
+import { AuthService } from '../auth/auth.service';
 import { CreateUserWithLibraryDto } from './dto/create-user-with-library.dto';
-import { LibraryService } from 'src/library/library.service';
-import { PayloadAuthDto } from 'src/auth/dto/payload-auth.dto';
+import { LibraryService } from '../library/library.service';
+import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 
 @Controller('user')
 export class UserController {

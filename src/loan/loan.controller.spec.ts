@@ -16,6 +16,8 @@ import { count } from 'console';
 
 describe('LoanController', () => {
   let controller: LoanController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -176,7 +178,7 @@ describe('LoanController', () => {
     });
     mockLoanService.findLoanedBook.mockResolvedValue([[], 0]);
 
-    const result = await controller.create(loanDto);
+    const result = await controller.create(req, loanDto);
 
     expect(result).toEqual({
       id: 1,
@@ -245,7 +247,7 @@ describe('LoanController', () => {
         obs: 'Observação aqui',
       }
     });
-    expect(mockLoanService.create).toHaveBeenCalledWith(loanDto);
+    expect(mockLoanService.create).toHaveBeenCalledWith(loanDto, libraryId);
   });
 
   it('should return all loans', async () => {
@@ -405,6 +407,7 @@ describe('LoanController', () => {
     };
 
     const result = await controller.findAll(
+      req,
       findLoanDto.start_date.toString(),
       findLoanDto.end_date.toString(),
       findLoanDto.book.toString(),
@@ -421,7 +424,7 @@ describe('LoanController', () => {
       count: loanQuantity
     });
     findLoanDto.page--;
-    expect(mockLoanService.findAll).toHaveBeenCalledWith(findLoanDto);
+    expect(mockLoanService.findAll).toHaveBeenCalledWith(findLoanDto, libraryId);
   });
 
   it('Should return one loan', async () => {
@@ -499,11 +502,11 @@ describe('LoanController', () => {
 
     // Cria o mock da consulta e consulta
     const loanId = 1;
-    const result = await controller.findOne(loanId.toString());
+    const result = await controller.findOne(req, loanId.toString());
 
     // Valida os dados
     expect(result).toEqual(loan);
-    expect(mockLoanService.findOne).toHaveBeenCalledWith(loanId);
+    expect(mockLoanService.findOne).toHaveBeenCalledWith(loanId, libraryId);
   });
 
   it('Should edit a loan', async () => {
@@ -592,7 +595,7 @@ describe('LoanController', () => {
       }
     });
 
-    const result = await controller.update(loanId.toString(), loanDto);
+    const result = await controller.update(req, loanId.toString(), loanDto);
 
     expect(result).toEqual({
       id: 1,
@@ -661,7 +664,7 @@ describe('LoanController', () => {
         obs: 'Observação aqui',
       }
     });
-    expect(mockLoanService.update).toHaveBeenCalledWith(loanId, loanDto);
+    expect(mockLoanService.update).toHaveBeenCalledWith(loanId, loanDto, libraryId);
   });
 
   it('Should remove a loan', async () => {
@@ -741,14 +744,14 @@ describe('LoanController', () => {
       }
     });
 
-    const result = await controller.remove(loanId.toString());
+    const result = await controller.remove(req, loanId.toString());
 
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
       message: 'Empréstimo deletado com sucesso.',
     });
-    expect(mockLoanService.remove).toHaveBeenCalledWith(loanId);
+    expect(mockLoanService.remove).toHaveBeenCalledWith(loanId, libraryId);
   });
 
   it('Should returned pending loan from book', async () => {
@@ -828,11 +831,11 @@ describe('LoanController', () => {
 
     // Cria o mock da consulta e consulta
     const loanId = 1;
-    const result = await controller.book(loanId.toString());
+    const result = await controller.book(req, loanId.toString());
 
     // Valida os dados
     expect(result).toEqual(loan);
-    expect(mockLoanService.findOne).toHaveBeenCalledWith(loanId);
+    expect(mockLoanService.findOne).toHaveBeenCalledWith(loanId, libraryId);
   });
 
   it('Should returned loan history from person', async () => {
@@ -983,18 +986,20 @@ describe('LoanController', () => {
       limit: 5,
       page: 1
     }
-    const result = await controller.personHistory(personId.toString(), findLoanHistory.page.toString(), findLoanHistory.limit.toString());
+    const result = await controller.personHistory(req, personId.toString(), findLoanHistory.page.toString(), findLoanHistory.limit.toString());
 
     findLoanHistory.page--;
     expect(mockLoanService.findLoanHistoryFromPerson).toHaveBeenCalledWith(
       personId,
-      findLoanHistory
+      findLoanHistory,
+      libraryId
     );
     expect(mockLoanService.findAndCountLoanHistoryFromPerson).toHaveBeenCalledWith(
       personId,
-      findLoanHistory
+      findLoanHistory,
+      libraryId
     );
-    expect(mockPersonService.findOne).toHaveBeenCalledWith(personId);
+    expect(mockPersonService.findOne).toHaveBeenCalledWith(personId, libraryId);
     expect(result).toEqual(
       {
         data: loanList,

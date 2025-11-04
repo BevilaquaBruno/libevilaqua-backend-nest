@@ -10,6 +10,8 @@ import { FindTypeDto } from './dto/find-type.dto';
 
 describe('TypeController', () => {
   let controller: TypeController;
+  const libraryId = 1;
+  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,13 +40,13 @@ describe('TypeController', () => {
       id: 1,
       ...publisher
     });
-    const result = await controller.create(publisher);
+    const result = await controller.create(req, publisher);
 
     expect(result).toEqual({
       id: 1,
       ...publisher
     });
-    expect(mockTypeService.create).toHaveBeenCalledWith(publisher);
+    expect(mockTypeService.create).toHaveBeenCalledWith(publisher, libraryId);
   });
 
   it('should return all types', async () => {
@@ -72,6 +74,7 @@ describe('TypeController', () => {
     };
 
     const result = await controller.findAll(
+      req,
       findDto.page.toString(),
       findDto.limit.toString(),
     );
@@ -82,7 +85,7 @@ describe('TypeController', () => {
       count: quantity
     });
     findDto.page--;
-    expect(mockTypeService.findAll).toHaveBeenCalledWith(findDto);
+    expect(mockTypeService.findAll).toHaveBeenCalledWith(findDto, libraryId);
   });
 
   it('Should return one type', async () => {
@@ -97,11 +100,11 @@ describe('TypeController', () => {
 
     // Cria o mock da consulta e consulta
     const id = 1;
-    const result = await controller.findOne(id.toString());
+    const result = await controller.findOne(req, id.toString());
 
     // Valida os dados
     expect(result).toEqual(publisher);
-    expect(mockTypeService.findOne).toHaveBeenCalledWith(id);
+    expect(mockTypeService.findOne).toHaveBeenCalledWith(id, libraryId);
   });
 
   it('Should edit a type', async () => {
@@ -119,10 +122,10 @@ describe('TypeController', () => {
     });
     mockTypeService.findOne.mockResolvedValue(dto);
 
-    const result = await controller.update(id.toString(), dto);
+    const result = await controller.update(req, id.toString(), dto);
 
     expect(result).toEqual(dto);
-    expect(mockTypeService.update).toHaveBeenCalledWith(id, dto);
+    expect(mockTypeService.update).toHaveBeenCalledWith(id, dto, libraryId);
   });
 
   it('Should remove a type', async () => {
@@ -139,14 +142,14 @@ describe('TypeController', () => {
       description: 'Tipo cadastrado'
     });
 
-    const result = await controller.remove(id.toString());
+    const result = await controller.remove(req, id.toString());
 
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
       message: 'Tipo deletado com sucesso.',
     });
-    expect(mockTypeService.remove).toHaveBeenCalledWith(id);
+    expect(mockTypeService.remove).toHaveBeenCalledWith(id, libraryId);
   });
 });
 
