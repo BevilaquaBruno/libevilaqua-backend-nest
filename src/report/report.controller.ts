@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { PdfService } from '../pdf/pdf.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
@@ -12,6 +12,7 @@ import { PublisherService } from '../publisher/publisher.service';
 import { TagService } from '../tag/tag.service';
 import { TypeService } from '../type/type.service';
 import { UserService } from '../user/user.service';
+import { ReportListDto } from './dto/report-list.dto';
 
 @Controller('report')
 export class ReportController {
@@ -26,6 +27,22 @@ export class ReportController {
     private readonly typeService: TypeService,
     private readonly userService: UserService,
   ) { }
+
+
+  @UseGuards(AuthGuard)
+  @Get('/')
+  async reportList(@Req() req: Request) {
+    const report_list: ReportListDto[] = [
+      { name: 'Lista de autores', description: 'Uma lista com todos os autores cadastrados' },
+      { name: 'Lista de gêneros', description: 'Uma lista com todos os gêneros cadastrados' },
+      { name: 'Lista de pessoas', description: 'Uma lista com todos os pessoas cadastradas' },
+      { name: 'Lista de tags', description: 'Uma lista com todos os tags cadastradas' },
+      { name: 'Lista de tipos', description: 'Uma lista com todos os tipos cadastrados' },
+      { name: 'Lista de usuários', description: 'Uma lista com todos os usuários cadastrados' },
+    ];
+
+    return report_list;
+  }
 
   // Emite relatório da lista de autores
   @UseGuards(AuthGuard)
