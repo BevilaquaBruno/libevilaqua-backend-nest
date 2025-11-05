@@ -9,6 +9,7 @@ import { AuthorService } from '../author/author.service';
 import { GenreService } from '../genre/genre.service';
 import { PersonService } from '../person/person.service';
 import { PublisherService } from '../publisher/publisher.service';
+import { TagService } from '../tag/tag.service';
 
 @Controller('report')
 export class ReportController {
@@ -19,6 +20,7 @@ export class ReportController {
     private readonly genreService: GenreService,
     private readonly personService: PersonService,
     private readonly publisherService: PublisherService,
+    private readonly tagService: TagService,
   ) { }
 
   // Emite relatório da lista de autores
@@ -161,7 +163,7 @@ export class ReportController {
       template: 'publisher-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de gêneros',
+        subtitle: 'Lista de Editoras',
         date: moment().format('DD/MM/YYYY'),
         author: 'MyAlexandria - Relatórios',
         headers: ['#', 'Descrição', 'País'],
@@ -173,6 +175,35 @@ export class ReportController {
     const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
     const responseData = this.getResponseData(pdfBuffer, 'publisher_list');
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/tag-list')
+  async tagList(@Req() req: Request, @Res() res) {
+    const reqUser: PayloadAuthDto = req['user'];
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    const tags = await this.tagService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+
+    // Cria os dados para o relatórios
+    const pdfData: ReportDataDto = {
+      layout: 'base',
+      template: 'tag-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de tags',
+        date: moment().format('DD/MM/YYYY'),
+        author: 'MyAlexandria - Relatórios',
+        headers: ['#', 'Descrição'],
+        data: tags,
+      }
+    };
+
+    // Gera o buffer do PDF
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
+
+    const responseData = this.getResponseData(pdfBuffer, 'tag_list');
     res.set(responseData);
     res.end(pdfBuffer);
   }
