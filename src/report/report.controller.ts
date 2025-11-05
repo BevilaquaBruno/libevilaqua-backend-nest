@@ -51,7 +51,7 @@ export class ReportController {
         subtitle: 'Lista de autores',
         date: moment().format('DD/MM/YYYY'),
         author: 'MyAlexandria - Relatórios',
-        headers: ['Cód.', 'nome', 'Nasc - Morte'],
+        headers: ['#', 'nome', 'Nasc - Morte'],
         data: authors_formatted,
       }
     };
@@ -80,7 +80,7 @@ export class ReportController {
         subtitle: 'Lista de gêneros',
         date: moment().format('DD/MM/YYYY'),
         author: 'MyAlexandria - Relatórios',
-        headers: ['Cód.', 'Descrição'],
+        headers: ['#', 'Descrição'],
         data: genres,
       }
     };
