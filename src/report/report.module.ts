@@ -30,6 +30,6 @@ export class ReportModule implements OnModuleInit {
       hbs.registerPartial(name, template);
     });
 
-    console.log(`🧩 Handlebars partials registrados: ${files.join(', ')}`);
+    //console.log(`🧩 Handlebars partials registrados: ${files.join(', ')}`);
   }
 }
