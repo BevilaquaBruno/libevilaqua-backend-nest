@@ -17,6 +17,8 @@ import { Publisher } from '../publisher/entities/publisher.entity';
 import { PublisherService } from '../publisher/publisher.service';
 import { Tag } from '../tag/entities/tag.entity';
 import { TagService } from '../tag/tag.service';
+import { Type } from '../type/entities/type.entity';
+import { TypeService } from '../type/type.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -26,6 +28,7 @@ import { TagService } from '../tag/tag.service';
     Person,
     Publisher,
     Tag,
+    Type,
   ])],
   controllers: [ReportController],
   providers: [
@@ -36,6 +39,7 @@ import { TagService } from '../tag/tag.service';
     PersonService,
     PublisherService,
     TagService,
+    TypeService,
   ]
 })
 export class ReportModule implements OnModuleInit {

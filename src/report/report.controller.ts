@@ -10,6 +10,7 @@ import { GenreService } from '../genre/genre.service';
 import { PersonService } from '../person/person.service';
 import { PublisherService } from '../publisher/publisher.service';
 import { TagService } from '../tag/tag.service';
+import { TypeService } from '../type/type.service';
 
 @Controller('report')
 export class ReportController {
@@ -21,6 +22,7 @@ export class ReportController {
     private readonly personService: PersonService,
     private readonly publisherService: PublisherService,
     private readonly tagService: TagService,
+    private readonly typeService: TypeService,
   ) { }
 
   // Emite relatório da lista de autores
@@ -204,6 +206,35 @@ export class ReportController {
     const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
     const responseData = this.getResponseData(pdfBuffer, 'tag_list');
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/type-list')
+  async typeList(@Req() req: Request, @Res() res) {
+    const reqUser: PayloadAuthDto = req['user'];
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    const types = await this.typeService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+
+    // Cria os dados para o relatórios
+    const pdfData: ReportDataDto = {
+      layout: 'base',
+      template: 'type-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de Tipos',
+        date: moment().format('DD/MM/YYYY'),
+        author: 'MyAlexandria - Relatórios',
+        headers: ['#', 'Descrição'],
+        data: types,
+      }
+    };
+
+    // Gera o buffer do PDF
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
+
+    const responseData = this.getResponseData(pdfBuffer, 'type_list');
     res.set(responseData);
     res.end(pdfBuffer);
   }
