@@ -27,8 +27,6 @@ export class PdfService {
 
     const html = await this.compileReport(data.template, data.data, data.layout);
     return this.generateWithCustomHtml(html, options);
-    //const pdfBuffer: Buffer = await generatePDF(html, options);
-    //return pdfBuffer;
   }
 
   private compileReport(templateName: string, data: any, layoutName = 'main') {
@@ -49,13 +47,13 @@ export class PdfService {
   }
 
   
-private async generateWithCustomHtml(html: string, options: any) {
+private async generateWithCustomHtml(html: string, options: any): Promise<Buffer> {
   const tempFilePath = path.join(process.cwd(), 'temp', `${uuid()}.hbs`);
 
   // salva o HTML num arquivo temporário
   fs.writeFileSync(tempFilePath, html, 'utf8');
 
-  const pdf = await generatePDF(tempFilePath, {}, options);
+  const pdf: Buffer = await generatePDF(tempFilePath, {}, options);
 
   // remove o arquivo depois
   fs.unlinkSync(tempFilePath);
