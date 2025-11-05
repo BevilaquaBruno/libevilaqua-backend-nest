@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReportController } from './report.controller';
 import { PdfService } from '../pdf/pdf.service';
+import { mockPdfService } from '../pdf/mocks/pdf.service.mock';
 
 describe('ReportController', () => {
   let controller: ReportController;
@@ -8,7 +9,7 @@ describe('ReportController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ReportController],
-      providers: [PdfService],
+      providers: [{ provide: PdfService, useValue: mockPdfService }],
     }).compile();
 
     controller = module.get<ReportController>(ReportController);

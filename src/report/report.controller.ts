@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { PdfService } from '../pdf/pdf.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
@@ -13,6 +13,8 @@ import { TagService } from '../tag/tag.service';
 import { TypeService } from '../type/type.service';
 import { UserService } from '../user/user.service';
 import { ReportListDto } from './dto/report-list.dto';
+import { LoanService } from '../loan/loan.service';
+import { FindLoanDto } from '../loan/dto/find-loan.dto';
 
 @Controller('report')
 export class ReportController {
@@ -26,6 +28,7 @@ export class ReportController {
     private readonly tagService: TagService,
     private readonly typeService: TypeService,
     private readonly userService: UserService,
+    private readonly loanService: LoanService,
   ) { }
 
 
@@ -283,6 +286,88 @@ export class ReportController {
     const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
     const responseData = this.getResponseData(pdfBuffer, 'user_list');
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+    @UseGuards(AuthGuard)
+  @Post('/loan-list')
+  async loanList(@Req() req: Request, @Res() res,
+    @Query('start_date') start_date: string,
+    @Query('end_date') end_date: string,
+    @Query('book') book: string,
+    @Query('person') person: string,
+    @Query('description') description: string,
+    @Query('returned') returned: string,
+  ) {
+    const reqUser: PayloadAuthDto = req['user'];
+    const findLoan: FindLoanDto = {
+      start_date: null,
+      end_date: null,
+      book: null,
+      person: null,
+      description: null,
+      returned: undefined,
+      limit: 999,
+      page: 0,
+    };
+
+    // Define os filtros com base no que veio na URL
+    if (start_date !== undefined) findLoan.start_date = start_date;
+
+    if (end_date !== undefined) findLoan.end_date = end_date;
+
+    if (book !== undefined) findLoan.book = parseInt(book);
+
+    if (person !== undefined) findLoan.person = parseInt(person);
+
+    if (description !== undefined) findLoan.description = description;
+
+    /**
+     * Valida o retorno do livr
+     * returned = true - Apenas livros retornados
+     * returned = false - Apenas livros não retornados
+     * returned = undefined - Todos os livros
+     */
+    if (returned !== undefined)
+      if (returned == 'true') findLoan.returned = true;
+      else findLoan.returned = false;
+
+
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    const loans = await this.loanService.findAll(findLoan, reqUser.libraryId);
+
+    let loanData = [];
+    for (let i = 0; i < loans.length; i++) {
+      const loan = loans[i];
+      loanData.push({
+        id: loan.id,
+        description: (null != loan.description) ? '' : loan.description,
+        person: loan.person.name,
+        book: loan.book.title,
+        loan_date: (null == loan.loan_date) ? '' : moment(loan.loan_date).format('DD/MM/YYYY'),
+        return_date: (null == loan.return_date) ? '' : moment(loan.return_date).format('DD/MM/YYYY'),
+      });
+    }
+
+    // Cria os dados para o relatórios
+    const pdfData: ReportDataDto = {
+      layout: 'base',
+      template: 'loan-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de Empréstimos',
+        date: moment().format('DD/MM/YYYY'),
+        author: process.env['APP_NAME'] + ' - Relatórios',
+        headers: ['#', 'Descrição', 'Pessoa', 'Livro', 'Data Emp.', 'Data Dev.'],
+        data: loanData,
+      }
+    };
+
+    // Gera o buffer do PDF
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
+
+    const responseData = this.getResponseData(pdfBuffer, 'loan_list');
     res.set(responseData);
     res.end(pdfBuffer);
   }

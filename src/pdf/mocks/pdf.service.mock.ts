@@ -1,3 +1,5 @@
-export const mockPersonService = {
-  a: jest.fn()
+export const mockPdfService = {
+  generatePDF: jest.fn(),
+  compileReport: jest.fn(),
+  generateWithCustomHtml: jest.fn(),
 }
