@@ -7,6 +7,7 @@ import { ReportDataDto } from './dto/report-data.dto';
 import { LibraryService } from '../library/library.service';
 import { AuthorService } from '../author/author.service';
 import { GenreService } from '../genre/genre.service';
+import { PersonService } from '../person/person.service';
 
 @Controller('report')
 export class ReportController {
@@ -15,6 +16,7 @@ export class ReportController {
     private readonly libraryService: LibraryService,
     private readonly authorService: AuthorService,
     private readonly genreService: GenreService,
+    private readonly personService: PersonService,
   ) { }
 
   // Emite relatório da lista de autores
@@ -82,6 +84,57 @@ export class ReportController {
         author: 'MyAlexandria - Relatórios',
         headers: ['#', 'Descrição'],
         data: genres,
+      }
+    };
+
+    // Gera o buffer do PDF
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
+
+    const responseData = this.getResponseData(pdfBuffer, 'genre_list');
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/person-list')
+  async personList(@Req() req: Request, @Res() res) {
+    const reqUser: PayloadAuthDto = req['user'];
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    const people = await this.personService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+
+    let peopleData = [];
+    for (let i = 0; i < people.length; i++) {
+      const person = people[i];
+      let address = `
+        ${((null == person.cep) ? '' : person.cep + ', ')}
+        ${((null == person.street) ? '' : person.street + ', ')}
+        ${((null == person.district) ? '' : 'B. ' + person.district + ', ')}
+        ${((null == person.number) ? '' : 'Nº' + person.number + ', ')}
+        ${((null == person.city) ? '' : person.city + ', ')}
+        ${((null == person.state) ? '' : person.state + ', ')}
+        `;
+      if('' == address.trim()){
+        address = '-';
+      }
+      peopleData.push({
+        id: person.id,
+        name: person.name,
+        cpf: (null == person.cpf) ? '-' : person.cpf,
+        address: address
+      });
+    }
+
+    // Cria os dados para o relatórios
+    const pdfData: ReportDataDto = {
+      layout: 'base',
+      template: 'person-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de pessoas',
+        date: moment().format('DD/MM/YYYY'),
+        author: 'MyAlexandria - Relatórios',
+        headers: ['#', 'Nome', 'CPF', 'Endereço'],
+        data: peopleData,
       }
     };
 

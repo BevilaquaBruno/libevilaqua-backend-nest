@@ -11,11 +11,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Genre } from '../genre/entities/genre.entity';
 import { GenreService } from '../genre/genre.service';
+import { Person } from '../person/entities/person.entity';
+import { PersonService } from '../person/person.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Library, Author, Genre])],
+  imports: [TypeOrmModule.forFeature([Library, Author, Genre, Person])],
   controllers: [ReportController],
-  providers: [PdfService, LibraryService, AuthorService, GenreService]
+  providers: [PdfService, LibraryService, AuthorService, GenreService, PersonService]
 })
 export class ReportModule implements OnModuleInit {
   onModuleInit() {

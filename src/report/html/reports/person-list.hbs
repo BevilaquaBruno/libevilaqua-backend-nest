@@ -1,0 +1,21 @@
+<div>
+  <h2>{{subtitle}}</h2>
+  <table>
+    <thead>
+      <tr>
+        {{#each headers}}
+          <th>{{this}}</th>
+        {{/each}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data}}
+        <tr>
+          {{#each this}}
+            <td>{{this}}</td>
+          {{/each}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div> 
