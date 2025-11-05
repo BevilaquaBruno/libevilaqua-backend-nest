@@ -6,7 +6,7 @@ export class ReportDataDto {
     subtitle: string;
     date: string;
     author: string;
-    headers: string[];
+    headers?: string[];
     data: any;
   }
 }
