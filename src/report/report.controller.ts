@@ -20,7 +20,7 @@ export class ReportController {
   // Emite relatório da lista de autores
   @UseGuards(AuthGuard)
   @Post('/author-list')
-  async authorList(@Req() req: Request, @Body() reportAuthorList: any, @Res() res) {
+  async authorList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
     const authors = await this.authorService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
@@ -66,7 +66,7 @@ export class ReportController {
 
   @UseGuards(AuthGuard)
   @Post('/genre-list')
-  async genreList(@Req() req: Request, @Body() reportGenreList: any, @Res() res) {
+  async genreList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
     const genres = await this.genreService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
