@@ -9,11 +9,13 @@ import { AuthorService } from '../author/author.service';
 import * as hbs from 'handlebars';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Genre } from '../genre/entities/genre.entity';
+import { GenreService } from '../genre/genre.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Library, Author])],
+  imports: [TypeOrmModule.forFeature([Library, Author, Genre])],
   controllers: [ReportController],
-  providers: [PdfService, LibraryService, AuthorService]
+  providers: [PdfService, LibraryService, AuthorService, GenreService]
 })
 export class ReportModule implements OnModuleInit {
   onModuleInit() {

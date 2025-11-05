@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { ReportDataDto } from './dto/report-data.dto';
 import { LibraryService } from '../library/library.service';
 import { AuthorService } from '../author/author.service';
+import { GenreService } from '../genre/genre.service';
 
 @Controller('report')
 export class ReportController {
@@ -13,12 +14,13 @@ export class ReportController {
     private readonly pdfService: PdfService,
     private readonly libraryService: LibraryService,
     private readonly authorService: AuthorService,
+    private readonly genreService: GenreService,
   ) { }
 
   // Emite relatório da lista de autores
   @UseGuards(AuthGuard)
   @Post('/author-list')
-  async create(@Req() req: Request, @Body() reportAuthorList: any, @Res() res) {
+  async authorList(@Req() req: Request, @Body() reportAuthorList: any, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
     const authors = await this.authorService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
@@ -35,32 +37,70 @@ export class ReportController {
         name: author.name,
         birth_death:
           ((null == author.birth_date) ? '-' : birth.format('DD/MM/YYYY'))
-            + ' | ' +
-            ((null == author.death_date) ? '-' : death.format('DD/MM/YYYY'))
+          + ' | ' +
+          ((null == author.death_date) ? '-' : death.format('DD/MM/YYYY'))
       })
     }
 
     // Cria os dados para o relatórios
     const pdfData: ReportDataDto = {
-      title: library.description,
-      subtitle: 'Lista de autores',
-      date: moment().format('DD/MM/YYYY'),
-      author: 'MyAlexandria - Relatórios',
-      headers: ['Cód.', 'nome', 'Nasc - Morte'],
-      data: authors_formatted,
+      layout: 'base',
+      template: 'author-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de autores',
+        date: moment().format('DD/MM/YYYY'),
+        author: 'MyAlexandria - Relatórios',
+        headers: ['Cód.', 'nome', 'Nasc - Morte'],
+        data: authors_formatted,
+      }
     };
 
     // Gera o buffer do PDF
     const pdfBuffer = await this.pdfService.generatePDF(pdfData, 'author-list');
 
-    res.set({
+    const responseData = this.getResponseData(pdfBuffer);
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/genre-list')
+  async genreList(@Req() req: Request, @Body() reportGenreList: any, @Res() res) {
+    const reqUser: PayloadAuthDto = req['user'];
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    const genres = await this.genreService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+
+    // Cria os dados para o relatórios
+    const pdfData: ReportDataDto = {
+      layout: 'base',
+      template: 'genre-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de gêneros',
+        date: moment().format('DD/MM/YYYY'),
+        author: 'MyAlexandria - Relatórios',
+        headers: ['Cód.', 'Descrição'],
+        data: genres,
+      }
+    };
+
+    // Gera o buffer do PDF
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData, 'genre-list');
+
+    const responseData = this.getResponseData(pdfBuffer);
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+  private getResponseData(pdfBuffer: Buffer) {
+    return {
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename=author_list_report.pdf`,
       'Content-Length': pdfBuffer.length,
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',
       Expires: 0,
-    });
-    res.end(pdfBuffer);
+    };
   }
 }
