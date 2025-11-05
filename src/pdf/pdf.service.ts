@@ -46,19 +46,19 @@ export class PdfService {
     return hbs.compile(finalTemplate)(data);
   }
 
-  
-private async generateWithCustomHtml(html: string, options: any): Promise<Buffer> {
-  const tempFilePath = path.join(process.cwd(), 'temp', `${uuid()}.hbs`);
 
-  // salva o HTML num arquivo temporário
-  fs.writeFileSync(tempFilePath, html, 'utf8');
+  private async generateWithCustomHtml(html: string, options: any): Promise<Buffer> {
+    const tempFilePath = path.join(process.cwd(), 'temp', `${uuid()}.hbs`);
 
-  const pdf: Buffer = await generatePDF(tempFilePath, {}, options);
+    // salva o HTML num arquivo temporário
+    fs.writeFileSync(tempFilePath, html, 'utf8');
 
-  // remove o arquivo depois
-  fs.unlinkSync(tempFilePath);
+    const pdf: Buffer = await generatePDF(tempFilePath, {}, options);
 
-  return pdf;
-}
+    // remove o arquivo depois
+    fs.unlinkSync(tempFilePath);
+
+    return pdf;
+  }
 
 }
