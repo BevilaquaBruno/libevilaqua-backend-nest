@@ -19,6 +19,9 @@ import { Tag } from '../tag/entities/tag.entity';
 import { TagService } from '../tag/tag.service';
 import { Type } from '../type/entities/type.entity';
 import { TypeService } from '../type/type.service';
+import { User } from '../user/entities/user.entity';
+import { UserService } from '../user/user.service';
+import { LibraryUser } from '../user/entities/library-user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -29,6 +32,8 @@ import { TypeService } from '../type/type.service';
     Publisher,
     Tag,
     Type,
+    User,
+    LibraryUser,
   ])],
   controllers: [ReportController],
   providers: [
@@ -40,6 +45,7 @@ import { TypeService } from '../type/type.service';
     PublisherService,
     TagService,
     TypeService,
+    UserService,
   ]
 })
 export class ReportModule implements OnModuleInit {

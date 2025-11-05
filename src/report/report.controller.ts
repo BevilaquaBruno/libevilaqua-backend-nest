@@ -11,6 +11,7 @@ import { PersonService } from '../person/person.service';
 import { PublisherService } from '../publisher/publisher.service';
 import { TagService } from '../tag/tag.service';
 import { TypeService } from '../type/type.service';
+import { UserService } from '../user/user.service';
 
 @Controller('report')
 export class ReportController {
@@ -23,6 +24,7 @@ export class ReportController {
     private readonly publisherService: PublisherService,
     private readonly tagService: TagService,
     private readonly typeService: TypeService,
+    private readonly userService: UserService,
   ) { }
 
   // Emite relatório da lista de autores
@@ -58,7 +60,7 @@ export class ReportController {
         title: library.description,
         subtitle: 'Lista de autores',
         date: moment().format('DD/MM/YYYY'),
-        author: 'MyAlexandria - Relatórios',
+        author: process.env['APP_NAME'] + ' - Relatórios',
         headers: ['#', 'nome', 'Nasc - Morte'],
         data: authors_formatted,
       }
@@ -87,7 +89,7 @@ export class ReportController {
         title: library.description,
         subtitle: 'Lista de gêneros',
         date: moment().format('DD/MM/YYYY'),
-        author: 'MyAlexandria - Relatórios',
+        author: process.env['APP_NAME'] + ' - Relatórios',
         headers: ['#', 'Descrição'],
         data: genres,
       }
@@ -138,7 +140,7 @@ export class ReportController {
         title: library.description,
         subtitle: 'Lista de pessoas',
         date: moment().format('DD/MM/YYYY'),
-        author: 'MyAlexandria - Relatórios',
+        author: process.env['APP_NAME'] + ' - Relatórios',
         headers: ['#', 'Nome', 'CPF', 'Endereço'],
         data: peopleData,
       }
@@ -167,7 +169,7 @@ export class ReportController {
         title: library.description,
         subtitle: 'Lista de Editoras',
         date: moment().format('DD/MM/YYYY'),
-        author: 'MyAlexandria - Relatórios',
+        author: process.env['APP_NAME'] + ' - Relatórios',
         headers: ['#', 'Descrição', 'País'],
         data: publishers,
       }
@@ -196,7 +198,7 @@ export class ReportController {
         title: library.description,
         subtitle: 'Lista de tags',
         date: moment().format('DD/MM/YYYY'),
-        author: 'MyAlexandria - Relatórios',
+        author: process.env['APP_NAME'] + ' - Relatórios',
         headers: ['#', 'Descrição'],
         data: tags,
       }
@@ -225,7 +227,7 @@ export class ReportController {
         title: library.description,
         subtitle: 'Lista de Tipos',
         date: moment().format('DD/MM/YYYY'),
-        author: 'MyAlexandria - Relatórios',
+        author: process.env['APP_NAME'] + ' - Relatórios',
         headers: ['#', 'Descrição'],
         data: types,
       }
@@ -235,6 +237,35 @@ export class ReportController {
     const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
     const responseData = this.getResponseData(pdfBuffer, 'type_list');
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/user-list')
+  async userList(@Req() req: Request, @Res() res) {
+    const reqUser: PayloadAuthDto = req['user'];
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    const users = await this.userService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+
+    // Cria os dados para o relatórios
+    const pdfData: ReportDataDto = {
+      layout: 'base',
+      template: 'user-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de Usuários',
+        date: moment().format('DD/MM/YYYY'),
+        author: process.env['APP_NAME'] + ' - Relatórios',
+        headers: ['#', 'Nome', 'E-mail'],
+        data: users,
+      }
+    };
+
+    // Gera o buffer do PDF
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
+
+    const responseData = this.getResponseData(pdfBuffer, 'user_list');
     res.set(responseData);
     res.end(pdfBuffer);
   }
