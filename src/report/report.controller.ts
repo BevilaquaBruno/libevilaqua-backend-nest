@@ -8,6 +8,7 @@ import { LibraryService } from '../library/library.service';
 import { AuthorService } from '../author/author.service';
 import { GenreService } from '../genre/genre.service';
 import { PersonService } from '../person/person.service';
+import { PublisherService } from '../publisher/publisher.service';
 
 @Controller('report')
 export class ReportController {
@@ -17,6 +18,7 @@ export class ReportController {
     private readonly authorService: AuthorService,
     private readonly genreService: GenreService,
     private readonly personService: PersonService,
+    private readonly publisherService: PublisherService,
   ) { }
 
   // Emite relatório da lista de autores
@@ -141,7 +143,36 @@ export class ReportController {
     // Gera o buffer do PDF
     const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
-    const responseData = this.getResponseData(pdfBuffer, 'genre_list');
+    const responseData = this.getResponseData(pdfBuffer, 'person_list');
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/publisher-list')
+  async publisherList(@Req() req: Request, @Res() res) {
+    const reqUser: PayloadAuthDto = req['user'];
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    const publishers = await this.publisherService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+
+    // Cria os dados para o relatórios
+    const pdfData: ReportDataDto = {
+      layout: 'base',
+      template: 'publisher-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de gêneros',
+        date: moment().format('DD/MM/YYYY'),
+        author: 'MyAlexandria - Relatórios',
+        headers: ['#', 'Descrição', 'País'],
+        data: publishers,
+      }
+    };
+
+    // Gera o buffer do PDF
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
+
+    const responseData = this.getResponseData(pdfBuffer, 'publisher_list');
     res.set(responseData);
     res.end(pdfBuffer);
   }

@@ -13,11 +13,26 @@ import { Genre } from '../genre/entities/genre.entity';
 import { GenreService } from '../genre/genre.service';
 import { Person } from '../person/entities/person.entity';
 import { PersonService } from '../person/person.service';
+import { Publisher } from '../publisher/entities/publisher.entity';
+import { PublisherService } from '../publisher/publisher.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Library, Author, Genre, Person])],
+  imports: [TypeOrmModule.forFeature([
+    Library,
+    Author,
+    Genre,
+    Person,
+    Publisher
+  ])],
   controllers: [ReportController],
-  providers: [PdfService, LibraryService, AuthorService, GenreService, PersonService]
+  providers: [
+    PdfService,
+    LibraryService,
+    AuthorService,
+    GenreService,
+    PersonService,
+    PublisherService
+  ]
 })
 export class ReportModule implements OnModuleInit {
   onModuleInit() {
