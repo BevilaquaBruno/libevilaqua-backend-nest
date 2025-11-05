@@ -12,13 +12,7 @@ export class PdfService {
   private layoutsDir = path.join(process.cwd(), 'src/report/html/layouts');
   private templatesDir = path.join(process.cwd(), 'src/report/html/reports');
 
-  async generatePDF(data: ReportDataDto, templateName: string): Promise<Buffer> {
-    const templatePath = path.join(
-      process.cwd(),
-      'src/report/html/reports',
-      templateName + '.hbs'
-    );
-
+  async generatePDF(data: ReportDataDto): Promise<Buffer> {
     const options = {
       format: 'A4',
       displayHeaderFooter: true,

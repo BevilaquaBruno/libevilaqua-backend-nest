@@ -57,7 +57,7 @@ export class ReportController {
     };
 
     // Gera o buffer do PDF
-    const pdfBuffer = await this.pdfService.generatePDF(pdfData, 'author-list');
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
     const responseData = this.getResponseData(pdfBuffer);
     res.set(responseData);
@@ -86,7 +86,7 @@ export class ReportController {
     };
 
     // Gera o buffer do PDF
-    const pdfBuffer = await this.pdfService.generatePDF(pdfData, 'genre-list');
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
     const responseData = this.getResponseData(pdfBuffer);
     res.set(responseData);
