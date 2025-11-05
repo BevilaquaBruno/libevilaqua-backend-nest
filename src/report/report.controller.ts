@@ -59,7 +59,7 @@ export class ReportController {
     // Gera o buffer do PDF
     const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
-    const responseData = this.getResponseData(pdfBuffer);
+    const responseData = this.getResponseData(pdfBuffer, 'author_list');
     res.set(responseData);
     res.end(pdfBuffer);
   }
@@ -88,15 +88,15 @@ export class ReportController {
     // Gera o buffer do PDF
     const pdfBuffer = await this.pdfService.generatePDF(pdfData);
 
-    const responseData = this.getResponseData(pdfBuffer);
+    const responseData = this.getResponseData(pdfBuffer, 'genre_list');
     res.set(responseData);
     res.end(pdfBuffer);
   }
 
-  private getResponseData(pdfBuffer: Buffer) {
+  private getResponseData(pdfBuffer: Buffer, reportName: string) {
     return {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename=author_list_report.pdf`,
+      'Content-Disposition': `attachment; filename=${reportName}.pdf`,
       'Content-Length': pdfBuffer.length,
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',
