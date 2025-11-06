@@ -13,6 +13,8 @@ export class PersonCreateTable1681776270324 implements MigrationInterface {
         district VARCHAR(100),
         street VARCHAR(100),
         number VARCHAR(5),
+        email VARCHAR(50),
+        phone VARCHAR(11),
         obs TEXT,
 
         libraryId INT NOT NULL,

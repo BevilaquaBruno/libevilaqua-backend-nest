@@ -49,42 +49,24 @@ export class PersonController {
       }
     }
 
-    // Valida campos vazios e os deixa null
-    createPersonDto.cep =
-      '' == createPersonDto.cep || undefined == createPersonDto.cep
-        ? null
-        : createPersonDto.cep;
-    createPersonDto.state =
-      undefined == createPersonDto.state ? null : createPersonDto.state;
-    createPersonDto.city =
-      '' == createPersonDto.city || undefined == createPersonDto.city
-        ? null
-        : createPersonDto.city;
-    createPersonDto.district =
-      '' == createPersonDto.district || undefined == createPersonDto.district
-        ? null
-        : createPersonDto.district;
-    createPersonDto.street =
-      '' == createPersonDto.street || undefined == createPersonDto.street
-        ? null
-        : createPersonDto.street;
-    createPersonDto.number =
-      '' == createPersonDto.number || undefined == createPersonDto.number
-        ? null
-        : createPersonDto.number;
-    createPersonDto.obs =
-      '' == createPersonDto.obs || undefined == createPersonDto.obs
-        ? null
-        : createPersonDto.obs;
-
     // Cria a pessoa
     const newPerson: Person = await this.personService.create(createPersonDto, reqUser.libraryId);
+    const returnPerson: UpdatePersonDto = {
+      id: newPerson.id,
+      cpf: newPerson.cpf,
+      name: newPerson.name,
+      cep: newPerson.cep,
+      state: newPerson.state,
+      city: newPerson.city,
+      district: newPerson.district,
+      number: newPerson.number,
+      street: newPerson.street,
+      obs: newPerson.obs,
+      email: newPerson.email,
+      phone: newPerson.phone,
+    };
 
-    // Remove os campos de criação e atualização
-    delete newPerson.createdAt;
-    delete newPerson.updatedAt;
-
-    return newPerson;
+    return returnPerson;
   }
 
   // Retorna uma lista de pessoa
@@ -153,34 +135,6 @@ export class PersonController {
       throw new HttpException('CPF já cadastrado.', HttpStatus.BAD_REQUEST);
     }
 
-    // valida campos vazios e os deixa null
-    updatePersonDto.cep =
-      '' == updatePersonDto.cep || undefined == updatePersonDto.cep
-        ? null
-        : updatePersonDto.cep;
-    updatePersonDto.state =
-      undefined == updatePersonDto.state ? null : updatePersonDto.state;
-    updatePersonDto.city =
-      '' == updatePersonDto.city || undefined == updatePersonDto.city
-        ? null
-        : updatePersonDto.city;
-    updatePersonDto.district =
-      '' == updatePersonDto.district || undefined == updatePersonDto.district
-        ? null
-        : updatePersonDto.district;
-    updatePersonDto.street =
-      '' == updatePersonDto.street || undefined == updatePersonDto.street
-        ? null
-        : updatePersonDto.street;
-    updatePersonDto.number =
-      '' == updatePersonDto.number || undefined == updatePersonDto.number
-        ? null
-        : updatePersonDto.number;
-    updatePersonDto.obs =
-      '' == updatePersonDto.obs || undefined == updatePersonDto.obs
-        ? null
-        : updatePersonDto.obs;
-
     // Atualiza a pessoa e retorna ela ou erro
     const updatedPerson = await this.personService.update(+id, updatePersonDto, reqUser.libraryId);
     if (updatedPerson.affected == 1) {
@@ -195,6 +149,8 @@ export class PersonController {
         number: updatePersonDto.number,
         street: updatePersonDto.street,
         obs: updatePersonDto.obs,
+        email: updatePersonDto.email,
+        phone: updatePersonDto.phone,
       };
 
       return returnPerson;

@@ -42,6 +42,12 @@ export class Person {
   @Column()
   obs: string;
 
+  @Column()
+  email: string;
+
+  @Column()
+  phone: string;
+
   @ManyToOne(() => Library, { eager: false })
   @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_person' })
   library?: Library;
