@@ -121,6 +121,7 @@ export class BookController {
     @Query('isbn') isbn: string,
     @Query('edition') edition: string,
     @Query('title') title: string,
+    @Query('status') status: string,
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
@@ -137,6 +138,7 @@ export class BookController {
       isbn: null,
       edition: null,
       title: null,
+      status: null,
       limit: null,
       page: null,
     };
@@ -197,6 +199,13 @@ export class BookController {
 
     // Pega o título
     if (title !== undefined) findBook.title = title;
+
+    if (status !== undefined) {
+      if ('true' == status)
+        findBook.status = true;
+      else
+        findBook.status = false;
+    }
 
     // Define a paginação
     findBook.limit = limit == undefined ? 5 : parseInt(limit);

@@ -390,6 +390,7 @@ export class ReportController {
     @Query('number_pages') number_pages: string,
     @Query('isbn') isbn: string,
     @Query('edition') edition: string,
+    @Query('status') status: string,
     @Query('title') title: string,
   ) {
     const reqUser: PayloadAuthDto = req['user'];
@@ -405,6 +406,7 @@ export class ReportController {
       isbn: null,
       edition: null,
       title: null,
+      status: null,
       limit: null,
       page: null,
     };
@@ -466,6 +468,13 @@ export class ReportController {
     // Pega o título
     if (title !== undefined) findBook.title = title;
 
+    if (status !== undefined) {
+      if ('true' == status)
+        findBook.status = true;
+      else
+        findBook.status = false;
+    }
+
     const library = await this.libraryService.findOne(reqUser.libraryId);
     const books = await this.bookService.findAll(findBook, reqUser.libraryId);
 
@@ -484,7 +493,8 @@ export class ReportController {
         authors: (0 == authors.length) ? '-' : authors,
         genre: (null == book.genre) ? '-' : book.genre.description,
         type: (null == book.type) ? '-' : book.type.description,
-        tags: (0 == tags.length) ? '-' : tags
+        tags: (0 == tags.length) ? '-' : tags,
+        status: (book.status) ? 'Ativo' : 'Inativo'
       });
     }
 
@@ -497,7 +507,7 @@ export class ReportController {
         subtitle: 'Lista de livros',
         date: moment().format('DD/MM/YYYY'),
         author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Título', 'Autor(es)', 'Gênero', 'Tipo', 'Tag(s)'],
+        headers: ['#', 'Título', 'Autor(es)', 'Gênero', 'Tipo', 'Tag(s)', 'Status'],
         data: bookData,
       }
     };

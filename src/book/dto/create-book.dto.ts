@@ -4,6 +4,7 @@ import {
   IsNumber,
   ValidateIf,
   IsArray,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateBookDto {
@@ -99,4 +100,7 @@ export class CreateBookDto {
   @ValidateIf((thisBook) => thisBook.authors_id.length > 0)
   @IsArray({ message: 'Informe a lista de autores novamente.' })
   authors_id: number[];
+
+  @IsBoolean({ message: 'Informe corretamente o status' })
+  status: boolean;
 }
