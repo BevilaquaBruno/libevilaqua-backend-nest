@@ -24,6 +24,8 @@ import { UserService } from '../user/user.service';
 import { LibraryUser } from '../user/entities/library-user.entity';
 import { Loan } from '../loan/entities/loan.entity';
 import { LoanService } from '../loan/loan.service';
+import { Book } from '../book/entities/book.entity';
+import { BookService } from '../book/book.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -37,6 +39,7 @@ import { LoanService } from '../loan/loan.service';
     User,
     LibraryUser,
     Loan,
+    Book,
   ])],
   controllers: [ReportController],
   providers: [
@@ -50,6 +53,7 @@ import { LoanService } from '../loan/loan.service';
     TypeService,
     UserService,
     LoanService,
+    BookService,
   ]
 })
 export class ReportModule implements OnModuleInit {

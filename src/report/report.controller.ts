@@ -15,6 +15,9 @@ import { UserService } from '../user/user.service';
 import { ReportListDto } from './dto/report-list.dto';
 import { LoanService } from '../loan/loan.service';
 import { FindLoanDto } from '../loan/dto/find-loan.dto';
+import { FindBookDto } from '../book/dto/find-book.dto';
+import { BookService } from '../book/book.service';
+import { Author } from '../author/entities/author.entity';
 
 @Controller('report')
 export class ReportController {
@@ -29,6 +32,7 @@ export class ReportController {
     private readonly typeService: TypeService,
     private readonly userService: UserService,
     private readonly loanService: LoanService,
+    private readonly bookService: BookService,
   ) { }
 
 
@@ -42,6 +46,8 @@ export class ReportController {
       { name: 'Lista de tags', description: 'Uma lista com todos os tags cadastradas' },
       { name: 'Lista de tipos', description: 'Uma lista com todos os tipos cadastrados' },
       { name: 'Lista de usuários', description: 'Uma lista com todos os usuários cadastrados' },
+      { name: 'Lista de empréstimos', description: 'Uma lista com todos os empréstimos cadastrados' },
+      { name: 'Lista de livros', description: 'Uma lista com todos os livros cadastrados' },
     ];
 
     return report_list;
@@ -141,7 +147,7 @@ export class ReportController {
         ${((null == person.city) ? '' : person.city + ', ')}
         ${((null == person.state) ? '' : person.state + ', ')}
         `;
-      if('' == address.trim()){
+      if ('' == address.trim()) {
         address = '-';
       }
       peopleData.push({
@@ -290,7 +296,7 @@ export class ReportController {
     res.end(pdfBuffer);
   }
 
-    @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post('/loan-list')
   async loanList(@Req() req: Request, @Res() res,
     @Query('start_date') start_date: string,
@@ -370,6 +376,161 @@ export class ReportController {
     const responseData = this.getResponseData(pdfBuffer, 'loan_list');
     res.set(responseData);
     res.end(pdfBuffer);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/book-list')
+  async bookList(@Req() req: Request, @Res() res,
+    @Query('genres') genres: string,
+    @Query('tags') tags: string,
+    @Query('publishers') publishers: string,
+    @Query('types') types: string,
+    @Query('authors') authors: string,
+    @Query('release_year') release_year: string,
+    @Query('number_pages') number_pages: string,
+    @Query('isbn') isbn: string,
+    @Query('edition') edition: string,
+    @Query('title') title: string,
+  ) {
+    const reqUser: PayloadAuthDto = req['user'];
+
+    const findBook: FindBookDto = {
+      typeList: null,
+      publisherList: null,
+      tagList: null,
+      genreList: null,
+      authorList: null,
+      release_year: null,
+      number_pages: null,
+      isbn: null,
+      edition: null,
+      title: null,
+      limit: null,
+      page: null,
+    };
+
+    // Transforma os itens passados na URL
+    // Transforma a typeList em number[]
+    if (types !== undefined) {
+      findBook.typeList = types.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    // Transforma a publisherList em number[]
+    if (publishers !== undefined) {
+      findBook.publisherList = publishers.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    // Transforma a taglist em number[]
+    if (tags !== undefined) {
+      findBook.tagList = tags.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    // Transforma a genderList em number[]
+    if (genres !== undefined) {
+      findBook.genreList = genres.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    // Transforma a authorList em number[]
+    if (authors !== undefined) {
+      findBook.authorList = authors.split(',').map((v) => {
+        return parseInt(v);
+      });
+    }
+
+    // Transforma o release_year em number
+    if (release_year !== undefined)
+      findBook.release_year = parseInt(release_year);
+
+    // Transforma o number_pages em array com as posições 0 e 1
+    if (number_pages !== undefined) {
+      const npArray: string[] = number_pages.split(',');
+      findBook.number_pages = [];
+      findBook.number_pages[0] = parseInt(npArray[0]);
+      findBook.number_pages[1] = parseInt(npArray[1]);
+    }
+
+    // Pega o isbn
+    if (isbn !== undefined) findBook.isbn = isbn;
+
+    // Pega a edição
+    if (edition !== undefined) findBook.edition = parseInt(edition);
+
+    // Pega o título
+    if (title !== undefined) findBook.title = title;
+
+    const library = await this.libraryService.findOne(reqUser.libraryId);
+    const books = await this.bookService.findAll(findBook, reqUser.libraryId);
+
+    let bookData = [];
+    for (let i = 0; i < books.length; i++) {
+      const book = books[i];
+
+      const authors = this.formatBookAuthors(book.authors);
+
+      let list_tags = book.tags.map(tag => tag.description);
+      let tags = list_tags.join(' - ');
+
+      bookData.push({
+        id: book.id,
+        title: book.title,
+        authors: (0 == authors.length) ? '-' : authors,
+        genre: (null == book.genre) ? '-' : book.genre.description,
+        type: (null == book.type) ? '-' : book.type.description,
+        tags: (0 == tags.length) ? '-' : tags
+      });
+    }
+
+    // Cria os dados para o relatórios
+    const pdfData: ReportDataDto = {
+      layout: 'base',
+      template: 'book-list',
+      data: {
+        title: library.description,
+        subtitle: 'Lista de livros',
+        date: moment().format('DD/MM/YYYY'),
+        author: process.env['APP_NAME'] + ' - Relatórios',
+        headers: ['#', 'Título', 'Autor(es)', 'Gênero', 'Tipo', 'Tag(s)'],
+        data: bookData,
+      }
+    };
+
+    // Gera o buffer do PDF
+    const pdfBuffer = await this.pdfService.generatePDF(pdfData);
+
+    const responseData = this.getResponseData(pdfBuffer, 'book_list');
+    res.set(responseData);
+    res.end(pdfBuffer);
+  }
+
+  private formatBookAuthors(authors: Author[]) {
+    const names = authors.map(author => author.name);
+    if (names.length > 3) {
+      // Exibe apenas os 3 primeiros e indica que há mais
+      const firstThree = names.slice(0, 3).join(', ');
+      return `${firstThree} e outros`;
+    }
+
+    if (names.length === 1) {
+      return names[0];
+    }
+
+    if (names.length === 2) {
+      return names.join(' e ');
+    }
+
+    if (names.length === 3) {
+      return `${names[0]}, ${names[1]} e ${names[2]}`;
+    }
+
+    return '';
   }
 
   private getResponseData(pdfBuffer: Buffer, reportName: string) {
