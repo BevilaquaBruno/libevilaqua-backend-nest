@@ -33,11 +33,12 @@ describe('BookService', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Book mock',
+      status: true,
       genre_id: 1,
       publisher_id: 1,
       type_id: 1,
       tags_id: [1, 2],
-      authors_id: [1, 2]
+      authors_id: [1, 2],
     };
 
     const mockBookResolved = {
@@ -48,6 +49,7 @@ describe('BookService', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Book mock',
+      status: true,
       genre: {
         id: 1,
         description: 'Genre test',
@@ -109,6 +111,7 @@ describe('BookService', () => {
         number_pages: 250,
         release_year: 2025,
         obs: 'Book mock',
+        status: true,
         genre: {
           id: 1,
           description: 'Genre test',
@@ -157,6 +160,7 @@ describe('BookService', () => {
         number_pages: 250,
         release_year: 2025,
         obs: 'Book mock',
+        status: true,
         genre: {
           id: 1,
           description: 'Genre test',
@@ -214,7 +218,8 @@ describe('BookService', () => {
       edition: 0,
       title: '',
       page: 1,
-      limit: 2
+      limit: 2,
+      status: true,
     };
 
     const result = await service.findAll(findBook, libraryId);
@@ -234,6 +239,7 @@ describe('BookService', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Book mock',
+      status: true,
       genre: {
         id: 1,
         description: 'Genre test',
@@ -294,6 +300,7 @@ describe('BookService', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Book mock',
+      status: true,
       genre_id: 1,
       publisher_id: 1,
       type_id: 1,
@@ -309,6 +316,7 @@ describe('BookService', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Book mock',
+      status: true,
       genre: {
         id: 1,
         description: 'Genre test',
@@ -393,6 +401,7 @@ describe('BookService', () => {
         number_pages: 250,
         release_year: 2025,
         obs: 'Book mock',
+        status: true,
         genre: {
           id: 1,
           description: 'Genre test',
@@ -441,6 +450,7 @@ describe('BookService', () => {
         number_pages: 250,
         release_year: 2025,
         obs: 'Book mock',
+        status: true,
         genre: {
           id: 1,
           description: 'Genre test',
@@ -509,7 +519,8 @@ describe('BookService', () => {
       edition: 0,
       title: '',
       page: 1,
-      limit: 2
+      limit: 2,
+      status: true
     };
     const result = await service.count(findBook, libraryId);
 

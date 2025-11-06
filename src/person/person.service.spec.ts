@@ -33,7 +33,9 @@ describe('PersonService', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     };
 
     const mockResolved: UpdatePersonDto = {
@@ -54,7 +56,9 @@ describe('PersonService', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     }, libraryId);
 
     expect(result).toEqual(mockResolved)
@@ -67,7 +71,9 @@ describe('PersonService', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     }, libraryId);
   });
 
@@ -84,7 +90,9 @@ describe('PersonService', () => {
         district: 'Linha São Paulo',
         street: 'Rua Sérgio Galvan',
         number: '15',
-        obs: 'Meu próprio cadastro'
+        obs: 'Meu próprio cadastro',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       },
       {
         id: 2,
@@ -96,7 +104,9 @@ describe('PersonService', () => {
         district: 'Linha São Paulo',
         street: 'Rua Sérgio Galvan',
         number: '15',
-        obs: 'Meu próprio cadastro'
+        obs: 'Meu próprio cadastro',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     ];
     mockPersonService.findAll.mockResolvedValue(mockList);
@@ -124,7 +134,9 @@ describe('PersonService', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     };
     mockPersonService.findOne.mockResolvedValue(mock);
 
@@ -148,7 +160,9 @@ describe('PersonService', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     };
     mockPersonService.update.mockResolvedValue(mock);
 
@@ -163,7 +177,9 @@ describe('PersonService', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     }, libraryId);
 
     // Valida o retorno
@@ -178,7 +194,9 @@ describe('PersonService', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     }, libraryId);
   });
 

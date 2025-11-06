@@ -20,7 +20,6 @@ import { PayloadAuthDto } from './dto/payload-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { SelectLibraryDto } from './dto/select-library.dto';
 import { LibraryService } from '../library/library.service';
-import { I18nService } from 'nestjs-i18n';
 
 @Controller('auth')
 export class AuthController {
@@ -29,8 +28,7 @@ export class AuthController {
     private userService: UserService,
     private mailService: MailService,
     private jwtService: JwtService,
-    private libraryService: LibraryService,
-    private readonly i18n: I18nService,
+    private libraryService: LibraryService
   ) { }
 
   @HttpCode(HttpStatus.OK)

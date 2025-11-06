@@ -22,6 +22,10 @@ import { TagService } from '../tag/tag.service';
 import { TypeService } from '../type/type.service';
 import { UserService } from '../user/user.service';
 import { LoanService } from '../loan/loan.service';
+import { I18nService } from 'nestjs-i18n';
+import { mockI18nService } from '../i18n/mocks/i18n.service.mock';
+import { BookService } from '../book/book.service';
+import { mockBookService } from '../book/mocks/book.service.mock';
 
 describe('ReportController', () => {
   let controller: ReportController;
@@ -41,6 +45,8 @@ describe('ReportController', () => {
         { provide: TypeService, useValue: mockTypeService },
         { provide: UserService, useValue: mockUserService },
         { provide: LoanService, useValue: mockLoanService },
+        { provide: BookService, useValue: mockBookService },
+        { provide: I18nService, useValue: mockI18nService },
 
       ],
     }).compile();
