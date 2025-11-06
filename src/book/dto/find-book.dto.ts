@@ -19,6 +19,8 @@ export class FindBookDto {
 
   title: string | null;
 
+  status: boolean | null;
+
   page: number;
 
   limit: number;

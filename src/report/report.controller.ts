@@ -319,15 +319,15 @@ export class ReportController {
     };
 
     // Define os filtros com base no que veio na URL
-    if (start_date !== undefined) findLoan.start_date = start_date;
+    if (undefined != start_date && '' != start_date) findLoan.start_date = start_date;
 
-    if (end_date !== undefined) findLoan.end_date = end_date;
+    if (undefined != end_date && '' != end_date) findLoan.end_date = end_date;
 
-    if (book !== undefined) findLoan.book = parseInt(book);
+    if (undefined != book && '' != book) findLoan.book = parseInt(book);
 
-    if (person !== undefined) findLoan.person = parseInt(person);
+    if (undefined != person && '' != person) findLoan.person = parseInt(person);
 
-    if (description !== undefined) findLoan.description = description;
+    if (undefined != description && '' != description) findLoan.description = description;
 
     /**
      * Valida o retorno do livr
@@ -335,7 +335,7 @@ export class ReportController {
      * returned = false - Apenas livros não retornados
      * returned = undefined - Todos os livros
      */
-    if (returned !== undefined)
+    if (undefined != returned && '' != returned)
       if (returned == 'true') findLoan.returned = true;
       else findLoan.returned = false;
 
@@ -348,7 +348,7 @@ export class ReportController {
       const loan = loans[i];
       loanData.push({
         id: loan.id,
-        description: (null != loan.description) ? '' : loan.description,
+        description: (null == loan.description) ? '' : loan.description,
         person: loan.person.name,
         book: loan.book.title,
         loan_date: (null == loan.loan_date) ? '' : moment(loan.loan_date).format('DD/MM/YYYY'),
@@ -390,6 +390,7 @@ export class ReportController {
     @Query('number_pages') number_pages: string,
     @Query('isbn') isbn: string,
     @Query('edition') edition: string,
+    @Query('status') status: string,
     @Query('title') title: string,
   ) {
     const reqUser: PayloadAuthDto = req['user'];
@@ -405,52 +406,53 @@ export class ReportController {
       isbn: null,
       edition: null,
       title: null,
+      status: null,
       limit: null,
       page: null,
     };
 
     // Transforma os itens passados na URL
     // Transforma a typeList em number[]
-    if (types !== undefined) {
+    if (undefined != types && '' != types) {
       findBook.typeList = types.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma a publisherList em number[]
-    if (publishers !== undefined) {
+    if (undefined != publishers && '' != publishers) {
       findBook.publisherList = publishers.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma a taglist em number[]
-    if (tags !== undefined) {
+    if (undefined != tags && '' != tags) {
       findBook.tagList = tags.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma a genderList em number[]
-    if (genres !== undefined) {
+    if (undefined != genres && '' != genres) {
       findBook.genreList = genres.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma a authorList em number[]
-    if (authors !== undefined) {
+    if (undefined != authors && '' != authors) {
       findBook.authorList = authors.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma o release_year em number
-    if (release_year !== undefined)
+    if (undefined != release_year && '' != release_year)
       findBook.release_year = parseInt(release_year);
 
     // Transforma o number_pages em array com as posições 0 e 1
-    if (number_pages !== undefined) {
+    if (undefined != number_pages && '' != number_pages) {
       const npArray: string[] = number_pages.split(',');
       findBook.number_pages = [];
       findBook.number_pages[0] = parseInt(npArray[0]);
@@ -458,13 +460,20 @@ export class ReportController {
     }
 
     // Pega o isbn
-    if (isbn !== undefined) findBook.isbn = isbn;
+    if (undefined != isbn && '' != isbn) findBook.isbn = isbn;
 
     // Pega a edição
-    if (edition !== undefined) findBook.edition = parseInt(edition);
+    if (undefined != edition && '' != edition) findBook.edition = parseInt(edition);
 
     // Pega o título
-    if (title !== undefined) findBook.title = title;
+    if (undefined != title && '' != title) findBook.title = title;
+
+    if (undefined != status && '' != status) {
+      if ('true' == status)
+        findBook.status = true;
+      else
+        findBook.status = false;
+    }
 
     const library = await this.libraryService.findOne(reqUser.libraryId);
     const books = await this.bookService.findAll(findBook, reqUser.libraryId);
@@ -484,7 +493,8 @@ export class ReportController {
         authors: (0 == authors.length) ? '-' : authors,
         genre: (null == book.genre) ? '-' : book.genre.description,
         type: (null == book.type) ? '-' : book.type.description,
-        tags: (0 == tags.length) ? '-' : tags
+        tags: (0 == tags.length) ? '-' : tags,
+        status: (book.status) ? 'Ativo' : 'Inativo'
       });
     }
 
@@ -497,7 +507,7 @@ export class ReportController {
         subtitle: 'Lista de livros',
         date: moment().format('DD/MM/YYYY'),
         author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Título', 'Autor(es)', 'Gênero', 'Tipo', 'Tag(s)'],
+        headers: ['#', 'Título', 'Autor(es)', 'Gênero', 'Tipo', 'Tag(s)', 'Status'],
         data: bookData,
       }
     };

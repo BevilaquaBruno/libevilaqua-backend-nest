@@ -11,7 +11,7 @@ import { Book } from './entities/book.entity';
 export class BookService {
   constructor(
     @InjectRepository(Book) private bookServiceRepository: Repository<Book>,
-  ) {}
+  ) { }
   create(createBookDto: CreateBookDto, libraryId: number) {
     // Cria um padrão de inserção no banco para o livro - Validar futuramente para alterar o local desse padrão
     const tempCreateBookDto = {
@@ -103,6 +103,9 @@ export class BookService {
     // Caso tenha título - Filtra por ele
     if (findBook.title != null)
       query.andWhere({ title: Like(`%${findBook.title}%`) });
+
+    if (findBook.status != null)
+      query.andWhere({ status: findBook.status });
 
     // Retorna a query ordenando pelo id decrescente
     return query
@@ -268,6 +271,9 @@ export class BookService {
     // Caso tenha título - Filtra por ele
     if (findBook.title != null)
       query.andWhere({ title: Like(`%${findBook.title}%`) });
+
+    if (findBook.status != null)
+      query.andWhere({ status: findBook.status });
 
     // Retorna a query ordenando pelo id decrescente
     return query.getCount();

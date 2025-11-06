@@ -173,15 +173,15 @@ export class LoanController {
     };
 
     // Define os filtros com base no que veio na URL
-    if (start_date !== undefined) findLoan.start_date = start_date;
+    if (undefined != start_date && '' != start_date) findLoan.start_date = start_date;
 
-    if (end_date !== undefined) findLoan.end_date = end_date;
+    if (undefined != end_date && '' != end_date) findLoan.end_date = end_date;
 
-    if (book !== undefined) findLoan.book = parseInt(book);
+    if (undefined != book && '' != book) findLoan.book = parseInt(book);
 
-    if (person !== undefined) findLoan.person = parseInt(person);
+    if (undefined != person && '' != person) findLoan.person = parseInt(person);
 
-    if (description !== undefined) findLoan.description = description;
+    if (undefined != description && '' != description) findLoan.description = description;
 
     /**
      * Valida o retorno do livr
@@ -189,9 +189,11 @@ export class LoanController {
      * returned = true - Apenas livros não retornados
      * returned = undefined - Todos os livros
      */
-    if (returned !== undefined)
-      if (returned == 'true') findLoan.returned = true;
-      else findLoan.returned = false;
+    if (undefined != returned && '' != returned)
+      if (returned == 'true')
+        findLoan.returned = true;
+      else
+        findLoan.returned = false;
 
     // Define a paginação
     findLoan.limit = limit == undefined ? 5 : parseInt(limit);

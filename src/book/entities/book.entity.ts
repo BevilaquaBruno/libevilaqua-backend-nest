@@ -78,6 +78,9 @@ export class Book {
   @Column({ select: false })
   libraryId: number;
 
+  @Column()
+  status: boolean;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
   createdAt: Date;
 
