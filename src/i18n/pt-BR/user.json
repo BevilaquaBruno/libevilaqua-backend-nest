@@ -1,9 +1,15 @@
 {
-  "email": {
-    "does_not_exists": "Não existe nenhum usuário com este e-mail.",
-    "invalid": "Informe um e-mail válido."
+  "dto": {
+    "email": {
+      "invalid": "Informe um e-mail válido."
+    },
+    "password": {
+      "invalid": "Informe a senha."
+    }
   },
-  "password": {
-    "invalid": "Informe a senha."
+  "controller": {
+    "email": {
+      "does_not_exists": "Não existe nenhum usuário com este e-mail."
+    }
   }
 }

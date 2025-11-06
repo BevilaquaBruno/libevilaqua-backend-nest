@@ -39,7 +39,7 @@ export class AuthController {
     const user = await this.userService.findByEmail(signInDto.email);
     if (null == user) {
       throw new HttpException(
-        await this.i18n.translate('user.email.does_not_exists'),
+        await this.i18n.translate('user.controller.email.does_not_exists'),
         HttpStatus.BAD_REQUEST
       );
     }
