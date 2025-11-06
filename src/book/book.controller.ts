@@ -145,46 +145,46 @@ export class BookController {
 
     // Transforma os itens passados na URL
     // Transforma a typeList em number[]
-    if (types !== undefined) {
+    if (undefined != types && '' != types) {
       findBook.typeList = types.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma a publisherList em number[]
-    if (publishers !== undefined) {
+    if (undefined != publishers && '' != publishers) {
       findBook.publisherList = publishers.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma a taglist em number[]
-    if (tags !== undefined) {
+    if (undefined != tags && '' != tags) {
       findBook.tagList = tags.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma a genderList em number[]
-    if (genres !== undefined) {
+    if (undefined != genres && '' != genres) {
       findBook.genreList = genres.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma a authorList em number[]
-    if (authors !== undefined) {
+    if (undefined != authors && '' != authors) {
       findBook.authorList = authors.split(',').map((v) => {
         return parseInt(v);
       });
     }
 
     // Transforma o release_year em number
-    if (release_year !== undefined)
+    if (undefined != release_year && '' != release_year)
       findBook.release_year = parseInt(release_year);
 
     // Transforma o number_pages em array com as posições 0 e 1
-    if (number_pages !== undefined) {
+    if (undefined != number_pages && '' != number_pages) {
       const npArray: string[] = number_pages.split(',');
       findBook.number_pages = [];
       findBook.number_pages[0] = parseInt(npArray[0]);
@@ -192,15 +192,15 @@ export class BookController {
     }
 
     // Pega o isbn
-    if (isbn !== undefined) findBook.isbn = isbn;
+    if (undefined != isbn && '' != isbn) findBook.isbn = isbn;
 
     // Pega a edição
-    if (edition !== undefined) findBook.edition = parseInt(edition);
+    if (undefined != edition && '' != edition) findBook.edition = parseInt(edition);
 
     // Pega o título
-    if (title !== undefined) findBook.title = title;
+    if (undefined != title && '' != title) findBook.title = title;
 
-    if (status !== undefined) {
+    if (undefined != status && '' != status) {
       if ('true' == status)
         findBook.status = true;
       else
