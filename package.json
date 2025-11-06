@@ -21,6 +21,7 @@
     "migrate": "typeorm-ts-node-commonjs migration:run -d ./database/run_migrations.ts"
   },
   "dependencies": {
+    "@bkrajendra/nestjs-pdf-lib": "^1.0.5",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^10.4.19",
     "@nestjs/config": "^4.0.2",

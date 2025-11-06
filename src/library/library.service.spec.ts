@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LibraryService } from './library.service';
-import { mockLibraryService } from './mock/library.service.mock';
+import { mockLibraryService } from './mocks/library.service.mock';
 import { CreateLibraryDto } from './dto/create-library.dto';
 import { UpdateLibraryDto } from './dto/update-library.dto';
 import { FindLibraryDto } from './dto/find-library.dto';

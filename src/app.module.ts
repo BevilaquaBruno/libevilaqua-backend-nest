@@ -14,6 +14,8 @@ import { LoanModule } from './loan/loan.module';
 import { MailService } from './mail/mail.service';
 import { MailModule } from './mail/mail.module';
 import { LibraryModule } from './library/library.module';
+import { PdfService } from './pdf/pdf.service';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -41,7 +43,9 @@ import { LibraryModule } from './library/library.module';
     LoanModule,
     MailModule,
     LibraryModule,
+    ReportModule,
   ],
-  providers: [MailService],
+  providers: [MailService, PdfService],
+  controllers: [],
 })
 export class AppModule {}
