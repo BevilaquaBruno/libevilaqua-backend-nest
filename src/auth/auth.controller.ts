@@ -20,6 +20,7 @@ import { PayloadAuthDto } from './dto/payload-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { SelectLibraryDto } from './dto/select-library.dto';
 import { LibraryService } from '../library/library.service';
+import { I18nService } from 'nestjs-i18n';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +30,7 @@ export class AuthController {
     private mailService: MailService,
     private jwtService: JwtService,
     private libraryService: LibraryService,
+    private readonly i18n: I18nService,
   ) { }
 
   @HttpCode(HttpStatus.OK)
@@ -36,7 +38,10 @@ export class AuthController {
   async signIn(@Body() signInDto: MainAuthDto) {
     const user = await this.userService.findByEmail(signInDto.email);
     if (null == user) {
-      throw new HttpException('Não existe nenhum usuário com este e-mail.', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        await this.i18n.translate('user.email.does_not_exists'),
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     const logged = await this.authService.signIn(signInDto.email, signInDto.password);

@@ -1,9 +1,9 @@
 import { IsEmail, Length, IsNotEmpty } from 'class-validator';
 export class MainAuthDto {
-  @IsEmail({}, { message: 'Informe um e-mail válido.' })
-  @Length(7, 50, { message: 'Informe um e-mail válido.' })
+  @IsEmail({}, { message: 'user.email.invalid' })
+  @Length(7, 50, { message: 'user.email.invalid' })
   email: string;
 
-  @IsNotEmpty({ message: 'Informe a senha.' })
+  @IsNotEmpty({ message: 'user.password.invalid' })
   password: string;
 }

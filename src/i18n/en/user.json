@@ -1,0 +1,9 @@
+{
+  "email": {
+    "does_not_exists": "There is no user with this email address.",
+    "invalid": "Please enter a valid e-mail address."
+  },
+  "password": {
+    "invalid": "Please provide a password."
+  }
+}
