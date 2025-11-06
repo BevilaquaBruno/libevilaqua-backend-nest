@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { CreateValidationPipe } from './common/pipes/validation-pipe/create-validation-pipe.pipe';
 import { I18nService } from 'nestjs-i18n';
+import { I18nFilter } from './i18n/i18n.filter';
 
 
 async function bootstrap() {
@@ -18,6 +19,14 @@ async function bootstrap() {
   app.useGlobalPipes(
     new CreateValidationPipe(i18n)
   );
+  /**
+   * Filters:
+   * I18nFilter: Altera os dados das exceptions, recebe tradução
+   */
+  app.useGlobalFilters(
+    new I18nFilter(i18n)
+  );
+
   const port: number = +process.env['PORT'];
   await app.listen(port);
 }

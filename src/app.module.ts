@@ -18,6 +18,8 @@ import { PdfService } from './pdf/pdf.service';
 import { ReportModule } from './report/report.module';
 import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 import * as path from 'path';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { I18nInterceptor } from './i18n/i18n.interceptor';
 
 @Module({
   imports: [
@@ -57,7 +59,10 @@ import * as path from 'path';
     LibraryModule,
     ReportModule,
   ],
-  providers: [MailService, PdfService],
+  providers: [MailService, PdfService, {
+      provide: APP_INTERCEPTOR,
+      useClass: I18nInterceptor,
+    }],
   controllers: [],
 })
 export class AppModule { }

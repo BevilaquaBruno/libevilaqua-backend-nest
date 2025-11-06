@@ -1,9 +1,9 @@
 import { IsEmail, Length, IsNotEmpty } from 'class-validator';
 export class MainAuthDto {
-  @IsEmail({}, { message: 'user.dto.email.invalid' })
-  @Length(7, 50, { message: 'user.dto.email.invalid' })
+  @IsEmail({}, { message: 'user.email.invalid' })
+  @Length(7, 50, { message: 'user.email.invalid' })
   email: string;
 
-  @IsNotEmpty({ message: 'user.dto.password.invalid' })
+  @IsNotEmpty({ message: 'user.password.invalid' })
   password: string;
 }

@@ -1,15 +1,19 @@
 {
-  "dto": {
-    "email": {
-      "invalid": "Informe um e-mail válido."
-    },
-    "password": {
-      "invalid": "Informe a senha."
-    }
+  "general": {
+    "does_not_have_access_to_library": "Esse usuário não tem acesso à biblioteca selecionada.",
+    "not_verified_in_library": "Usuário ainda não verificado nesta biblioteca, token de verificação reenviado."
   },
-  "controller": {
-    "email": {
-      "does_not_exists": "Não existe nenhum usuário com este e-mail."
-    }
+  "email": {
+    "invalid": "Informe um e-mail válido.",
+    "does_not_exists": "Não existe nenhum usuário com este e-mail.",
+    "sent_successfully": "E-mail enviado com sucesso.",
+    "verified_successfully": "E-mail verificado com sucesso.",
+    "verified_error": "Ocorreu algum erro com a verificação do e-mail, tente novamente."
+  },
+  "password": {
+    "invalid": "Informe uma senha válida.",
+    "different_password": "As duas senhas são diferentes.",
+    "update_error": "Erro ao atualizar a senha, tente novamente.",
+    "update_successfully": "Senha atualizada com sucesso."
   }
 }

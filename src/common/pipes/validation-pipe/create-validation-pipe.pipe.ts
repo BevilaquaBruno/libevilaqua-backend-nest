@@ -1,7 +1,6 @@
 // src/common/pipes/create-validation.pipe.ts
 import {
-  ArgumentsHost,
-  BadRequestException,
+  HttpException,
   HttpStatus,
   Injectable,
   ValidationError,
@@ -39,14 +38,15 @@ export class CreateValidationPipe extends ValidationPipe {
 
         // se a mensagem for uma chave i18n, traduz
         let message = constraint;
+
         if (typeof constraint === 'string' && constraint.includes('.')) {
           message = await this.i18n.translate(constraint, { lang });
         }
 
-        return new BadRequestException({
-          statusCode: HttpStatus.BAD_REQUEST,
+        return new HttpException(
           message,
-        });
+          HttpStatus.BAD_REQUEST,
+        );
       },
     });
   }

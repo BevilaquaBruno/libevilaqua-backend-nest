@@ -1,15 +1,19 @@
 {
-  "dto": {
-    "email": {
-      "invalid": "Please enter a valid e-mail address."
-    },
-    "password": {
-      "invalid": "Please provide a password."
-    }
+  "general": {
+    "does_not_have_access_to_library": "This user does not have access to the selected library.",
+    "not_verified_in_library": "User not yet verified in this library, verification token resent."
   },
-  "controller": {
-    "email": {
-      "does_not_exists": "There is no user with this email address."
-    }
+  "email": {
+    "invalid": "Please enter a valid e-mail address.",
+    "does_not_exists": "There is no user with this email address.",
+    "sent_successfully": "Email sent successfully.",
+    "verified_successfully": "Email verified successfully.",
+    "verified_error": "There was an error with the email verification, please try again."
+  },
+  "password": {
+    "invalid": "Please provide a valid password.",
+    "different_password": "The two passwords are different.",
+    "update_error": "Error updating password, please try again.",
+    "update_successfully": "Password successfully updated."
   }
 }
