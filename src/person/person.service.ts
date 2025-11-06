@@ -22,18 +22,6 @@ export class PersonService {
   findAll(findPersonDto: FindPersonDto, libraryId: number) {
     // Retorna a lista de pessoas paginada ordenada pelo id decrescente
     return this.personServiceRepository.find({
-      select: {
-        id: true,
-        name: true,
-        cpf: true,
-        cep: true,
-        state: true,
-        city: true,
-        district: true,
-        street: true,
-        number: true,
-        obs: true
-      },
       take: findPersonDto.limit,
       skip: findPersonDto.page,
       where: { libraryId: libraryId },

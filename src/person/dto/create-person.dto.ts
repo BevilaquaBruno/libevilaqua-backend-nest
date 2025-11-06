@@ -1,6 +1,8 @@
 import {
+  IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsNumberString,
   IsString,
   Length,
   Matches,
@@ -91,4 +93,24 @@ export class CreatePersonDto {
   )
   @IsString({ message: 'Informe novamente a observação da pessoa.' })
   obs: string;
+
+  @ValidateIf(
+    (thisPerson) =>
+      thisPerson.email !== undefined &&
+      thisPerson.email !== '' &&
+      thisPerson.email !== null,
+  )
+  @IsEmail({}, { message: 'Informe um e-mail válido.' })
+  @Length(7, 50, { message: 'Informe um e-mail válido.' })
+  email: string;
+
+  @ValidateIf(
+    (thisPerson) =>
+      thisPerson.phone !== undefined &&
+      thisPerson.phone !== '' &&
+      thisPerson.phone !== null,
+  )
+  @IsNumberString({}, { message: 'Informe um telefone válido.' })
+  @Length(1, 11, { message: 'Informe um telefone válido.' })
+  phone: string;
 }

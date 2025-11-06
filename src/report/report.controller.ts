@@ -139,6 +139,7 @@ export class ReportController {
     let peopleData = [];
     for (let i = 0; i < people.length; i++) {
       const person = people[i];
+
       let address = `
         ${((null == person.cep) ? '' : person.cep + ', ')}
         ${((null == person.street) ? '' : person.street + ', ')}
@@ -150,11 +151,15 @@ export class ReportController {
       if ('' == address.trim()) {
         address = '-';
       }
+      
+      const contactData = [person.email, person.phone]
+
       peopleData.push({
         id: person.id,
         name: person.name,
         cpf: (null == person.cpf) ? '-' : person.cpf,
-        address: address
+        address: address,
+        contact: contactData.filter(Boolean).join(', ') || '-'
       });
     }
 
@@ -167,7 +172,7 @@ export class ReportController {
         subtitle: 'Lista de pessoas',
         date: moment().format('DD/MM/YYYY'),
         author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Nome', 'CPF', 'Endereço'],
+        headers: ['#', 'Nome', 'CPF', 'Endereço', 'Contatos'],
         data: peopleData,
       }
     };
