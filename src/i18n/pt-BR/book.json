@@ -1,0 +1,46 @@
+{
+  "general": {
+    "not_found": "Livro não encontrado.",
+    "update_error": "Ocorreu algum erro com a atualização do livro.",
+    "delete_error": "Ocorreu algum erro com a atualização do livro.",
+    "deleted_with_success": "Livro deletado com sucesso."
+  },
+  "title": {
+    "invalid": "Informe um título válido.",
+    "length_error": "O título deve ter até 250 caracteres."
+  },
+  "edition": {
+    "invalid": "Informe a edição do livro corretamente."
+  },
+  "isbn": {
+    "invalid": "Informe o ISBN corretamente.",
+    "length_error": "O ISBN deve ter 13 dígitos."
+  },
+  "number_pages": {
+    "invalid": "Informe o número de páginas corretamente."
+  },
+  "release_year": {
+    "invalid": "Informe o ano de lançamento corretamente."
+  },
+  "obs": {
+    "invalid": "Informe as observações corretamente."
+  },
+  "genre": {
+    "invalid": "Informe o gênero corretamente."
+  },
+  "publisher": {
+    "invalid": "Informe a editora corretamente."
+  },
+  "type": {
+    "invalid": "Informe o tipo corretamente."
+  },
+  "tags": {
+    "invalid": "Informe a lista de tags corretamente."
+  },
+  "authors": {
+    "invalid": "Informe a lista de autores corretamente."
+  },
+  "status": {
+    "invalid": "Informe o status corretamente."
+  }
+}

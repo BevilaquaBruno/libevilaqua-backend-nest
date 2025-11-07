@@ -47,7 +47,7 @@ export class BookController {
 
       if (!genreExists) {
         throw new HttpException(
-          'Gênero não encontrado.',
+          'genre.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -58,7 +58,7 @@ export class BookController {
 
       if (!publisherExists) {
         throw new HttpException(
-          'Editora não encontrada.',
+          'publisher.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -69,7 +69,7 @@ export class BookController {
 
       if (!typeExists) {
         throw new HttpException(
-          'Tipo não encontrado.',
+          'type.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -80,7 +80,7 @@ export class BookController {
 
       if (authorsExists.length != createBookDto.authors_id.length) {
         throw new HttpException(
-          'Um dos autores não foi encontrado.',
+          'author.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -91,7 +91,7 @@ export class BookController {
 
       if (tagsExists.length != createBookDto.tags_id.length) {
         throw new HttpException(
-          'Uma das tags não foi encontrada.',
+          'tag.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -229,7 +229,7 @@ export class BookController {
 
     if (null == book) {
       throw new HttpException(
-        'Livro não encontrado. Código do livro: ' + id + '.',
+        'book.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -246,7 +246,7 @@ export class BookController {
     const book: Book = await this.bookService.findOne(+id, reqUser.libraryId);
     if (null == book) {
       throw new HttpException(
-        'Livro não encontrado. Código do livro: ' + id + '.',
+        'book.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -256,7 +256,7 @@ export class BookController {
 
       if (!genreExists) {
         throw new HttpException(
-          'Gênero não encontrado.',
+          'genre.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -267,7 +267,7 @@ export class BookController {
 
       if (!publisherExists) {
         throw new HttpException(
-          'Editora não encontrada.',
+          'publisher.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -278,7 +278,7 @@ export class BookController {
 
       if (!typeExists) {
         throw new HttpException(
-          'Tipo não encontrado.',
+          'type.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -289,7 +289,7 @@ export class BookController {
 
       if (authorsExists.length != updateBookDto.authors_id.length) {
         throw new HttpException(
-          'Um dos autores não foi encontrado.',
+          'author.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -300,7 +300,7 @@ export class BookController {
 
       if (tagsExists.length != updateBookDto.tags_id.length) {
         throw new HttpException(
-          'Uma das tags não foi encontrada.',
+          'tag.general.not_found',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -308,10 +308,17 @@ export class BookController {
 
     const updatedBook = await this.bookService.update(+id, updateBookDto);
 
-    return {
-      id: updatedBook.id,
-      ...updateBookDto,
-    };
+    if (updateBookDto) {
+      return {
+        id: updatedBook.id,
+        ...updateBookDto,
+      };
+    } else {
+      throw new HttpException(
+        'book.general.update_error',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   // Deleta um livro
@@ -324,7 +331,7 @@ export class BookController {
 
     if (null == book) {
       throw new HttpException(
-        'Livro não encontrado. Código do livro: ' + id + '.',
+        'book.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -334,11 +341,11 @@ export class BookController {
     if (deletedBook.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Livro deletado com sucesso.',
+        message: 'book.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar o livro.',
+        'book.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }

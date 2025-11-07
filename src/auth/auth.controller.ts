@@ -82,7 +82,7 @@ export class AuthController {
       // Verifica se a biblioteca existe
       const library = await this.libraryService.findOne(selectedLibrary.libraryId);
       if (!library) {
-        throw new HttpException('library.id.does_not_exists', HttpStatus.BAD_REQUEST);
+        throw new HttpException('library.general.not_found', HttpStatus.BAD_REQUEST);
       } 
 
       const userHasLibrary = await this.userService.userHasLibrary(user.id, selectedLibrary.libraryId);

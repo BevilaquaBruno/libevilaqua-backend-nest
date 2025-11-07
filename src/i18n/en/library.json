@@ -1,5 +1,5 @@
 {
-  "id": {
-    "does_not_exists": "Theres no library with this id."
+  "general": {
+    "not_found": "Theres no library with this id."
   }
 }
