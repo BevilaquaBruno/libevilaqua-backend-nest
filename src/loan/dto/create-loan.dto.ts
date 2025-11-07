@@ -8,9 +8,9 @@ import {
 } from 'class-validator';
 
 export class CreateLoanDto {
-  @IsString({ message: 'Informe a descrição do empréstimo.' })
+  @IsString({ message: 'loan.description.invalid' })
   @Length(1, 250, {
-    message: 'A descrição do empréstimo deve ter entre 1 e 250 caracteres.',
+    message: 'loan.description.length_error',
   })
   description: string;
 
@@ -21,25 +21,25 @@ export class CreateLoanDto {
       thisLoan.return_date !== '',
   )
   @Matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, {
-    message: 'Informe uma data de devolução válida.',
+    message: 'loan.return_date.invalid',
   })
   return_date: Date;
 
   @Matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, {
-    message: 'Informe uma data de previsão de devolução válida.',
+    message: 'loan.must_return_date.invalid',
   })
   must_return_date: Date;
 
   @Matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, {
-    message: 'Informe uma data de empréstimo válida.',
+    message: 'loan.loan_date.invalid',
   })
   loan_date: Date;
 
-  @IsNotEmpty({ message: 'O livro é obrigatório.' })
-  @IsNumber({}, { message: 'Selecione o livro novamente.' })
+  @IsNotEmpty({ message: 'loan.book.required' })
+  @IsNumber({}, { message: 'loan.book.invalid' })
   bookId: number;
 
-  @IsNotEmpty({ message: 'A pessoa é obrigatória.' })
-  @IsNumber({}, { message: 'Selecione a pessoa novamente.' })
+  @IsNotEmpty({ message: 'loan.person.required' })
+  @IsNumber({}, { message: 'loan.person.invalid' })
   personId: number;
 }

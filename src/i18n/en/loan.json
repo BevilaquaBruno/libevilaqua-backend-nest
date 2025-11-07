@@ -1,0 +1,35 @@
+{
+  "general": {
+    "not_found": "Loan not found.",
+    "book_is_loaned": "This book is already on loan.",
+    "book_already_returned": "book already returned.",
+    "update_error": "There was an error updating the loan.",
+    "delete_error": "There was an error deleting the loan.",
+    "deleted_with_success": "Loan successfully deleted.",
+    "return_error": "There was an error with the return of the book.",
+    "no_pending_loan_found": "No outstanding loans were found for this book."
+  },
+  "return_date": {
+    "invalid": "Please enter a valid return date.",
+    "is_before_loan_date": "The return date is earlier than the loan date."
+  },
+  "description": {
+    "invalid": "Please enter a valid description.",
+    "length_error": "The description must be up to 250 characters long."
+  },
+  "must_return_date": {
+    "invalid": "Please provide a valid estimated return date.",
+    "is_before_loan_date": "The expected return date is earlier than the loan date."
+  },
+  "loan_date": {
+    "invalid": "Please provide loan date."
+  },
+  "book": {
+    "invalid": "Select the book again.",
+    "required": "The book is required."
+  },
+  "person": {
+    "invalid": "Select the person again.",
+    "required": "The person is required."
+  }
+}
