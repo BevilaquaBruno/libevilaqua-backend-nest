@@ -70,7 +70,7 @@ export class GenreController {
 
     if (null == genre)
       throw new HttpException(
-        'Gênero não encontrado. Código do gênero: ' + id + '.',
+        'genre.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     return genre;
@@ -85,7 +85,7 @@ export class GenreController {
     const genre: Genre = await this.genreService.findOne(+id, reqUser.libraryId);
     if (null == genre)
       throw new HttpException(
-        'Gênero não encontrado. Código do gênero: ' + id + '.',
+        'genre.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
@@ -98,7 +98,7 @@ export class GenreController {
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização do gênero.',
+        'genre.general.update_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -113,7 +113,7 @@ export class GenreController {
     const genre: Genre = await this.genreService.findOne(+id, reqUser.libraryId);
     if (null == genre)
       throw new HttpException(
-        'Gênero não encontrado. Código do gênero: ' + id + '.',
+        'genre.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
@@ -122,11 +122,11 @@ export class GenreController {
     if (deletedGenre.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Gênero deletado com sucesso.',
+        message: 'genre.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar o gênero.',
+        'genre.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }

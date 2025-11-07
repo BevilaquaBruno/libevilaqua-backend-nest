@@ -1,5 +1,12 @@
 {
   "general": {
-    "not_found": "Gênero não encontrado."
+    "not_found": "Gênero não encontrado.",
+    "update_error": "Ocorreu algum erro com a atualização do gênero.",
+    "delete_error": "Ocorreu algum erro com a atualização do gênero.",
+    "deleted_with_success": "Gênero deletado com sucesso."
+  },
+  "description": {
+    "invalid": "Informe uma descrição válida.",
+    "length_error": "A descrição deve ter até 50 caracteres."
   }
 }

@@ -1,6 +1,6 @@
 import { IsNotEmpty, Length } from 'class-validator';
 export class CreateGenreDto {
-  @IsNotEmpty({ message: 'Informe uma descrição válida.' })
-  @Length(1, 50, { message: 'Descrição deve até 50 caracteres.' })
+  @IsNotEmpty({ message: 'genre.description.invalid' })
+  @Length(1, 50, { message: 'genre.description.length_error' })
   description: string;
 }
