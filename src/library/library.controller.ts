@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { LibraryService } from './library.service';
 import { UpdateLibraryDto } from './dto/update-library.dto';
 import { AuthGuard } from '../auth/auth.guard';
@@ -13,10 +13,7 @@ export class LibraryController {
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateLibraryDto: UpdateLibraryDto) {
     const reqUser: PayloadAuthDto = req['user'];
     if (reqUser.libraryId.toString() != id) {
-      throw new HttpException(
-        "Biblioteca inválida, tente novamente",
-        HttpStatus.BAD_REQUEST
-      );
+      throw new UnauthorizedException();
     }
     updateLibraryDto.id = reqUser.libraryId;
     const libraryUpdated = await this.libraryService.update(reqUser.libraryId, updateLibraryDto);
@@ -27,7 +24,7 @@ export class LibraryController {
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização da biblioteca.',
+        'library.general.update_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -38,20 +35,17 @@ export class LibraryController {
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     if (reqUser.libraryId.toString() != id) {
-      throw new HttpException(
-        "Biblioteca inválida, tente novamente",
-        HttpStatus.BAD_REQUEST
-      );
+      throw new UnauthorizedException();
     }
     const deleteLibrary = await this.libraryService.remove(reqUser.libraryId);
     if (deleteLibrary.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Toda a biblioteca foi deletada com sucesso.',
+        message: 'library.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar a biblioteca.',
+        'library.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }

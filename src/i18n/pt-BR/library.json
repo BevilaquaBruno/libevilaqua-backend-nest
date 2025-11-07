@@ -1,5 +1,12 @@
 {
   "general": {
-    "not_found": "Não existe uma biblioteca com este código."
+    "not_found": "Não existe uma biblioteca com este código.",
+    "update_error": "Ocorreu algum erro com a atualização da biblioteca.",
+    "delete_error": "Ocorreu algum erro com a atualização da biblioteca.",
+    "deleted_with_success": "Toda a biblioteca foi deletada com sucesso."
+  },
+  "description": {
+    "invalid": "Informe uma descrição válida.",
+    "length_error": "A descrição deve ter até 50 caracteres."
   }
 }
