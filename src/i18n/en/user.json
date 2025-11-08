@@ -1,19 +1,31 @@
 {
   "general": {
+    "not_found": "User not found.",
     "does_not_have_access_to_library": "This user does not have access to the selected library.",
-    "not_verified_in_library": "User not yet verified in this library, verification token resent."
+    "not_verified_in_library": "User not yet verified in this library, verification token resent.",
+    "update_error": "There was an error updating the user.",
+    "delete_error": "There was an error deleting the user.",
+    "deleted_with_success": "User successfully deleted.",
+    "register_error": "An error occurred during user registration. Please try again.",
+    "error_link_user_lib": "An error occurred in the link between the user and the library. Please try again."
+  },
+  "name": {
+    "required": "Name is required.",
+    "length_error": "The name must be up to 50 characters long."
   },
   "email": {
     "invalid": "Please enter a valid e-mail address.",
     "does_not_exists": "There is no user with this email address.",
     "sent_successfully": "Email sent successfully.",
     "verified_successfully": "Email verified successfully.",
-    "verified_error": "There was an error with the email verification, please try again."
+    "verified_error": "There was an error with the email verification, please try again.",
+    "already_registered": "E-mail already registered."
   },
   "password": {
     "invalid": "Please provide a valid password.",
     "different_password": "The two passwords are different.",
     "update_error": "Error updating password, please try again.",
-    "update_successfully": "Password successfully updated."
+    "update_successfully": "Password successfully updated.",
+    "incorrect": "Incorrect password."
   }
 }

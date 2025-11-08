@@ -1,9 +1,10 @@
 {
   "general": {
-    "not_found": "Não existe uma biblioteca com este código.",
+    "not_found": "Biblioteca não encontrada.",
     "update_error": "Ocorreu algum erro com a atualização da biblioteca.",
     "delete_error": "Ocorreu algum erro com a atualização da biblioteca.",
-    "deleted_with_success": "Toda a biblioteca foi deletada com sucesso."
+    "deleted_with_success": "Toda a biblioteca foi deletada com sucesso.",
+    "register_error": "Ocorreu algum erro no registro da biblioteca, tente novamente."
   },
   "description": {
     "invalid": "Informe uma descrição válida.",

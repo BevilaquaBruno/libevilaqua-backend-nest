@@ -43,7 +43,7 @@ export class UserController {
     const library = await this.libraryService.findOne(reqUser.libraryId);
     if (!library) {
       throw new HttpException(
-        "Biblioteca inválida, tente novamente.",
+        "library.general.not_found",
         HttpStatus.BAD_REQUEST
       );
     }
@@ -51,7 +51,7 @@ export class UserController {
     // Valida se as senhas informadas são iguais
     if (createUserDto.password != createUserDto.verify_password) {
       throw new HttpException(
-        'As senhas devem ser iguais.',
+        'user.password.different_password',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -63,7 +63,7 @@ export class UserController {
     );
     if (userAlreadyExistsInLibrary?.email != undefined) {
       throw new HttpException(
-        'Já existe um usuário com esse e-mail cadastrado.',
+        'user.email.already_registered',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -79,17 +79,11 @@ export class UserController {
     } else {
       createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
       currentUser = await this.userService.create(createUserDto);
-      if (!currentUser) {
-        throw new HttpException(
-          'Ocorreu algum erro no registro do usuário, tente novamente.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
     }
 
     if (!currentUser) {
       throw new HttpException(
-        'Ocorreu algum erro no registro do usuário, tente novamente.',
+        'user.general.register_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -97,7 +91,7 @@ export class UserController {
     const newLibraryUser = await this.userService.createLibraryUser(currentUser.id, reqUser.libraryId);
     if (!newLibraryUser) {
       throw new HttpException(
-        'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
+        'user.general.error_link_user_lib',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -121,7 +115,7 @@ export class UserController {
     // Valida se as senhas informadas são iguais
     if (createUserDto.password != createUserDto.verify_password) {
       throw new HttpException(
-        'As senhas devem ser iguais.',
+        'user.password.different_password',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -129,7 +123,7 @@ export class UserController {
     const newLibrary = await this.libraryService.create(createLibraryDto);
     if (!newLibrary) {
       throw new HttpException(
-        'Ocorreu algum erro no registro da biblioteca, tente novamente.',
+        'library.general.register_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -145,18 +139,19 @@ export class UserController {
     } else {
       createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
       currentUser = await this.userService.create(createUserDto);
-      if (!currentUser) {
-        throw new HttpException(
-          'Ocorreu algum erro no registro do usuário, tente novamente.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+    }
+
+    if (!currentUser) {
+      throw new HttpException(
+        'user.general.register_error',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const newLibraryUser = await this.userService.createLibraryUser(currentUser.id, newLibrary.id);
     if (!newLibraryUser) {
       throw new HttpException(
-        'Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente.',
+        'user.general.error_link_user_lib',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -207,7 +202,7 @@ export class UserController {
     const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user)
       throw new HttpException(
-        'Usuário não encontrado. Código do usuário: ' + id + '.',
+        'user.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     return user;
@@ -222,7 +217,7 @@ export class UserController {
     const library = await this.libraryService.findOne(reqUser.libraryId);
     if (!library) {
       throw new HttpException(
-        "Biblioteca inválida, tente novamente.",
+        "library.general.not_found",
         HttpStatus.BAD_REQUEST
       );
     }
@@ -231,7 +226,7 @@ export class UserController {
     const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user) {
       throw new HttpException(
-        'Usuário não encontrado. Código do usuário: ' + id + '.',
+        'user.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -244,7 +239,7 @@ export class UserController {
     );
     if (userAlreadyExistsInLibrary?.email != undefined) {
       throw new HttpException(
-        'Já existe um usuário com esse e-mail cadastrado na biblioteca.',
+        'user.email.already_registered',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -258,7 +253,7 @@ export class UserController {
         updateUserDto.verify_password == ''
       ) {
         throw new HttpException(
-          'Para atualizar a senha, preencha os campos de a senha atual, nova senha e confirmação da nova senha.',
+          'user.password.different_password',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -271,7 +266,7 @@ export class UserController {
       );
       if (!isValid) {
         throw new HttpException(
-          'A senha atual está incorreta.',
+          'user.password.incorrect',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -279,7 +274,7 @@ export class UserController {
       // Valida se as novas senhas informadas estão iguais
       if (updateUserDto.password != updateUserDto.verify_password) {
         throw new HttpException(
-          'A nova senha e a confirmação da nova senha devem ser iguais.',
+          'user.password.different_password',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -302,7 +297,7 @@ export class UserController {
     );
     if (userExists) {
       throw new HttpException(
-        'Não é possível utilizar este e-mail pois ele já é um usuário em outra biblioteca.',
+        'user.email.already_registered',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -331,7 +326,7 @@ export class UserController {
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização do usuário.',
+        'user.general.update_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -347,7 +342,7 @@ export class UserController {
     const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user) {
       throw new HttpException(
-        'Usuário não encontrado. Código do usuário: ' + id + '.',
+        'user.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -357,11 +352,11 @@ export class UserController {
     if (deletedUser.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Usuário deletado com sucesso.',
+        message: 'user.general.delete_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar o usuário.',
+        'user.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }
