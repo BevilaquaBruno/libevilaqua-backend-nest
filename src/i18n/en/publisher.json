@@ -1,5 +1,16 @@
 {
   "general": {
-    "not_found": "Publisher not found."
+    "not_found": "publisher not found.",
+    "update_error": "There was an error updating the publisher.",
+    "delete_error": "There was an error deleting the publisher.",
+    "deleted_with_success": "Publisher successfully deleted."
+  },
+  "description": {
+    "invalid": "Please enter a valid description.",
+    "length_error": "The description must be up to 50 characters long."
+  },
+  "country": {
+    "invalid": "Please enter a valid country.",
+    "length_error": "The country must be up to 50 characters long."
   }
 }

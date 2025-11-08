@@ -1,17 +1,17 @@
 import { IsString, IsNotEmpty, Length } from 'class-validator';
 
 export class CreatePublisherDto {
-  @IsString({ message: 'Informe o nome da editora.' })
-  @IsNotEmpty({ message: 'Informe o nome da editora.' })
+  @IsString({ message: 'publisher.description.invalid' })
+  @IsNotEmpty({ message: 'publisher.description.invalid' })
   @Length(3, 50, {
-    message: 'O nome da editora deve ter entre 3 e 50 caracteres.',
+    message: 'publisher.description.length_error',
   })
   name: string;
 
-  @IsString({ message: 'Informe o país da editora.' })
-  @IsNotEmpty({ message: 'Informe o país da editora.' })
+  @IsString({ message: 'publisher.country.invalid' })
+  @IsNotEmpty({ message: 'publisher.country.invalid' })
   @Length(3, 50, {
-    message: 'O país da editora deve ter entre 3 e 50 caracteres.',
+    message: 'publisher.country.length_error',
   })
   country: string;
 }
