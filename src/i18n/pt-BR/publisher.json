@@ -1,0 +1,16 @@
+{
+  "general": {
+    "not_found": "Editora não encontrada.",
+    "update_error": "Ocorreu algum erro com a atualização da editora.",
+    "delete_error": "Ocorreu algum erro com a atualização da editora.",
+    "deleted_with_success": "Editora deletada com sucesso."
+  },
+  "description": {
+    "invalid": "Informe uma descrição válida.",
+    "length_error": "A descrição deve ter até 50 caracteres."
+  },
+  "country": {
+    "invalid": "Informe um país válido.",
+    "length_error": "O país deve ter até 50 caracteres."
+  }
+}

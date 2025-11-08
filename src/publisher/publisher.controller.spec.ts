@@ -153,7 +153,7 @@ describe('PublisherController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Editora deletada com sucesso.',
+      message: 'publisher.general.deleted_with_success',
     });
     expect(mockPublisherService.remove).toHaveBeenCalledWith(id, libraryId);
   });

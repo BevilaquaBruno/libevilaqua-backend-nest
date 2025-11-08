@@ -40,7 +40,7 @@ export class AuthorController {
       const isBirthDateValid = moment(createAuthorDto.birth_date).isValid();
       if (!isBirthDateValid) {
         throw new HttpException(
-          'Informe uma data de nascimento válida.',
+          'author.birth_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -51,7 +51,7 @@ export class AuthorController {
       const isDeathDateValid = moment(createAuthorDto.death_date).isValid();
       if (!isDeathDateValid) {
         throw new HttpException(
-          'Informe uma data de falecimento válida.',
+          'author.death_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -62,7 +62,7 @@ export class AuthorController {
     const death_moment = moment(createAuthorDto.death_date);
     if (birth_moment.isAfter(death_moment)) {
       throw new HttpException(
-        'Data de nascimento está maior que a data de falecimento.',
+        'author.birth_date.is_after_death_date',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -110,7 +110,7 @@ export class AuthorController {
     const author: Author = await this.authorService.findOne(+id, reqUser.libraryId);
     if (null == author)
       throw new HttpException(
-        'Autor não encontrado. Código do autor: ' + id + '.',
+        'author.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
@@ -126,7 +126,7 @@ export class AuthorController {
     const author: Author = await this.authorService.findOne(+id, reqUser.libraryId);
     if (null == author) {
       throw new HttpException(
-        'Autor não encontrado. Código do autor: ' + id + '.',
+        'author.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -136,7 +136,7 @@ export class AuthorController {
       const isBirthDateValid = moment(updateAuthorDto.birth_date).isValid();
       if (!isBirthDateValid) {
         throw new HttpException(
-          'Informe uma data de nascimento válida.',
+          'author.birth_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -147,7 +147,7 @@ export class AuthorController {
       const isDeathDateValid = moment(updateAuthorDto.death_date).isValid();
       if (!isDeathDateValid) {
         throw new HttpException(
-          'Informe uma data de falecimento válida.',
+          'author.death_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -158,7 +158,7 @@ export class AuthorController {
     const death_moment = moment(updateAuthorDto.death_date);
     if (birth_moment.isAfter(death_moment)) {
       throw new HttpException(
-        'Data de nascimento está maior que a data de falecimento.',
+        'author.birth_date.is_after_death_date',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -175,7 +175,7 @@ export class AuthorController {
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização do autor.',
+        'author.general.update_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -190,7 +190,7 @@ export class AuthorController {
     const author: Author = await this.authorService.findOne(+id, reqUser.libraryId);
     if (null == author) {
       throw new HttpException(
-        'Autor não encontrado. Código do autor: ' + id + '.',
+        'author.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -203,7 +203,7 @@ export class AuthorController {
     }, reqUser.libraryId);
     if (books.length > 0) {
       throw new HttpException(
-        'Existem livros vinculados a esse autor, não é possível excluir.',
+        'author.general.has_books',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -213,11 +213,11 @@ export class AuthorController {
     if (deletedAuthor.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Autor deletado com sucesso.',
+        message: 'author.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar o Autor.',
+        'author.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -236,7 +236,7 @@ export class AuthorController {
     const author: Author = await this.authorService.findOne(+authorId, reqUser.libraryId);
     if (null == author) {
       throw new HttpException(
-        'Autor não encontrado. Código do autor: ' + authorId + '.',
+        'author.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }

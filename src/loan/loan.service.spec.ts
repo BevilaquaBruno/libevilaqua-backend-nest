@@ -98,6 +98,8 @@ describe('LoanService', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     };
 
@@ -186,6 +188,8 @@ describe('LoanService', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
+          email: "bruno.f.bevilaqua@gmail.com",
+          phone: "49912345678"
         }
       },
       {
@@ -253,6 +257,8 @@ describe('LoanService', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
+          email: "bruno.f.bevilaqua@gmail.com",
+          phone: "49912345678"
         }
       }
     ];
@@ -352,6 +358,8 @@ describe('LoanService', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     };
     mockLoanService.findOne.mockResolvedValue(mockLoan);
@@ -431,6 +439,8 @@ describe('LoanService', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     };
     mockLoanService.update.mockResolvedValue(mockLoan);

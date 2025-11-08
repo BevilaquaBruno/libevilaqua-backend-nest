@@ -170,7 +170,7 @@ describe('AuthorController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Autor deletado com sucesso.',
+      message: 'author.general.deleted_with_success',
     });
     expect(mockAuthorService.remove).toHaveBeenCalledWith(authorId, libraryId);
     expect(mockBookService.findBooksFromAuthor).toHaveBeenCalledWith({

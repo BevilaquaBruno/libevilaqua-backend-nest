@@ -1,0 +1,31 @@
+{
+  "general": {
+    "not_found": "Usuário não encontrado.",
+    "does_not_have_access_to_library": "Esse usuário não tem acesso à biblioteca selecionada.",
+    "not_verified_in_library": "Usuário ainda não verificado nesta biblioteca, token de verificação reenviado.",
+    "update_error": "Ocorreu algum erro com a atualização do usuário.",
+    "delete_error": "Ocorreu algum erro com a atualização do usuário.",
+    "deleted_with_success": "Usuário deletado com sucesso.",
+    "register_error": "Ocorreu algum erro no registro do usuário, tente novamente.",
+    "error_link_user_lib": "Ocorreu algum erro no vínculo entre o usuário e a biblioteca, tente novamente."
+  },
+  "name": {
+    "required": "Nome é obrigatório.",
+    "length_error": "Nome deve ter até 50 caracteres."
+  },
+  "email": {
+    "invalid": "Informe um e-mail válido.",
+    "does_not_exists": "Não existe nenhum usuário com este e-mail.",
+    "sent_successfully": "E-mail enviado com sucesso.",
+    "verified_successfully": "E-mail verificado com sucesso.",
+    "verified_error": "Ocorreu algum erro com a verificação do e-mail, tente novamente.",
+    "already_registered": "Já existe um usuário com esse e-mail cadastrado."
+  },
+  "password": {
+    "invalid": "Informe uma senha válida.",
+    "different_password": "As duas senhas são diferentes.",
+    "update_error": "Erro ao atualizar a senha, tente novamente.",
+    "update_successfully": "Senha atualizada com sucesso.",
+    "incorrect": "Senha incorreta."
+  }
+}

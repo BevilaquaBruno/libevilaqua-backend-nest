@@ -28,7 +28,7 @@ export class AuthController {
     private userService: UserService,
     private mailService: MailService,
     private jwtService: JwtService,
-    private libraryService: LibraryService,
+    private libraryService: LibraryService
   ) { }
 
   @HttpCode(HttpStatus.OK)
@@ -36,7 +36,10 @@ export class AuthController {
   async signIn(@Body() signInDto: MainAuthDto) {
     const user = await this.userService.findByEmail(signInDto.email);
     if (null == user) {
-      throw new HttpException('Não existe nenhum usuário com este e-mail.', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'user.email.does_not_exists',
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     const logged = await this.authService.signIn(signInDto.email, signInDto.password);
@@ -66,7 +69,7 @@ export class AuthController {
       // Verifica se o usuário existe
       const user = await this.userService.findByEmail(selectedLibrary.email);
       if (!user) {
-        throw new HttpException('Usuário informado é inexistente.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.email.does_not_exists', HttpStatus.BAD_REQUEST);
       }
 
       // Verifica se a senha trazida está correta
@@ -79,23 +82,23 @@ export class AuthController {
       // Verifica se a biblioteca existe
       const library = await this.libraryService.findOne(selectedLibrary.libraryId);
       if (!library) {
-        throw new HttpException('Biblioteca selecionada é inexistente.', HttpStatus.BAD_REQUEST);
-      }
+        throw new HttpException('library.general.not_found', HttpStatus.BAD_REQUEST);
+      } 
 
       const userHasLibrary = await this.userService.userHasLibrary(user.id, selectedLibrary.libraryId);
       if (0 == userHasLibrary[1]) {
-        throw new HttpException('Esse usuário não tem acesso à biblioteca selecionada.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.general.does_not_have_access_to_library', HttpStatus.BAD_REQUEST);
       }
 
       const libraryUser = await this.userService.getLibraryUser(user.id, selectedLibrary.libraryId);
       if (!libraryUser) {
-        throw new HttpException('Vínculo entre usuário e biblioteca não encontrado.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.general.does_not_have_access_to_library', HttpStatus.BAD_REQUEST);
       }
 
       if (null == libraryUser.email_verified_at) {
         const token = this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
         this.mailService.sendUserConfirmation(user.email, token, library.description);
-        throw new HttpException('Usuário ainda não verificado nesta biblioteca, token de verificação reenviado.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.general.not_verified_in_library', HttpStatus.BAD_REQUEST);
       }
 
       return this.authService.generateLoginToken(user, selectedLibrary.libraryId);
@@ -119,19 +122,19 @@ export class AuthController {
   async sendResetPassword(@Body() sendResetPaswordDto: { email: string }) {
     // Valida o e-mail 
     if ('' == sendResetPaswordDto.email)
-      throw new HttpException('Informe o e-mail novamente.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('user.email.invalid', HttpStatus.BAD_REQUEST);
 
     // Verifica se usuário existe
     const user = await this.userService.findByEmail(sendResetPaswordDto.email);
     if (null == user)
-      throw new HttpException('Não existe nenhum usuário com este e-mail.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('user.email.does_not_exists', HttpStatus.BAD_REQUEST);
 
     const token = this.authService.generateResetToken(user, 'S');
     await this.mailService.sendResetPasswordRequest(user.name, user.email, token);
 
     return {
       statusCode: 200,
-      message: 'E-mail enviado com sucesso.',
+      message: 'user.email.sent_successfully',
     };
   }
 
@@ -150,30 +153,30 @@ export class AuthController {
       // Pega o resetToken
       const resetToken = await this.authService.findOneToken(token);
       if (!resetToken)
-        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.invalid', HttpStatus.BAD_REQUEST);
 
       if (resetToken.used)
-        throw new HttpException('Token já usado, tente novamente.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.already_used', HttpStatus.BAD_REQUEST);
 
       if ('S' != resetToken.type)
-        throw new HttpException('Token inválidos.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.invalid', HttpStatus.BAD_REQUEST);
       // Valida as senhas
       if (resetPasswordDto.newPassword != resetPasswordDto.confirmNewPassword)
-        throw new HttpException('As senhas estão diferentes.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.password.different_password', HttpStatus.BAD_REQUEST);
 
       // Se for um token de login, não deixa alterar a senha
       if (currentUser.logged) {
-        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.invalid', HttpStatus.BAD_REQUEST);
       }
 
       // Valida o e-mail
       if ('' == currentUser.username)
-        throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.password.update_error', HttpStatus.BAD_REQUEST);
 
       // Verifica se usuário existe
       const user = await this.userService.findByEmail(currentUser.username);
       if (null == user)
-        throw new HttpException('Erro ao atualizar a senha, tente novamente.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.password.update_error', HttpStatus.BAD_REQUEST);
 
       const encriptedPasword = await bcrypt.hash(resetPasswordDto.newPassword, 10);
       const updatedUser = await this.userService.updatePassword(user.id, encriptedPasword, currentUser.libraryId);
@@ -182,11 +185,11 @@ export class AuthController {
         this.authService.updateResetToken(+resetToken.id, true);
         return {
           statusCode: 200,
-          message: 'Senha atualizada com sucesso.',
+          message: 'user.password.update_successfully',
         };
       } else {
         throw new HttpException(
-          'Ocorreu algum erro com a atualização da senha, tente novamente.',
+          'user.password.update_error',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -212,47 +215,47 @@ export class AuthController {
       // Pega o resetToken
       const resetToken = await this.authService.findOneToken(token);
       if (!resetToken)
-        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.invalid', HttpStatus.BAD_REQUEST);
 
       if (resetToken.used)
-        throw new HttpException('Token já usado, tente novamente.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.already_used', HttpStatus.BAD_REQUEST);
 
       if ('E' != resetToken.type)
-        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.invalid', HttpStatus.BAD_REQUEST);
 
       // Valida o e-mail
       const email = data.email;
       if (!email || '' == email) {
-        throw new HttpException('E-mail inválido.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.email.invalid', HttpStatus.BAD_REQUEST);
       }
 
       // Valida o e-mail informado e o e-mail do token
       // Se for um token de login, não deixa alterar a senha
       if (reqUser.logged) {
-        throw new HttpException('Token inválido.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.invalid', HttpStatus.BAD_REQUEST);
       }
 
       if (reqUser.username != email) {
-        throw new HttpException('Token inválido para o e-mail informado.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('auth.token.invalid', HttpStatus.BAD_REQUEST);
       }
 
       // Valida se existe um usuário com o e-mail
       let user = await this.userService.findByEmail(email);
       if (!user) {
-        throw new HttpException('Não existe um usuário com esse e-mail.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('user.email.does_not_exists', HttpStatus.BAD_REQUEST);
       }
 
       this.authService.updateResetToken(+resetToken.id, true);
       const updatedUser = await this.userService.confirmEmail(user.id, reqUser.libraryId);
       if (updatedUser.affected == 1) {
-        // Atualiza o token como used
+        // Atualiza o token como used 
         return {
           statusCode: 200,
-          message: 'E-mail verificado com sucesso.',
+          message: 'user.email.verified_successfully',
         };
       } else {
         throw new HttpException(
-          'Ocorreu algum erro com a verificação do e-mail, tente novamente.',
+          'user.email.verified_error',
           HttpStatus.BAD_REQUEST,
         );
       }

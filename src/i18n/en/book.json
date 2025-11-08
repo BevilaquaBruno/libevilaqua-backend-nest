@@ -1,0 +1,46 @@
+{
+  "general": {
+    "not_found": "Book not found.",
+    "update_error": "There was an error updating the book.",
+    "delete_error": "There was an error deleting the book.",
+    "deleted_with_success": "Book successfully deleted."
+  },
+  "title": {
+    "invalid": "Please enter a valid title.",
+    "length_error": "The title must be up to 250 characters long."
+  },
+  "edition": {
+    "invalid": "Please enter a valid edition book."
+  },
+  "isbn": {
+    "invalid": "Please enter a valid ISBN.",
+    "length_error": "The ISBN must have 13 digits."
+  },
+  "number_pages": {
+    "invalid": "Pleas enter a valid number pages."
+  },
+  "release_year": {
+    "invalid": "Please enter a valid release year."
+  },
+  "obs": {
+    "invalid": "Please enter a valid obs."
+  },
+  "genre": {
+    "invalid": "Please enter a valid genre."
+  },
+  "publisher": {
+    "invalid": "Please enter a valid publisher."
+  },
+  "type": {
+    "invalid": "Please enter a valid type."
+  },
+  "tags": {
+    "invalid": "Please enter a valid tag list."
+  },
+  "authors": {
+    "invalid": "Please enter a valid author list."
+  },
+  "status": {
+    "invalid": "Please enter a valid status."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "general": {
+    "not_found": "Author not found.",
+    "update_error": "There was an error updating the author.",
+    "delete_error": "There was an error deleting the author.",
+    "has_books": "There are books linked to this author; it is not possible to exclude the author.",
+    "deleted_with_success": "Author successfully deleted."
+  },
+  "name": {
+    "invalid": "Please enter a valid name.",
+    "length_error": "The name must be up to 60 characters long."
+  },
+  "birth_date": {
+    "invalid": "Please enter a valid birth date.",
+    "is_after_death_date": "Date of birth cannot be after date of death."
+  },
+  "death_date": {
+    "invalid": "Please enter a valid death date."
+  },
+  "bio": {
+    "invalid": "Please enter a valid bio."
+  }
+}

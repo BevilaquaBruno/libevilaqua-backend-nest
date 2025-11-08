@@ -1,11 +1,12 @@
 // src/common/pipes/create-validation.pipe.ts
 import {
-  BadRequestException,
+  HttpException,
   HttpStatus,
   Injectable,
   ValidationError,
   ValidationPipe,
 } from '@nestjs/common';
+import { I18nService, I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class CreateValidationPipe extends ValidationPipe {
@@ -21,15 +22,31 @@ export class CreateValidationPipe extends ValidationPipe {
    *  message: 'Mensagem de erro'
    * }
    */
-  constructor() {
+  constructor(private readonly i18n: I18nService) {
     super({
       dismissDefaultMessages: true,
       stopAtFirstError: true,
-      exceptionFactory: (errors: ValidationError[]) => {
-        return new BadRequestException({
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: Object.values(errors[0].constraints || {})[0],
-        });
+      exceptionFactory: async (errors: ValidationError[]) => {
+        const error = errors[0];
+        const constraint = Object.values(error.constraints || {})[0];
+
+        // Pega o contexto da tradução (do pipe e module)
+        const ctx = I18nContext.current();
+
+        // obtém o idioma, se disponível, ou pt
+        const lang = ctx?.lang || 'pt';
+
+        // se a mensagem for uma chave i18n, traduz
+        let message = constraint;
+
+        if (typeof constraint === 'string' && constraint.includes('.')) {
+          message = await this.i18n.translate(constraint, { lang });
+        }
+
+        return new HttpException(
+          message,
+          HttpStatus.BAD_REQUEST,
+        );
       },
     });
   }

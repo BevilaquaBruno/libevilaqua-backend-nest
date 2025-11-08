@@ -1,0 +1,23 @@
+{
+  "general": {
+    "not_found": "Autor não encontrado.",
+    "update_error": "Ocorreu algum erro com a atualização do autor.",
+    "delete_error": "Ocorreu algum erro com a atualização do autor.",
+    "has_books": "Existem livros vinculados a esse autor, não é possível excluir o autor.",
+    "deleted_with_success": "Autor deletado com sucesso."
+  },
+  "name": {
+    "invalid": "Informe um nome válido.",
+    "length_error": "O nome deve ter até 60 caracteres."
+  },
+  "birth_date": {
+    "invalid": "Informe uma data de nascimento válida.",
+    "is_after_death_date": "Data de nascimento não pode ser após a data de morte."
+  },
+  "death_date": {
+    "invalid": "Informe uma data de morte válida."
+  },
+  "bio": {
+    "invalid": "Informe a biografia novamente."
+  }
+}

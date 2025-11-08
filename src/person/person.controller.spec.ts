@@ -41,7 +41,9 @@ describe('PersonController', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     }
 
     // Mocka o retorno
@@ -71,7 +73,9 @@ describe('PersonController', () => {
         district: 'Linha São Paulo',
         street: 'Rua Sérgio Galvan',
         number: '15',
-        obs: 'Meu próprio cadastro'
+        obs: 'Meu próprio cadastro',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       },
       {
         id: 2,
@@ -83,7 +87,9 @@ describe('PersonController', () => {
         district: 'Linha São Paulo',
         street: 'Rua Sérgio Galvan',
         number: '15',
-        obs: 'Meu próprio cadastro'
+        obs: 'Meu próprio cadastro',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       },
     ];
     const quantity = list.length;
@@ -125,7 +131,9 @@ describe('PersonController', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     };
 
     // Insere os mocks nos serviços
@@ -153,7 +161,9 @@ describe('PersonController', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     };
 
     // Mocka o retorno no service e pega o resultado do controller
@@ -188,7 +198,9 @@ describe('PersonController', () => {
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
-      obs: 'Meu próprio cadastro'
+      obs: 'Meu próprio cadastro',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     });
 
     const result = await controller.remove(req, id.toString());
@@ -196,7 +208,7 @@ describe('PersonController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Pessoa deletada com sucesso.',
+      message: 'person.general.deleted_with_success',
     });
     expect(mockPersonService.remove).toHaveBeenCalledWith(id, libraryId);
   });

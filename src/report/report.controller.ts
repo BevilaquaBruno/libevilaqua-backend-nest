@@ -18,6 +18,7 @@ import { FindLoanDto } from '../loan/dto/find-loan.dto';
 import { FindBookDto } from '../book/dto/find-book.dto';
 import { BookService } from '../book/book.service';
 import { Author } from '../author/entities/author.entity';
+import { I18nService } from 'nestjs-i18n';
 
 @Controller('report')
 export class ReportController {
@@ -33,6 +34,7 @@ export class ReportController {
     private readonly userService: UserService,
     private readonly loanService: LoanService,
     private readonly bookService: BookService,
+    private readonly i18nService: I18nService,
   ) { }
 
 
@@ -40,14 +42,15 @@ export class ReportController {
   @Get('/')
   async reportList(@Req() req: Request) {
     const report_list: ReportListDto[] = [
-      { name: 'Lista de autores', description: 'Uma lista com todos os autores cadastrados' },
-      { name: 'Lista de gêneros', description: 'Uma lista com todos os gêneros cadastrados' },
-      { name: 'Lista de pessoas', description: 'Uma lista com todos os pessoas cadastradas' },
-      { name: 'Lista de tags', description: 'Uma lista com todos os tags cadastradas' },
-      { name: 'Lista de tipos', description: 'Uma lista com todos os tipos cadastrados' },
-      { name: 'Lista de usuários', description: 'Uma lista com todos os usuários cadastrados' },
-      { name: 'Lista de empréstimos', description: 'Uma lista com todos os empréstimos cadastrados' },
-      { name: 'Lista de livros', description: 'Uma lista com todos os livros cadastrados' },
+      { name: this.i18nService.translate('report.author.name'), description: this.i18nService.translate('report.author.description') },
+      { name: this.i18nService.translate('report.genre.name'), description: this.i18nService.translate('report.genre.description') },
+      { name: this.i18nService.translate('report.person.name'), description: this.i18nService.translate('report.person.description') },
+      { name: this.i18nService.translate('report.publisher.name'), description: this.i18nService.translate('report.publisher.description') },
+      { name: this.i18nService.translate('report.tag.name'), description: this.i18nService.translate('report.tag.description') },
+      { name: this.i18nService.translate('report.type.name'), description: this.i18nService.translate('report.type.description') },
+      { name: this.i18nService.translate('report.user.name'), description: this.i18nService.translate('report.user.description') },
+      { name: this.i18nService.translate('report.loan.name'), description: this.i18nService.translate('report.loan.description') },
+      { name: this.i18nService.translate('report.book.name'), description: this.i18nService.translate('report.book.description') },
     ];
 
     return report_list;
@@ -84,10 +87,19 @@ export class ReportController {
       template: 'author-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de autores',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'nome', 'Nasc - Morte'],
+        subtitle: this.i18nService.translate('report.author.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.author.headers.name'),
+          this.i18nService.translate('report.author.headers.birth_death_date')
+        ],
         data: authors_formatted,
       }
     };
@@ -113,10 +125,18 @@ export class ReportController {
       template: 'genre-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de gêneros',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Descrição'],
+        subtitle: this.i18nService.translate('report.genre.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.genre.headers.description')
+        ],
         data: genres,
       }
     };
@@ -151,7 +171,7 @@ export class ReportController {
       if ('' == address.trim()) {
         address = '-';
       }
-      
+
       const contactData = [person.email, person.phone]
 
       peopleData.push({
@@ -169,10 +189,21 @@ export class ReportController {
       template: 'person-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de pessoas',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Nome', 'CPF', 'Endereço', 'Contatos'],
+        subtitle: this.i18nService.translate('report.person.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.person.headers.name'),
+          this.i18nService.translate('report.person.headers.cpf'),
+          this.i18nService.translate('report.person.headers.address'),
+          this.i18nService.translate('report.person.headers.contact')
+        ],
         data: peopleData,
       }
     };
@@ -198,10 +229,19 @@ export class ReportController {
       template: 'publisher-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de Editoras',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Descrição', 'País'],
+        subtitle: this.i18nService.translate('report.publisher.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.publisher.headers.description'),
+          this.i18nService.translate('report.publisher.headers.country')
+        ],
         data: publishers,
       }
     };
@@ -227,10 +267,18 @@ export class ReportController {
       template: 'tag-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de tags',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Descrição'],
+        subtitle: this.i18nService.translate('report.tag.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.tag.headers.description')
+        ],
         data: tags,
       }
     };
@@ -256,10 +304,18 @@ export class ReportController {
       template: 'type-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de Tipos',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Descrição'],
+        subtitle: this.i18nService.translate('report.type.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.type.headers.description')
+        ],
         data: types,
       }
     };
@@ -285,10 +341,19 @@ export class ReportController {
       template: 'user-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de Usuários',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Nome', 'E-mail'],
+        subtitle: this.i18nService.translate('report.user.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.user.headers.name'),
+          this.i18nService.translate('report.user.headers.email')
+        ],
         data: users,
       }
     };
@@ -367,10 +432,22 @@ export class ReportController {
       template: 'loan-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de Empréstimos',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Descrição', 'Pessoa', 'Livro', 'Data Emp.', 'Data Dev.'],
+        subtitle: this.i18nService.translate('report.loan.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.loan.headers.description'),
+          this.i18nService.translate('report.loan.headers.person'),
+          this.i18nService.translate('report.loan.headers.book'),
+          this.i18nService.translate('report.loan.headers.loan_date'),
+          this.i18nService.translate('report.loan.headers.return_date')
+        ],
         data: loanData,
       }
     };
@@ -499,7 +576,7 @@ export class ReportController {
         genre: (null == book.genre) ? '-' : book.genre.description,
         type: (null == book.type) ? '-' : book.type.description,
         tags: (0 == tags.length) ? '-' : tags,
-        status: (book.status) ? 'Ativo' : 'Inativo'
+        status: (book.status) ? this.i18nService.translate('report.general.active') : this.i18nService.translate('report.general.inactive')
       });
     }
 
@@ -509,10 +586,23 @@ export class ReportController {
       template: 'book-list',
       data: {
         title: library.description,
-        subtitle: 'Lista de livros',
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - Relatórios',
-        headers: ['#', 'Título', 'Autor(es)', 'Gênero', 'Tipo', 'Tag(s)', 'Status'],
+        subtitle: this.i18nService.translate('report.book.subtitle'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
+        headers: [
+          '#',
+          this.i18nService.translate('report.book.headers.title'),
+          this.i18nService.translate('report.book.headers.author'),
+          this.i18nService.translate('report.book.headers.genre'),
+          this.i18nService.translate('report.book.headers.type'),
+          this.i18nService.translate('report.book.headers.tag'),
+          this.i18nService.translate('report.book.headers.status')
+        ],
         data: bookData,
       }
     };
@@ -530,7 +620,7 @@ export class ReportController {
     if (names.length > 3) {
       // Exibe apenas os 3 primeiros e indica que há mais
       const firstThree = names.slice(0, 3).join(', ');
-      return `${firstThree} e outros`;
+      return `${firstThree} ${this.i18nService.translate('report.general.and_others')}`;
     }
 
     if (names.length === 1) {

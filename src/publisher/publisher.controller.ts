@@ -70,7 +70,7 @@ export class PublisherController {
     const publisher: Publisher = await this.publisherService.findOne(+id, reqUser.libraryId);
     if (null == publisher)
       throw new HttpException(
-        'Editora não encontrada. Código da editora ' + id + '.',
+        'publisher.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     return publisher;
@@ -85,7 +85,7 @@ export class PublisherController {
     const publisher: Publisher = await this.publisherService.findOne(+id, reqUser.libraryId);
     if (null == publisher)
       throw new HttpException(
-        'Editora não encontrada. Código da editora ' + id + '.',
+        'publisher.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
@@ -104,7 +104,7 @@ export class PublisherController {
       return returnData;
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização da editora.',
+        'publisher.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -119,7 +119,7 @@ export class PublisherController {
     const publisher: Publisher = await this.publisherService.findOne(+id, reqUser.libraryId);
     if (null == publisher)
       throw new HttpException(
-        'Editora não encontrada. Código da editora ' + id + '.',
+        'publisher.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
@@ -128,11 +128,11 @@ export class PublisherController {
     if (deletedPublisher.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Editora deletada com sucesso.',
+        message: 'publisher.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar a editora.',
+        'publisher.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }

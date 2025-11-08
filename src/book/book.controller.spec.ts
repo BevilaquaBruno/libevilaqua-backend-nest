@@ -53,6 +53,7 @@ describe('BookController', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Observações do livro',
+      status: true,
       genre_id: 1,
       publisher_id: 1,
       type_id: 1,
@@ -133,6 +134,7 @@ describe('BookController', () => {
         number_pages: 250,
         release_year: 2025,
         obs: 'Book mock',
+        status: true,
         genre: {
           id: 1,
           description: 'Genre test',
@@ -181,6 +183,7 @@ describe('BookController', () => {
         number_pages: 250,
         release_year: 2025,
         obs: 'Book mock',
+        status: true,
         genre: {
           id: 1,
           description: 'Genre test',
@@ -241,7 +244,8 @@ describe('BookController', () => {
       edition: 0,
       title: '',
       page: 1,
-      limit: 2
+      limit: 2,
+      status: true
     };
     const result = await controller.findAll(
       req,
@@ -256,7 +260,8 @@ describe('BookController', () => {
       findBookDto.edition.toString(),
       findBookDto.title,
       findBookDto.page.toString(),
-      findBookDto.limit.toString()
+      findBookDto.limit.toString(),
+      'true',
     );
 
     expect(result).toEqual({
@@ -275,6 +280,7 @@ describe('BookController', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Book mock',
+      status: true,
       genre: {
         id: 1,
         description: 'Genre test',
@@ -339,6 +345,7 @@ describe('BookController', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Observações do livro',
+      status: true,
       genre_id: 1,
       publisher_id: 1,
       type_id: 1,
@@ -458,6 +465,7 @@ describe('BookController', () => {
       number_pages: 250,
       release_year: 2025,
       obs: 'Book mock',
+      status: true,
       genre: {
         id: 1,
         description: 'Genre test',
@@ -512,7 +520,7 @@ describe('BookController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Livro deletado com sucesso.',
+      message: 'book.general.deleted_with_success',
     });
     expect(mockBookService.remove).toHaveBeenCalledWith(bookId, libraryId);
     expect(mockBookService.findOne).toHaveBeenCalledWith(bookId, libraryId);

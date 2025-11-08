@@ -1,9 +1,9 @@
 import { IsString, Length } from 'class-validator';
 
 export class CreateTypeDto {
-  @IsString({ message: 'Informe novamente a descrição do tipo.' })
+  @IsString({ message: 'type.description.invalid' })
   @Length(1, 50, {
-    message: 'A descrição do tipo deve ter entre 1 e 50 caracteres.',
+    message: 'type.description.length_error',
   })
   description: string;
 }

@@ -1,7 +1,7 @@
 import { IsNotEmpty, Length } from "class-validator";
 
 export class CreateLibraryDto {
-  @IsNotEmpty({ message: 'Informe uma descrição válida.' })
-  @Length(1, 50, { message: 'Descrição deve ter até 50 caracteres.' })
+  @IsNotEmpty({ message: 'library.description.invalid' })
+  @Length(1, 50, { message: 'library.description.length_error' })
   description: string;
 }

@@ -1,12 +1,12 @@
-import { IsAlphanumeric, IsAscii, IsEmail, IsNumber } from "class-validator";
+import { IsAscii, IsEmail, IsNumber } from "class-validator";
 
 export class SelectLibraryDto {
-  @IsEmail({}, { message: 'Informe corretamente o e-mail.' })
+  @IsEmail({}, { message: 'user.email.invalid' })
   email: string;
   
-  @IsAscii({ message: 'Dados incorretos no login, tente novamente.' })
+  @IsAscii({ message: 'user.password.invalid' })
   password: string;
 
-  @IsNumber({}, { message: 'Informe corretamente a biblioteca.' })
+  @IsNumber({}, { message: 'user.library.invalid' })
   libraryId: number;
 }

@@ -29,7 +29,7 @@ export class TagController {
   @Post()
   async create(@Req() req: Request, @Body() createTagDto: CreateTagDto) {
     const reqUser: PayloadAuthDto = req['user'];
-    
+
     const newTag = await this.tagService.create(createTagDto, reqUser.libraryId);
 
     return {
@@ -68,7 +68,7 @@ export class TagController {
     const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
       throw new HttpException(
-        'Tag não encontrada. Código da tag: ' + id + '.',
+        'tag.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     return tag;
@@ -83,7 +83,7 @@ export class TagController {
     const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
       throw new HttpException(
-        'Tag não encontrada. Código da tag: ' + id + '.',
+        'tag.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
@@ -96,7 +96,7 @@ export class TagController {
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização da tag.',
+        'tag.general.update_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -111,7 +111,7 @@ export class TagController {
     const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
       throw new HttpException(
-        'Tag não encontrada. Código da tag: ' + id + '.',
+        'tag.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
@@ -120,11 +120,11 @@ export class TagController {
     if (deletedTag.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Tag deletada com sucesso.',
+        message: 'tag.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar a tag.',
+        'tag.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }

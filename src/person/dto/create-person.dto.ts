@@ -11,9 +11,9 @@ import {
 import { States } from '../../helpers/enum/States.enum';
 
 export class CreatePersonDto {
-  @IsString({ message: 'Informe o nome da pessoa novamente.' })
-  @IsNotEmpty({ message: 'Nome é obrigatório.' })
-  @Length(1, 250, { message: 'Informe um nome com até 250 caracteres.' })
+  @IsString({ message: 'person.name.invalid' })
+  @IsNotEmpty({ message: 'person.name.required' })
+  @Length(1, 250, { message: 'person.name.length_error' })
   name: string;
 
   @ValidateIf(
@@ -22,8 +22,8 @@ export class CreatePersonDto {
       thisPerson.cpf !== '' &&
       thisPerson.cpf !== null,
   )
-  @IsString({ message: 'Informe corretamente o CPF da pessoa.' })
-  @Matches(/\d{3}.\d{3}.\d{3}-\d{2}/g, { message: 'CPF inválido.' })
+  @IsString({ message: 'person.cpf.invalid' })
+  @Matches(/\d{3}.\d{3}.\d{3}-\d{2}/g, { message: 'person.cpf.invalid' })
   cpf: string;
 
   @ValidateIf(
@@ -32,8 +32,8 @@ export class CreatePersonDto {
       thisPerson.cep !== '' &&
       thisPerson.cep !== null,
   )
-  @IsString({ message: 'Informe novamente o CEP da pessoa.' })
-  @Matches(/\d{5}-\d{3}/g, { message: 'CEP inválido.' })
+  @IsString({ message: 'person.cep.invalid' })
+  @Matches(/\d{5}-\d{3}/g, { message: 'person.cep.invalid' })
   cep: string;
 
   @ValidateIf(
@@ -42,7 +42,7 @@ export class CreatePersonDto {
       thisPerson.state !== '' &&
       thisPerson.state !== null,
   )
-  @IsEnum(States, { message: 'Estado inválido.' })
+  @IsEnum(States, { message: 'person.state.invalid' })
   state: States;
 
   @ValidateIf(
@@ -51,7 +51,7 @@ export class CreatePersonDto {
       thisPerson.city !== '' &&
       thisPerson.city !== null,
   )
-  @IsString({ message: 'Informe novamente a cidade da pessoa.' })
+  @IsString({ message: 'person.city.invalid' })
   city: string;
 
   @ValidateIf(
@@ -60,7 +60,7 @@ export class CreatePersonDto {
       thisPerson.district !== '' &&
       thisPerson.district !== null,
   )
-  @IsString({ message: 'Informe novamente o bairro da pessoa.' })
+  @IsString({ message: 'person.district.invalid' })
   district: string;
 
   @ValidateIf(
@@ -69,7 +69,7 @@ export class CreatePersonDto {
       thisPerson.street !== '' &&
       thisPerson.street !== null,
   )
-  @IsString({ message: 'Informe novamente a rua da pessoa.' })
+  @IsString({ message: 'person.number.invalid' })
   street: string;
 
   @ValidateIf(
@@ -78,10 +78,10 @@ export class CreatePersonDto {
       thisPerson.number !== '' &&
       thisPerson.number !== null,
   )
-  @IsString({ message: 'Informe novamente o número da pessoa.' })
-  @Length(1, 5, { message: 'Número pode ter no máximo 5 dígitos.' })
+  @IsString({ message: 'person.number.invalid' })
+  @Length(1, 5, { message: 'person.number.length_error' })
   @Matches(/(\d{1,5})|(SN)|(S\/N)/g, {
-    message: 'Número inválido, informe o número, SN ou S/N.',
+    message: 'person.number.invalid',
   })
   number: string;
 
@@ -91,7 +91,7 @@ export class CreatePersonDto {
       thisPerson.obs !== '' &&
       thisPerson.obs !== null,
   )
-  @IsString({ message: 'Informe novamente a observação da pessoa.' })
+  @IsString({ message: 'person.obs.invalid' })
   obs: string;
 
   @ValidateIf(
@@ -100,8 +100,8 @@ export class CreatePersonDto {
       thisPerson.email !== '' &&
       thisPerson.email !== null,
   )
-  @IsEmail({}, { message: 'Informe um e-mail válido.' })
-  @Length(7, 50, { message: 'Informe um e-mail válido.' })
+  @IsEmail({}, { message: 'person.email.invalid' })
+  @Length(7, 50, { message: 'person.email.invalid' })
   email: string;
 
   @ValidateIf(
@@ -110,7 +110,7 @@ export class CreatePersonDto {
       thisPerson.phone !== '' &&
       thisPerson.phone !== null,
   )
-  @IsNumberString({}, { message: 'Informe um telefone válido.' })
-  @Length(1, 11, { message: 'Informe um telefone válido.' })
+  @IsNumberString({}, { message: 'person.phone.invalid' })
+  @Length(1, 11, { message: 'person.phone.invalid' })
   phone: string;
 }

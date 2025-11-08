@@ -1,0 +1,12 @@
+{
+  "general": {
+    "not_found": "Tipo não encontrado.",
+    "update_error": "Ocorreu algum erro com a atualização do tipo.",
+    "delete_error": "Ocorreu algum erro com a atualização do tipo.",
+    "deleted_with_success": "Tipo deletado com sucesso."
+  },
+  "description": {
+    "invalid": "Informe uma descrição válida.",
+    "length_error": "A descrição deve ter até 50 caracteres."
+  }
+}

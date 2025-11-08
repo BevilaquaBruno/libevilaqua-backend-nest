@@ -147,7 +147,7 @@ describe('GenreController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Gênero deletado com sucesso.',
+      message: 'genre.general.deleted_with_success',
     });
     expect(mockGenreService.remove).toHaveBeenCalledWith(genreId, libraryId);
   });

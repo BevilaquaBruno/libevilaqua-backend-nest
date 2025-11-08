@@ -16,9 +16,23 @@ import { MailModule } from './mail/mail.module';
 import { LibraryModule } from './library/library.module';
 import { PdfService } from './pdf/pdf.service';
 import { ReportModule } from './report/report.module';
+import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
+import * as path from 'path';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { I18nInterceptor } from './i18n/i18n.interceptor';
 
 @Module({
   imports: [
+    I18nModule.forRoot({
+      fallbackLanguage: 'pt-BR',
+      loaderOptions: {
+        path: path.join(__dirname, '..', '..', 'src', '/i18n/'),
+        watch: true,
+      },
+      resolvers: [
+          new AcceptLanguageResolver()
+      ],
+    }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -45,7 +59,10 @@ import { ReportModule } from './report/report.module';
     LibraryModule,
     ReportModule,
   ],
-  providers: [MailService, PdfService],
+  providers: [MailService, PdfService, {
+      provide: APP_INTERCEPTOR,
+      useClass: I18nInterceptor,
+    }],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule { }

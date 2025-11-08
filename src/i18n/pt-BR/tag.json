@@ -1,0 +1,12 @@
+{
+  "general": {
+    "not_found": "Tag não encontrado.",
+    "update_error": "Ocorreu algum erro com a atualização da tag.",
+    "delete_error": "Ocorreu algum erro com a atualização da tag.",
+    "deleted_with_success": "Tag deletada com sucesso."
+  },
+  "description": {
+    "invalid": "Informe uma descrição válida.",
+    "length_error": "A descrição deve ter até 50 caracteres."
+  }
+}

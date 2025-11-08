@@ -1,0 +1,13 @@
+{
+  "general": {
+    "not_found": "Library not found.",
+    "update_error": "There was an error updating the library.",
+    "delete_error": "There was an error deleting the library.",
+    "deleted_with_success": "The entire library has been successfully deleted.",
+    "register_error": "An error occurred during library registration. Please try again."
+  },
+  "description": {
+    "invalid": "Please enter a valid description.",
+    "length_error": "The description must be up to 50 characters long."
+  }
+}

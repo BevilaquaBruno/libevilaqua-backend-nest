@@ -1,0 +1,35 @@
+{
+  "general": {
+    "not_found": "Empréstimo não encontrado.",
+    "book_is_loaned": "Este livro já está emprestado.",
+    "book_already_returned": "Livro já devolvido.",
+    "update_error": "Ocorreu algum erro com a atualização do empréstimo.",
+    "delete_error": "Ocorreu algum erro com a atualização do empréstimo.",
+    "deleted_with_success": "Empréstimo deletado com sucesso.",
+    "return_error": "Ocorreu algum erro com a devolução do livro.",
+    "no_pending_loan_found": "Não foi encontrado nenhum empréstimo em aberto para o livro."
+  },
+  "return_date": {
+    "invalid": "Informe uma data de devolução válida.",
+    "is_before_loan_date": "Data de devolução está anterior a data do empréstimo."
+  },
+  "description": {
+    "invalid": "Informe uma descrição válida.",
+    "length_error": "A descrição deve ter até 250 caracteres."
+  },
+  "must_return_date": {
+    "invalid": "Informe uma data de previsão de devolução válida.",
+    "is_before_loan_date": "Data de previsão de devolução está anterior a data do empréstimo."
+  },
+  "loan_date": {
+    "invalid": "Informe uma data válida para o empréstimo."
+  },
+  "book": {
+    "invalid": "Selecione o livro novamente.",
+    "required": "O livro é obrigatório."
+  },
+  "person": {
+    "invalid": "Selecione a pessoa novamente.",
+    "required": "A pessoa é obrigatória."
+  }
+}

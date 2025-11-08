@@ -7,8 +7,8 @@ import {
 } from 'class-validator';
 
 export class CreateAuthorDto {
-  @IsNotEmpty({ message: 'Informe um nome válido.' })
-  @Length(1, 60, { message: 'O nome deve ter até 60 caracteres.' })
+  @IsNotEmpty({ message: 'author.name.invalid' })
+  @Length(1, 60, { message: 'author.name.length_error' })
   name: string;
 
   @ValidateIf(
@@ -18,7 +18,7 @@ export class CreateAuthorDto {
       thisAuthor.birth_date != '',
   )
   @Matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, {
-    message: 'Informe uma data de nascimento válida.',
+    message: 'author.birth_date.invalid',
   })
   birth_date: Date;
 
@@ -29,7 +29,7 @@ export class CreateAuthorDto {
       thisAuthor.death_date != '',
   )
   @Matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, {
-    message: 'Informe uma data de falecimento válida.',
+    message: 'author.death_date.invalid',
   })
   death_date: Date;
 
@@ -39,6 +39,6 @@ export class CreateAuthorDto {
       thisAuthor.bio != undefined &&
       thisAuthor.bio != '',
   )
-  @IsString({ message: 'Informe a biografia novamente.' })
+  @IsString({ message: 'author.bio.invalid' })
   bio: string;
 }

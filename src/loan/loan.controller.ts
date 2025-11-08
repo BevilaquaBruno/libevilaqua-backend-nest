@@ -44,9 +44,7 @@ export class LoanController {
     const book: Book = await this.bookService.findOne(createLoanDto.bookId, reqUser.libraryId);
     if (null == book) {
       throw new HttpException(
-        'Livro selecionado não encontrado. Código do livro: ' +
-        createLoanDto.bookId +
-        '.',
+        'book.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -58,9 +56,7 @@ export class LoanController {
     );
     if (null == person) {
       throw new HttpException(
-        'Pessoa selecionada não encontrada. Código da pessoa: ' +
-        createLoanDto.personId +
-        '.',
+        'person.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -73,7 +69,7 @@ export class LoanController {
     );
     if (isBookLoaned[1] != 0) {
       throw new HttpException(
-        'Este livro já está emprestado.',
+        'loan.general.book_is_loaned',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -86,7 +82,7 @@ export class LoanController {
       const is_must_return_date_valid = must_return_date.isValid();
       if (!is_must_return_date_valid) {
         throw new HttpException(
-          'Informe uma data de previsão de devolução válida.',
+          'loan.must_return_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -97,7 +93,7 @@ export class LoanController {
       const is_loan_date_valid = loan_date.isValid();
       if (!is_loan_date_valid) {
         throw new HttpException(
-          'Informe uma data de empréstimo válida.',
+          'loan.loan_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -106,7 +102,7 @@ export class LoanController {
     // Valida se a data de previsão de retorno é anterior a data do empréstimo, se for retorna erro
     if (must_return_date.isBefore(loan_date)) {
       throw new HttpException(
-        'Data de previsão de devolução está anterior a data do empréstimo.',
+        'loan.must_return_date.is_before_loan_date',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -117,7 +113,7 @@ export class LoanController {
       const is_return_date_valid = return_date.isValid();
       if (!is_return_date_valid) {
         throw new HttpException(
-          'Informe uma data de devolução válida.',
+          'loan.return_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -125,7 +121,7 @@ export class LoanController {
       // Valida se a data de retorno é anterior a data do empréstimo, se for retorna erro
       if (return_date.isBefore(loan_date)) {
         throw new HttpException(
-          'Data de devolução está anterior a data do empréstimo.',
+          'loan.return_date.is_before_loan_date',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -216,7 +212,7 @@ export class LoanController {
     const loan = await this.loanService.findOne(+id, reqUser.libraryId);
     if (loan === null) {
       throw new HttpException(
-        'Não existe um empréstimo com esse código.',
+        'loan.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -233,7 +229,7 @@ export class LoanController {
     const currentLoan: Loan = await this.loanService.findOne(+id, reqUser.libraryId);
     if (null == currentLoan) {
       throw new HttpException(
-        'Empréstimo não encontrado. Código do Empréstimo: ' + id + '.',
+        'loan.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -242,9 +238,7 @@ export class LoanController {
     const book: Book = await this.bookService.findOne(updateLoanDto.bookId, reqUser.libraryId);
     if (null == book) {
       throw new HttpException(
-        'Livro selecionado não encontrado. Código do livro: ' +
-        updateLoanDto.bookId +
-        '.',
+        'book.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -257,9 +251,7 @@ export class LoanController {
       );
       if (null == person) {
         throw new HttpException(
-          'Pessoa selecionada não encontrada. Código da pessoa: ' +
-          updateLoanDto.personId +
-          '.',
+          'person.general.not_found',
           HttpStatus.NOT_FOUND,
         );
       }
@@ -273,7 +265,7 @@ export class LoanController {
     );
     if (isBookLoaned[1] != 0) {
       throw new HttpException(
-        'Este livro já está emprestado.',
+        'loan.general.book_is_loaned',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -286,7 +278,7 @@ export class LoanController {
       const is_must_return_date_valid = must_return_date.isValid();
       if (!is_must_return_date_valid) {
         throw new HttpException(
-          'Informe uma data de previsão de devolução válida.',
+          'loan.must_return_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -297,7 +289,7 @@ export class LoanController {
       const is_loan_date_valid = loan_date.isValid();
       if (!is_loan_date_valid) {
         throw new HttpException(
-          'Informe uma data de empréstimo válida.',
+          'loan.loan_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -306,7 +298,7 @@ export class LoanController {
     // Valida se a data de previsão de retorno é anterior a data do empréstimo, se for retorna erro
     if (must_return_date.isBefore(loan_date)) {
       throw new HttpException(
-        'Data de previsão de devolução está anterior a data do empréstimo.',
+        'loan.must_return_date.is_before_loan_date',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -317,7 +309,7 @@ export class LoanController {
       const is_return_date_valid = return_date.isValid();
       if (!is_return_date_valid) {
         throw new HttpException(
-          'Informe uma data de devolução válida.',
+          'loan.return_date.invalid',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -325,7 +317,7 @@ export class LoanController {
       // Valida se a data de retorno é anterior a data do empréstimo, se for retorna erro
       if (return_date.isBefore(loan_date)) {
         throw new HttpException(
-          'Data de devolução está anterior a data do empréstimo.',
+          'loan.return_date.is_before_loan_date',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -345,7 +337,7 @@ export class LoanController {
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização do empréstimo.',
+        'loan.general.update_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -360,7 +352,7 @@ export class LoanController {
     const loan: Loan = await this.loanService.findOne(+id, reqUser.libraryId);
     if (null == loan) {
       throw new HttpException(
-        'Empréstimo não encontrado. Código do Empréstimo: ' + id + '.',
+        'loan.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -370,11 +362,11 @@ export class LoanController {
     if (deletedLoan.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Empréstimo deletado com sucesso.',
+        message: 'loan.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar o Empréstimo.',
+        'loan.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -389,7 +381,7 @@ export class LoanController {
     const loan: Loan = await this.loanService.findOne(+id, reqUser.libraryId);
     if (null == loan) {
       throw new HttpException(
-        'Empréstimo não encontrado. Código do Empréstimo: ' + id + '.',
+        'loan.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -398,7 +390,7 @@ export class LoanController {
     if (null != loan.return_date) {
       const return_date = moment(loan.return_date);
       throw new HttpException(
-        'Livro já devolvido no dia ' + return_date.format('DD/MM/YYYY') + '.',
+        'loan.general.book_already_returned',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -407,7 +399,7 @@ export class LoanController {
     const is_return_date_valid = return_date.isValid();
     if (!is_return_date_valid) {
       throw new HttpException(
-        'Informe uma data de devolução válida.',
+        'loan.return_date.invalid',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -415,7 +407,7 @@ export class LoanController {
     // Valida se a data de retorno é anterior a data do empréstimo, se for retorna erro
     if (return_date.isBefore(loan.loan_date)) {
       throw new HttpException(
-        'Data de devolução está anterior a data do empréstimo.',
+        'loan.return_date.is_before_loan_date',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -434,7 +426,7 @@ export class LoanController {
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com o retorno do empréstimo.',
+        'loan.general.return_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -449,7 +441,7 @@ export class LoanController {
     const book = await this.bookService.findOne(+bookId, reqUser.libraryId);
     if (book === null) {
       throw new HttpException(
-        'Não existe um livro com esse código.',
+        'book.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -458,7 +450,7 @@ export class LoanController {
     const loan = await this.loanService.findCurrentLoanFromBook(+bookId, reqUser.libraryId);
     if (loan === null)
       throw new HttpException(
-        'Não foi encontrado nenhum empréstimo em aberto para o livro.',
+        'loan.general.no_pending_loan_found',
         HttpStatus.BAD_REQUEST,
       );
     else return loan;
@@ -473,7 +465,7 @@ export class LoanController {
     const person = await this.personService.findOne(+personId, reqUser.libraryId);
     if (person === null) {
       throw new HttpException(
-        'Não existe uma pessoa com esse código.',
+        'loan.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }

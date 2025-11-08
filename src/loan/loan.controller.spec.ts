@@ -114,6 +114,8 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     });
     mockBookService.findOne.mockResolvedValue({
@@ -175,6 +177,8 @@ describe('LoanController', () => {
       street: 'Rua Marechal Deodoro',
       number: '1280',
       obs: 'Observação aqui',
+      email: "bruno.f.bevilaqua@gmail.com",
+      phone: "49912345678"
     });
     mockLoanService.findLoanedBook.mockResolvedValue([[], 0]);
 
@@ -245,6 +249,8 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     });
     expect(mockLoanService.create).toHaveBeenCalledWith(loanDto, libraryId);
@@ -318,6 +324,8 @@ describe('LoanController', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
+          email: "bruno.f.bevilaqua@gmail.com",
+          phone: "49912345678"
         }
       },
       {
@@ -385,6 +393,8 @@ describe('LoanController', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
+          email: "bruno.f.bevilaqua@gmail.com",
+          phone: "49912345678"
         }
       }
     ];
@@ -417,6 +427,10 @@ describe('LoanController', () => {
       findLoanDto.page.toString(),
       findLoanDto.limit.toString(),
     );
+
+    findLoanDto.start_date = null;
+    findLoanDto.end_date = null;
+    findLoanDto.description = null;
 
     // Valida os retornos
     expect(result).toEqual({
@@ -494,6 +508,8 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     };
 
@@ -592,6 +608,8 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     });
 
@@ -662,6 +680,8 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     });
     expect(mockLoanService.update).toHaveBeenCalledWith(loanId, loanDto, libraryId);
@@ -741,6 +761,8 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     });
 
@@ -749,7 +771,7 @@ describe('LoanController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Empréstimo deletado com sucesso.',
+      message: 'loan.general.deleted_with_success',
     });
     expect(mockLoanService.remove).toHaveBeenCalledWith(loanId, libraryId);
   });
@@ -822,6 +844,8 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
+        email: "bruno.f.bevilaqua@gmail.com",
+        phone: "49912345678"
       }
     };
 
@@ -906,6 +930,8 @@ describe('LoanController', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
+          email: "bruno.f.bevilaqua@gmail.com",
+          phone: "49912345678"
         }
       },
       {
@@ -973,6 +999,8 @@ describe('LoanController', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
+          email: "bruno.f.bevilaqua@gmail.com",
+          phone: "49912345678"
         }
       }
     ];
