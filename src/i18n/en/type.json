@@ -1,5 +1,12 @@
 {
   "general": {
-    "not_found": "Type not found."
+    "not_found": "Type not found.",
+    "update_error": "There was an error updating the type.",
+    "delete_error": "There was an error deleting the type.",
+    "deleted_with_success": "Type successfully deleted."
+  },
+  "description": {
+    "invalid": "Please enter a valid description.",
+    "length_error": "The description must be up to 50 characters long."
   }
 }

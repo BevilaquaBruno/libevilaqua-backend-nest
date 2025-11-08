@@ -71,7 +71,7 @@ export class TypeController {
     const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type)
       throw new HttpException(
-        'Tipo não encontrado. Código do tipo: ' + id + '.',
+        'type.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     return type;
@@ -86,7 +86,7 @@ export class TypeController {
     const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type) {
       throw new HttpException(
-        'Tipo não encontrado. Código do tipo: ' + id + '.',
+        'type.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -100,7 +100,7 @@ export class TypeController {
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização do tipo.',
+        'type.general.update_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -115,7 +115,7 @@ export class TypeController {
     const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type) {
       throw new HttpException(
-        'Tipo não encontrado. Código do tipo: ' + id + '.',
+        'type.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -125,11 +125,11 @@ export class TypeController {
     if (deletedType.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Tipo deletado com sucesso.',
+        message: 'type.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar o tipo.',
+        'type.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }
