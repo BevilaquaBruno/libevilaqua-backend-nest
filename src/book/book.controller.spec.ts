@@ -520,7 +520,7 @@ describe('BookController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Livro deletado com sucesso.',
+      message: 'book.general.deleted_with_success',
     });
     expect(mockBookService.remove).toHaveBeenCalledWith(bookId, libraryId);
     expect(mockBookService.findOne).toHaveBeenCalledWith(bookId, libraryId);

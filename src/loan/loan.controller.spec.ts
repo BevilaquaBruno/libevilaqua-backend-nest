@@ -771,7 +771,7 @@ describe('LoanController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Empréstimo deletado com sucesso.',
+      message: 'loan.general.deleted_with_success',
     });
     expect(mockLoanService.remove).toHaveBeenCalledWith(loanId, libraryId);
   });

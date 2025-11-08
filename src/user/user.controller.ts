@@ -352,7 +352,7 @@ export class UserController {
     if (deletedUser.affected == 1) {
       return {
         statusCode: 200,
-        message: 'user.general.delete_with_success',
+        message: 'user.general.deleted_with_success',
       };
     } else {
       throw new HttpException(

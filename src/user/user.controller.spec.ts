@@ -174,7 +174,7 @@ describe('UserController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Usuário deletado com sucesso.',
+      message: 'user.general.deleted_with_success',
     });
     expect(mockUserService.remove).toHaveBeenCalledWith(id);
   });

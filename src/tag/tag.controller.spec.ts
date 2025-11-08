@@ -147,7 +147,7 @@ describe('TagController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Tag deletada com sucesso.',
+      message: 'tag.general.deleted_with_success',
     });
     expect(mockTagService.remove).toHaveBeenCalledWith(id, libraryId);
   });

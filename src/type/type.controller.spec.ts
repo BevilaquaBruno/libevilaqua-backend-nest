@@ -147,7 +147,7 @@ describe('TypeController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Tipo deletado com sucesso.',
+      message: 'type.general.deleted_with_success',
     });
     expect(mockTypeService.remove).toHaveBeenCalledWith(id, libraryId);
   });

@@ -57,7 +57,7 @@ describe('LibraryController', () => {
 
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Toda a biblioteca foi deletada com sucesso.',
+      message: 'library.general.deleted_with_success',
     });
     expect(mockLibraryService.remove).toHaveBeenCalledWith(libraryId);
   });

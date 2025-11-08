@@ -208,7 +208,7 @@ describe('PersonController', () => {
     // Valida os retornos
     expect(result).toEqual({
       statusCode: 200,
-      message: 'Pessoa deletada com sucesso.',
+      message: 'person.general.deleted_with_success',
     });
     expect(mockPersonService.remove).toHaveBeenCalledWith(id, libraryId);
   });
