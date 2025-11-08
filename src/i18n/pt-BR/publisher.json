@@ -3,7 +3,7 @@
     "not_found": "Editora não encontrada.",
     "update_error": "Ocorreu algum erro com a atualização da editora.",
     "delete_error": "Ocorreu algum erro com a atualização da editora.",
-    "deleted_with_success": "Editora deletado com sucesso."
+    "deleted_with_success": "Editora deletada com sucesso."
   },
   "description": {
     "invalid": "Informe uma descrição válida.",
