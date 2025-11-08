@@ -7,9 +7,11 @@ import { I18nFilter } from './i18n/i18n.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  /*
   app.enableCors({
-    origin: ['http://localhost:4200']
+    origin: [process.env['FRONT_END_URL']]
   });
+  */
   // Cria o serviço i18n
   const i18n = app.get<I18nService<Record<string, unknown>>>(I18nService);
   /**
