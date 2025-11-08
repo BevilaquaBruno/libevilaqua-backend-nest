@@ -1,0 +1,95 @@
+{
+  "general": {
+    "reports": "Reports",
+    "and_others": "and others",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "author": {
+    "name": "List of authors.",
+    "description": "A list of all registered authors.",
+    "subtitle": "List of authors",
+    "headers": {
+      "name": "Name",
+      "birth_death_date": "Birth - Death"
+    }
+  },
+  "genre": {
+    "name": "List of genres.",
+    "description": "A list of all registered genres.",
+    "subtitle": "List of genres",
+    "headers": {
+      "description": "Description"
+    }
+  },
+  "person": {
+    "name": "List of people.",
+    "description": "A list of all registered people.",
+    "subtitle": "List of people",
+    "headers": {
+      "name": "Name",
+      "cpf": "CPF",
+      "address": "Address",
+      "contact": "Contacts"
+    }
+  },
+  "publisher": {
+    "name": "List of publisher.",
+    "description": "A list of all registered publisher.",
+    "subtitle": "List of publishers",
+    "headers": {
+      "description": "Description",
+      "country": "Country"
+    }
+  },
+  "tag": {
+    "name": "List of tags.",
+    "description": "A list of all registered tags.",
+    "subtitle": "List of tags",
+    "headers": {
+      "description": "Description"
+    }
+  },
+  "type": {
+    "name": "List of types.",
+    "description": "A list of all registered types.",
+    "subtitle": "List of types",
+    "headers": {
+      "description": "Description"
+    }
+  },
+  "user": {
+    "name": "List of users.",
+    "description": "A list of all registered users.",
+    "subtitle": "List of users",
+    "headers": {
+      "name": "Name",
+      "email": "E-mail"
+    }
+  },
+  "loan": {
+    "name": "List of loans.",
+    "description": "A list of all registered loans.",
+    "subtitle": "List of loans",
+    "headers": {
+      "description": "Description",
+      "person": "Person",
+      "book": "Book",
+      "loan_date": "Loan date",
+      "return_date": "Return date"
+    }
+  },
+  "book": {
+    "name": "List of books.",
+    "description": "A list of all registered books.",
+    "subtitle": "List of books",
+    "headers": {
+      "title": "Title",
+      "author": "Author(s)",
+      "genre": "Genre",
+      "type": "Type",
+      "tag": "Tag",
+      "status": "Status"
+    }
+  }
+}

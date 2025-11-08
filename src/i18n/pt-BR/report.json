@@ -1,0 +1,95 @@
+{
+  "general": {
+    "reports": "Relatórios",
+    "and_others": "e outros",
+    "active": "Ativo",
+    "inactive": "inativo"
+  },
+  "author": {
+    "name": "Lista de autores.",
+    "description": "Uma lista com todos os autores cadastrados.",
+    "subtitle": "Lista de autores",
+    "headers": {
+      "name": "Nome",
+      "birth_death_date": "Nasc - Morte"
+    }
+  },
+  "genre": {
+    "name": "Lista de gêneros.",
+    "description": "Uma lista com todos os gêneros cadastrados.",
+    "subtitle": "Lista de gêneros",
+    "headers": {
+      "description": "Descrição"
+    }
+  },
+  "person": {
+    "name": "Lista de pessoas.",
+    "description": "Uma lista com todos os pessoas cadastradas.",
+    "subtitle": "Lista de pessoas",
+    "headers": {
+      "name": "Nome",
+      "cpf": "CPF",
+      "address": "Endereço",
+      "contact": "Contatos"
+    }
+  },
+  "publisher": {
+    "name": "Lista de Editoras.",
+    "description": "Uma lista com todos as editoras cadastradas.",
+    "subtitle": "Lista de editoras",
+    "headers": {
+      "description": "Descrição",
+      "country": "País"
+    }
+  },
+  "tag": {
+    "name": "Lista de tags.",
+    "description": "Uma lista com todos os tags cadastradas.",
+    "subtitle": "Lista de tags",
+    "headers": {
+      "description": "Descrição"
+    }
+  },
+  "type": {
+    "name": "Lista de tipos.",
+    "description": "Uma lista com todos os tipos cadastrados.",
+    "subtitle": "Lista de tipos",
+    "headers": {
+      "description": "Descrição"
+    }
+  },
+  "user": {
+    "name": "Lista de usuários.",
+    "description": "Uma lista com todos os usuários cadastrados.",
+    "subtitle": "Lista de usuários",
+    "headers": {
+      "name": "Nome",
+      "email": "E-mail"
+    }
+  },
+  "loan": {
+    "name": "Lista de empréstimos.",
+    "description": "Uma lista com todos os empréstimos cadastrados.",
+    "subtitle": "Lista de empréstimos",
+    "headers": {
+      "description": "Descrição",
+      "person": "Pessoa",
+      "book": "Livro",
+      "loan_date": "Data Emp.",
+      "return_date": "Data Dev."
+    }
+  },
+  "book": {
+    "name": "Lista de livros.",
+    "description": "Uma lista com todos os livros cadastrados.",
+    "subtitle": "Lista de livros",
+    "headers": {
+      "title": "Título",
+      "author": "Autor(es)",
+      "genre": "Gênero",
+      "type": "Tipo",
+      "tag": "Tag",
+      "status": "Status"
+    }
+  }
+}
