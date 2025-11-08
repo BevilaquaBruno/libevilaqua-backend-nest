@@ -35,7 +35,7 @@ export class PersonController {
     if (createPersonDto.cpf) {
       const isCpfValid = CPF.validate(createPersonDto.cpf);
       if (!isCpfValid) {
-        throw new HttpException('CPF inválido.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('person.cpf.invalid', HttpStatus.BAD_REQUEST);
       }
 
       // Valida se a pessoa(CPF) já está cadastrada
@@ -45,7 +45,7 @@ export class PersonController {
         reqUser.libraryId
       );
       if (isPersonRegistered?.cpf != undefined) {
-        throw new HttpException('CPF já cadastrado.', HttpStatus.BAD_REQUEST);
+        throw new HttpException('person.cpf.already_registered', HttpStatus.BAD_REQUEST);
       }
     }
 
@@ -100,7 +100,7 @@ export class PersonController {
     const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
     if (null == person)
       throw new HttpException(
-        'Pessoa não encontrada. Código da pessoa: ' + id + '.',
+        'person.general.not_found',
         HttpStatus.NOT_FOUND,
       );
     return person;
@@ -115,14 +115,14 @@ export class PersonController {
     const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
     if (null == person)
       throw new HttpException(
-        'Pessoa não encontrada. Código da pessoa: ' + id + '.',
+        'person.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
     // Valida o CPF
     const isCpfValid = CPF.validate(updatePersonDto.cpf);
     if (!isCpfValid) {
-      throw new HttpException('CPF inválido.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('person.cpf.invalid', HttpStatus.BAD_REQUEST);
     }
 
     // Verifica se a pessoa (CPF) já está cadastrada
@@ -132,7 +132,7 @@ export class PersonController {
       reqUser.libraryId
     );
     if (isPersonRegistered?.cpf != undefined) {
-      throw new HttpException('CPF já cadastrado.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('person.cpf.already_registered', HttpStatus.BAD_REQUEST);
     }
 
     // Atualiza a pessoa e retorna ela ou erro
@@ -156,7 +156,7 @@ export class PersonController {
       return returnPerson;
     } else {
       throw new HttpException(
-        'Ocorreu algum erro com a atualização da pessoa.',
+        'person.general.update_error',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -171,7 +171,7 @@ export class PersonController {
     const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
     if (null == person)
       throw new HttpException(
-        'Pessoa não encontrada. Código da pessoa: ' + id + '.',
+        'person.general.not_found',
         HttpStatus.NOT_FOUND,
       );
 
@@ -181,11 +181,11 @@ export class PersonController {
     if (deletePerson.affected == 1) {
       return {
         statusCode: 200,
-        message: 'Pessoa deletada com sucesso.',
+        message: 'person.general.deleted_with_success',
       };
     } else {
       throw new HttpException(
-        'Ocorreu algum erro ao deletar a pessoa.',
+        'person.general.delete_error',
         HttpStatus.BAD_REQUEST,
       );
     }

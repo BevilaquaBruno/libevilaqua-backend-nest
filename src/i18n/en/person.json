@@ -1,5 +1,45 @@
 {
   "general": {
-    "not_found": "Person not found."
+    "not_found": "Person not found.",
+    "update_error": "There was an error updating the person.",
+    "delete_error": "There was an error deleting the person.",
+    "deleted_with_success": "Person successfully deleted."
+  },
+  "name": {
+    "invalid": "Please enter a valid name.",
+    "required": "Name is required.",
+    "length_error": "The name must be up to 250 characters long."
+  },
+  "cpf": {
+    "invalid": "Please enter a valid CPF.",
+    "already_registered": "CPF already registered."
+  },
+  "cep": {
+    "invalid": "Please enter a valid CEP."
+  },
+  "state": {
+    "invalid": "Please enter a valida state."
+  },
+  "city": {
+    "invalid": "Please enter a valid city."
+  },
+  "district": {
+    "invalid": "Please enter a valid district."
+  },
+  "street": {
+    "invalid": "Please enter a valid street."
+  },
+  "number": {
+    "invalid": "Please enter a valid number.",
+    "length_error": "The number must be up to 5 characters long."
+  },
+  "obs": {
+    "invalid": "Please enter a valid obs."
+  },
+  "email": {
+    "invalid": "Please enter a valid e-mail."
+  },
+  "phone": {
+    "invalid": "Please enter a valid phone."
   }
 }

@@ -1,5 +1,45 @@
 {
   "general": {
-    "not_found": "Pessoa não encontrada."
+    "not_found": "Pessoa não encontrada.",
+    "update_error": "Ocorreu algum erro com a atualização da pessoa.",
+    "delete_error": "Ocorreu algum erro com a atualização da pessoa.",
+    "deleted_with_success": "Pessoa deletada com sucesso."
+  },
+  "name": {
+    "invalid": "Infome um nome válido",
+    "required": "Nome é obrigatório.",
+    "length_error": "O nome deve ter até 250 caracteres."
+  },
+  "cpf": {
+    "invalid": "Informe um CPF válido.",
+    "already_registered": "CPF já cadastrado."
+  },
+  "cep": {
+    "invalid": "Informe um CEP válido."
+  },
+  "state": {
+    "invalid": "Informe um estado válido."
+  },
+  "city": {
+    "invalid": "Informe uma cidade válida."
+  },
+  "district": {
+    "invalid": "Informe um bairro válido."
+  },
+  "street": {
+    "invalid": "Informe uma rua válida."
+  },
+  "number": {
+    "invalid": "Informe um número válido.",
+    "length_error": "O número deve ter até 5 caracteres."
+  },
+  "obs": {
+    "invalid": "Informe uma observação válida."
+  },
+  "email": {
+    "invalid": "Informe um e-mail válido."
+  },
+  "phone": {
+    "invalid": "Informe um telefone válido."
   }
 }
