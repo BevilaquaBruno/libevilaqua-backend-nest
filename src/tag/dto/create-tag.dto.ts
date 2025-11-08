@@ -1,9 +1,9 @@
 import { IsString, Length } from 'class-validator';
 
 export class CreateTagDto {
-  @IsString({ message: 'Informe novamente a tag.' })
+  @IsString({ message: 'tag.description.invalid' })
   @Length(1, 50, {
-    message: 'A tag deve ter entre 1 e 50 caracteres.',
+    message: 'tag.description.length_error',
   })
   description: string;
 }
