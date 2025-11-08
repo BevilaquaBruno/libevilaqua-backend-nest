@@ -88,12 +88,17 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.author.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
-          '#', 
+          '#',
           this.i18nService.translate('report.author.headers.name'),
-          this.i18nService.translate('report.author.headers.birth_death_date')  
+          this.i18nService.translate('report.author.headers.birth_death_date')
         ],
         data: authors_formatted,
       }
@@ -121,8 +126,13 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.genre.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.genre.headers.description')
@@ -180,8 +190,13 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.person.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.person.headers.name'),
@@ -215,8 +230,13 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.publisher.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.publisher.headers.description'),
@@ -248,8 +268,13 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.tag.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.tag.headers.description')
@@ -280,8 +305,13 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.type.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.type.headers.description')
@@ -312,8 +342,13 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.user.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.user.headers.name'),
@@ -398,8 +433,13 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.loan.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.loan.headers.description'),
@@ -547,8 +587,13 @@ export class ReportController {
       data: {
         title: library.description,
         subtitle: this.i18nService.translate('report.book.subtitle'),
-        date: moment().format('DD/MM/YYYY'),
-        author: process.env['APP_NAME'] + ' - ' + this.i18nService.translate('report.general.reports'),
+        generated_in_date:
+          this.i18nService.translate('report.general.generated_in') + ' ' +
+          moment().format('DD/MM/YYYY'),
+        generated_by_author:
+          this.i18nService.translate('report.general.generated_by') + ' ' +
+          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.book.headers.title'),

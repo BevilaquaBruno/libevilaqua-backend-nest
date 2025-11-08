@@ -3,7 +3,9 @@
     "reports": "Relatórios",
     "and_others": "e outros",
     "active": "Ativo",
-    "inactive": "inativo"
+    "inactive": "inativo",
+    "generated_in": "Gerado em",
+    "generated_by": "Relatório gerado automaticamente por"
   },
   "author": {
     "name": "Lista de autores.",

@@ -4,8 +4,8 @@ export class ReportDataDto {
   data: {
     title: string;
     subtitle: string;
-    date: string;
-    author: string;
+    generated_in_date: string;
+    generated_by_author: string;
     headers?: string[];
     data: any;
   }
