@@ -71,6 +71,15 @@ describe('auth E2E', () => {
       .expect(200);
   });
 
+  /*
+  it('GET /author - Get all books', async () => {
+    await request(app.getHttpServer())
+      .get(`/author/${author2.id}/books?page=1&limit=100`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    });
+  */
+
 });
 
 export function registerAuthor(app, token, author) {
