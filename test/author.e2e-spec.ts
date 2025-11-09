@@ -5,7 +5,7 @@ import { AppModule } from '../src/app.module';
 import { author1, author2 } from './mocks/author.mock';
 import { getAuthToken } from './auth.e2e-spec';
 
-describe('auth E2E', () => {
+describe('author E2E', () => {
   let app: INestApplication;
   let token: string = null;
 
