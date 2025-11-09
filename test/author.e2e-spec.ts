@@ -2,12 +2,13 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { author1, author2 } from './mocks/author.mock';
+import { userBaseLogin } from './mocks/auth.mock';
 
-const BASE_URL = 'http://localhost:3000';
-
-describe('author E2E', () => {
+describe('auth E2E', () => {
   let app: INestApplication;
-  let token: string;
+  let passwordToken: string = null;
+  let token: string = null;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -16,102 +17,99 @@ describe('author E2E', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-
-    // 1) Signin to obtain initial token (returned in `password` field)
-    const signinRes = await request(app.getHttpServer())
-      .post('/auth/signin')
-      .send({
-        email: 'bruno.f.bevilaqua@gmail.com',
-        password: '123',
-      });
-    if (signinRes.status === 201 || signinRes.status === 200) {
-      // expecting response body to contain a 'password' field which holds the first JWT
-      const tokenA = signinRes.body && signinRes.body.password ? signinRes.body.password : signinRes.body.token;
-      // 2) Select library using tokenA as password to receive final access_token
-      const selectRes = await request(app.getHttpServer())
-        .post('/auth/select-library')
-        .send({
-          email: 'bruno.f.bevilaqua@gmail.com',
-          password: tokenA,
-          libraryId: 1,
-        });
-      token = selectRes.body && selectRes.body.access_token ? selectRes.body.access_token : selectRes.body.token;
-    } else {
-      // fallback: try to extract token anyway
-      const tokenA = signinRes.body && signinRes.body.password ? signinRes.body.password : signinRes.body.token;
-      const selectRes = await request(app.getHttpServer())
-        .post('/auth/select-library')
-        .send({
-          email: 'bruno.f.bevilaqua@gmail.com',
-          password: tokenA,
-          libraryId: 1,
-        });
-      token = selectRes.body && selectRes.body.access_token ? selectRes.body.access_token : selectRes.body.token;
-    }
   });
 
   afterAll(async () => {
     await app.close();
   });
 
-  it('GET /author/{{author_id}}/books?page={{page}}&limit={{limit}} - Get all books', async () => {
+  it('POST /auth/signin - Sign in', async () => {
     const res = await request(app.getHttpServer())
-      .get(`/author/{{author_id}}/books?page={{page}}&limit={{limit}}`)
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200);
-    // you can add more assertions here on res.body
+      .post(`/auth/signin`)
+      .send({
+        email: userBaseLogin.email,
+        password: userBaseLogin.password
+      }).expect(200);
+
+    passwordToken = res.body['password'];
   });
 
-  it('DELETE /author/{{id}} - Delete', async () => {
+  it('POST /auth/select-library - Select Library', async () => {
     const res = await request(app.getHttpServer())
-      .delete(`/author/{{id}}`)
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200);
-    // you can add more assertions here on res.body
+      .post(`/auth/select-library`)
+      .send({
+        "email": userBaseLogin.email,
+        "password": passwordToken,
+        "libraryId": 1
+      })
+      .expect(201);
+
+    token = res.body['access_token'];
   });
 
-  it('GET /author/{{id}} - Get one', async () => {
-    const res = await request(app.getHttpServer())
-      .get(`/author/{{id}}`)
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200);
-    // you can add more assertions here on res.body
-  });
-
-  it('POST /author - New', async () => {
-    const res = await request(app.getHttpServer())
+  it('POST /author - Create two authors', async () => {
+    const resAuthor1 = await request(app.getHttpServer())
       .post(`/author`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-  "name": "Roniwalter Jatobá sad asRoniwalter Jatobá sad asRoniwalter Jatobá sad asRoniwalter Jatobá sad asRoniwalter Jatobá sad asRoniwalter Jatobá sad asRoniwalter Jatobá sad asRoniwalter Jatobá sad as",
-  "birth_date": "2025-01-01",
-  "death_date": null,
-  "bio": null
-})
-      .expect(201);
-    // you can add more assertions here on res.body
-  });
+        name: author1.name,
+        birth_date: author1.birth_date,
+        death_date: author1.death_date,
+        bio: author1.bio
+      }).expect(201);
 
-  it('PATCH /author/{{id}} - Update', async () => {
-    const res = await request(app.getHttpServer())
-      .patch(`/author/{{id}}`)
+    author1.id = resAuthor1.body['id'];
+
+    const resAuthor2 = await request(app.getHttpServer())
+      .post(`/author`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-  "name": "Roniwalter Jatoba",
-  "birth_date": null,
-  "death_date": null,
-  "bio": "Bio do autor aqui"
-})
-      .expect(200);
-    // you can add more assertions here on res.body
+        name: author2.name,
+        birth_date: author2.birth_date,
+        death_date: author2.death_date,
+        bio: author2.bio
+      }).expect(201);
+
+    author2.id = resAuthor2.body['id'];
   });
 
-  it('GET /author?page={{page}}&limit={{limit}} - Get all', async () => {
-    const res = await request(app.getHttpServer())
-      .get(`/author?page={{page}}&limit={{limit}}`)
+  it('PATCH /author - Update', async () => {
+    author1.name = "Nome atualizado do primeiro autor";
+    author1.bio = "Bio atualizada";
+
+    await request(app.getHttpServer())
+      .patch(`/author/${author1.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: author1.name,
+        birth_date: author1.birth_date,
+        death_date: author1.death_date,
+        bio: author1.bio
+      }).expect(200);
+  });
+
+  it('GET /author - Get all', async () => {
+    await request(app.getHttpServer())
+      .get(`/author`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect({
+        data: [author2, author1],
+        count: 2
+      });
+  });
+
+  it('GET /author - Get one', async () => {
+    await request(app.getHttpServer())
+      .get(`/author/${author1.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(author1);
+  });
+
+  it('DELETE /author - Delete', async () => {
+    await request(app.getHttpServer())
+      .delete(`/author/${author2.id}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
-    // you can add more assertions here on res.body
   });
 
 });
