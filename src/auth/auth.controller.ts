@@ -97,7 +97,7 @@ export class AuthController {
 
       if (null == libraryUser.email_verified_at) {
         const token = this.authService.generateResetToken(user, 'E', selectedLibrary.libraryId);
-        this.mailService.sendUserConfirmation(user.email, token, library.description);
+        this.mailService.sendUserConfirmation(user, token, library.description);
         throw new HttpException('user.general.not_verified_in_library', HttpStatus.BAD_REQUEST);
       }
 
@@ -130,7 +130,7 @@ export class AuthController {
       throw new HttpException('user.email.does_not_exists', HttpStatus.BAD_REQUEST);
 
     const token = this.authService.generateResetToken(user, 'S');
-    await this.mailService.sendResetPasswordRequest(user.name, user.email, token);
+    await this.mailService.sendResetPasswordRequest(user, token);
 
     return {
       statusCode: 200,
