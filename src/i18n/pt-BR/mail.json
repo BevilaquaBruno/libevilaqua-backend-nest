@@ -1,0 +1,14 @@
+{
+  "general": {
+    "hi": "Olá"
+  },
+  "user_confirmation": {
+    "confirm_email": "Confirme seu cadastro",
+    "please_confirm_your_registration": "Por favor, confirme seu cadastro a biblioteca",
+    "in_app": "no app"
+  },
+  "reset_password": {
+    "reset_your_password": "Resete sua senha",
+    "access_this_link": "Acesse o link abaixo para resetar sua senha"
+  }
+}

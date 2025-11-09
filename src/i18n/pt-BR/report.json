@@ -66,7 +66,8 @@
     "subtitle": "Lista de usuários",
     "headers": {
       "name": "Nome",
-      "email": "E-mail"
+      "email": "E-mail",
+      "language": "Idioma"
     }
   },
   "loan": {

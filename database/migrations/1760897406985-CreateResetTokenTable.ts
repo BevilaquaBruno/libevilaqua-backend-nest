@@ -6,7 +6,7 @@ export class CreateResetTokenTable1760897406985 implements MigrationInterface {
         await queryRunner.query(`
             CREATE TABLE reset_tokens (
                 id INT NOT NULL AUTO_INCREMENT,
-                token VARCHAR(256) NOT NULL,
+                token TEXT NOT NULL,
                 expiresAt DATETIME NOT NULL,
                 used BOOLEAN NOT NULL DEFAULT FALSE,
                 type ENUM('E', 'S'),

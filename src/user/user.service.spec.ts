@@ -4,6 +4,7 @@ import { mockUserService } from './mocks/user.service.mock';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
+import { Languages } from '../helpers/enum/Languages.enum';
 
 describe('UserService', () => {
   let service: UserService;
@@ -27,13 +28,15 @@ describe('UserService', () => {
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
       password: '1234',
-      verify_password: '1234'
+      verify_password: '1234',
+      language: Languages.EN
     };
 
     const mockResolved: UpdateUserDto = {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN,
       password: '1234',
       verify_password: '1234',
       update_password: true,
@@ -48,6 +51,7 @@ describe('UserService', () => {
     const result = await service.create({
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN,
       password: '1234',
       verify_password: '1234'
     });
@@ -56,6 +60,7 @@ describe('UserService', () => {
     expect(mockUserService.create).toHaveBeenCalledWith({
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN,
       password: '1234',
       verify_password: '1234'
     });
@@ -68,11 +73,13 @@ describe('UserService', () => {
         id: 1,
         name: 'Bruno Fernando',
         email: 'bbbevilaqua@gmail.com',
+        language: Languages.EN,
       },
       {
         id: 2,
         name: 'Bruno Fernando',
         email: 'bbbevilaqua@gmail.com',
+        language: Languages.EN,
       }
     ];
     mockUserService.findAll.mockResolvedValue(mockList);
@@ -95,6 +102,7 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN,
       password: '1234',
       verify_password: '1234'
     };
@@ -114,6 +122,7 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN,
       password: '1234',
       verify_password: '1234',
       update_password: false,
@@ -126,6 +135,7 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN,
       password: '1234',
       verify_password: '1234',
       update_password: false,
@@ -138,6 +148,7 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN,
       password: '1234',
       verify_password: '1234',
       update_password: false,
@@ -180,7 +191,8 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      password: 'senha-criptografada'
+      password: 'senha-criptografada',
+      language: Languages.EN,
     });
 
     // Chama o count
@@ -191,7 +203,8 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      password: 'senha-criptografada'
+      password: 'senha-criptografada',
+      language: Languages.EN,
     });
     expect(mockUserService.findOneWithPassword).toHaveBeenCalledWith(1, libraryId);
   });
@@ -202,7 +215,8 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      password: 'senha-criptografada'
+      password: 'senha-criptografada',
+      language: Languages.EN,
     });
 
     // Chama o count
@@ -213,7 +227,8 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      password: 'senha-criptografada'
+      password: 'senha-criptografada',
+      language: Languages.EN,
     });
     expect(mockUserService.findByEmail).toHaveBeenCalledWith('bbbevilaqua@gmail.com');
   });
@@ -224,7 +239,8 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      password: 'senha-criptografada'
+      password: 'senha-criptografada',
+      language: Languages.EN,
     }], 1]);
 
     // Chama o count
@@ -235,7 +251,8 @@ describe('UserService', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      password: 'senha-criptografada'
+      password: 'senha-criptografada',
+      language: Languages.EN,
     }], 1]);
     expect(mockUserService.userHasLibrary).toHaveBeenCalledWith(1, libraryId);
   });

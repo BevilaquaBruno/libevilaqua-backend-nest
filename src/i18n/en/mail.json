@@ -1,0 +1,14 @@
+{
+  "general": {
+    "hi": "Hello"
+  },
+  "user_confirmation": {
+    "confirm_email": "Confirm your registration",
+    "please_confirm_your_registration": "Please, confirm your access to the library",
+    "in_app": "in the app"
+  },
+  "reset_password": {
+    "reset_your_password": "Reset your password",
+    "access_this_link": "Access the following link to reset your password:"
+  }
+}

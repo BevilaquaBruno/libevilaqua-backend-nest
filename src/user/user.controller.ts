@@ -98,12 +98,13 @@ export class UserController {
 
     // envia o e-mail
     const token = this.authService.generateResetToken(currentUser, 'E', reqUser.libraryId);
-    this.mailService.sendUserConfirmation(currentUser.email, token, library.description);
+    this.mailService.sendUserConfirmation(currentUser, token, library.description);
 
     return {
       id: currentUser.id,
       name: currentUser.name,
       email: currentUser.email,
+      language: currentUser.language
     };
   }
 
@@ -157,12 +158,13 @@ export class UserController {
     }
     // envia o e-mail
     const token = this.authService.generateResetToken(currentUser, 'E', newLibrary.id);
-    this.mailService.sendUserConfirmation(currentUser.email, token, createLibraryDto.description);
+    this.mailService.sendUserConfirmation(currentUser, token, createLibraryDto.description);
 
     return {
       id: currentUser.id,
       name: currentUser.name,
       email: currentUser.email,
+      language: currentUser.language,
       library: {
         id: newLibrary.id,
         description: newLibrary.description,
@@ -310,7 +312,7 @@ export class UserController {
       userToToken.name = updateUserDto.name;
       userToToken.email = updateUserDto.email;
       const token = this.authService.generateResetToken(userToToken, 'E', reqUser.libraryId);
-      this.mailService.sendUserConfirmation(userToToken.email, token, library.description);
+      this.mailService.sendUserConfirmation(userToToken, token, library.description);
     }
 
     // Atualiza o usuário
@@ -323,6 +325,7 @@ export class UserController {
         id: +id,
         name: updateUserDto.name,
         email: updateUserDto.email,
+        language: updateUserDto.language
       };
     } else {
       throw new HttpException(
