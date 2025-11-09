@@ -352,7 +352,8 @@ export class ReportController {
         headers: [
           '#',
           this.i18nService.translate('report.user.headers.name'),
-          this.i18nService.translate('report.user.headers.email')
+          this.i18nService.translate('report.user.headers.email'),
+          this.i18nService.translate('report.user.headers.language')
         ],
         data: users,
       }
