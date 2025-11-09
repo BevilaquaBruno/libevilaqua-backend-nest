@@ -24,6 +24,9 @@ export class User {
 
   @OneToMany(() => LibraryUser, libraryUser => libraryUser.user)
   libraries: LibraryUser[];
+
+  @Column()
+  language: string;
   
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })
   createdAt: Date;

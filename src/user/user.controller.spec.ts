@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import { mockAuthService } from '../auth/mocks/auth.service.mock';
 import { LibraryService } from '../library/library.service';
 import { mockLibraryService } from '../library/mocks/library.service.mock';
+import { Languages } from '../helpers/enum/Languages.enum';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -44,14 +45,16 @@ describe('UserController', () => {
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
       password: '1234',
-      verify_password: '1234'
+      verify_password: '1234',
+      language: Languages.EN
     };
 
     // Mocka o retorno
     mockUserService.create.mockResolvedValue({
       id: 1,
       name: 'Bruno Fernando',
-      email: 'bbbevilaqua@gmail.com'
+      email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN
     });
     mockLibraryService.findOne.mockResolvedValue({ id: 1, description: "Biblioteca um" });
     mockUserService.createLibraryUser.mockResolvedValue({ id: 1, library: { id: 1 }, user: { id: 1 } })
@@ -60,7 +63,8 @@ describe('UserController', () => {
     expect(result).toEqual({
       id: 1,
       name: 'Bruno Fernando',
-      email: 'bbbevilaqua@gmail.com'
+      email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN
     });
     expect(mockUserService.create).toHaveBeenCalled();
     expect(mockLibraryService.findOne).toHaveBeenCalledWith(libraryId);
@@ -74,11 +78,13 @@ describe('UserController', () => {
         id: 1,
         name: 'Bruno Fernando',
         email: 'bbbevilaqua@gmail.com',
+        language: Languages.EN
       },
       {
         id: 2,
         name: 'Bruno Fernando',
         email: 'bbbevilaqua@gmail.com',
+        language: Languages.EN
       },
     ];
     const quantity = list.length;
@@ -114,6 +120,7 @@ describe('UserController', () => {
       id: 2,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN
     };
 
     // Insere os mocks nos serviços
@@ -135,6 +142,7 @@ describe('UserController', () => {
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
       email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN,
       update_password: false,
       current_password: '',
     };
@@ -150,7 +158,7 @@ describe('UserController', () => {
     const result = await controller.update(req, id.toString(), dto);
 
     expect(result).toEqual(dto);
-    expect(mockUserService.update).toHaveBeenCalledWith(id, { "id": 1, "email": "bbbevilaqua@gmail.com", "name": "Bruno Fernando Bevilaqua" });
+    expect(mockUserService.update).toHaveBeenCalledWith(id, { "id": 1, "email": "bbbevilaqua@gmail.com", "name": "Bruno Fernando Bevilaqua", "language": Languages.EN });
     expect(mockLibraryService.findOne).toHaveBeenCalledWith(libraryId);
   });
 
@@ -166,7 +174,8 @@ describe('UserController', () => {
     mockUserService.findOne.mockResolvedValue({
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      email: 'bbbevilaqua@gmail.com'
+      email: 'bbbevilaqua@gmail.com',
+      language: Languages.EN
     });
 
     const result = await controller.remove(req, id.toString());

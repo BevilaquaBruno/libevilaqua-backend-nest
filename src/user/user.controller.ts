@@ -104,6 +104,7 @@ export class UserController {
       id: currentUser.id,
       name: currentUser.name,
       email: currentUser.email,
+      language: currentUser.language
     };
   }
 
@@ -163,6 +164,7 @@ export class UserController {
       id: currentUser.id,
       name: currentUser.name,
       email: currentUser.email,
+      language: currentUser.language,
       library: {
         id: newLibrary.id,
         description: newLibrary.description,
@@ -323,6 +325,7 @@ export class UserController {
         id: +id,
         name: updateUserDto.name,
         email: updateUserDto.email,
+        language: updateUserDto.language
       };
     } else {
       throw new HttpException(

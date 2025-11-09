@@ -27,5 +27,8 @@
     "update_error": "Erro ao atualizar a senha, tente novamente.",
     "update_successfully": "Senha atualizada com sucesso.",
     "incorrect": "Senha incorreta."
+  },
+  "language": {
+    "invalid": "Informe um idioma válido."
   }
 }

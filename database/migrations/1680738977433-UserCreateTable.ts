@@ -8,6 +8,7 @@ export class UserCreateTable1680738977433 implements MigrationInterface {
             name VARCHAR(50) NOT NULL,
             email VARCHAR(50) NOT NULL,
             password VARCHAR(100),
+            language ENUM('en', 'pt-br') default 'en',
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

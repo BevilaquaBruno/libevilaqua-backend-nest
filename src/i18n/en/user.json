@@ -27,5 +27,8 @@
     "update_error": "Error updating password, please try again.",
     "update_successfully": "Password successfully updated.",
     "incorrect": "Incorrect password."
+  },
+  "language": {
+    "invalid": "Please enter a valid language."
   }
 }

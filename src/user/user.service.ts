@@ -48,6 +48,7 @@ export class UserService {
         name: true,
         email: true,
         password: true,
+        language: true,
       },
       where: {
         id: id,
@@ -85,7 +86,8 @@ export class UserService {
         id: true,
         name: true,
         email: true,
-        password: true
+        password: true,
+        language: true
       },
       where: dynamicWhere,
     });
