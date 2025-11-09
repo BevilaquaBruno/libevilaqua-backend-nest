@@ -3,11 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { author1, author2 } from './mocks/author.mock';
-import { userBaseLogin } from './mocks/auth.mock';
+import { getAuthToken } from './auth.e2e-spec';
 
 describe('auth E2E', () => {
   let app: INestApplication;
-  let passwordToken: string = null;
   let token: string = null;
 
   beforeAll(async () => {
@@ -17,59 +16,19 @@ describe('auth E2E', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    token = await getAuthToken(app);
   });
 
   afterAll(async () => {
     await app.close();
   });
 
-  it('POST /auth/signin - Sign in', async () => {
-    const res = await request(app.getHttpServer())
-      .post(`/auth/signin`)
-      .send({
-        email: userBaseLogin.email,
-        password: userBaseLogin.password
-      }).expect(200);
-
-    passwordToken = res.body['password'];
-  });
-
-  it('POST /auth/select-library - Select Library', async () => {
-    const res = await request(app.getHttpServer())
-      .post(`/auth/select-library`)
-      .send({
-        "email": userBaseLogin.email,
-        "password": passwordToken,
-        "libraryId": 1
-      })
-      .expect(201);
-
-    token = res.body['access_token'];
-  });
-
   it('POST /author - Create two authors', async () => {
-    const resAuthor1 = await request(app.getHttpServer())
-      .post(`/author`)
-      .set('Authorization', `Bearer ${token}`)
-      .send({
-        name: author1.name,
-        birth_date: author1.birth_date,
-        death_date: author1.death_date,
-        bio: author1.bio
-      }).expect(201);
-
+    const resAuthor1 = await registerAuthor(app, token, author1).expect(201);
     author1.id = resAuthor1.body['id'];
 
-    const resAuthor2 = await request(app.getHttpServer())
-      .post(`/author`)
-      .set('Authorization', `Bearer ${token}`)
-      .send({
-        name: author2.name,
-        birth_date: author2.birth_date,
-        death_date: author2.death_date,
-        bio: author2.bio
-      }).expect(201);
-
+    const resAuthor2 = await registerAuthor(app, token, author2).expect(201);
     author2.id = resAuthor2.body['id'];
   });
 
@@ -113,3 +72,15 @@ describe('auth E2E', () => {
   });
 
 });
+
+export function registerAuthor(app, token, author) {
+  return request(app.getHttpServer())
+    .post(`/author`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      name: author.name,
+      birth_date: author.birth_date,
+      death_date: author.death_date,
+      bio: author.bio
+    })
+}
