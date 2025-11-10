@@ -46,6 +46,16 @@ export class BookService {
     // Inicia uma constante para a query com as tabelas
     const query = this.bookServiceRepository
       .createQueryBuilder('book')
+      .select([
+        "book.id",
+        "book.title",
+        "book.edition",
+        "book.isbn",
+        "book.number_pages",
+        "book.release_year",
+        "book.obs",
+        "book.status",
+      ])
       .leftJoinAndSelect('book.genre', 'genre')
       .leftJoinAndSelect('book.publisher', 'publisher')
       .leftJoinAndSelect('book.type', 'type')
@@ -149,6 +159,7 @@ export class BookService {
           death_date: true,
           bio: true
         },
+        status: true,
       },
       where: {
         id: id,
