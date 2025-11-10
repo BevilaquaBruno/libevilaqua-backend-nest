@@ -120,19 +120,21 @@ export class PersonController {
       );
 
     // Valida o CPF
-    const isCpfValid = CPF.validate(updatePersonDto.cpf);
-    if (!isCpfValid) {
-      throw new HttpException('person.cpf.invalid', HttpStatus.BAD_REQUEST);
-    }
+    if (updatePersonDto.cpf) {
+      const isCpfValid = CPF.validate(updatePersonDto.cpf);
+      if (!isCpfValid) {
+        throw new HttpException('person.cpf.invalid', HttpStatus.BAD_REQUEST);
+      }
 
-    // Verifica se a pessoa (CPF) já está cadastrada
-    const isPersonRegistered = await this.personService.findByCPF(
-      updatePersonDto.cpf,
-      +id,
-      reqUser.libraryId
-    );
-    if (isPersonRegistered?.cpf != undefined) {
-      throw new HttpException('person.cpf.already_registered', HttpStatus.BAD_REQUEST);
+      // Verifica se a pessoa (CPF) já está cadastrada
+      const isPersonRegistered = await this.personService.findByCPF(
+        updatePersonDto.cpf,
+        +id,
+        reqUser.libraryId
+      );
+      if (isPersonRegistered?.cpf != undefined) {
+        throw new HttpException('person.cpf.already_registered', HttpStatus.BAD_REQUEST);
+      }
     }
 
     // Atualiza a pessoa e retorna ela ou erro
