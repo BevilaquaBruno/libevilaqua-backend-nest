@@ -74,11 +74,11 @@ describe('type E2E', () => {
 
 });
 
-export function registerType(app, token, genre) {
+export function registerType(app, token, type) {
   return request(app.getHttpServer())
     .post(`/type`)
     .set('Authorization', `Bearer ${token}`)
     .send({
-      description: genre.description
+      description: type.description
     })
 }
