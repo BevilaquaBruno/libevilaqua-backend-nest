@@ -64,7 +64,12 @@ describe('author E2E', () => {
       .expect(author1);
   });
 
-  it('DELETE /author - Delete', async () => {
+  it('DELETE /author - Delete two authors', async () => {
+    await request(app.getHttpServer())
+      .delete(`/author/${author1.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
     await request(app.getHttpServer())
       .delete(`/author/${author2.id}`)
       .set('Authorization', `Bearer ${token}`)
