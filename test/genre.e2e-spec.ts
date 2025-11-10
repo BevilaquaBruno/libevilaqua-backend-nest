@@ -32,7 +32,7 @@ describe('genre E2E', () => {
     genre2.id = resGenre2.body['id'];
   });
 
-  it('PATCH /genre2 - Update', async () => {
+  it('PATCH /genre - Update', async () => {
     genre1.description = "Gênero 1 atualizado";
 
     await request(app.getHttpServer())
