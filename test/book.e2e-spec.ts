@@ -62,11 +62,6 @@ describe('book E2E', () => {
     const resTag2 = await registerTag(app, token, tag2);
     tag2.id = resTag2.body['id'];
 
-    const resPerson1 = await registerPerson(app, token, person1);
-    person1.id = resPerson1.body['id'];
-    const resPerson2 = await registerPerson(app, token, person2);
-    person2.id = resPerson2.body['id'];
-
     book1.type_id = type1.id;
     book1.genre_id = genre1.id;
     book1.publisher_id = publisher1.id;
