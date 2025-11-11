@@ -24,7 +24,10 @@ import { PublisherService } from '../publisher/publisher.service';
 import { TypeService } from '../type/type.service';
 import { AuthorService } from '../author/author.service';
 import { TagService } from '../tag/tag.service';
+import { ApiQuery, ApiParam } from '@nestjs/swagger';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('book')
 export class BookController {
   constructor(
@@ -109,6 +112,20 @@ export class BookController {
   // Retorna todos os livros
   @UseGuards(AuthGuard)
   @Get()
+  @ApiQuery({ name: 'genres', required: false, example: '1', examples: { oneGenre: { summary: 'One genre', value: '1' }, moreGenres: { summary: 'Two Genres', value: '1,2' }}, description: 'Genre filter.', schema: { default: null }})
+  @ApiQuery({ name: 'tags', required: false, example: '1', examples: { oneTag: { summary: 'One tag', value: '1' }, moreTags: { summary: 'Two Tags', value: '1,2' }}, description: 'Tag filter.', schema: { default: null }})
+  @ApiQuery({ name: 'publishers', required: false, example: '1', examples: { onePublisher: { summary: 'One publisher', value: '1' }, morePublishers: { summary: 'Two Publishers', value: '1,2' }}, description: 'Publisher filter.', schema: { default: null }})
+  @ApiQuery({ name: 'types', required: false, example: '1', examples: { oneType: { summary: 'One type', value: '1' }, moreTypes: { summary: 'Two Types', value: '1,2' }}, description: 'Type filter.', schema: { default: null }})
+  @ApiQuery({ name: 'authors', required: false, example: '1', examples: { oneAuthor: { summary: 'One author', value: '1' }, moreAuthors: { summary: 'Two Authors', value: '1,2' }}, description: 'Author filter.', schema: { default: null }})
+  @ApiQuery({ name: 'release_year', required: false, example: '2025', description: 'Release year filter.', schema: { default: null } })
+  @ApiQuery({ name: 'number_pages', required: false, example: '1', examples: { oneNumberPage: { summary: 'One number_pages', value: '1' }, moreNumberPages: { summary: 'Two number pages', value: '1,2' }}, description: 'Number page filter.', schema: { default: null }})
+  @ApiQuery({ name: 'isbn', required: false, example: '9856434579234', description: 'ISBN filter.', schema: { default: null } })
+  @ApiQuery({ name: 'isbn', required: false, example: '9856434579234', description: 'ISBN filter.', schema: { default: null } })
+  @ApiQuery({ name: 'edition', required: false, example: '1', description: 'Edition number.', schema: { default: null } })
+  @ApiQuery({ name: 'title', required: false, example: 'Os Sertões', description: 'Book title.', schema: { default: null } })
+  @ApiQuery({ name: 'status', required: false, example: 'true', description: 'Book status.', schema: { default: null } })
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
   async findAll(
     @Req() req: Request,
     @Query('genres') genres: string,
@@ -222,6 +239,7 @@ export class BookController {
   // Retorna um livro
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Book id.' })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta o livro, retorna se existe ou retorna erro
@@ -240,6 +258,7 @@ export class BookController {
   // Atualiza o livro
   @UseGuards(AuthGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Book id.' })
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o livro existe, se existe atualiza
@@ -324,6 +343,7 @@ export class BookController {
   // Deleta um livro
   @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Book id.' })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o livro existe

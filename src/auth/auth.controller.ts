@@ -20,7 +20,9 @@ import { PayloadAuthDto } from './dto/payload-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { SelectLibraryDto } from './dto/select-library.dto';
 import { LibraryService } from '../library/library.service';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -50,7 +52,7 @@ export class AuthController {
         id: user.id,
         name: user.name,
         email: user.email,
-        password: this.jwtService.sign({ password: user.password }, { expiresIn: '5m' }),
+        password: await this.jwtService.sign({ password: user.password }, { expiresIn: '5m' }),
         libraries: libraries,
       };
     } else {

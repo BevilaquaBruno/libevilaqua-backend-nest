@@ -22,7 +22,10 @@ import { UpdateAuthorDto } from './dto/update-author.dto';
 import * as moment from 'moment';
 import { Author } from './entities/author.entity';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('author')
 export class AuthorController {
   constructor(
@@ -81,6 +84,8 @@ export class AuthorController {
   // Retorna todos autores
   @UseGuards(AuthGuard)
   @Get()
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
   async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria o padrão de paginação e limite
@@ -104,6 +109,7 @@ export class AuthorController {
   // Retorna um autor
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Author id.' })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Valida se o id retornado existe, retorna erro ou retorna o autor
@@ -120,6 +126,7 @@ export class AuthorController {
   // Atualiza o autor
   @UseGuards(AuthGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Author id.' })
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // valida se o id do autor existe
@@ -184,6 +191,7 @@ export class AuthorController {
   // Deleta o autor
   @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Author id.' })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o autor existe
@@ -224,9 +232,13 @@ export class AuthorController {
   }
 
   // Retorna todos os livros do autor
+
   @UseGuards(AuthGuard)
   @Get('/:authorId/books')
-  async books( @Req() req: Request,
+  @ApiParam({ name: 'authorId', required: false, example: '1', description: 'Author id.', schema: { default: 1 } })
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
+  async books(@Req() req: Request,
     @Param('authorId') authorId: string,
     @Query('page') page: string,
     @Query('limit') limit: string,

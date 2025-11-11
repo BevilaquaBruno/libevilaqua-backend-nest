@@ -9,13 +9,16 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { States } from '../../helpers/enum/States.enum';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePersonDto {
+  @ApiProperty({ example: 'Bruno Fernando Bevilaqua', description: 'Person name.' })
   @IsString({ message: 'person.name.invalid' })
   @IsNotEmpty({ message: 'person.name.required' })
   @Length(1, 250, { message: 'person.name.length_error' })
   name: string;
 
+  @ApiProperty({ example: '211.782.680-63', examples: ['211.782.680-63', '9875728495', null], description: 'Person document.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.cpf !== undefined &&
@@ -23,9 +26,9 @@ export class CreatePersonDto {
       thisPerson.cpf !== null,
   )
   @IsString({ message: 'person.cpf.invalid' })
-  @Matches(/\d{3}.\d{3}.\d{3}-\d{2}/g, { message: 'person.cpf.invalid' })
   cpf: string;
 
+  @ApiProperty({ example: '89700-055', examples: ['89700-055', null], description: 'Person Zip-Code.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.cep !== undefined &&
@@ -33,9 +36,9 @@ export class CreatePersonDto {
       thisPerson.cep !== null,
   )
   @IsString({ message: 'person.cep.invalid' })
-  @Matches(/\d{5}-\d{3}/g, { message: 'person.cep.invalid' })
   cep: string;
 
+  @ApiProperty({ example: 'SC', examples: ['SC', null], description: 'Person state.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.state !== undefined &&
@@ -45,6 +48,7 @@ export class CreatePersonDto {
   @IsEnum(States, { message: 'person.state.invalid' })
   state: States;
 
+  @ApiProperty({ example: 'Concórdia', examples: ['Concórdia', null], description: 'Person city.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.city !== undefined &&
@@ -54,6 +58,7 @@ export class CreatePersonDto {
   @IsString({ message: 'person.city.invalid' })
   city: string;
 
+  @ApiProperty({ example: 'Bairro Presidentes', examples: ['Bairro Presidentes', null], description: 'Person district.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.district !== undefined &&
@@ -63,6 +68,7 @@ export class CreatePersonDto {
   @IsString({ message: 'person.district.invalid' })
   district: string;
 
+  @ApiProperty({ example: 'Rua Costa e Silva', examples: ['Rua Costa e Silva', null], description: 'Person street.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.street !== undefined &&
@@ -72,6 +78,7 @@ export class CreatePersonDto {
   @IsString({ message: 'person.number.invalid' })
   street: string;
 
+  @ApiProperty({ example: '1250', examples: ['1250', 'SN', 'S/N', null], description: 'Person number.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.number !== undefined &&
@@ -85,6 +92,7 @@ export class CreatePersonDto {
   })
   number: string;
 
+  @ApiProperty({ example: 'Some text here', examples: ['Some text here', null], description: 'Person bio.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.obs !== undefined &&
@@ -94,6 +102,7 @@ export class CreatePersonDto {
   @IsString({ message: 'person.obs.invalid' })
   obs: string;
 
+  @ApiProperty({ example: 'temp@mail.com', examples: ['temp@mail.com', null], description: 'Person e-mail.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.email !== undefined &&
@@ -104,6 +113,7 @@ export class CreatePersonDto {
   @Length(7, 50, { message: 'person.email.invalid' })
   email: string;
 
+  @ApiProperty({ example: '+5511923456789', examples: ['+5511923456789', null], description: 'Person phone.' })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.phone !== undefined &&

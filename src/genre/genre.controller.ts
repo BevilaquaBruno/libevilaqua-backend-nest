@@ -19,7 +19,10 @@ import { AuthGuard } from '../auth/auth.guard';
 import { FindGenreDto } from './dto/find-genre.dto';
 import { Genre } from './entities/genre.entity';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('genre')
 export class GenreController {
   constructor(private readonly genreService: GenreService) { }
@@ -41,6 +44,8 @@ export class GenreController {
   // Retorna todos os gêneros
   @UseGuards(AuthGuard)
   @Get()
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
   async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
@@ -63,6 +68,7 @@ export class GenreController {
   // Retorna um gênero
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Genre id.' })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta o gênero e retorna erro se não encontrou
@@ -79,6 +85,7 @@ export class GenreController {
   // Atualiza um gênero
   @UseGuards(AuthGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Genre id.' })
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta o gênero e retorna erro se não encontrou
@@ -107,6 +114,7 @@ export class GenreController {
   // Deleta um gênero
   @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Genre id.' })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta o gênero e retorna erro se não encontrou

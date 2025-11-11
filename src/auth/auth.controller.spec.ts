@@ -38,12 +38,12 @@ describe('AuthController', () => {
 
   it('Should call signIn and return libraries', async () => {
     // Cria o dto do usuário para o controller e o retorno do token
-    const dto: MainAuthDto = { email: 'bruno.f.bevilaqua@gmail.com', password: '123456' };
-    const token = { access_token: 'jwt-token' };
+    const dto: MainAuthDto = { email: 'bruno.f.bevilaqua@gmail.com', password: '123' };
     const password = await bcrypt.hash('123', 10);
     
     mockUserService.findByEmail.mockResolvedValue({
       id: 1,
+      name: 'Bruno Fernando Bevilaqua',
       email: 'bruno.f.bevilaqua@gmail.com',
       password: password,
     });
@@ -60,9 +60,9 @@ describe('AuthController', () => {
     expect(mockLibraryService.getLibrariesFromuser).toHaveBeenCalledWith(1);
     expect(result).toEqual({
       id: 1,
-      name: undefined,
+      name: 'Bruno Fernando Bevilaqua',
       email: 'bruno.f.bevilaqua@gmail.com',
-      password: mockJwtService.sign({ password: '123' }, { expiresIn: '5m' }),
+      password: await mockJwtService.sign({ password: '123' }, { expiresIn: '5m' }),
       libraries: [{ id: 1, description: "Library" }],
     });
   });

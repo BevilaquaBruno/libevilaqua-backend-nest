@@ -19,7 +19,10 @@ import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindTagDto } from './dto/find-tag.dto';
 import { Tag } from './entities/tag.entity';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('tag')
 export class TagController {
   constructor(private readonly tagService: TagService) { }
@@ -41,6 +44,8 @@ export class TagController {
   // Retorna as tags
   @UseGuards(AuthGuard)
   @Get()
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
   async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
@@ -62,6 +67,7 @@ export class TagController {
   // Retorna uma tag
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Tag id.' })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe
@@ -77,6 +83,7 @@ export class TagController {
   // Cria uma tag
   @UseGuards(AuthGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Tag id.' })
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe
@@ -105,6 +112,7 @@ export class TagController {
   // Deleta a tag
   @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Tag id.' })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe

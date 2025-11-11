@@ -19,7 +19,10 @@ import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindTypeDto } from './dto/find-type.dto';
 import { Type } from './entities/type.entity';
 import { PayloadAuthDto } from 'src/auth/dto/payload-auth.dto';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('type')
 export class TypeController {
   constructor(private readonly typeService: TypeService) { }
@@ -42,6 +45,8 @@ export class TypeController {
   // Retorna uma lista de tipos
   @UseGuards(AuthGuard)
   @Get()
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
   async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
@@ -64,6 +69,7 @@ export class TypeController {
   // Retorna um tipo
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Type id.' })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
 
@@ -80,6 +86,7 @@ export class TypeController {
   // Edita o tipo
   @UseGuards(AuthGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Type id.' })
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateTypeDto: UpdateTypeDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o tipo existe
@@ -109,6 +116,7 @@ export class TypeController {
   // Exclui o tipo
   @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Type id.' })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o tipo existe

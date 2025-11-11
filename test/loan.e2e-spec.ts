@@ -282,6 +282,9 @@ describe('loan E2E', () => {
   it('PATCH /loan - Return a book', async () => {
     await request(app.getHttpServer())
       .patch(`/loan/return/${loan1.id}`)
+      .send({
+        return_date: moment().add('5days').format('YYYY-MM-DD')
+      })
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
