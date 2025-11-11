@@ -169,6 +169,49 @@ describe('book E2E', () => {
       .expect(book1Completed);
   });
 
+  // Esse get no autor quebra os outros, então ficará aqui:
+  it('GET /author - Get all books', async () => {
+    const book1Completed = {
+      id: book1.id,
+      title: book1.title,
+      edition: book1.edition,
+      isbn: book1.isbn,
+      number_pages: book1.number_pages,
+      release_year: book1.release_year,
+      obs: book1.obs,
+      status: book1.status,
+      genre: genre1,
+      publisher: publisher1,
+      type: type1,
+      tags: [tag1],
+      authors: [author1],
+    }
+
+    const book2Completed = {
+      id: book2.id,
+      title: book2.title,
+      edition: book2.edition,
+      isbn: book2.isbn,
+      number_pages: book2.number_pages,
+      release_year: book2.release_year,
+      obs: book2.obs,
+      status: book2.status,
+      genre: genre2,
+      publisher: publisher2,
+      type: type2,
+      tags: [tag1, tag2],
+      authors: [author2, author1],
+    }
+
+    const res = await request(app.getHttpServer())
+      .get(`/author/${author1.id}/books?page=1&limit=100`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect({
+        data: [book2Completed, book1Completed],
+        count: 2,
+      });
+  });
+
   it('DELETE /book - Delete two books', async () => {
     await request(app.getHttpServer())
       .delete(`/book/${book1.id}`)

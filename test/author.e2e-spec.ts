@@ -4,6 +4,16 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { author1, author2 } from './mocks/author.mock';
 import { getAuthToken } from './auth.e2e-spec';
+import { registerType } from './type.e2e-spec';
+import { type1 } from './mocks/type.mock';
+import { registerPublisher } from './publisher.e2e-spec';
+import { publisher1 } from './mocks/publisher.mock';
+import { registerGenre } from './genre.e2e-spec';
+import { genre1 } from './mocks/genre.mock';
+import { registerTag } from './tag.e2e-spec';
+import { tag1 } from './mocks/tag.mock';
+import { book1 } from './mocks/book.mock';
+import { registerBook } from './book.e2e-spec';
 
 describe('author E2E', () => {
   let app: INestApplication;
@@ -76,14 +86,8 @@ describe('author E2E', () => {
       .expect(200);
   });
 
-  /*
-  it('GET /author - Get all books', async () => {
-    await request(app.getHttpServer())
-      .get(`/author/${author2.id}/books?page=1&limit=100`)
-      .set('Authorization', `Bearer ${token}`)
-      .expect(200);
-    });
-  */
+  // O teste a seguir fica no arquivo de testes do livro
+  //GET /author - Get all books
 
 });
 
