@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { States } from '../../helpers/enum/States.enum';
 import { Library } from '../../library/entities/library.entity';
 
 @Entity()
@@ -19,13 +18,13 @@ export class Person {
   name: string;
 
   @Column()
-  cpf: string;
+  document: string;
 
   @Column()
-  cep: string;
+  zip_code: string;
 
   @Column()
-  state: States;
+  state: string;
 
   @Column()
   city: string;
@@ -47,6 +46,9 @@ export class Person {
 
   @Column()
   phone: string;
+
+  @Column()
+  country: string;
 
   @ManyToOne(() => Library, { eager: false })
   @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_person' })

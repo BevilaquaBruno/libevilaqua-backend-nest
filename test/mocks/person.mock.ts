@@ -1,8 +1,8 @@
 export var person1 = {
   id: 1,
   name: "Pessoa 1",
-  cpf: null,
-  cep: null,
+  document: null,
+  zip_code: null,
   state: null,
   city: null,
   district: null,
@@ -10,14 +10,15 @@ export var person1 = {
   number: null,
   obs: null,
   email: null,
-  phone: null
+  phone: null,
+  country: null
 }
 
 export var person2 = {
   id: 2,
   name: "Pessoa 2",
-  cpf: "103.411.729-79",
-  cep: "89700-055",
+  document: "103.411.729-79",
+  zip_code: "89700-055",
   state: "SC",
   city: "Concórdia",
   district: "Centro",
@@ -25,5 +26,6 @@ export var person2 = {
   number: "1280",
   obs: "Observação da pessoa, teste",
   email: "bbevilaqua@gmail.com",
-  phone: "49920011913"
+  phone: "49920011913",
+  country: "Brasil"
 }

@@ -5,7 +5,6 @@ import { mockPersonService } from './mocks/person.service.mock';
 import { JwtService } from '@nestjs/jwt';
 import { mockJwtService } from '../auth/mocks/jwt.service.mock';
 import { CreatePersonDto } from './dto/create-person.dto';
-import { States } from '../helpers/enum/States.enum';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { FindPersonDto } from './dto/find-person.dto';
 
@@ -34,16 +33,17 @@ describe('PersonController', () => {
     // Cria o dto
     const person: CreatePersonDto = {
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
-      cep: '889700-055',
-      state: States.SC,
+      document: '103.411.729-79',
+      zip_code: '889700-055',
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     }
 
     // Mocka o retorno
@@ -66,30 +66,32 @@ describe('PersonController', () => {
       {
         id: 1,
         name: 'Bruno Fernando Bevilaqua',
-        cpf: '103.411.729-79',
-        cep: '889700-055',
-        state: States.SC,
+        document: '103.411.729-79',
+        zip_code: '889700-055',
+        state: 'SC',
         city: 'Concórdia',
         district: 'Linha São Paulo',
         street: 'Rua Sérgio Galvan',
         number: '15',
         obs: 'Meu próprio cadastro',
         email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
+        phone: "49912345678",
+        country: "Brasil"
       },
       {
         id: 2,
         name: 'Bruno Fernando Bevilaqua',
-        cpf: '686.845.220-95',
-        cep: '889700-055',
-        state: States.SC,
+        document: '686.845.220-95',
+        zip_code: '889700-055',
+        state: 'SC',
         city: 'Concórdia',
         district: 'Linha São Paulo',
         street: 'Rua Sérgio Galvan',
         number: '15',
         obs: 'Meu próprio cadastro',
         email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
+        phone: "49912345678",
+        country: "Brasil"
       },
     ];
     const quantity = list.length;
@@ -124,16 +126,17 @@ describe('PersonController', () => {
     const person: UpdatePersonDto = {
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
-      cep: '889700-055',
-      state: States.SC,
+      document: '103.411.729-79',
+      zip_code: '889700-055',
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     };
 
     // Insere os mocks nos serviços
@@ -154,16 +157,17 @@ describe('PersonController', () => {
     const dto: UpdatePersonDto = {
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
-      cep: '889700-055',
-      state: States.SC,
+      document: '103.411.729-79',
+      zip_code: '889700-055',
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     };
 
     // Mocka o retorno no service e pega o resultado do controller
@@ -191,16 +195,17 @@ describe('PersonController', () => {
     mockPersonService.findOne.mockResolvedValue({
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
-      cep: '889700-055',
-      state: States.SC,
+      document: '103.411.729-79',
+      zip_code: '889700-055',
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     });
 
     const result = await controller.remove(req, id.toString());

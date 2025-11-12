@@ -8,7 +8,6 @@ import {
   Matches,
   ValidateIf,
 } from 'class-validator';
-import { States } from '../../helpers/enum/States.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePersonDto {
@@ -21,22 +20,22 @@ export class CreatePersonDto {
   @ApiProperty({ example: '211.782.680-63', examples: ['211.782.680-63', '9875728495', null], description: 'Person document.' })
   @ValidateIf(
     (thisPerson) =>
-      thisPerson.cpf !== undefined &&
-      thisPerson.cpf !== '' &&
-      thisPerson.cpf !== null,
+      thisPerson.document !== undefined &&
+      thisPerson.document !== '' &&
+      thisPerson.document !== null,
   )
-  @IsString({ message: 'person.cpf.invalid' })
-  cpf: string;
+  @IsString({ message: 'person.document.invalid' })
+  document: string;
 
-  @ApiProperty({ example: '89700-055', examples: ['89700-055', null], description: 'Person Zip-Code.' })
+  @ApiProperty({ example: '89700-055', examples: ['89700-055', '62704-1234', null], description: 'Person Zip-Code.' })
   @ValidateIf(
     (thisPerson) =>
-      thisPerson.cep !== undefined &&
-      thisPerson.cep !== '' &&
-      thisPerson.cep !== null,
+      thisPerson.zip_code !== undefined &&
+      thisPerson.zip_code !== '' &&
+      thisPerson.zip_code !== null,
   )
-  @IsString({ message: 'person.cep.invalid' })
-  cep: string;
+  @IsString({ message: 'person.zip_code.invalid' })
+  zip_code: string;
 
   @ApiProperty({ example: 'SC', examples: ['SC', null], description: 'Person state.' })
   @ValidateIf(
@@ -45,8 +44,9 @@ export class CreatePersonDto {
       thisPerson.state !== '' &&
       thisPerson.state !== null,
   )
-  @IsEnum(States, { message: 'person.state.invalid' })
-  state: States;
+  @IsString({ message: 'person.state.invalid' })
+  @Length(1, 30, { message: 'person.state.invalid' })
+  state: string;
 
   @ApiProperty({ example: 'Concórdia', examples: ['Concórdia', null], description: 'Person city.' })
   @ValidateIf(
@@ -121,6 +121,17 @@ export class CreatePersonDto {
       thisPerson.phone !== null,
   )
   @IsNumberString({}, { message: 'person.phone.invalid' })
-  @Length(1, 11, { message: 'person.phone.invalid' })
+  @Length(1, 20, { message: 'person.phone.invalid' })
   phone: string;
+
+  @ApiProperty({ example: 'Brazil', examples: ['Brazil', 'Brasil', null], description: 'Person country.' })
+  @ValidateIf(
+    (thisPerson) =>
+      thisPerson.country !== undefined &&
+      thisPerson.country !== '' &&
+      thisPerson.country !== null,
+  )
+  @IsString({ message: 'person.country.invalid' })
+  @Length(1, 50, { message: 'person.country.invalid' })
+  country: string;
 }

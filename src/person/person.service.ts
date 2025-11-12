@@ -60,9 +60,9 @@ export class PersonService {
     });
   }
 
-  findByCPF(cpf: string, excludeId: number = null, libraryId: number) {
+  findByDocument(document: string, excludeId: number = null, libraryId: number) {
     let dynamicWhere: FindOptionsWhere<Person> = {
-      cpf: cpf,
+      document: document,
       libraryId: libraryId
     };
 

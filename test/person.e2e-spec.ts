@@ -42,8 +42,8 @@ describe('person E2E', () => {
       .send({
         id: person1.id,
         name: person1.name,
-        cpf: person1.cpf,
-        cep: person1.cep,
+        document: person1.document,
+        zip_code: person1.zip_code,
         state: person1.state,
         city: person1.city,
         district: person1.district,
@@ -51,7 +51,8 @@ describe('person E2E', () => {
         number: person1.number,
         obs: person1.obs,
         email: person1.email,
-        phone: person1.phone
+        phone: person1.phone,
+        country: person1.country
       }).expect(200);
   });
 
@@ -93,8 +94,8 @@ export function registerPerson(app, token, person) {
     .send({
       id: person.id,
       name: person.name,
-      cpf: person.cpf,
-      cep: person.cep,
+      document: person.document,
+      zip_code: person.zip_code,
       state: person.state,
       city: person.city,
       district: person.district,
@@ -102,6 +103,7 @@ export function registerPerson(app, token, person) {
       number: person.number,
       obs: person.obs,
       email: person.email,
-      phone: person.phone
+      phone: person.phone,
+      country: person.country
     })
 }

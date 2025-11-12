@@ -30,7 +30,7 @@
     "subtitle": "Lista de pessoas",
     "headers": {
       "name": "Nome",
-      "cpf": "CPF",
+      "document": "Documento",
       "address": "Endereço",
       "contact": "Contatos"
     }
