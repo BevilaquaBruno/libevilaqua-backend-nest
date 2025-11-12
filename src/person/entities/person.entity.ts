@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { States } from '../../helpers/enum/States.enum';
 import { Library } from '../../library/entities/library.entity';
 
 @Entity()
@@ -25,7 +24,7 @@ export class Person {
   zip_code: string;
 
   @Column()
-  state: States;
+  state: string;
 
   @Column()
   city: string;

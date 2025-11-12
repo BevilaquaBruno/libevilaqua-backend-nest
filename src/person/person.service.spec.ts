@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
-import { States } from '../helpers/enum/States.enum';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { mockPersonService } from './mocks/person.service.mock';
 import { FindPersonDto } from './dto/find-person.dto';
@@ -28,7 +27,7 @@ describe('PersonService', () => {
       name: 'Bruno Fernando Bevilaqua',
       document: '103.411.729-79',
       zip_code: '889700-055',
-      state: States.SC,
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
@@ -51,7 +50,7 @@ describe('PersonService', () => {
       name: 'Bruno Fernando Bevilaqua',
       document: '103.411.729-79',
       zip_code: '889700-055',
-      state: States.SC,
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
@@ -66,7 +65,7 @@ describe('PersonService', () => {
       name: 'Bruno Fernando Bevilaqua',
       document: '103.411.729-79',
       zip_code: '889700-055',
-      state: States.SC,
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
@@ -85,7 +84,7 @@ describe('PersonService', () => {
         name: 'Bruno Fernando Bevilaqua',
         document: '103.411.729-79',
         zip_code: '889700-055',
-        state: States.SC,
+        state: 'SC',
         city: 'Concórdia',
         district: 'Linha São Paulo',
         street: 'Rua Sérgio Galvan',
@@ -99,7 +98,7 @@ describe('PersonService', () => {
         name: 'Bruno Fernando Bevilaqua',
         document: '686.845.220-95',
         zip_code: '889700-055',
-        state: States.SC,
+        state: 'SC',
         city: 'Concórdia',
         district: 'Linha São Paulo',
         street: 'Rua Sérgio Galvan',
@@ -129,7 +128,7 @@ describe('PersonService', () => {
       name: 'Bruno Fernando Bevilaqua',
       document: '103.411.729-79',
       zip_code: '889700-055',
-      state: States.SC,
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
@@ -155,7 +154,7 @@ describe('PersonService', () => {
       name: 'Bruno Fernando Bevilaqua',
       document: '103.411.729-79',
       zip_code: '889700-055',
-      state: States.SC,
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
@@ -172,7 +171,7 @@ describe('PersonService', () => {
       name: 'Bruno Fernando Bevilaqua',
       document: '103.411.729-79',
       zip_code: '889700-055',
-      state: States.SC,
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',
@@ -189,7 +188,7 @@ describe('PersonService', () => {
       name: 'Bruno Fernando Bevilaqua',
       document: '103.411.729-79',
       zip_code: '889700-055',
-      state: States.SC,
+      state: 'SC',
       city: 'Concórdia',
       district: 'Linha São Paulo',
       street: 'Rua Sérgio Galvan',

@@ -8,7 +8,6 @@ import {
   Matches,
   ValidateIf,
 } from 'class-validator';
-import { States } from '../../helpers/enum/States.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePersonDto {
@@ -45,8 +44,9 @@ export class CreatePersonDto {
       thisPerson.state !== '' &&
       thisPerson.state !== null,
   )
-  @IsEnum(States, { message: 'person.state.invalid' })
-  state: States;
+  @IsString({ message: 'person.state.invalid' })
+  @Length(1, 30, { message: 'person.state.invalid' })
+  state: string;
 
   @ApiProperty({ example: 'Concórdia', examples: ['Concórdia', null], description: 'Person city.' })
   @ValidateIf(
