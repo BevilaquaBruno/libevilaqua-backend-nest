@@ -19,7 +19,10 @@ import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindPublisherDto } from './dto/find-publisher.dto';
 import { Publisher } from './entities/publisher.entity';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('publisher')
 export class PublisherController {
   constructor(private readonly publisherService: PublisherService) { }
@@ -42,6 +45,8 @@ export class PublisherController {
   // Retorna as editoras
   @UseGuards(AuthGuard)
   @Get()
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
   async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
@@ -64,6 +69,7 @@ export class PublisherController {
   // Retorna uma editora
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Publisher id.' })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a editora existe
@@ -79,6 +85,7 @@ export class PublisherController {
   // Atualiza a editora
   @UseGuards(AuthGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Publisher id.' })
   async update(@Req() req: Request, @Param('id') id: string, @Body() updatePublisherDto: UpdatePublisherDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a editora existe
@@ -113,6 +120,7 @@ export class PublisherController {
   // Deleta e editora
   @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Publisher id.' })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a editora existe

@@ -26,11 +26,11 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
     I18nModule.forRoot({
       fallbackLanguage: 'pt-BR',
       loaderOptions: {
-        path: path.join(__dirname, '..', '..', 'src', '/i18n/'),
-        watch: true,
+        path: path.join(process.cwd(), 'src', 'i18n'),
+        watch: process.env.NODE_ENV !== 'test', // desativa watch em testes
       },
       resolvers: [
-          new AcceptLanguageResolver()
+        new AcceptLanguageResolver()
       ],
     }),
     ConfigModule.forRoot({ isGlobal: true }),
@@ -40,7 +40,7 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
       port: Number(process.env['DB_PORT']),
       username: process.env['DB_USERNAME'],
       password: process.env['DB_PASSWORD'],
-      database: process.env['DB_DATABASE'],
+      database: process.env.NODE_ENV === 'test' ? 'libevilaqua_test' : process.env['DB_DATABASE'],
       autoLoadEntities: true,
       synchronize: false,
       timezone: '-03:00',
@@ -60,9 +60,9 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
     ReportModule,
   ],
   providers: [MailService, PdfService, {
-      provide: APP_INTERCEPTOR,
-      useClass: I18nInterceptor,
-    }],
+    provide: APP_INTERCEPTOR,
+    useClass: I18nInterceptor,
+  }],
   controllers: [],
 })
 export class AppModule { }

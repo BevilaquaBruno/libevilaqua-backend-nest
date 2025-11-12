@@ -26,7 +26,10 @@ import { Book } from '../../src/book/entities/book.entity';
 import { Person } from '../../src/person/entities/person.entity';
 import { Loan } from './entities/loan.entity';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('loan')
 export class LoanController {
   constructor(
@@ -144,6 +147,14 @@ export class LoanController {
   // Retorna todos os empréstimos
   @UseGuards(AuthGuard)
   @Get()
+  @ApiQuery({ name: 'start_date', required: false, example: '2024-01-01', description: 'Start date to filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'end_date', required: false, example: '2024-31-12', description: 'End date to filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'book', required: false, example: '1', description: 'Book filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'person', required: false, example: '1', description: 'Person filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'description', required: false, example: '1', description: 'Description filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'returned', required: false, example: 'true', examples: { returned: {summary: 'Returned loans', value: 'true'}, notReturned: {summary: 'Pending loans', value: 'false'} }, description: 'Return or not filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
   async findAll(
     @Req() req: Request,
     @Query('start_date') start_date: string,
@@ -205,6 +216,7 @@ export class LoanController {
   // Retorna um empréstimo
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Loan id.' })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
 
@@ -223,6 +235,7 @@ export class LoanController {
   // Atualiza o empréstimo
   @UseGuards(AuthGuard)
   @Patch(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Loan id.' })
   async update(@Req() req: Request, @Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o empréstimo existe
@@ -346,6 +359,7 @@ export class LoanController {
   // Deleta um empréstimo
   @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Loan id.' })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o empréstimo existe
@@ -375,6 +389,7 @@ export class LoanController {
   // Retorna o livro (atualiza o returnd_date do empréstimo)
   @UseGuards(AuthGuard)
   @Patch('/return/:id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Loan id.' })
   async return(@Req() req: Request, @Param('id') id: string, @Body() returnBookDto: ReturnBookDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o empréstimo existe
@@ -435,6 +450,7 @@ export class LoanController {
   // Retorna o empréstimo em aberto do livro
   @UseGuards(AuthGuard)
   @Get('/book/:bookId')
+  @ApiParam({ name: 'bookId', required: true, example: '1', description: 'Book id.' })
   async book(@Req() req: Request, @Param('bookId') bookId: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o livro existe
@@ -459,6 +475,7 @@ export class LoanController {
   // Retorna o histórico de empréstimo da pessoa
   @UseGuards(AuthGuard)
   @Get('/person/:personId/history')
+  @ApiParam({ name: 'personId', required: true, example: '1', description: 'Person id.' })
   async personHistory(@Req() req: Request, @Param('personId') personId: string, @Query('page') page: string, @Query('limit') limit: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe

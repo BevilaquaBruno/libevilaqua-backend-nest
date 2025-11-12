@@ -20,7 +20,10 @@ import { FindPersonDto } from './dto/find-person.dto';
 import { Person } from './entities/person.entity';
 import CPF from 'cpf-check';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
+import { ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
 
+@ApiDefaultErrorResponses()
 @Controller('person')
 export class PersonController {
   constructor(private readonly personService: PersonService) { }
@@ -72,6 +75,8 @@ export class PersonController {
   // Retorna uma lista de pessoa
   @UseGuards(AuthGuard)
   @Get()
+  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
+  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
   async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
@@ -94,6 +99,7 @@ export class PersonController {
   // Retorna uma pessoa
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Person id.' })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe - Retorna erro ou a pessoa
@@ -120,19 +126,21 @@ export class PersonController {
       );
 
     // Valida o CPF
-    const isCpfValid = CPF.validate(updatePersonDto.cpf);
-    if (!isCpfValid) {
-      throw new HttpException('person.cpf.invalid', HttpStatus.BAD_REQUEST);
-    }
+    if (updatePersonDto.cpf) {
+      const isCpfValid = CPF.validate(updatePersonDto.cpf);
+      if (!isCpfValid) {
+        throw new HttpException('person.cpf.invalid', HttpStatus.BAD_REQUEST);
+      }
 
-    // Verifica se a pessoa (CPF) já está cadastrada
-    const isPersonRegistered = await this.personService.findByCPF(
-      updatePersonDto.cpf,
-      +id,
-      reqUser.libraryId
-    );
-    if (isPersonRegistered?.cpf != undefined) {
-      throw new HttpException('person.cpf.already_registered', HttpStatus.BAD_REQUEST);
+      // Verifica se a pessoa (CPF) já está cadastrada
+      const isPersonRegistered = await this.personService.findByCPF(
+        updatePersonDto.cpf,
+        +id,
+        reqUser.libraryId
+      );
+      if (isPersonRegistered?.cpf != undefined) {
+        throw new HttpException('person.cpf.already_registered', HttpStatus.BAD_REQUEST);
+      }
     }
 
     // Atualiza a pessoa e retorna ela ou erro
@@ -165,6 +173,7 @@ export class PersonController {
   // Deleta uma pessoa
   @UseGuards(AuthGuard)
   @Delete(':id')
+  @ApiParam({ name: 'id', required: true, example: '1', description: 'Person id.' })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe e retorna erro
