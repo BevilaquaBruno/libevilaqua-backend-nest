@@ -47,6 +47,9 @@ export class Person {
   @Column()
   phone: string;
 
+  @Column()
+  country: string;
+
   @ManyToOne(() => Library, { eager: false })
   @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_person' })
   library?: Library;

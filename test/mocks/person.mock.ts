@@ -10,7 +10,8 @@ export var person1 = {
   number: null,
   obs: null,
   email: null,
-  phone: null
+  phone: null,
+  country: null
 }
 
 export var person2 = {
@@ -25,5 +26,6 @@ export var person2 = {
   number: "1280",
   obs: "Observação da pessoa, teste",
   email: "bbevilaqua@gmail.com",
-  phone: "49920011913"
+  phone: "49920011913",
+  country: "Brasil"
 }

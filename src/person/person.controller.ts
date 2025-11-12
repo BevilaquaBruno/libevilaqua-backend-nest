@@ -61,6 +61,7 @@ export class PersonController {
       obs: newPerson.obs,
       email: newPerson.email,
       phone: newPerson.phone,
+      country: newPerson.country,
     };
 
     return returnPerson;
@@ -148,6 +149,7 @@ export class PersonController {
         obs: updatePersonDto.obs,
         email: updatePersonDto.email,
         phone: updatePersonDto.phone,
+        country: updatePersonDto.country,
       };
 
       return returnPerson;

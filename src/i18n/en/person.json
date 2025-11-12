@@ -41,5 +41,8 @@
   },
   "phone": {
     "invalid": "Please enter a valid phone."
+  },
+  "country": {
+    "invalid": "Please enter a valid country."
   }
 }

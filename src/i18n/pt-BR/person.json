@@ -41,5 +41,8 @@
   },
   "phone": {
     "invalid": "Informe um telefone válido."
+  },
+  "country": {
+    "invalid": "Informe um país válido."
   }
 }

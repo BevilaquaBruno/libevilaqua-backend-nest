@@ -34,7 +34,8 @@ describe('PersonService', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     };
 
     const mockResolved: UpdatePersonDto = {
@@ -57,7 +58,8 @@ describe('PersonService', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     }, libraryId);
 
     expect(result).toEqual(mockResolved)
@@ -72,7 +74,8 @@ describe('PersonService', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     }, libraryId);
   });
 
@@ -91,7 +94,8 @@ describe('PersonService', () => {
         number: '15',
         obs: 'Meu próprio cadastro',
         email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
+        phone: "49912345678",
+        country: "Brasil"
       },
       {
         id: 2,
@@ -105,7 +109,8 @@ describe('PersonService', () => {
         number: '15',
         obs: 'Meu próprio cadastro',
         email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
+        phone: "49912345678",
+        country: "Brasil"
       }
     ];
     mockPersonService.findAll.mockResolvedValue(mockList);
@@ -135,7 +140,8 @@ describe('PersonService', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     };
     mockPersonService.findOne.mockResolvedValue(mock);
 
@@ -161,7 +167,8 @@ describe('PersonService', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     };
     mockPersonService.update.mockResolvedValue(mock);
 
@@ -178,7 +185,8 @@ describe('PersonService', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     }, libraryId);
 
     // Valida o retorno
@@ -195,7 +203,8 @@ describe('PersonService', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     }, libraryId);
   });
 

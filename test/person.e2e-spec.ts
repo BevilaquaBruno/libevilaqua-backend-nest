@@ -51,7 +51,8 @@ describe('person E2E', () => {
         number: person1.number,
         obs: person1.obs,
         email: person1.email,
-        phone: person1.phone
+        phone: person1.phone,
+        country: person1.country
       }).expect(200);
   });
 
@@ -102,6 +103,7 @@ export function registerPerson(app, token, person) {
       number: person.number,
       obs: person.obs,
       email: person.email,
-      phone: person.phone
+      phone: person.phone,
+      country: person.country
     })
 }

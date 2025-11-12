@@ -168,6 +168,7 @@ export class ReportController {
         ${((null == person.number) ? '' : 'Nº' + person.number + ', ')}
         ${((null == person.city) ? '' : person.city + ', ')}
         ${((null == person.state) ? '' : person.state + ', ')}
+        ${((null == person.country) ? '' : person.country + ', ')}
         `;
       if ('' == address.trim()) {
         address = '-';

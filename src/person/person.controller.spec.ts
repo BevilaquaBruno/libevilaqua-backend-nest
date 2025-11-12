@@ -42,7 +42,8 @@ describe('PersonController', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     }
 
     // Mocka o retorno
@@ -74,7 +75,8 @@ describe('PersonController', () => {
         number: '15',
         obs: 'Meu próprio cadastro',
         email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
+        phone: "49912345678",
+        country: "Brasil"
       },
       {
         id: 2,
@@ -88,7 +90,8 @@ describe('PersonController', () => {
         number: '15',
         obs: 'Meu próprio cadastro',
         email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
+        phone: "49912345678",
+        country: "Brasil"
       },
     ];
     const quantity = list.length;
@@ -132,7 +135,8 @@ describe('PersonController', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     };
 
     // Insere os mocks nos serviços
@@ -162,7 +166,8 @@ describe('PersonController', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     };
 
     // Mocka o retorno no service e pega o resultado do controller
@@ -199,7 +204,8 @@ describe('PersonController', () => {
       number: '15',
       obs: 'Meu próprio cadastro',
       email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      phone: "49912345678",
+      country: "Brasil"
     });
 
     const result = await controller.remove(req, id.toString());

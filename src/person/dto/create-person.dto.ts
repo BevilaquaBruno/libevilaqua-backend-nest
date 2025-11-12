@@ -123,4 +123,15 @@ export class CreatePersonDto {
   @IsNumberString({}, { message: 'person.phone.invalid' })
   @Length(1, 20, { message: 'person.phone.invalid' })
   phone: string;
+
+  @ApiProperty({ example: 'Brazil', examples: ['Brazil', 'Brasil', null], description: 'Person country.' })
+  @ValidateIf(
+    (thisPerson) =>
+      thisPerson.country !== undefined &&
+      thisPerson.country !== '' &&
+      thisPerson.country !== null,
+  )
+  @IsString({ message: 'person.country.invalid' })
+  @Length(1, 50, { message: 'person.country.invalid' })
+  country: string;
 }

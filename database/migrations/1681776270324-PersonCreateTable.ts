@@ -16,6 +16,7 @@ export class PersonCreateTable1681776270324 implements MigrationInterface {
         email VARCHAR(50),
         phone VARCHAR(20),
         obs TEXT,
+        country VARCHAR(50),
 
         libraryId INT NOT NULL,
 
