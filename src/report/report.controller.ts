@@ -19,6 +19,7 @@ import { FindBookDto } from '../book/dto/find-book.dto';
 import { BookService } from '../book/book.service';
 import { Author } from '../author/entities/author.entity';
 import { I18nService } from 'nestjs-i18n';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('report')
 export class ReportController {
@@ -369,6 +370,12 @@ export class ReportController {
 
   @UseGuards(AuthGuard)
   @Post('/loan-list')
+  @ApiQuery({ name: 'start_date', required: false, example: '2024-01-01', description: 'Start date to filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'end_date', required: false, example: '2024-31-12', description: 'End date to filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'book', required: false, example: '1', description: 'Book filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'person', required: false, example: '1', description: 'Person filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'description', required: false, example: '1', description: 'Description filter loan.', schema: { default: null } })
+  @ApiQuery({ name: 'returned', required: false, example: 'true', examples: { returned: { summary: 'Returned loans', value: 'true' }, notReturned: { summary: 'Pending loans', value: 'false' } }, description: 'Return or not filter loan.', schema: { default: null } })
   async loanList(@Req() req: Request, @Res() res,
     @Query('start_date') start_date: string,
     @Query('end_date') end_date: string,
@@ -463,6 +470,17 @@ export class ReportController {
 
   @UseGuards(AuthGuard)
   @Post('/book-list')
+  @ApiQuery({ name: 'genres', required: false, example: '1', examples: { oneGenre: { summary: 'One genre', value: '1' }, moreGenres: { summary: 'Two Genres', value: '1,2' } }, description: 'Genre filter.', schema: { default: null } })
+  @ApiQuery({ name: 'tags', required: false, example: '1', examples: { oneTag: { summary: 'One tag', value: '1' }, moreTags: { summary: 'Two Tags', value: '1,2' } }, description: 'Tag filter.', schema: { default: null } })
+  @ApiQuery({ name: 'publishers', required: false, example: '1', examples: { onePublisher: { summary: 'One publisher', value: '1' }, morePublishers: { summary: 'Two Publishers', value: '1,2' } }, description: 'Publisher filter.', schema: { default: null } })
+  @ApiQuery({ name: 'types', required: false, example: '1', examples: { oneType: { summary: 'One type', value: '1' }, moreTypes: { summary: 'Two Types', value: '1,2' } }, description: 'Type filter.', schema: { default: null } })
+  @ApiQuery({ name: 'authors', required: false, example: '1', examples: { oneAuthor: { summary: 'One author', value: '1' }, moreAuthors: { summary: 'Two Authors', value: '1,2' } }, description: 'Author filter.', schema: { default: null } })
+  @ApiQuery({ name: 'release_year', required: false, example: '2025', description: 'Release year filter.', schema: { default: null } })
+  @ApiQuery({ name: 'number_pages', required: false, example: '1', examples: { oneNumberPage: { summary: 'One number_pages', value: '1' }, moreNumberPages: { summary: 'Two number pages', value: '1,2' } }, description: 'Number page filter.', schema: { default: null } })
+  @ApiQuery({ name: 'isbn', required: false, example: '9856434579234', description: 'ISBN filter.', schema: { default: null } })
+  @ApiQuery({ name: 'isbn', required: false, example: '9856434579234', description: 'ISBN filter.', schema: { default: null } })
+  @ApiQuery({ name: 'edition', required: false, example: '1', description: 'Edition number.', schema: { default: null } })
+  @ApiQuery({ name: 'title', required: false, example: 'Os Sertões', description: 'Book title.', schema: { default: null } })
   async bookList(@Req() req: Request, @Res() res,
     @Query('genres') genres: string,
     @Query('tags') tags: string,
