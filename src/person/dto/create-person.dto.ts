@@ -25,6 +25,7 @@ export class CreatePersonDto {
       thisPerson.document !== null,
   )
   @IsString({ message: 'person.document.invalid' })
+  @Length(1, 50, { message: 'person.document.length_error' })
   document: string;
 
   @ApiProperty({ example: '89700-055', examples: ['89700-055', '62704-1234', null], description: 'Person Zip-Code.' })
@@ -35,6 +36,7 @@ export class CreatePersonDto {
       thisPerson.zip_code !== null,
   )
   @IsString({ message: 'person.zip_code.invalid' })
+  @Length(1, 15, { message: 'person.zip_code.length_error' })
   zip_code: string;
 
   @ApiProperty({ example: 'SC', examples: ['SC', null], description: 'Person state.' })
@@ -45,7 +47,7 @@ export class CreatePersonDto {
       thisPerson.state !== null,
   )
   @IsString({ message: 'person.state.invalid' })
-  @Length(1, 30, { message: 'person.state.invalid' })
+  @Length(1, 30, { message: 'person.state.length_error' })
   state: string;
 
   @ApiProperty({ example: 'Concórdia', examples: ['Concórdia', null], description: 'Person city.' })
@@ -56,6 +58,7 @@ export class CreatePersonDto {
       thisPerson.city !== null,
   )
   @IsString({ message: 'person.city.invalid' })
+  @Length(1, 30, { message: 'person.city.length_error' })
   city: string;
 
   @ApiProperty({ example: 'Bairro Presidentes', examples: ['Bairro Presidentes', null], description: 'Person district.' })
@@ -66,6 +69,7 @@ export class CreatePersonDto {
       thisPerson.district !== null,
   )
   @IsString({ message: 'person.district.invalid' })
+  @Length(1, 100, { message: 'person.district.length_error' })
   district: string;
 
   @ApiProperty({ example: 'Rua Costa e Silva', examples: ['Rua Costa e Silva', null], description: 'Person street.' })
@@ -76,6 +80,7 @@ export class CreatePersonDto {
       thisPerson.street !== null,
   )
   @IsString({ message: 'person.number.invalid' })
+  @Length(1, 100, { message: 'person.street.length_error' })
   street: string;
 
   @ApiProperty({ example: '1250', examples: ['1250', 'SN', 'S/N', null], description: 'Person number.' })
@@ -100,6 +105,7 @@ export class CreatePersonDto {
       thisPerson.obs !== null,
   )
   @IsString({ message: 'person.obs.invalid' })
+  @Length(1, 500, { message: 'person.obs.length_error' })
   obs: string;
 
   @ApiProperty({ example: 'temp@mail.com', examples: ['temp@mail.com', null], description: 'Person e-mail.' })
@@ -110,7 +116,7 @@ export class CreatePersonDto {
       thisPerson.email !== null,
   )
   @IsEmail({}, { message: 'person.email.invalid' })
-  @Length(7, 50, { message: 'person.email.invalid' })
+  @Length(7, 50, { message: 'person.email.length_error' })
   email: string;
 
   @ApiProperty({ example: '+5511923456789', examples: ['+5511923456789', null], description: 'Person phone.' })
@@ -121,7 +127,7 @@ export class CreatePersonDto {
       thisPerson.phone !== null,
   )
   @IsNumberString({}, { message: 'person.phone.invalid' })
-  @Length(1, 20, { message: 'person.phone.invalid' })
+  @Length(1, 20, { message: 'person.phone.length_error' })
   phone: string;
 
   @ApiProperty({ example: 'Brazil', examples: ['Brazil', 'Brasil', null], description: 'Person country.' })
@@ -132,6 +138,6 @@ export class CreatePersonDto {
       thisPerson.country !== null,
   )
   @IsString({ message: 'person.country.invalid' })
-  @Length(1, 50, { message: 'person.country.invalid' })
+  @Length(1, 50, { message: 'person.country.length_error' })
   country: string;
 }

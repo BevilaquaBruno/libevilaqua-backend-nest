@@ -12,29 +12,35 @@
   },
   "document": {
     "invalid": "Informe um CPF válido.",
-    "already_registered": "CPF já cadastrado."
+    "already_registered": "CPF já cadastrado.",
+    "length_error": "O documento (CPF ou outro) deve ter até 50 caracteres."
   },
   "zip_code": {
-    "invalid": "Informe um CEP válido."
+    "invalid": "Informe um CEP válido.",
+    "length_error": "Informe um CEP válido."
   },
   "state": {
     "invalid": "Informe um estado válido."
   },
   "city": {
-    "invalid": "Informe uma cidade válida."
+    "invalid": "Informe uma cidade válida.",
+    "length_error": "A cidade deve ter até 30 caracteres."
   },
   "district": {
-    "invalid": "Informe um bairro válido."
+    "invalid": "Informe um bairro válido.",
+    "length_error": "O bairro deve ter até 100 caracteres."
   },
   "street": {
-    "invalid": "Informe uma rua válida."
+    "invalid": "Informe uma rua válida.",
+    "length_error": "A rua deve ter até 100 caracteres."
   },
   "number": {
     "invalid": "Informe um número válido.",
     "length_error": "O número deve ter até 5 caracteres."
   },
   "obs": {
-    "invalid": "Informe uma observação válida."
+    "invalid": "Informe uma observação válida.",
+    "length_error": "A bio deve ter até 500 caracteres."
   },
   "email": {
     "invalid": "Informe um e-mail válido."

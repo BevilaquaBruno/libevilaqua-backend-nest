@@ -18,6 +18,7 @@
     "invalid": "Please enter a valid death date."
   },
   "bio": {
-    "invalid": "Please enter a valid bio."
+    "invalid": "Please enter a valid bio.",
+    "length_error": "The bio must be up to 500 characters long."
   }
 }

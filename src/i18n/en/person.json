@@ -12,29 +12,35 @@
   },
   "document": {
     "invalid": "Please enter a valid document.",
-    "already_registered": "Document already registered."
+    "already_registered": "Document already registered.",
+    "length_error": "The document must be up to 50 characters long."
   },
   "zip_code": {
-    "invalid": "Please enter a valid ZIP Code."
+    "invalid": "Please enter a valid ZIP Code.",
+    "length_error": "Please enter a valid ZIP Code."
   },
   "state": {
     "invalid": "Please enter a valida state."
   },
   "city": {
-    "invalid": "Please enter a valid city."
+    "invalid": "Please enter a valid city.",
+    "length_error": "The city must be up to 30 characters long."
   },
   "district": {
-    "invalid": "Please enter a valid district."
+    "invalid": "Please enter a valid district.",
+    "length_error": "The district must be up to 100 characters long."
   },
   "street": {
-    "invalid": "Please enter a valid street."
+    "invalid": "Please enter a valid street.",
+    "length_error": "The street must be up to 100 characters long."
   },
   "number": {
     "invalid": "Please enter a valid number.",
     "length_error": "The number must be up to 5 characters long."
   },
   "obs": {
-    "invalid": "Please enter a valid obs."
+    "invalid": "Please enter a valid obs.",
+    "length_error": "The bio must be up to 500 characters long."
   },
   "email": {
     "invalid": "Please enter a valid e-mail."
