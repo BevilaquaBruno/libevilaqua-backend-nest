@@ -14,7 +14,7 @@
     "invalid": "Informe um CPF válido.",
     "already_registered": "CPF já cadastrado."
   },
-  "cep": {
+  "zip_code": {
     "invalid": "Informe um CEP válido."
   },
   "state": {

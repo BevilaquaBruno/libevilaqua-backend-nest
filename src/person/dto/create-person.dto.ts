@@ -28,15 +28,15 @@ export class CreatePersonDto {
   @IsString({ message: 'person.document.invalid' })
   document: string;
 
-  @ApiProperty({ example: '89700-055', examples: ['89700-055', null], description: 'Person Zip-Code.' })
+  @ApiProperty({ example: '89700-055', examples: ['89700-055', '62704-1234', null], description: 'Person Zip-Code.' })
   @ValidateIf(
     (thisPerson) =>
-      thisPerson.cep !== undefined &&
-      thisPerson.cep !== '' &&
-      thisPerson.cep !== null,
+      thisPerson.zip_code !== undefined &&
+      thisPerson.zip_code !== '' &&
+      thisPerson.zip_code !== null,
   )
-  @IsString({ message: 'person.cep.invalid' })
-  cep: string;
+  @IsString({ message: 'person.zip_code.invalid' })
+  zip_code: string;
 
   @ApiProperty({ example: 'SC', examples: ['SC', null], description: 'Person state.' })
   @ValidateIf(

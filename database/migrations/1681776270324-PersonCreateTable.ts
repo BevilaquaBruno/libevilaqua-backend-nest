@@ -7,7 +7,7 @@ export class PersonCreateTable1681776270324 implements MigrationInterface {
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(250) NOT NULL,
         document VARCHAR(50),
-        cep CHAR(9),
+        zip_code VARCHAR(15),
         state ENUM('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'),
         city VARCHAR(30),
         district VARCHAR(100),

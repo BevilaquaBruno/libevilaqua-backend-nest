@@ -22,7 +22,7 @@ export class Person {
   document: string;
 
   @Column()
-  cep: string;
+  zip_code: string;
 
   @Column()
   state: States;

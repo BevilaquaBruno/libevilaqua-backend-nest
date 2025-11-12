@@ -162,7 +162,7 @@ export class ReportController {
       const person = people[i];
 
       let address = `
-        ${((null == person.cep) ? '' : person.cep + ', ')}
+        ${((null == person.zip_code) ? '' : person.zip_code + ', ')}
         ${((null == person.street) ? '' : person.street + ', ')}
         ${((null == person.district) ? '' : 'B. ' + person.district + ', ')}
         ${((null == person.number) ? '' : 'Nº' + person.number + ', ')}
