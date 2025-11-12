@@ -18,6 +18,7 @@
     "invalid": "Informe uma data de morte válida."
   },
   "bio": {
-    "invalid": "Informe a biografia novamente."
+    "invalid": "Informe a biografia novamente.",
+    "length_error": "A bio deve ter até 500 caracteres."
   }
 }

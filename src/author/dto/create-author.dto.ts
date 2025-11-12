@@ -45,5 +45,6 @@ export class CreateAuthorDto {
       thisAuthor.bio != '',
   )
   @IsString({ message: 'author.bio.invalid' })
+  @Length(1, 500, { message: 'author.bio.length_error' })
   bio: string;
 }

@@ -5,7 +5,7 @@ export class CreatePublisherDto {
   @ApiProperty({ example: 'Editora edipro', description: 'Publisher name.' })
   @IsString({ message: 'publisher.description.invalid' })
   @IsNotEmpty({ message: 'publisher.description.invalid' })
-  @Length(3, 50, {
+  @Length(1, 50, {
     message: 'publisher.description.length_error',
   })
   name: string;
@@ -13,7 +13,7 @@ export class CreatePublisherDto {
   @ApiProperty({ example: 'Brazil', examples: ['Brazil', null], description: 'Publisher country.' })
   @IsString({ message: 'publisher.country.invalid' })
   @IsNotEmpty({ message: 'publisher.country.invalid' })
-  @Length(3, 50, {
+  @Length(1, 50, {
     message: 'publisher.country.length_error',
   })
   country: string;

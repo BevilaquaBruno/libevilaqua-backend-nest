@@ -23,7 +23,8 @@
     "invalid": "Please enter a valid release year."
   },
   "obs": {
-    "invalid": "Please enter a valid obs."
+    "invalid": "Please enter a valid obs.",
+    "length_error": "The bio must be up to 500 characters long."
   },
   "genre": {
     "invalid": "Please enter a valid genre."

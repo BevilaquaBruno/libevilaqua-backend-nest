@@ -71,6 +71,7 @@ export class CreateBookDto {
       thisBook.obs !== '',
   )
   @IsString({ message: 'book.obs.invalid' })
+  @Length(1, 500, { message: 'book.obs.length_error' })
   obs: string;
 
   @ApiProperty({ example: 1, examples: [1, null], description: 'Genre id.' })

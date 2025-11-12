@@ -23,7 +23,8 @@
     "invalid": "Informe o ano de lançamento corretamente."
   },
   "obs": {
-    "invalid": "Informe as observações corretamente."
+    "invalid": "Informe as observações corretamente.",
+    "length_error": "A bio deve ter até 500 caracteres."
   },
   "genre": {
     "invalid": "Informe o gênero corretamente."
