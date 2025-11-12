@@ -10,9 +10,9 @@
     "required": "Name is required.",
     "length_error": "The name must be up to 250 characters long."
   },
-  "cpf": {
-    "invalid": "Please enter a valid CPF.",
-    "already_registered": "CPF already registered."
+  "document": {
+    "invalid": "Please enter a valid document.",
+    "already_registered": "Document already registered."
   },
   "cep": {
     "invalid": "Please enter a valid CEP."

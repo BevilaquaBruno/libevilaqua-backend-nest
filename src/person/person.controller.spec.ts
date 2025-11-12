@@ -34,7 +34,7 @@ describe('PersonController', () => {
     // Cria o dto
     const person: CreatePersonDto = {
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -66,7 +66,7 @@ describe('PersonController', () => {
       {
         id: 1,
         name: 'Bruno Fernando Bevilaqua',
-        cpf: '103.411.729-79',
+        document: '103.411.729-79',
         cep: '889700-055',
         state: States.SC,
         city: 'Concórdia',
@@ -80,7 +80,7 @@ describe('PersonController', () => {
       {
         id: 2,
         name: 'Bruno Fernando Bevilaqua',
-        cpf: '686.845.220-95',
+        document: '686.845.220-95',
         cep: '889700-055',
         state: States.SC,
         city: 'Concórdia',
@@ -124,7 +124,7 @@ describe('PersonController', () => {
     const person: UpdatePersonDto = {
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -154,7 +154,7 @@ describe('PersonController', () => {
     const dto: UpdatePersonDto = {
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -191,7 +191,7 @@ describe('PersonController', () => {
     mockPersonService.findOne.mockResolvedValue({
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',

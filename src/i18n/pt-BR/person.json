@@ -10,9 +10,9 @@
     "required": "Nome é obrigatório.",
     "length_error": "O nome deve ter até 250 caracteres."
   },
-  "cpf": {
-    "invalid": "Informe um CPF válido.",
-    "already_registered": "CPF já cadastrado."
+  "document": {
+    "invalid": "Informe um documento válido.",
+    "already_registered": "documento já cadastrado."
   },
   "cep": {
     "invalid": "Informe um CEP válido."

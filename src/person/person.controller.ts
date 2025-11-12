@@ -18,7 +18,6 @@ import { UpdatePersonDto } from './dto/update-person.dto';
 import { AuthGuard } from '../../src/auth/auth.guard';
 import { FindPersonDto } from './dto/find-person.dto';
 import { Person } from './entities/person.entity';
-import CPF from 'cpf-check';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 import { ApiParam, ApiQuery } from '@nestjs/swagger';
 import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-error-responses.decorator';
@@ -35,20 +34,15 @@ export class PersonController {
     const reqUser: PayloadAuthDto = req['user'];
 
     // Valida o CPF
-    if (createPersonDto.cpf) {
-      const isCpfValid = CPF.validate(createPersonDto.cpf);
-      if (!isCpfValid) {
-        throw new HttpException('person.cpf.invalid', HttpStatus.BAD_REQUEST);
-      }
-
+    if (createPersonDto.document) {
       // Valida se a pessoa(CPF) já está cadastrada
-      const isPersonRegistered = await this.personService.findByCPF(
-        createPersonDto.cpf,
+      const isPersonRegistered = await this.personService.findByDocument(
+        createPersonDto.document,
         null,
         reqUser.libraryId
       );
-      if (isPersonRegistered?.cpf != undefined) {
-        throw new HttpException('person.cpf.already_registered', HttpStatus.BAD_REQUEST);
+      if (isPersonRegistered?.document != undefined) {
+        throw new HttpException('person.document.already_registered', HttpStatus.BAD_REQUEST);
       }
     }
 
@@ -56,7 +50,7 @@ export class PersonController {
     const newPerson: Person = await this.personService.create(createPersonDto, reqUser.libraryId);
     const returnPerson: UpdatePersonDto = {
       id: newPerson.id,
-      cpf: newPerson.cpf,
+      document: newPerson.document,
       name: newPerson.name,
       cep: newPerson.cep,
       state: newPerson.state,
@@ -126,20 +120,15 @@ export class PersonController {
       );
 
     // Valida o CPF
-    if (updatePersonDto.cpf) {
-      const isCpfValid = CPF.validate(updatePersonDto.cpf);
-      if (!isCpfValid) {
-        throw new HttpException('person.cpf.invalid', HttpStatus.BAD_REQUEST);
-      }
-
+    if (updatePersonDto.document) {
       // Verifica se a pessoa (CPF) já está cadastrada
-      const isPersonRegistered = await this.personService.findByCPF(
-        updatePersonDto.cpf,
+      const isPersonRegistered = await this.personService.findByDocument(
+        updatePersonDto.document,
         +id,
         reqUser.libraryId
       );
-      if (isPersonRegistered?.cpf != undefined) {
-        throw new HttpException('person.cpf.already_registered', HttpStatus.BAD_REQUEST);
+      if (isPersonRegistered?.document != undefined) {
+        throw new HttpException('person.document.already_registered', HttpStatus.BAD_REQUEST);
       }
     }
 
@@ -148,7 +137,7 @@ export class PersonController {
     if (updatedPerson.affected == 1) {
       const returnPerson: UpdatePersonDto = {
         id: +id,
-        cpf: updatePersonDto.cpf,
+        document: updatePersonDto.document,
         name: updatePersonDto.name,
         cep: updatePersonDto.cep,
         state: updatePersonDto.state,

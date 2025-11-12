@@ -5,5 +5,5 @@ export const mockPersonService = {
   update: jest.fn(),
   remove: jest.fn(),
   count: jest.fn(),
-  findByCPF: jest.fn(),
+  findByDocument: jest.fn(),
 }

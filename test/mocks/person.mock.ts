@@ -1,7 +1,7 @@
 export var person1 = {
   id: 1,
   name: "Pessoa 1",
-  cpf: null,
+  document: null,
   cep: null,
   state: null,
   city: null,
@@ -16,7 +16,7 @@ export var person1 = {
 export var person2 = {
   id: 2,
   name: "Pessoa 2",
-  cpf: "103.411.729-79",
+  document: "103.411.729-79",
   cep: "89700-055",
   state: "SC",
   city: "Concórdia",

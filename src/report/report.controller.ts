@@ -178,7 +178,7 @@ export class ReportController {
       peopleData.push({
         id: person.id,
         name: person.name,
-        cpf: (null == person.cpf) ? '-' : person.cpf,
+        document: (null == person.document) ? '-' : person.document,
         address: address,
         contact: contactData.filter(Boolean).join(', ') || '-'
       });
@@ -201,7 +201,7 @@ export class ReportController {
         headers: [
           '#',
           this.i18nService.translate('report.person.headers.name'),
-          this.i18nService.translate('report.person.headers.cpf'),
+          this.i18nService.translate('report.person.headers.document'),
           this.i18nService.translate('report.person.headers.address'),
           this.i18nService.translate('report.person.headers.contact')
         ],

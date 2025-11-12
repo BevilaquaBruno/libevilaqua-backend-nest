@@ -26,7 +26,7 @@ describe('PersonService', () => {
     // Cria o mock
     const mock: CreatePersonDto = {
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -49,7 +49,7 @@ describe('PersonService', () => {
     // Chama e valida
     const result = await service.create({
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -64,7 +64,7 @@ describe('PersonService', () => {
     expect(result).toEqual(mockResolved)
     expect(mockPersonService.create).toHaveBeenCalledWith({
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -83,7 +83,7 @@ describe('PersonService', () => {
       {
         id: 1,
         name: 'Bruno Fernando Bevilaqua',
-        cpf: '103.411.729-79',
+        document: '103.411.729-79',
         cep: '889700-055',
         state: States.SC,
         city: 'Concórdia',
@@ -97,7 +97,7 @@ describe('PersonService', () => {
       {
         id: 2,
         name: 'Bruno Fernando Bevilaqua',
-        cpf: '686.845.220-95',
+        document: '686.845.220-95',
         cep: '889700-055',
         state: States.SC,
         city: 'Concórdia',
@@ -127,7 +127,7 @@ describe('PersonService', () => {
     // Cria o mock
     const mock = {
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -153,7 +153,7 @@ describe('PersonService', () => {
     const mock: UpdatePersonDto = {
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -170,7 +170,7 @@ describe('PersonService', () => {
     const result = await service.update(1, {
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',
@@ -187,7 +187,7 @@ describe('PersonService', () => {
     expect(mockPersonService.update).toHaveBeenCalledWith(1, {
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
-      cpf: '103.411.729-79',
+      document: '103.411.729-79',
       cep: '889700-055',
       state: States.SC,
       city: 'Concórdia',

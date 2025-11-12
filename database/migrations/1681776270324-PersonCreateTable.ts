@@ -6,7 +6,7 @@ export class PersonCreateTable1681776270324 implements MigrationInterface {
     CREATE TABLE person(
         id INT NOT NULL AUTO_INCREMENT,
         name VARCHAR(250) NOT NULL,
-        cpf CHAR(14),
+        document VARCHAR(50),
         cep CHAR(9),
         state ENUM('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'),
         city VARCHAR(30),
@@ -14,7 +14,7 @@ export class PersonCreateTable1681776270324 implements MigrationInterface {
         street VARCHAR(100),
         number VARCHAR(5),
         email VARCHAR(50),
-        phone VARCHAR(11),
+        phone VARCHAR(20),
         obs TEXT,
 
         libraryId INT NOT NULL,

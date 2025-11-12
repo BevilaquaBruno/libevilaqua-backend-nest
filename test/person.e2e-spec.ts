@@ -42,7 +42,7 @@ describe('person E2E', () => {
       .send({
         id: person1.id,
         name: person1.name,
-        cpf: person1.cpf,
+        document: person1.document,
         cep: person1.cep,
         state: person1.state,
         city: person1.city,
@@ -93,7 +93,7 @@ export function registerPerson(app, token, person) {
     .send({
       id: person.id,
       name: person.name,
-      cpf: person.cpf,
+      document: person.document,
       cep: person.cep,
       state: person.state,
       city: person.city,

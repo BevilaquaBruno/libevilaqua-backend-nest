@@ -21,12 +21,12 @@ export class CreatePersonDto {
   @ApiProperty({ example: '211.782.680-63', examples: ['211.782.680-63', '9875728495', null], description: 'Person document.' })
   @ValidateIf(
     (thisPerson) =>
-      thisPerson.cpf !== undefined &&
-      thisPerson.cpf !== '' &&
-      thisPerson.cpf !== null,
+      thisPerson.document !== undefined &&
+      thisPerson.document !== '' &&
+      thisPerson.document !== null,
   )
-  @IsString({ message: 'person.cpf.invalid' })
-  cpf: string;
+  @IsString({ message: 'person.document.invalid' })
+  document: string;
 
   @ApiProperty({ example: '89700-055', examples: ['89700-055', null], description: 'Person Zip-Code.' })
   @ValidateIf(
@@ -121,6 +121,6 @@ export class CreatePersonDto {
       thisPerson.phone !== null,
   )
   @IsNumberString({}, { message: 'person.phone.invalid' })
-  @Length(1, 11, { message: 'person.phone.invalid' })
+  @Length(1, 20, { message: 'person.phone.invalid' })
   phone: string;
 }

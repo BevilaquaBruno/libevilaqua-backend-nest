@@ -19,7 +19,7 @@ export class Person {
   name: string;
 
   @Column()
-  cpf: string;
+  document: string;
 
   @Column()
   cep: string;
