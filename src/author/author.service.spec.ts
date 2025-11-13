@@ -11,9 +11,7 @@ describe('AuthorService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        { provide: AuthorService, useValue: mockAuthorService }
-      ],
+      providers: [{ provide: AuthorService, useValue: mockAuthorService }],
     }).compile();
 
     service = module.get<AuthorService>(AuthorService);
@@ -29,30 +27,36 @@ describe('AuthorService', () => {
       name: 'New Author name',
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
-      bio: 'Here is the author bio, a long place to put some text'
+      bio: 'Here is the author bio, a long place to put some text',
     };
     const mockAuthorResolved: UpdateAuthorDto = {
       id: 1,
-      ...mockAuthor
+      ...mockAuthor,
     };
     mockAuthorService.create.mockResolvedValue(mockAuthorResolved);
 
     // Chama a criação do Author
-    const result = await service.create({
-      name: 'New Author name',
-      birth_date: new Date('2000-01-01'),
-      death_date: new Date('2025-01-01'),
-      bio: 'Here is the author bio, a long place to put some text'
-    }, libraryId);
+    const result = await service.create(
+      {
+        name: 'New Author name',
+        birth_date: new Date('2000-01-01'),
+        death_date: new Date('2025-01-01'),
+        bio: 'Here is the author bio, a long place to put some text',
+      },
+      libraryId,
+    );
 
     // Valida o retorno e a chamada
     expect(result).toEqual(mockAuthorResolved);
-    expect(mockAuthorService.create).toHaveBeenCalledWith({
-      name: 'New Author name',
-      birth_date: new Date('2000-01-01'),
-      death_date: new Date('2025-01-01'),
-      bio: 'Here is the author bio, a long place to put some text'
-    }, libraryId);
+    expect(mockAuthorService.create).toHaveBeenCalledWith(
+      {
+        name: 'New Author name',
+        birth_date: new Date('2000-01-01'),
+        death_date: new Date('2025-01-01'),
+        bio: 'Here is the author bio, a long place to put some text',
+      },
+      libraryId,
+    );
   });
 
   it('Should return a list with all authors', async () => {
@@ -63,28 +67,31 @@ describe('AuthorService', () => {
         name: 'New Author name',
         birth_date: new Date('2000-01-01'),
         death_date: new Date('2025-01-01'),
-        bio: 'Here is the author bio, a long place to put some text'
+        bio: 'Here is the author bio, a long place to put some text',
       },
       {
         id: 2,
         name: 'New Author name 2',
         birth_date: new Date('2000-01-01'),
         death_date: new Date('2025-01-01'),
-        bio: 'Here is the author bio, a long place to put some text 2'
-      }
+        bio: 'Here is the author bio, a long place to put some text 2',
+      },
     ];
     mockAuthorService.findAll.mockResolvedValue(mockAuthorList);
 
     // Cria a paginação e recebe o retorno
     const findAuthor: FindAuthorDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
     const result = await service.findAll(findAuthor, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockAuthorList);
-    expect(mockAuthorService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
+    expect(mockAuthorService.findAll).toHaveBeenCalledWith(
+      { limit: 2, page: 1 },
+      libraryId,
+    );
   });
 
   it('Should return one author', async () => {
@@ -94,7 +101,7 @@ describe('AuthorService', () => {
       name: 'New Author name',
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
-      bio: 'Here is the author bio, a long place to put some text'
+      bio: 'Here is the author bio, a long place to put some text',
     };
     mockAuthorService.findOne.mockResolvedValue(mockAuthor);
 
@@ -103,7 +110,7 @@ describe('AuthorService', () => {
 
     // Valida os retornos
     expect(result).toEqual(mockAuthor);
-    expect(mockAuthorService.findOne).toHaveBeenCalledWith(1, libraryId)
+    expect(mockAuthorService.findOne).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should update and author', async () => {
@@ -113,35 +120,43 @@ describe('AuthorService', () => {
       name: 'Update Author name',
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
-      bio: 'Here is the author bio, a long place to put some text'
+      bio: 'Here is the author bio, a long place to put some text',
     };
     mockAuthorService.update.mockResolvedValue(mockAuthor);
 
     // Chama a edição do Author
-    const result = await service.update(1, {
-      id: 1,
-      name: 'Update Author name',
-      birth_date: new Date('2000-01-01'),
-      death_date: new Date('2025-01-01'),
-      bio: 'Here is the author bio, a long place to put some text'
-    }, libraryId);
+    const result = await service.update(
+      1,
+      {
+        id: 1,
+        name: 'Update Author name',
+        birth_date: new Date('2000-01-01'),
+        death_date: new Date('2025-01-01'),
+        bio: 'Here is the author bio, a long place to put some text',
+      },
+      libraryId,
+    );
 
     // Valida o retorno e a chamada
     expect(result).toEqual(mockAuthor);
-    expect(mockAuthorService.update).toHaveBeenCalledWith(1, {
-      id: 1,
-      name: 'Update Author name',
-      birth_date: new Date('2000-01-01'),
-      death_date: new Date('2025-01-01'),
-      bio: 'Here is the author bio, a long place to put some text'
-    }, libraryId);
+    expect(mockAuthorService.update).toHaveBeenCalledWith(
+      1,
+      {
+        id: 1,
+        name: 'Update Author name',
+        birth_date: new Date('2000-01-01'),
+        death_date: new Date('2025-01-01'),
+        bio: 'Here is the author bio, a long place to put some text',
+      },
+      libraryId,
+    );
   });
 
   it('Should remove an author', async () => {
     // Cria o mock de retorno e coloca no delete Author
     const mockDeleteAuthor = {
       raw: [],
-      affected: 1
+      affected: 1,
     };
     mockAuthorService.remove.mockResolvedValue(mockDeleteAuthor);
 

@@ -5,6 +5,9 @@ export class CreateUserWithLibraryDto {
   @ApiProperty({ example: 'create-user.dto.ts', description: 'User data.' })
   user: CreateUserDto;
 
-  @ApiProperty({ example: 'create-ibrary.dto.ts', description: 'Library data.' })
+  @ApiProperty({
+    example: 'create-ibrary.dto.ts',
+    description: 'Library data.',
+  })
   library: CreateLibraryDto;
 }

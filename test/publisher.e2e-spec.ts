@@ -33,15 +33,16 @@ describe('publisher E2E', () => {
   });
 
   it('PATCH /publisher - Update', async () => {
-    publisher1.name = "Editora 1 atualizada";
+    publisher1.name = 'Editora 1 atualizada';
 
     await request(app.getHttpServer())
       .patch(`/publisher/${publisher1.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         name: publisher1.name,
-        country: publisher1.country
-      }).expect(200);
+        country: publisher1.country,
+      })
+      .expect(200);
   });
 
   it('GET /publisher - Get all', async () => {
@@ -50,7 +51,7 @@ describe('publisher E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect({
         data: [publisher2, publisher1],
-        count: 2
+        count: 2,
       });
   });
 
@@ -72,7 +73,6 @@ describe('publisher E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
-
 });
 
 export function registerPublisher(app, token, publisher) {
@@ -81,6 +81,6 @@ export function registerPublisher(app, token, publisher) {
     .set('Authorization', `Bearer ${token}`)
     .send({
       name: publisher.name,
-      country: publisher.country
-    })
+      country: publisher.country,
+    });
 }

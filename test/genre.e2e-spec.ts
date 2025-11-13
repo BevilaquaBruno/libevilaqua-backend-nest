@@ -33,14 +33,15 @@ describe('genre E2E', () => {
   });
 
   it('PATCH /genre - Update', async () => {
-    genre1.description = "Gênero 1 atualizado";
+    genre1.description = 'Gênero 1 atualizado';
 
     await request(app.getHttpServer())
       .patch(`/genre/${genre1.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-        description: genre1.description
-      }).expect(200);
+        description: genre1.description,
+      })
+      .expect(200);
   });
 
   it('GET /genre - Get all', async () => {
@@ -49,7 +50,7 @@ describe('genre E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect({
         data: [genre2, genre1],
-        count: 2
+        count: 2,
       });
   });
 
@@ -71,7 +72,6 @@ describe('genre E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
-
 });
 
 export function registerGenre(app, token, genre) {
@@ -79,6 +79,6 @@ export function registerGenre(app, token, genre) {
     .post(`/genre`)
     .set('Authorization', `Bearer ${token}`)
     .send({
-      description: genre.description
-    })
+      description: genre.description,
+    });
 }

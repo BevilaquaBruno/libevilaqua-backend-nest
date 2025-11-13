@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  Column,
+  JoinColumn,
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { Library } from '../../library/entities/library.entity';
 
@@ -7,11 +13,11 @@ export class LibraryUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, user => user.libraries, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.libraries, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @ManyToOne(() => Library, library => library.users, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Library, (library) => library.users, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'libraryId' })
   library: Library;
 

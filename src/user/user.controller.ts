@@ -35,7 +35,7 @@ export class UserController {
     private readonly mailService: MailService,
     private readonly authService: AuthService,
     private readonly libraryService: LibraryService,
-  ) { }
+  ) {}
 
   // Cria o usuário
   @UseGuards(AuthGuard)
@@ -46,8 +46,8 @@ export class UserController {
     const library = await this.libraryService.findOne(reqUser.libraryId);
     if (!library) {
       throw new HttpException(
-        "library.general.not_found",
-        HttpStatus.BAD_REQUEST
+        'library.general.not_found',
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -62,7 +62,7 @@ export class UserController {
     // Valida se o usuário (email) já existe, se existe retorna erro
     const userAlreadyExistsInLibrary = await this.userService.findByEmail(
       createUserDto.email,
-      reqUser.libraryId
+      reqUser.libraryId,
     );
     if (userAlreadyExistsInLibrary?.email != undefined) {
       throw new HttpException(
@@ -73,7 +73,7 @@ export class UserController {
 
     // Valida se o usuário (email) já existe, se existe retorna erro
     const userEmailAlreadyExists = await this.userService.findByEmail(
-      createUserDto.email
+      createUserDto.email,
     );
 
     let currentUser: User | null = null;
@@ -91,7 +91,10 @@ export class UserController {
       );
     }
 
-    const newLibraryUser = await this.userService.createLibraryUser(currentUser.id, reqUser.libraryId);
+    const newLibraryUser = await this.userService.createLibraryUser(
+      currentUser.id,
+      reqUser.libraryId,
+    );
     if (!newLibraryUser) {
       throw new HttpException(
         'user.general.error_link_user_lib',
@@ -100,19 +103,29 @@ export class UserController {
     }
 
     // envia o e-mail
-    const token = this.authService.generateResetToken(currentUser, 'E', reqUser.libraryId);
-    this.mailService.sendUserConfirmation(currentUser, token, library.description);
+    const token = this.authService.generateResetToken(
+      currentUser,
+      'E',
+      reqUser.libraryId,
+    );
+    this.mailService.sendUserConfirmation(
+      currentUser,
+      token,
+      library.description,
+    );
 
     return {
       id: currentUser.id,
       name: currentUser.name,
       email: currentUser.email,
-      language: currentUser.language
+      language: currentUser.language,
     };
   }
 
   @Post('/with-library')
-  async createUserWithLibrary(@Body() createUserWithLibrary: CreateUserWithLibraryDto) {
+  async createUserWithLibrary(
+    @Body() createUserWithLibrary: CreateUserWithLibraryDto,
+  ) {
     const createUserDto = createUserWithLibrary.user;
     const createLibraryDto = createUserWithLibrary.library;
 
@@ -134,7 +147,7 @@ export class UserController {
 
     // Valida se o usuário (email) já existe, se existe retorna erro
     const userAlreadyExists = await this.userService.findByEmail(
-      createUserDto.email
+      createUserDto.email,
     );
 
     let currentUser: User | null = null;
@@ -152,7 +165,10 @@ export class UserController {
       );
     }
 
-    const newLibraryUser = await this.userService.createLibraryUser(currentUser.id, newLibrary.id);
+    const newLibraryUser = await this.userService.createLibraryUser(
+      currentUser.id,
+      newLibrary.id,
+    );
     if (!newLibraryUser) {
       throw new HttpException(
         'user.general.error_link_user_lib',
@@ -160,8 +176,16 @@ export class UserController {
       );
     }
     // envia o e-mail
-    const token = this.authService.generateResetToken(currentUser, 'E', newLibrary.id);
-    this.mailService.sendUserConfirmation(currentUser, token, createLibraryDto.description);
+    const token = this.authService.generateResetToken(
+      currentUser,
+      'E',
+      newLibrary.id,
+    );
+    this.mailService.sendUserConfirmation(
+      currentUser,
+      token,
+      createLibraryDto.description,
+    );
 
     return {
       id: currentUser.id,
@@ -171,16 +195,32 @@ export class UserController {
       library: {
         id: newLibrary.id,
         description: newLibrary.description,
-      }
+      },
     };
   }
 
   // Retorna todos os usuários
   @UseGuards(AuthGuard)
   @Get()
-  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
-  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
-  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: '1',
+    description: 'Page number.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: '10',
+    description: 'Limit of registers in the page.',
+    schema: { default: 5 },
+  })
+  async findAll(
+    @Req() req: Request,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findUser: FindUserDto = {
@@ -202,49 +242,57 @@ export class UserController {
   // Retorna um usuário
   @UseGuards(AuthGuard)
   @Get(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'User id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'User id.',
+  })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
 
     // Consulta se o usuário existe
     const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user)
-      throw new HttpException(
-        'user.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('user.general.not_found', HttpStatus.NOT_FOUND);
     return user;
   }
 
   // Edita o usuário
   @UseGuards(AuthGuard)
   @Patch(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'User id.' })
-  async update(@Req() req: Request, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'User id.',
+  })
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
 
     const library = await this.libraryService.findOne(reqUser.libraryId);
     if (!library) {
       throw new HttpException(
-        "library.general.not_found",
-        HttpStatus.BAD_REQUEST
+        'library.general.not_found',
+        HttpStatus.BAD_REQUEST,
       );
     }
 
     // Verifica se o usuário existe
     const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user) {
-      throw new HttpException(
-        'user.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('user.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Verifica se o usuário (email) já existe, excluindo o usuário atual
     const userAlreadyExistsInLibrary = await this.userService.findByEmail(
       updateUserDto.email,
       reqUser.libraryId,
-      +id
+      +id,
     );
     if (userAlreadyExistsInLibrary?.email != undefined) {
       throw new HttpException(
@@ -268,7 +316,10 @@ export class UserController {
       }
 
       // Valida a senha atual informada
-      const user = await this.userService.findOneWithPassword(+id, reqUser.libraryId);
+      const user = await this.userService.findOneWithPassword(
+        +id,
+        reqUser.libraryId,
+      );
       const isValid = await bcrypt.compare(
         updateUserDto.current_password,
         user.password,
@@ -302,7 +353,7 @@ export class UserController {
     const userExists = await this.userService.findByEmail(
       updateUserDto.email,
       null,
-      +id
+      +id,
     );
     if (userExists) {
       throw new HttpException(
@@ -312,27 +363,38 @@ export class UserController {
     }
 
     // Se o e-mail que veio no corpo da requisição for diferente do e-mail do banco de dados, manda uma confirmação
-    const isEmailChanged = (updateUserDto.email != user.email) ? true : false;
+    const isEmailChanged = updateUserDto.email != user.email ? true : false;
     if (isEmailChanged) {
       // envia o e-mail
-      let userToToken: User = user;
+      const userToToken: User = user;
       userToToken.name = updateUserDto.name;
       userToToken.email = updateUserDto.email;
-      const token = this.authService.generateResetToken(userToToken, 'E', reqUser.libraryId);
-      this.mailService.sendUserConfirmation(userToToken, token, library.description);
+      const token = this.authService.generateResetToken(
+        userToToken,
+        'E',
+        reqUser.libraryId,
+      );
+      this.mailService.sendUserConfirmation(
+        userToToken,
+        token,
+        library.description,
+      );
     }
 
     // Atualiza o usuário
     const updatedUser = await this.userService.update(+id, updateUserDto);
     if (updatedUser.affected == 1) {
       if (isEmailChanged) {
-        await this.userService.setLibraryUserUnconfirmed(+id, reqUser.libraryId);
+        await this.userService.setLibraryUserUnconfirmed(
+          +id,
+          reqUser.libraryId,
+        );
       }
       return {
         id: +id,
         name: updateUserDto.name,
         email: updateUserDto.email,
-        language: updateUserDto.language
+        language: updateUserDto.language,
       };
     } else {
       throw new HttpException(
@@ -345,17 +407,19 @@ export class UserController {
   // Deleta o usuário
   @UseGuards(AuthGuard)
   @Delete(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'User id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'User id.',
+  })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
 
     // Verifica se o usuário existe
     const user: User = await this.userService.findOne(+id, reqUser.libraryId);
     if (null == user) {
-      throw new HttpException(
-        'user.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('user.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Deleta o usuário

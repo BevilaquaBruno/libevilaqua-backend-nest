@@ -7,9 +7,7 @@ describe('MailService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        { provide: MailService, useValue: mockMailService },
-      ],
+      providers: [{ provide: MailService, useValue: mockMailService }],
     }).compile();
 
     service = module.get<MailService>(MailService);

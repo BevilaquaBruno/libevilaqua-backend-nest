@@ -10,7 +10,11 @@ export class CreatePublisherDto {
   })
   name: string;
 
-  @ApiProperty({ example: 'Brazil', examples: ['Brazil', null], description: 'Publisher country.' })
+  @ApiProperty({
+    example: 'Brazil',
+    examples: ['Brazil', null],
+    description: 'Publisher country.',
+  })
   @IsString({ message: 'publisher.country.invalid' })
   @IsNotEmpty({ message: 'publisher.country.invalid' })
   @Length(1, 50, {

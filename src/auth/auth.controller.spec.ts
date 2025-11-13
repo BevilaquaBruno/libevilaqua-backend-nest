@@ -26,7 +26,7 @@ describe('AuthController', () => {
         { provide: UserService, useValue: mockUserService },
         { provide: MailService, useValue: mockMailService },
         { provide: LibraryService, useValue: mockLibraryService },
-      ]
+      ],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
@@ -38,16 +38,21 @@ describe('AuthController', () => {
 
   it('Should call signIn and return libraries', async () => {
     // Cria o dto do usuário para o controller e o retorno do token
-    const dto: MainAuthDto = { email: 'bruno.f.bevilaqua@gmail.com', password: '123' };
+    const dto: MainAuthDto = {
+      email: 'bruno.f.bevilaqua@gmail.com',
+      password: '123',
+    };
     const password = await bcrypt.hash('123', 10);
-    
+
     mockUserService.findByEmail.mockResolvedValue({
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
       email: 'bruno.f.bevilaqua@gmail.com',
       password: password,
     });
-    mockLibraryService.getLibrariesFromuser.mockResolvedValue([{ id: 1, description: "Library" }]);
+    mockLibraryService.getLibrariesFromuser.mockResolvedValue([
+      { id: 1, description: 'Library' },
+    ]);
     mockJwtService.sign.mockResolvedValue('jwt-token');
 
     // Mocka o sign-in do auth service para ele retornar o token criado
@@ -56,14 +61,20 @@ describe('AuthController', () => {
     const result = await controller.signIn(dto);
 
     // Valida como o mock foi chamado e o resultado
-    expect(mockAuthService.signIn).toHaveBeenCalledWith(dto.email, dto.password);
+    expect(mockAuthService.signIn).toHaveBeenCalledWith(
+      dto.email,
+      dto.password,
+    );
     expect(mockLibraryService.getLibrariesFromuser).toHaveBeenCalledWith(1);
     expect(result).toEqual({
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
       email: 'bruno.f.bevilaqua@gmail.com',
-      password: await mockJwtService.sign({ password: '123' }, { expiresIn: '5m' }),
-      libraries: [{ id: 1, description: "Library" }],
+      password: await mockJwtService.sign(
+        { password: '123' },
+        { expiresIn: '5m' },
+      ),
+      libraries: [{ id: 1, description: 'Library' }],
     });
   });
 
@@ -85,5 +96,4 @@ describe('AuthController', () => {
     // Espera o resultado isValid
     expect(result).toEqual({ isValid: true });
   });
-
 });

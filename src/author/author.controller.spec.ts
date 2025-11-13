@@ -15,7 +15,14 @@ import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
 describe('AuthorController', () => {
   let controller: AuthorController;
   const libraryId = 1;
-  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
+  const req = {
+    user: {
+      libraryId: 1,
+      logged: true,
+      sub: 1,
+      username: 'bruno.f.bevilaqua@gmail.com',
+    },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,7 +30,7 @@ describe('AuthorController', () => {
       providers: [
         { provide: JwtService, useValue: mockJwtService },
         { provide: AuthorService, useValue: mockAuthorService },
-        { provide: BookService, useValue: mockBookService }
+        { provide: BookService, useValue: mockBookService },
       ],
     }).compile();
 
@@ -40,19 +47,19 @@ describe('AuthorController', () => {
       name: 'New Author name',
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
-      bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+      bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
     };
 
     // Mocka o retorno no service e pega o resultado do controller
     mockAuthorService.create.mockResolvedValue({
       id: 1,
-      ...authorDto
+      ...authorDto,
     });
     const result = await controller.create(req, authorDto);
 
     expect(result).toEqual({
       id: 1,
-      ...authorDto
+      ...authorDto,
     });
     expect(mockAuthorService.create).toHaveBeenCalledWith(authorDto, 1);
   });
@@ -65,15 +72,15 @@ describe('AuthorController', () => {
         name: 'New Author name',
         birth_date: new Date('2000-01-01'),
         death_date: new Date('2025-01-01'),
-        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
       },
       {
         id: 2,
         name: 'New Author with other name',
         birth_date: new Date('2001-01-01'),
         death_date: new Date('2023-01-01'),
-        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text again'
-      }
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text again',
+      },
     ];
     const authorQuantity = authorList.length;
 
@@ -89,15 +96,18 @@ describe('AuthorController', () => {
     const result = await controller.findAll(
       req,
       findAuthorDto.page.toString(),
-      findAuthorDto.limit.toString()
+      findAuthorDto.limit.toString(),
     );
 
     expect(result).toEqual({
       data: authorList,
-      count: authorList.length
+      count: authorList.length,
     });
     findAuthorDto.page--;
-    expect(mockAuthorService.findAll).toHaveBeenCalledWith(findAuthorDto, libraryId);
+    expect(mockAuthorService.findAll).toHaveBeenCalledWith(
+      findAuthorDto,
+      libraryId,
+    );
     expect(mockAuthorService.count).toHaveBeenCalledWith(libraryId);
   });
 
@@ -108,7 +118,7 @@ describe('AuthorController', () => {
       name: 'Author name',
       birth_date: new Date('2001-01-01'),
       death_date: new Date('2023-01-01'),
-      bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text again'
+      bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text again',
     };
 
     // Insere os mocks nos serviços
@@ -131,20 +141,24 @@ describe('AuthorController', () => {
       name: 'Edit Author name',
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
-      bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+      bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
     };
 
     // Mocka o retorno no service e pega o resultado do controller
     mockAuthorService.update.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockAuthorService.findOne.mockResolvedValue(authorDto);
 
     const result = await controller.update(req, authorId.toString(), authorDto);
 
     expect(result).toEqual(authorDto);
-    expect(mockAuthorService.update).toHaveBeenCalledWith(authorId, authorDto, libraryId);
+    expect(mockAuthorService.update).toHaveBeenCalledWith(
+      authorId,
+      authorDto,
+      libraryId,
+    );
   });
 
   it('Should remove an author', async () => {
@@ -154,7 +168,7 @@ describe('AuthorController', () => {
     // Mocka o resultado
     mockAuthorService.remove.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockBookService.findBooksFromAuthor.mockResolvedValue([]);
     mockAuthorService.findOne.mockResolvedValue({
@@ -162,7 +176,7 @@ describe('AuthorController', () => {
       name: 'a',
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
-      bio: 'abc'
+      bio: 'abc',
     });
 
     const result = await controller.remove(req, authorId.toString());
@@ -173,11 +187,14 @@ describe('AuthorController', () => {
       message: 'author.general.deleted_with_success',
     });
     expect(mockAuthorService.remove).toHaveBeenCalledWith(authorId, libraryId);
-    expect(mockBookService.findBooksFromAuthor).toHaveBeenCalledWith({
-      authorId: authorId,
-      limit: 1,
-      page: 1
-    }, libraryId);
+    expect(mockBookService.findBooksFromAuthor).toHaveBeenCalledWith(
+      {
+        authorId: authorId,
+        limit: 1,
+        page: 1,
+      },
+      libraryId,
+    );
   });
 
   it('Should return all books from an author', async () => {
@@ -189,59 +206,64 @@ describe('AuthorController', () => {
     };
 
     // Cria o mock e coloca no servico do livro
-    const bookList = [{
-      id: 1,
-      title: 'Book Title',
-      edition: 1,
-      isbn: '1234567890987',
-      number_pages: 250,
-      release_year: 2025,
-      obs: 'Book mock',
-      genre: {
+    const bookList = [
+      {
         id: 1,
-        description: 'Genre test',
-      },
-      publisher: {
-        id: 1,
-        name: 'Publisher 1',
-        country: 'Brazil'
-      },
-      type: {
-        id: 1,
-        descrption: 'Type Test'
-      },
-      tags: [
-        {
+        title: 'Book Title',
+        edition: 1,
+        isbn: '1234567890987',
+        number_pages: 250,
+        release_year: 2025,
+        obs: 'Book mock',
+        genre: {
           id: 1,
-          description: 'Tag Test'
+          description: 'Genre test',
         },
-        {
+        publisher: {
           id: 1,
-          description: 'Tag Test 2'
+          name: 'Publisher 1',
+          country: 'Brazil',
         },
-      ],
-      authors: [
-        {
-          name: 'New Author name',
-          birth_date: new Date('2000-01-01'),
-          death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+        type: {
+          id: 1,
+          descrption: 'Type Test',
         },
-        {
-          name: 'New Author name 2',
-          birth_date: new Date('2000-01-01'),
-          death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-        }
-      ]
-    }];
-    mockBookService.findAndCountBooksFromAuthor.mockResolvedValue([bookList, bookList.length]);
+        tags: [
+          {
+            id: 1,
+            description: 'Tag Test',
+          },
+          {
+            id: 1,
+            description: 'Tag Test 2',
+          },
+        ],
+        authors: [
+          {
+            name: 'New Author name',
+            birth_date: new Date('2000-01-01'),
+            death_date: new Date('2025-01-01'),
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
+          },
+          {
+            name: 'New Author name 2',
+            birth_date: new Date('2000-01-01'),
+            death_date: new Date('2025-01-01'),
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
+      },
+    ];
+    mockBookService.findAndCountBooksFromAuthor.mockResolvedValue([
+      bookList,
+      bookList.length,
+    ]);
     mockAuthorService.findOne.mockResolvedValue({
       id: findAuthorBooks.authorId,
       name: 'a',
       birth_date: new Date('2000-01-01'),
       death_date: new Date('2025-01-01'),
-      bio: 'abc'
+      bio: 'abc',
     });
 
     // Consulta os livros
@@ -249,14 +271,19 @@ describe('AuthorController', () => {
       req,
       findAuthorBooks.authorId.toString(),
       findAuthorBooks.page.toString(),
-      findAuthorBooks.limit.toString()
+      findAuthorBooks.limit.toString(),
     );
 
     // Valida os retornos
-    expect(result).toEqual({count: bookList.length, data: bookList});
+    expect(result).toEqual({ count: bookList.length, data: bookList });
     findAuthorBooks.page--;
-    expect(mockBookService.findAndCountBooksFromAuthor).toHaveBeenCalledWith(findAuthorBooks, libraryId);
-    expect(mockAuthorService.findOne).toHaveBeenCalledWith(findAuthorBooks.authorId, libraryId);
+    expect(mockBookService.findAndCountBooksFromAuthor).toHaveBeenCalledWith(
+      findAuthorBooks,
+      libraryId,
+    );
+    expect(mockAuthorService.findOne).toHaveBeenCalledWith(
+      findAuthorBooks.authorId,
+      libraryId,
+    );
   });
-
 });

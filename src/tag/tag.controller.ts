@@ -25,7 +25,7 @@ import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-erro
 @ApiDefaultErrorResponses()
 @Controller('tag')
 export class TagController {
-  constructor(private readonly tagService: TagService) { }
+  constructor(private readonly tagService: TagService) {}
 
   // Cria uma tag
   @UseGuards(AuthGuard)
@@ -33,7 +33,10 @@ export class TagController {
   async create(@Req() req: Request, @Body() createTagDto: CreateTagDto) {
     const reqUser: PayloadAuthDto = req['user'];
 
-    const newTag = await this.tagService.create(createTagDto, reqUser.libraryId);
+    const newTag = await this.tagService.create(
+      createTagDto,
+      reqUser.libraryId,
+    );
 
     return {
       id: newTag.id,
@@ -44,9 +47,25 @@ export class TagController {
   // Retorna as tags
   @UseGuards(AuthGuard)
   @Get()
-  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
-  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
-  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: '1',
+    description: 'Page number.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: '10',
+    description: 'Limit of registers in the page.',
+    schema: { default: 5 },
+  })
+  async findAll(
+    @Req() req: Request,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findTag: FindTagDto = {
@@ -67,35 +86,47 @@ export class TagController {
   // Retorna uma tag
   @UseGuards(AuthGuard)
   @Get(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Tag id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Tag id.',
+  })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe
     const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
-      throw new HttpException(
-        'tag.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('tag.general.not_found', HttpStatus.NOT_FOUND);
     return tag;
   }
 
   // Cria uma tag
   @UseGuards(AuthGuard)
   @Patch(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Tag id.' })
-  async update(@Req() req: Request, @Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Tag id.',
+  })
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateTagDto: UpdateTagDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe
     const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
-      throw new HttpException(
-        'tag.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('tag.general.not_found', HttpStatus.NOT_FOUND);
 
     // Atualiza a tag
-    const updatedTag = await this.tagService.update(+id, updateTagDto, reqUser.libraryId);
+    const updatedTag = await this.tagService.update(
+      +id,
+      updateTagDto,
+      reqUser.libraryId,
+    );
     if (updatedTag.affected == 1) {
       return {
         id: +id,
@@ -112,16 +143,18 @@ export class TagController {
   // Deleta a tag
   @UseGuards(AuthGuard)
   @Delete(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Tag id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Tag id.',
+  })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a tag existe
     const tag: Tag = await this.tagService.findOne(+id, reqUser.libraryId);
     if (null == tag)
-      throw new HttpException(
-        'tag.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('tag.general.not_found', HttpStatus.NOT_FOUND);
 
     // Deleta a tag
     const deletedTag = await this.tagService.remove(+id, reqUser.libraryId);

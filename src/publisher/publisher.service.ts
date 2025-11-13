@@ -11,11 +11,11 @@ export class PublisherService {
   constructor(
     @InjectRepository(Publisher)
     private publisherServiceRepository: Repository<Publisher>,
-  ) { }
+  ) {}
   create(createPublisherDto: CreatePublisherDto, libraryId: number) {
     return this.publisherServiceRepository.save({
       ...createPublisherDto,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
@@ -25,12 +25,12 @@ export class PublisherService {
       select: {
         id: true,
         name: true,
-        country: true
+        country: true,
       },
       take: findPublisher.limit,
       skip: findPublisher.page,
       where: {
-        libraryId: libraryId
+        libraryId: libraryId,
       },
       order: { id: 'DESC' },
     });
@@ -41,27 +41,39 @@ export class PublisherService {
       select: {
         id: true,
         name: true,
-        country: true
+        country: true,
       },
       where: {
         id: id,
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
-  update(id: number, updatePublisherDto: UpdatePublisherDto, libraryId: number) {
-    return this.publisherServiceRepository.update({
-      id: id,
-      libraryId: libraryId
-    }, updatePublisherDto);
+  update(
+    id: number,
+    updatePublisherDto: UpdatePublisherDto,
+    libraryId: number,
+  ) {
+    return this.publisherServiceRepository.update(
+      {
+        id: id,
+        libraryId: libraryId,
+      },
+      updatePublisherDto,
+    );
   }
 
   remove(id: number, libraryId: number) {
-    return this.publisherServiceRepository.delete({ id: id, libraryId: libraryId });
+    return this.publisherServiceRepository.delete({
+      id: id,
+      libraryId: libraryId,
+    });
   }
 
   count(libraryId: number) {
-    return this.publisherServiceRepository.count({ where: { libraryId: libraryId } });
+    return this.publisherServiceRepository.count({
+      where: { libraryId: libraryId },
+    });
   }
 }

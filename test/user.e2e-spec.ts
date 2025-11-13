@@ -33,7 +33,7 @@ describe('user E2E', () => {
   });
 
   it('PATCH /user - Update', async () => {
-    user1.name = "Bruno Temp Atualizado";
+    user1.name = 'Bruno Temp Atualizado';
 
     await request(app.getHttpServer())
       .patch(`/user/${user1.id}`)
@@ -45,7 +45,8 @@ describe('user E2E', () => {
         password: user1.password,
         verify_password: user1.verify_password,
         language: user1.language,
-      }).expect(200);
+      })
+      .expect(200);
   });
 
   it('GET /user - Get all', async () => {
@@ -58,7 +59,7 @@ describe('user E2E', () => {
             id: 1,
             name: 'Bruno Bevilaqua',
             email: 'bruno.f.bevilaqua@gmail.com',
-            language: 'pt-br'
+            language: 'pt-br',
           },
           {
             id: user1.id,
@@ -73,7 +74,7 @@ describe('user E2E', () => {
             language: user2.language,
           },
         ],
-        count: 3
+        count: 3,
       });
   });
 
@@ -100,7 +101,6 @@ describe('user E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
-
 });
 
 export function registerUser(app, token, user) {
@@ -114,5 +114,5 @@ export function registerUser(app, token, user) {
       password: user.password,
       verify_password: user.verify_password,
       language: user.language,
-    })
+    });
 }

@@ -35,7 +35,10 @@ describe('I18nInterceptor', () => {
     // O interceptor retorna uma Promise dentro do map(), então precisamos resolvê-la:
     const resolved = await result;
 
-    expect(i18nService.translate).toHaveBeenCalledWith('user.email.invalid' as never, expect.any(Object));
+    expect(i18nService.translate).toHaveBeenCalledWith(
+      'user.email.invalid' as never,
+      expect.any(Object),
+    );
     expect(resolved.message).toBe('Mensagem traduzida');
   });
 

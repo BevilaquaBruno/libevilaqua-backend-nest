@@ -10,11 +10,11 @@ import { FindTypeDto } from './dto/find-type.dto';
 export class TypeService {
   constructor(
     @InjectRepository(Type) private typeServiceRepository: Repository<Type>,
-  ) { }
+  ) {}
   create(createTypeDto: CreateTypeDto, libraryId: number) {
     return this.typeServiceRepository.save({
       ...createTypeDto,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
@@ -22,7 +22,7 @@ export class TypeService {
     return this.typeServiceRepository.find({
       select: {
         id: true,
-        description: true
+        description: true,
       },
       take: findType.limit,
       skip: findType.page,
@@ -35,20 +35,23 @@ export class TypeService {
     return this.typeServiceRepository.findOne({
       select: {
         id: true,
-        description: true
+        description: true,
       },
       where: {
         id: id,
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
   update(id: number, updateTypeDto: UpdateTypeDto, libraryId: number) {
-    return this.typeServiceRepository.update({
-      id: id,
-      libraryId: libraryId
-    }, updateTypeDto);
+    return this.typeServiceRepository.update(
+      {
+        id: id,
+        libraryId: libraryId,
+      },
+      updateTypeDto,
+    );
   }
 
   remove(id: number, libraryId: number) {
@@ -56,6 +59,8 @@ export class TypeService {
   }
 
   count(libraryId: number) {
-    return this.typeServiceRepository.count({ where: { libraryId: libraryId } });
+    return this.typeServiceRepository.count({
+      where: { libraryId: libraryId },
+    });
   }
 }

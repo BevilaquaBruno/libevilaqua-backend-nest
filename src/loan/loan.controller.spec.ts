@@ -17,7 +17,14 @@ import { count } from 'console';
 describe('LoanController', () => {
   let controller: LoanController;
   const libraryId = 1;
-  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
+  const req = {
+    user: {
+      libraryId: 1,
+      logged: true,
+      sub: 1,
+      username: 'bruno.f.bevilaqua@gmail.com',
+    },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,7 +33,7 @@ describe('LoanController', () => {
         { provide: JwtService, useValue: mockJwtService },
         { provide: LoanService, useValue: mockLoanService },
         { provide: BookService, useValue: mockBookService },
-        { provide: PersonService, useValue: mockPersonService }
+        { provide: PersonService, useValue: mockPersonService },
       ],
     }).compile();
 
@@ -45,8 +52,8 @@ describe('LoanController', () => {
       must_return_date: new Date('2025-01-02'),
       loan_date: new Date('2025-01-01'),
       bookId: 1,
-      personId: 2
-    }
+      personId: 2,
+    };
 
     // Mocka o retorno
     mockLoanService.create.mockResolvedValue({
@@ -70,20 +77,20 @@ describe('LoanController', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -92,16 +99,16 @@ describe('LoanController', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -114,9 +121,9 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     });
     mockBookService.findOne.mockResolvedValue({
       id: 1,
@@ -133,20 +140,20 @@ describe('LoanController', () => {
       publisher: {
         id: 1,
         name: 'Publisher 1',
-        country: 'Brazil'
+        country: 'Brazil',
       },
       type: {
         id: 1,
-        descrption: 'Type Test'
+        descrption: 'Type Test',
       },
       tags: [
         {
           id: 1,
-          description: 'Tag Test'
+          description: 'Tag Test',
         },
         {
           id: 2,
-          description: 'Tag Test 2'
+          description: 'Tag Test 2',
         },
       ],
       authors: [
@@ -155,16 +162,16 @@ describe('LoanController', () => {
           name: 'New Author name',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
         },
         {
           id: 2,
           name: 'New Author name 2',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-        }
-      ]
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+        },
+      ],
     });
     mockPersonService.findOne.mockResolvedValue({
       id: 2,
@@ -177,8 +184,8 @@ describe('LoanController', () => {
       street: 'Rua Marechal Deodoro',
       number: '1280',
       obs: 'Observação aqui',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678"
+      email: 'bruno.f.bevilaqua@gmail.com',
+      phone: '49912345678',
     });
     mockLoanService.findLoanedBook.mockResolvedValue([[], 0]);
 
@@ -205,20 +212,20 @@ describe('LoanController', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -227,16 +234,16 @@ describe('LoanController', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -249,9 +256,9 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     });
     expect(mockLoanService.create).toHaveBeenCalledWith(loanDto, libraryId);
   });
@@ -280,20 +287,20 @@ describe('LoanController', () => {
           publisher: {
             id: 1,
             name: 'Publisher 1',
-            country: 'Brazil'
+            country: 'Brazil',
           },
           type: {
             id: 1,
-            descrption: 'Type Test'
+            descrption: 'Type Test',
           },
           tags: [
             {
               id: 1,
-              description: 'Tag Test'
+              description: 'Tag Test',
             },
             {
               id: 2,
-              description: 'Tag Test 2'
+              description: 'Tag Test 2',
             },
           ],
           authors: [
@@ -302,16 +309,16 @@ describe('LoanController', () => {
               name: 'New Author name',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
             },
             {
               id: 2,
               name: 'New Author name 2',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-            }
-          ]
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+            },
+          ],
         },
         person: {
           id: 2,
@@ -324,9 +331,9 @@ describe('LoanController', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
-          email: "bruno.f.bevilaqua@gmail.com",
-          phone: "49912345678"
-        }
+          email: 'bruno.f.bevilaqua@gmail.com',
+          phone: '49912345678',
+        },
       },
       {
         id: 2,
@@ -349,20 +356,20 @@ describe('LoanController', () => {
           publisher: {
             id: 1,
             name: 'Publisher 1',
-            country: 'Brazil'
+            country: 'Brazil',
           },
           type: {
             id: 1,
-            descrption: 'Type Test'
+            descrption: 'Type Test',
           },
           tags: [
             {
               id: 1,
-              description: 'Tag Test'
+              description: 'Tag Test',
             },
             {
               id: 2,
-              description: 'Tag Test 2'
+              description: 'Tag Test 2',
             },
           ],
           authors: [
@@ -371,16 +378,16 @@ describe('LoanController', () => {
               name: 'New Author name',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
             },
             {
               id: 2,
               name: 'New Author name 2',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-            }
-          ]
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+            },
+          ],
         },
         person: {
           id: 3,
@@ -393,10 +400,10 @@ describe('LoanController', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
-          email: "bruno.f.bevilaqua@gmail.com",
-          phone: "49912345678"
-        }
-      }
+          email: 'bruno.f.bevilaqua@gmail.com',
+          phone: '49912345678',
+        },
+      },
     ];
     const loanQuantity = loanList.length;
 
@@ -413,7 +420,7 @@ describe('LoanController', () => {
       book: 0,
       person: 0,
       description: '',
-      returned: false
+      returned: false,
     };
 
     const result = await controller.findAll(
@@ -435,10 +442,13 @@ describe('LoanController', () => {
     // Valida os retornos
     expect(result).toEqual({
       data: loanList,
-      count: loanQuantity
+      count: loanQuantity,
     });
     findLoanDto.page--;
-    expect(mockLoanService.findAll).toHaveBeenCalledWith(findLoanDto, libraryId);
+    expect(mockLoanService.findAll).toHaveBeenCalledWith(
+      findLoanDto,
+      libraryId,
+    );
   });
 
   it('Should return one loan', async () => {
@@ -464,20 +474,20 @@ describe('LoanController', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -486,16 +496,16 @@ describe('LoanController', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -508,9 +518,9 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     };
 
     // Insere os mocks nos serviços
@@ -541,7 +551,7 @@ describe('LoanController', () => {
     // Mocka o retorno no service e pega o resultado do controller
     mockLoanService.update.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockLoanService.findOne.mockResolvedValue({
       id: 1,
@@ -564,20 +574,20 @@ describe('LoanController', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -586,16 +596,16 @@ describe('LoanController', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -608,9 +618,9 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     });
 
     const result = await controller.update(req, loanId.toString(), loanDto);
@@ -636,20 +646,20 @@ describe('LoanController', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -658,16 +668,16 @@ describe('LoanController', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -680,11 +690,15 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     });
-    expect(mockLoanService.update).toHaveBeenCalledWith(loanId, loanDto, libraryId);
+    expect(mockLoanService.update).toHaveBeenCalledWith(
+      loanId,
+      loanDto,
+      libraryId,
+    );
   });
 
   it('Should remove a loan', async () => {
@@ -694,7 +708,7 @@ describe('LoanController', () => {
     // Mocka o resultado
     mockLoanService.remove.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockLoanService.findOne.mockResolvedValue({
       id: 1,
@@ -717,20 +731,20 @@ describe('LoanController', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -739,16 +753,16 @@ describe('LoanController', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -761,9 +775,9 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     });
 
     const result = await controller.remove(req, loanId.toString());
@@ -793,20 +807,20 @@ describe('LoanController', () => {
       publisher: {
         id: 1,
         name: 'Publisher 1',
-        country: 'Brazil'
+        country: 'Brazil',
       },
       type: {
         id: 1,
-        descrption: 'Type Test'
+        descrption: 'Type Test',
       },
       tags: [
         {
           id: 1,
-          description: 'Tag Test'
+          description: 'Tag Test',
         },
         {
           id: 2,
-          description: 'Tag Test 2'
+          description: 'Tag Test 2',
         },
       ],
       authors: [
@@ -815,16 +829,16 @@ describe('LoanController', () => {
           name: 'New Author name',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
         },
         {
           id: 2,
           name: 'New Author name 2',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-        }
-      ]
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+        },
+      ],
     };
     const loan = {
       id: 1,
@@ -844,9 +858,9 @@ describe('LoanController', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     };
 
     // Insere os mocks nos serviços
@@ -886,20 +900,20 @@ describe('LoanController', () => {
           publisher: {
             id: 1,
             name: 'Publisher 1',
-            country: 'Brazil'
+            country: 'Brazil',
           },
           type: {
             id: 1,
-            descrption: 'Type Test'
+            descrption: 'Type Test',
           },
           tags: [
             {
               id: 1,
-              description: 'Tag Test'
+              description: 'Tag Test',
             },
             {
               id: 2,
-              description: 'Tag Test 2'
+              description: 'Tag Test 2',
             },
           ],
           authors: [
@@ -908,16 +922,16 @@ describe('LoanController', () => {
               name: 'New Author name',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
             },
             {
               id: 2,
               name: 'New Author name 2',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-            }
-          ]
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+            },
+          ],
         },
         person: {
           id: 2,
@@ -930,9 +944,9 @@ describe('LoanController', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
-          email: "bruno.f.bevilaqua@gmail.com",
-          phone: "49912345678"
-        }
+          email: 'bruno.f.bevilaqua@gmail.com',
+          phone: '49912345678',
+        },
       },
       {
         id: 2,
@@ -955,20 +969,20 @@ describe('LoanController', () => {
           publisher: {
             id: 1,
             name: 'Publisher 1',
-            country: 'Brazil'
+            country: 'Brazil',
           },
           type: {
             id: 1,
-            descrption: 'Type Test'
+            descrption: 'Type Test',
           },
           tags: [
             {
               id: 1,
-              description: 'Tag Test'
+              description: 'Tag Test',
             },
             {
               id: 2,
-              description: 'Tag Test 2'
+              description: 'Tag Test 2',
             },
           ],
           authors: [
@@ -977,16 +991,16 @@ describe('LoanController', () => {
               name: 'New Author name',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
             },
             {
               id: 2,
               name: 'New Author name 2',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-            }
-          ]
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+            },
+          ],
         },
         person: {
           id: 3,
@@ -999,10 +1013,10 @@ describe('LoanController', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
-          email: "bruno.f.bevilaqua@gmail.com",
-          phone: "49912345678"
-        }
-      }
+          email: 'bruno.f.bevilaqua@gmail.com',
+          phone: '49912345678',
+        },
+      },
     ];
 
     mockPersonService.findOne.mockResolvedValue(loanList[0].person);
@@ -1012,28 +1026,28 @@ describe('LoanController', () => {
     const personId = 1;
     const findLoanHistory: FindLoanHistoryDto = {
       limit: 5,
-      page: 1
-    }
-    const result = await controller.personHistory(req, personId.toString(), findLoanHistory.page.toString(), findLoanHistory.limit.toString());
+      page: 1,
+    };
+    const result = await controller.personHistory(
+      req,
+      personId.toString(),
+      findLoanHistory.page.toString(),
+      findLoanHistory.limit.toString(),
+    );
 
     findLoanHistory.page--;
     expect(mockLoanService.findLoanHistoryFromPerson).toHaveBeenCalledWith(
       personId,
       findLoanHistory,
-      libraryId
+      libraryId,
     );
-    expect(mockLoanService.findAndCountLoanHistoryFromPerson).toHaveBeenCalledWith(
-      personId,
-      findLoanHistory,
-      libraryId
-    );
+    expect(
+      mockLoanService.findAndCountLoanHistoryFromPerson,
+    ).toHaveBeenCalledWith(personId, findLoanHistory, libraryId);
     expect(mockPersonService.findOne).toHaveBeenCalledWith(personId, libraryId);
-    expect(result).toEqual(
-      {
-        data: loanList,
-        count: 2
-      }
-    );
+    expect(result).toEqual({
+      data: loanList,
+      count: 2,
+    });
   });
-
 });

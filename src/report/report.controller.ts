@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { PdfService } from '../pdf/pdf.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { PayloadAuthDto } from '../auth/dto/payload-auth.dto';
@@ -36,22 +45,48 @@ export class ReportController {
     private readonly loanService: LoanService,
     private readonly bookService: BookService,
     private readonly i18nService: I18nService,
-  ) { }
-
+  ) {}
 
   @UseGuards(AuthGuard)
   @Get('/')
   async reportList(@Req() req: Request) {
     const report_list: ReportListDto[] = [
-      { name: this.i18nService.translate('report.author.name'), description: this.i18nService.translate('report.author.description') },
-      { name: this.i18nService.translate('report.genre.name'), description: this.i18nService.translate('report.genre.description') },
-      { name: this.i18nService.translate('report.person.name'), description: this.i18nService.translate('report.person.description') },
-      { name: this.i18nService.translate('report.publisher.name'), description: this.i18nService.translate('report.publisher.description') },
-      { name: this.i18nService.translate('report.tag.name'), description: this.i18nService.translate('report.tag.description') },
-      { name: this.i18nService.translate('report.type.name'), description: this.i18nService.translate('report.type.description') },
-      { name: this.i18nService.translate('report.user.name'), description: this.i18nService.translate('report.user.description') },
-      { name: this.i18nService.translate('report.loan.name'), description: this.i18nService.translate('report.loan.description') },
-      { name: this.i18nService.translate('report.book.name'), description: this.i18nService.translate('report.book.description') },
+      {
+        name: this.i18nService.translate('report.author.name'),
+        description: this.i18nService.translate('report.author.description'),
+      },
+      {
+        name: this.i18nService.translate('report.genre.name'),
+        description: this.i18nService.translate('report.genre.description'),
+      },
+      {
+        name: this.i18nService.translate('report.person.name'),
+        description: this.i18nService.translate('report.person.description'),
+      },
+      {
+        name: this.i18nService.translate('report.publisher.name'),
+        description: this.i18nService.translate('report.publisher.description'),
+      },
+      {
+        name: this.i18nService.translate('report.tag.name'),
+        description: this.i18nService.translate('report.tag.description'),
+      },
+      {
+        name: this.i18nService.translate('report.type.name'),
+        description: this.i18nService.translate('report.type.description'),
+      },
+      {
+        name: this.i18nService.translate('report.user.name'),
+        description: this.i18nService.translate('report.user.description'),
+      },
+      {
+        name: this.i18nService.translate('report.loan.name'),
+        description: this.i18nService.translate('report.loan.description'),
+      },
+      {
+        name: this.i18nService.translate('report.book.name'),
+        description: this.i18nService.translate('report.book.description'),
+      },
     ];
 
     return report_list;
@@ -63,11 +98,13 @@ export class ReportController {
   async authorList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
-    const authors = await this.authorService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
-
+    const authors = await this.authorService.findAll(
+      { limit: 999, page: 0 },
+      reqUser.libraryId,
+    );
 
     // Formata os dados para exibir
-    let authors_formatted = [];
+    const authors_formatted = [];
     for (let i = 0; i < authors.length; i++) {
       const author = authors[i];
       const birth = moment(author.birth_date);
@@ -76,10 +113,10 @@ export class ReportController {
         id: author.id,
         name: author.name,
         birth_death:
-          ((null == author.birth_date) ? '-' : birth.format('DD/MM/YYYY'))
-          + ' | ' +
-          ((null == author.death_date) ? '-' : death.format('DD/MM/YYYY'))
-      })
+          (null == author.birth_date ? '-' : birth.format('DD/MM/YYYY')) +
+          ' | ' +
+          (null == author.death_date ? '-' : death.format('DD/MM/YYYY')),
+      });
     }
 
     // Cria os dados para o relatórios
@@ -90,19 +127,22 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.author.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.author.headers.name'),
-          this.i18nService.translate('report.author.headers.birth_death_date')
+          this.i18nService.translate('report.author.headers.birth_death_date'),
         ],
         data: authors_formatted,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -118,7 +158,10 @@ export class ReportController {
   async genreList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
-    const genres = await this.genreService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+    const genres = await this.genreService.findAll(
+      { limit: 999, page: 0 },
+      reqUser.libraryId,
+    );
 
     // Cria os dados para o relatórios
     const pdfData: ReportDataDto = {
@@ -128,18 +171,21 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.genre.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
-          this.i18nService.translate('report.genre.headers.description')
+          this.i18nService.translate('report.genre.headers.description'),
         ],
         data: genres,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -155,33 +201,36 @@ export class ReportController {
   async personList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
-    const people = await this.personService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+    const people = await this.personService.findAll(
+      { limit: 999, page: 0 },
+      reqUser.libraryId,
+    );
 
-    let peopleData = [];
+    const peopleData = [];
     for (let i = 0; i < people.length; i++) {
       const person = people[i];
 
       let address = `
-        ${((null == person.zip_code) ? '' : person.zip_code + ', ')}
-        ${((null == person.street) ? '' : person.street + ', ')}
-        ${((null == person.district) ? '' : 'B. ' + person.district + ', ')}
-        ${((null == person.number) ? '' : 'Nº' + person.number + ', ')}
-        ${((null == person.city) ? '' : person.city + ', ')}
-        ${((null == person.state) ? '' : person.state + ', ')}
-        ${((null == person.country) ? '' : person.country + ', ')}
+        ${null == person.zip_code ? '' : person.zip_code + ', '}
+        ${null == person.street ? '' : person.street + ', '}
+        ${null == person.district ? '' : 'B. ' + person.district + ', '}
+        ${null == person.number ? '' : 'Nº' + person.number + ', '}
+        ${null == person.city ? '' : person.city + ', '}
+        ${null == person.state ? '' : person.state + ', '}
+        ${null == person.country ? '' : person.country + ', '}
         `;
       if ('' == address.trim()) {
         address = '-';
       }
 
-      const contactData = [person.email, person.phone]
+      const contactData = [person.email, person.phone];
 
       peopleData.push({
         id: person.id,
         name: person.name,
-        document: (null == person.document) ? '-' : person.document,
+        document: null == person.document ? '-' : person.document,
         address: address,
-        contact: contactData.filter(Boolean).join(', ') || '-'
+        contact: contactData.filter(Boolean).join(', ') || '-',
       });
     }
 
@@ -193,21 +242,24 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.person.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.person.headers.name'),
           this.i18nService.translate('report.person.headers.document'),
           this.i18nService.translate('report.person.headers.address'),
-          this.i18nService.translate('report.person.headers.contact')
+          this.i18nService.translate('report.person.headers.contact'),
         ],
         data: peopleData,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -223,7 +275,10 @@ export class ReportController {
   async publisherList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
-    const publishers = await this.publisherService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+    const publishers = await this.publisherService.findAll(
+      { limit: 999, page: 0 },
+      reqUser.libraryId,
+    );
 
     // Cria os dados para o relatórios
     const pdfData: ReportDataDto = {
@@ -233,19 +288,22 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.publisher.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.publisher.headers.description'),
-          this.i18nService.translate('report.publisher.headers.country')
+          this.i18nService.translate('report.publisher.headers.country'),
         ],
         data: publishers,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -261,7 +319,10 @@ export class ReportController {
   async tagList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
-    const tags = await this.tagService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+    const tags = await this.tagService.findAll(
+      { limit: 999, page: 0 },
+      reqUser.libraryId,
+    );
 
     // Cria os dados para o relatórios
     const pdfData: ReportDataDto = {
@@ -271,18 +332,21 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.tag.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
-          this.i18nService.translate('report.tag.headers.description')
+          this.i18nService.translate('report.tag.headers.description'),
         ],
         data: tags,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -298,7 +362,10 @@ export class ReportController {
   async typeList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
-    const types = await this.typeService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+    const types = await this.typeService.findAll(
+      { limit: 999, page: 0 },
+      reqUser.libraryId,
+    );
 
     // Cria os dados para o relatórios
     const pdfData: ReportDataDto = {
@@ -308,18 +375,21 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.type.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
-          this.i18nService.translate('report.type.headers.description')
+          this.i18nService.translate('report.type.headers.description'),
         ],
         data: types,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -335,7 +405,10 @@ export class ReportController {
   async userList(@Req() req: Request, @Res() res) {
     const reqUser: PayloadAuthDto = req['user'];
     const library = await this.libraryService.findOne(reqUser.libraryId);
-    const users = await this.userService.findAll({ limit: 999, page: 0 }, reqUser.libraryId);
+    const users = await this.userService.findAll(
+      { limit: 999, page: 0 },
+      reqUser.libraryId,
+    );
 
     // Cria os dados para o relatórios
     const pdfData: ReportDataDto = {
@@ -345,20 +418,23 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.user.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
           this.i18nService.translate('report.user.headers.name'),
           this.i18nService.translate('report.user.headers.email'),
-          this.i18nService.translate('report.user.headers.language')
+          this.i18nService.translate('report.user.headers.language'),
         ],
         data: users,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -371,13 +447,55 @@ export class ReportController {
 
   @UseGuards(AuthGuard)
   @Post('/loan-list')
-  @ApiQuery({ name: 'start_date', required: false, example: '2024-01-01', description: 'Start date to filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'end_date', required: false, example: '2024-31-12', description: 'End date to filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'book', required: false, example: '1', description: 'Book filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'person', required: false, example: '1', description: 'Person filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'description', required: false, example: '1', description: 'Description filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'returned', required: false, example: 'true', examples: { returned: { summary: 'Returned loans', value: 'true' }, notReturned: { summary: 'Pending loans', value: 'false' } }, description: 'Return or not filter loan.', schema: { default: null } })
-  async loanList(@Req() req: Request, @Res() res,
+  @ApiQuery({
+    name: 'start_date',
+    required: false,
+    example: '2024-01-01',
+    description: 'Start date to filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'end_date',
+    required: false,
+    example: '2024-31-12',
+    description: 'End date to filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'book',
+    required: false,
+    example: '1',
+    description: 'Book filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'person',
+    required: false,
+    example: '1',
+    description: 'Person filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'description',
+    required: false,
+    example: '1',
+    description: 'Description filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'returned',
+    required: false,
+    example: 'true',
+    examples: {
+      returned: { summary: 'Returned loans', value: 'true' },
+      notReturned: { summary: 'Pending loans', value: 'false' },
+    },
+    description: 'Return or not filter loan.',
+    schema: { default: null },
+  })
+  async loanList(
+    @Req() req: Request,
+    @Res() res,
     @Query('start_date') start_date: string,
     @Query('end_date') end_date: string,
     @Query('book') book: string,
@@ -398,7 +516,8 @@ export class ReportController {
     };
 
     // Define os filtros com base no que veio na URL
-    if (undefined != start_date && '' != start_date) findLoan.start_date = start_date;
+    if (undefined != start_date && '' != start_date)
+      findLoan.start_date = start_date;
 
     if (undefined != end_date && '' != end_date) findLoan.end_date = end_date;
 
@@ -406,7 +525,8 @@ export class ReportController {
 
     if (undefined != person && '' != person) findLoan.person = parseInt(person);
 
-    if (undefined != description && '' != description) findLoan.description = description;
+    if (undefined != description && '' != description)
+      findLoan.description = description;
 
     /**
      * Valida o retorno do livr
@@ -418,20 +538,25 @@ export class ReportController {
       if (returned == 'true') findLoan.returned = true;
       else findLoan.returned = false;
 
-
     const library = await this.libraryService.findOne(reqUser.libraryId);
     const loans = await this.loanService.findAll(findLoan, reqUser.libraryId);
 
-    let loanData = [];
+    const loanData = [];
     for (let i = 0; i < loans.length; i++) {
       const loan = loans[i];
       loanData.push({
         id: loan.id,
-        description: (null == loan.description) ? '' : loan.description,
+        description: null == loan.description ? '' : loan.description,
         person: loan.person.name,
         book: loan.book.title,
-        loan_date: (null == loan.loan_date) ? '' : moment(loan.loan_date).format('DD/MM/YYYY'),
-        return_date: (null == loan.return_date) ? '' : moment(loan.return_date).format('DD/MM/YYYY'),
+        loan_date:
+          null == loan.loan_date
+            ? ''
+            : moment(loan.loan_date).format('DD/MM/YYYY'),
+        return_date:
+          null == loan.return_date
+            ? ''
+            : moment(loan.return_date).format('DD/MM/YYYY'),
       });
     }
 
@@ -443,11 +568,14 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.loan.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
@@ -455,10 +583,10 @@ export class ReportController {
           this.i18nService.translate('report.loan.headers.person'),
           this.i18nService.translate('report.loan.headers.book'),
           this.i18nService.translate('report.loan.headers.loan_date'),
-          this.i18nService.translate('report.loan.headers.return_date')
+          this.i18nService.translate('report.loan.headers.return_date'),
         ],
         data: loanData,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -471,18 +599,110 @@ export class ReportController {
 
   @UseGuards(AuthGuard)
   @Post('/book-list')
-  @ApiQuery({ name: 'genres', required: false, example: '1', examples: { oneGenre: { summary: 'One genre', value: '1' }, moreGenres: { summary: 'Two Genres', value: '1,2' } }, description: 'Genre filter.', schema: { default: null } })
-  @ApiQuery({ name: 'tags', required: false, example: '1', examples: { oneTag: { summary: 'One tag', value: '1' }, moreTags: { summary: 'Two Tags', value: '1,2' } }, description: 'Tag filter.', schema: { default: null } })
-  @ApiQuery({ name: 'publishers', required: false, example: '1', examples: { onePublisher: { summary: 'One publisher', value: '1' }, morePublishers: { summary: 'Two Publishers', value: '1,2' } }, description: 'Publisher filter.', schema: { default: null } })
-  @ApiQuery({ name: 'types', required: false, example: '1', examples: { oneType: { summary: 'One type', value: '1' }, moreTypes: { summary: 'Two Types', value: '1,2' } }, description: 'Type filter.', schema: { default: null } })
-  @ApiQuery({ name: 'authors', required: false, example: '1', examples: { oneAuthor: { summary: 'One author', value: '1' }, moreAuthors: { summary: 'Two Authors', value: '1,2' } }, description: 'Author filter.', schema: { default: null } })
-  @ApiQuery({ name: 'release_year', required: false, example: '2025', description: 'Release year filter.', schema: { default: null } })
-  @ApiQuery({ name: 'number_pages', required: false, example: '1', examples: { oneNumberPage: { summary: 'One number_pages', value: '1' }, moreNumberPages: { summary: 'Two number pages', value: '1,2' } }, description: 'Number page filter.', schema: { default: null } })
-  @ApiQuery({ name: 'isbn', required: false, example: '9856434579234', description: 'ISBN filter.', schema: { default: null } })
-  @ApiQuery({ name: 'isbn', required: false, example: '9856434579234', description: 'ISBN filter.', schema: { default: null } })
-  @ApiQuery({ name: 'edition', required: false, example: '1', description: 'Edition number.', schema: { default: null } })
-  @ApiQuery({ name: 'title', required: false, example: 'Os Sertões', description: 'Book title.', schema: { default: null } })
-  async bookList(@Req() req: Request, @Res() res,
+  @ApiQuery({
+    name: 'genres',
+    required: false,
+    example: '1',
+    examples: {
+      oneGenre: { summary: 'One genre', value: '1' },
+      moreGenres: { summary: 'Two Genres', value: '1,2' },
+    },
+    description: 'Genre filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'tags',
+    required: false,
+    example: '1',
+    examples: {
+      oneTag: { summary: 'One tag', value: '1' },
+      moreTags: { summary: 'Two Tags', value: '1,2' },
+    },
+    description: 'Tag filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'publishers',
+    required: false,
+    example: '1',
+    examples: {
+      onePublisher: { summary: 'One publisher', value: '1' },
+      morePublishers: { summary: 'Two Publishers', value: '1,2' },
+    },
+    description: 'Publisher filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'types',
+    required: false,
+    example: '1',
+    examples: {
+      oneType: { summary: 'One type', value: '1' },
+      moreTypes: { summary: 'Two Types', value: '1,2' },
+    },
+    description: 'Type filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'authors',
+    required: false,
+    example: '1',
+    examples: {
+      oneAuthor: { summary: 'One author', value: '1' },
+      moreAuthors: { summary: 'Two Authors', value: '1,2' },
+    },
+    description: 'Author filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'release_year',
+    required: false,
+    example: '2025',
+    description: 'Release year filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'number_pages',
+    required: false,
+    example: '1',
+    examples: {
+      oneNumberPage: { summary: 'One number_pages', value: '1' },
+      moreNumberPages: { summary: 'Two number pages', value: '1,2' },
+    },
+    description: 'Number page filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'isbn',
+    required: false,
+    example: '9856434579234',
+    description: 'ISBN filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'isbn',
+    required: false,
+    example: '9856434579234',
+    description: 'ISBN filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'edition',
+    required: false,
+    example: '1',
+    description: 'Edition number.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'title',
+    required: false,
+    example: 'Os Sertões',
+    description: 'Book title.',
+    schema: { default: null },
+  })
+  async bookList(
+    @Req() req: Request,
+    @Res() res,
     @Query('genres') genres: string,
     @Query('tags') tags: string,
     @Query('publishers') publishers: string,
@@ -565,38 +785,39 @@ export class ReportController {
     if (undefined != isbn && '' != isbn) findBook.isbn = isbn;
 
     // Pega a edição
-    if (undefined != edition && '' != edition) findBook.edition = parseInt(edition);
+    if (undefined != edition && '' != edition)
+      findBook.edition = parseInt(edition);
 
     // Pega o título
     if (undefined != title && '' != title) findBook.title = title;
 
     if (undefined != status && '' != status) {
-      if ('true' == status)
-        findBook.status = true;
-      else
-        findBook.status = false;
+      if ('true' == status) findBook.status = true;
+      else findBook.status = false;
     }
 
     const library = await this.libraryService.findOne(reqUser.libraryId);
     const books = await this.bookService.findAll(findBook, reqUser.libraryId);
 
-    let bookData = [];
+    const bookData = [];
     for (let i = 0; i < books.length; i++) {
       const book = books[i];
 
       const authors = this.formatBookAuthors(book.authors);
 
-      let list_tags = book.tags.map(tag => tag.description);
-      let tags = list_tags.join(' - ');
+      const list_tags = book.tags.map((tag) => tag.description);
+      const tags = list_tags.join(' - ');
 
       bookData.push({
         id: book.id,
         title: book.title,
-        authors: (0 == authors.length) ? '-' : authors,
-        genre: (null == book.genre) ? '-' : book.genre.description,
-        type: (null == book.type) ? '-' : book.type.description,
-        tags: (0 == tags.length) ? '-' : tags,
-        status: (book.status) ? this.i18nService.translate('report.general.active') : this.i18nService.translate('report.general.inactive')
+        authors: 0 == authors.length ? '-' : authors,
+        genre: null == book.genre ? '-' : book.genre.description,
+        type: null == book.type ? '-' : book.type.description,
+        tags: 0 == tags.length ? '-' : tags,
+        status: book.status
+          ? this.i18nService.translate('report.general.active')
+          : this.i18nService.translate('report.general.inactive'),
       });
     }
 
@@ -608,11 +829,14 @@ export class ReportController {
         title: library.description,
         subtitle: this.i18nService.translate('report.book.subtitle'),
         generated_in_date:
-          this.i18nService.translate('report.general.generated_in') + ' ' +
+          this.i18nService.translate('report.general.generated_in') +
+          ' ' +
           moment().format('DD/MM/YYYY'),
         generated_by_author:
-          this.i18nService.translate('report.general.generated_by') + ' ' +
-          process.env['APP_NAME'] + ' - ' +
+          this.i18nService.translate('report.general.generated_by') +
+          ' ' +
+          process.env['APP_NAME'] +
+          ' - ' +
           this.i18nService.translate('report.general.reports'),
         headers: [
           '#',
@@ -621,10 +845,10 @@ export class ReportController {
           this.i18nService.translate('report.book.headers.genre'),
           this.i18nService.translate('report.book.headers.type'),
           this.i18nService.translate('report.book.headers.tag'),
-          this.i18nService.translate('report.book.headers.status')
+          this.i18nService.translate('report.book.headers.status'),
         ],
         data: bookData,
-      }
+      },
     };
 
     // Gera o buffer do PDF
@@ -636,7 +860,7 @@ export class ReportController {
   }
 
   private formatBookAuthors(authors: Author[]) {
-    const names = authors.map(author => author.name);
+    const names = authors.map((author) => author.name);
     if (names.length > 3) {
       // Exibe apenas os 3 primeiros e indica que há mais
       const firstThree = names.slice(0, 3).join(', ');

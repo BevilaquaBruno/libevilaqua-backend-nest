@@ -11,14 +11,21 @@ import { FindPersonDto } from './dto/find-person.dto';
 describe('PersonController', () => {
   let controller: PersonController;
   const libraryId = 1;
-  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
+  const req = {
+    user: {
+      libraryId: 1,
+      logged: true,
+      sub: 1,
+      username: 'bruno.f.bevilaqua@gmail.com',
+    },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PersonController],
       providers: [
         { provide: JwtService, useValue: mockJwtService },
-        { provide: PersonService, useValue: mockPersonService }
+        { provide: PersonService, useValue: mockPersonService },
       ],
     }).compile();
 
@@ -41,21 +48,21 @@ describe('PersonController', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
-    }
+      email: 'bruno.f.bevilaqua@gmail.com',
+      phone: '49912345678',
+      country: 'Brasil',
+    };
 
     // Mocka o retorno
     mockPersonService.create.mockResolvedValue({
       id: 1,
-      ...person
+      ...person,
     });
     const result = await controller.create(req, person);
 
     expect(result).toEqual({
       id: 1,
-      ...person
+      ...person,
     });
     expect(mockPersonService.create).toHaveBeenCalledWith(person, libraryId);
   });
@@ -74,9 +81,9 @@ describe('PersonController', () => {
         street: 'Rua Sérgio Galvan',
         number: '15',
         obs: 'Meu próprio cadastro',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678",
-        country: "Brasil"
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+        country: 'Brasil',
       },
       {
         id: 2,
@@ -89,9 +96,9 @@ describe('PersonController', () => {
         street: 'Rua Sérgio Galvan',
         number: '15',
         obs: 'Meu próprio cadastro',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678",
-        country: "Brasil"
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+        country: 'Brasil',
       },
     ];
     const quantity = list.length;
@@ -103,7 +110,7 @@ describe('PersonController', () => {
     // Cria a paginação e requisita
     const FindPersonDto: FindPersonDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
 
     const result = await controller.findAll(
@@ -115,10 +122,13 @@ describe('PersonController', () => {
     // Valida os retornos
     expect(result).toEqual({
       data: list,
-      count: quantity
+      count: quantity,
     });
     FindPersonDto.page--;
-    expect(mockPersonService.findAll).toHaveBeenCalledWith(FindPersonDto, libraryId);
+    expect(mockPersonService.findAll).toHaveBeenCalledWith(
+      FindPersonDto,
+      libraryId,
+    );
   });
 
   it('Should return one people', async () => {
@@ -134,9 +144,9 @@ describe('PersonController', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
+      email: 'bruno.f.bevilaqua@gmail.com',
+      phone: '49912345678',
+      country: 'Brasil',
     };
 
     // Insere os mocks nos serviços
@@ -165,15 +175,15 @@ describe('PersonController', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
+      email: 'bruno.f.bevilaqua@gmail.com',
+      phone: '49912345678',
+      country: 'Brasil',
     };
 
     // Mocka o retorno no service e pega o resultado do controller
     mockPersonService.update.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockPersonService.findOne.mockResolvedValue(dto);
 
@@ -190,7 +200,7 @@ describe('PersonController', () => {
     // Mocka o resultado
     mockPersonService.remove.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockPersonService.findOne.mockResolvedValue({
       id: 1,
@@ -203,9 +213,9 @@ describe('PersonController', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
+      email: 'bruno.f.bevilaqua@gmail.com',
+      phone: '49912345678',
+      country: 'Brasil',
     });
 
     const result = await controller.remove(req, id.toString());

@@ -33,14 +33,15 @@ describe('tag E2E', () => {
   });
 
   it('PATCH /tag - Update', async () => {
-    tag1.description = "Tipo 1 atualizado";
+    tag1.description = 'Tipo 1 atualizado';
 
     await request(app.getHttpServer())
       .patch(`/tag/${tag1.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-        description: tag1.description
-      }).expect(200);
+        description: tag1.description,
+      })
+      .expect(200);
   });
 
   it('GET /tag - Get all', async () => {
@@ -49,7 +50,7 @@ describe('tag E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect({
         data: [tag2, tag1],
-        count: 2
+        count: 2,
       });
   });
 
@@ -71,7 +72,6 @@ describe('tag E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
-
 });
 
 export function registerTag(app, token, tag) {
@@ -79,6 +79,6 @@ export function registerTag(app, token, tag) {
     .post(`/tag`)
     .set('Authorization', `Bearer ${token}`)
     .send({
-      description: tag.description
-    })
+      description: tag.description,
+    });
 }

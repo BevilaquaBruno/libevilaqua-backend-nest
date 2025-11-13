@@ -47,7 +47,6 @@ describe('ReportController', () => {
         { provide: LoanService, useValue: mockLoanService },
         { provide: BookService, useValue: mockBookService },
         { provide: I18nService, useValue: mockI18nService },
-
       ],
     }).compile();
 

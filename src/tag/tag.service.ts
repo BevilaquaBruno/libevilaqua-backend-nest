@@ -10,11 +10,11 @@ import { FindTagDto } from './dto/find-tag.dto';
 export class TagService {
   constructor(
     @InjectRepository(Tag) private tagServiceRepository: Repository<Tag>,
-  ) { }
+  ) {}
   create(createTagDto: CreateTagDto, libraryId: number) {
     return this.tagServiceRepository.save({
       ...createTagDto,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
@@ -36,20 +36,23 @@ export class TagService {
     return this.tagServiceRepository.findOne({
       select: {
         id: true,
-        description: true
+        description: true,
       },
       where: {
         id: id,
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
   update(id: number, updateTagDto: UpdateTagDto, libraryId: number) {
-    return this.tagServiceRepository.update({
-      id: id,
-      libraryId: libraryId
-    }, updateTagDto);
+    return this.tagServiceRepository.update(
+      {
+        id: id,
+        libraryId: libraryId,
+      },
+      updateTagDto,
+    );
   }
 
   remove(id: number, libraryId: number) {
@@ -65,7 +68,7 @@ export class TagService {
       where: {
         id: In(tag_id_list),
         libraryId: libraryId,
-      }
-    })
+      },
+    });
   }
 }

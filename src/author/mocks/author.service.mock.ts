@@ -6,4 +6,4 @@ export const mockAuthorService = {
   remove: jest.fn(),
   count: jest.fn(),
   getAuthorList: jest.fn(),
-}
+};

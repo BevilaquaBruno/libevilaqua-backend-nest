@@ -18,7 +18,10 @@ export class Genre {
   description: string;
 
   @ManyToOne(() => Library, { eager: false })
-  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_genre' })
+  @JoinColumn({
+    name: 'libraryId',
+    foreignKeyConstraintName: 'FK_library_genre',
+  })
   library?: Library;
 
   @Column({ select: false })

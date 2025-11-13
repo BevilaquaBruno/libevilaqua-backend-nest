@@ -30,30 +30,28 @@ describe('auth E2E', () => {
   it('POST /auth/select-library - Select Library', async () => {
     await selectLibrary(app, token).expect(201);
   });
-
 });
 
 export async function getAuthToken(app: INestApplication) {
   const resSignIn = await signin(app).expect(200);
-  const resLibrary = await selectLibrary(app, resSignIn.body['password']).expect(201);
+  const resLibrary = await selectLibrary(
+    app,
+    resSignIn.body['password'],
+  ).expect(201);
   return resLibrary.body.access_token;
 }
 
 function signin(app: INestApplication) {
-  return request(app.getHttpServer())
-    .post(`/auth/signin`)
-    .send({
-      email: userBaseLogin.email,
-      password: userBaseLogin.password
-    });
+  return request(app.getHttpServer()).post(`/auth/signin`).send({
+    email: userBaseLogin.email,
+    password: userBaseLogin.password,
+  });
 }
 
 function selectLibrary(app: INestApplication, token: string) {
-  return request(app.getHttpServer())
-    .post(`/auth/select-library`)
-    .send({
-      "email": userBaseLogin.email,
-      "password": token,
-      "libraryId": 1
-    });
+  return request(app.getHttpServer()).post(`/auth/select-library`).send({
+    email: userBaseLogin.email,
+    password: token,
+    libraryId: 1,
+  });
 }

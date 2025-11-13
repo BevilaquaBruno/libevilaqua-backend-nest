@@ -6,4 +6,4 @@ export const mockTagService = {
   remove: jest.fn(),
   count: jest.fn(),
   getTagList: jest.fn(),
-}
+};

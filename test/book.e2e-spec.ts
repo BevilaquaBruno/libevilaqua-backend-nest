@@ -70,7 +70,6 @@ describe('book E2E', () => {
     const resBook1 = await registerBook(app, token, book1).expect(201);
     book1.id = resBook1.body['id'];
 
-
     book2.type_id = type2.id;
     book2.genre_id = genre2.id;
     book2.publisher_id = publisher2.id;
@@ -81,10 +80,10 @@ describe('book E2E', () => {
   });
 
   it('PATCH /book - Update', async () => {
-    book1.title = "Título do livro 1 atualizado";
+    book1.title = 'Título do livro 1 atualizado';
     book1.edition = 55;
     book1.number_pages = 64;
-    book1.obs = "Observação atualizada como teste.";
+    book1.obs = 'Observação atualizada como teste.';
 
     await request(app.getHttpServer())
       .patch(`/book/${book1.id}`)
@@ -101,8 +100,9 @@ describe('book E2E', () => {
         type_id: book1.type_id,
         authors_id: book1.authors_id,
         tags_id: book1.tags_id,
-        status: book1.status
-      }).expect(200);
+        status: book1.status,
+      })
+      .expect(200);
   });
 
   it('GET /book - Get all', async () => {
@@ -120,7 +120,7 @@ describe('book E2E', () => {
       type: type1,
       tags: [tag1],
       authors: [author1],
-    }
+    };
 
     const book2Completed = {
       id: book2.id,
@@ -136,14 +136,14 @@ describe('book E2E', () => {
       type: type2,
       tags: [tag1, tag2],
       authors: [author1, author2],
-    }
+    };
 
     await request(app.getHttpServer())
       .get(`/book`)
       .set('Authorization', `Bearer ${token}`)
       .expect({
         data: [book2Completed, book1Completed],
-        count: 2
+        count: 2,
       });
   });
 
@@ -162,7 +162,7 @@ describe('book E2E', () => {
       type: type1,
       tags: [tag1],
       authors: [author1],
-    }
+    };
     await request(app.getHttpServer())
       .get(`/book/${book1.id}`)
       .set('Authorization', `Bearer ${token}`)
@@ -185,7 +185,7 @@ describe('book E2E', () => {
       type: type1,
       tags: [tag1],
       authors: [author1],
-    }
+    };
 
     const book2Completed = {
       id: book2.id,
@@ -201,7 +201,7 @@ describe('book E2E', () => {
       type: type2,
       tags: [tag1, tag2],
       authors: [author2, author1],
-    }
+    };
 
     const res = await request(app.getHttpServer())
       .get(`/author/${author1.id}/books?page=1&limit=100`)
@@ -223,7 +223,6 @@ describe('book E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
-
 });
 
 export function registerBook(app, token, book) {
@@ -242,6 +241,6 @@ export function registerBook(app, token, book) {
       type_id: book.type_id,
       authors_id: book.authors_id,
       tags_id: book.tags_id,
-      status: book.status
-    })
+      status: book.status,
+    });
 }

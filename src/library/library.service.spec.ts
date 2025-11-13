@@ -21,53 +21,57 @@ describe('LibraryService', () => {
   });
 
   it('Should create a library', async () => {
-
     const mockLibrary: CreateLibraryDto = {
-      description: 'New Library'
+      description: 'New Library',
     };
 
     const mockLibraryResolved: UpdateLibraryDto = {
       id: 1,
-      ...mockLibrary
-    }
+      ...mockLibrary,
+    };
 
     mockLibraryService.create.mockResolvedValue(mockLibraryResolved);
 
     const result = await service.create({
-      description: 'New Library'
+      description: 'New Library',
     });
 
-    expect(result).toEqual(mockLibraryResolved)
-    expect(mockLibraryService.create).toHaveBeenCalledWith({ description: 'New Library' });
+    expect(result).toEqual(mockLibraryResolved);
+    expect(mockLibraryService.create).toHaveBeenCalledWith({
+      description: 'New Library',
+    });
   });
 
   it('Should return a list with all libraries', async () => {
     const mockLibraryList = [
       {
         id: 1,
-        description: 'Library 1'
+        description: 'Library 1',
       },
       {
         id: 2,
-        description: 'Library 2'
-      }
+        description: 'Library 2',
+      },
     ];
     mockLibraryService.findAll.mockResolvedValue(mockLibraryList);
     const findLibraryDto: FindLibraryDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
     const result = await service.findAll(findLibraryDto);
 
     // Valida os retornos
     expect(result).toEqual(mockLibraryList);
-    expect(mockLibraryService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 });
+    expect(mockLibraryService.findAll).toHaveBeenCalledWith({
+      limit: 2,
+      page: 1,
+    });
   });
 
   it('Should return a library', async () => {
     const mockLibrary = {
       id: 1,
-      description: 'Library novo'
+      description: 'Library novo',
     };
     mockLibraryService.findOne.mockResolvedValue(mockLibrary);
     const result = await service.findOne(1);
@@ -78,23 +82,26 @@ describe('LibraryService', () => {
   it('Should update a library', async () => {
     const mockLibrary: UpdateLibraryDto = {
       id: 1,
-      description: 'Update Library'
+      description: 'Update Library',
     };
     mockLibraryService.update.mockResolvedValue(mockLibrary);
 
-    const result = await service.update(1, { id: 1, description: 'Update Library' });
+    const result = await service.update(1, {
+      id: 1,
+      description: 'Update Library',
+    });
 
     expect(result).toEqual(mockLibrary);
     expect(mockLibraryService.update).toHaveBeenCalledWith(1, {
       id: 1,
-      description: 'Update Library'
+      description: 'Update Library',
     });
   });
 
   it('Should remove a library', async () => {
     const mockDeleteLibrary = {
       raw: [],
-      affected: 1
+      affected: 1,
     };
     mockLibraryService.remove.mockResolvedValue(mockDeleteLibrary);
 

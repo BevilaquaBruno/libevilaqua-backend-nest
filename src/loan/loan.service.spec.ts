@@ -10,9 +10,7 @@ describe('LoanService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        { provide: LoanService, useValue: mockLoanService }
-      ],
+      providers: [{ provide: LoanService, useValue: mockLoanService }],
     }).compile();
 
     service = module.get<LoanService>(LoanService);
@@ -30,7 +28,7 @@ describe('LoanService', () => {
       must_return_date: null,
       loan_date: new Date('2025-01-01'),
       bookId: 1,
-      personId: 2
+      personId: 2,
     };
 
     const mockLoanResolved = {
@@ -54,20 +52,20 @@ describe('LoanService', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -76,16 +74,16 @@ describe('LoanService', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -98,9 +96,9 @@ describe('LoanService', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     };
 
     // Coloca no resolve
@@ -109,15 +107,18 @@ describe('LoanService', () => {
     // Chama e valida
     const result = await service.create(mockLoan, libraryId);
 
-    expect(result).toEqual(mockLoanResolved)
-    expect(mockLoanService.create).toHaveBeenCalledWith({
-      description: 'Novo empréstimo',
-      return_date: null,
-      must_return_date: null,
-      loan_date: new Date('2025-01-01'),
-      bookId: 1,
-      personId: 2
-    }, libraryId);
+    expect(result).toEqual(mockLoanResolved);
+    expect(mockLoanService.create).toHaveBeenCalledWith(
+      {
+        description: 'Novo empréstimo',
+        return_date: null,
+        must_return_date: null,
+        loan_date: new Date('2025-01-01'),
+        bookId: 1,
+        personId: 2,
+      },
+      libraryId,
+    );
   });
 
   it('Should return a list with all loans', async () => {
@@ -144,20 +145,20 @@ describe('LoanService', () => {
           publisher: {
             id: 1,
             name: 'Publisher 1',
-            country: 'Brazil'
+            country: 'Brazil',
           },
           type: {
             id: 1,
-            descrption: 'Type Test'
+            descrption: 'Type Test',
           },
           tags: [
             {
               id: 1,
-              description: 'Tag Test'
+              description: 'Tag Test',
             },
             {
               id: 2,
-              description: 'Tag Test 2'
+              description: 'Tag Test 2',
             },
           ],
           authors: [
@@ -166,16 +167,16 @@ describe('LoanService', () => {
               name: 'New Author name',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
             },
             {
               id: 2,
               name: 'New Author name 2',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-            }
-          ]
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+            },
+          ],
         },
         person: {
           id: 2,
@@ -188,9 +189,9 @@ describe('LoanService', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
-          email: "bruno.f.bevilaqua@gmail.com",
-          phone: "49912345678"
-        }
+          email: 'bruno.f.bevilaqua@gmail.com',
+          phone: '49912345678',
+        },
       },
       {
         id: 2,
@@ -213,20 +214,20 @@ describe('LoanService', () => {
           publisher: {
             id: 1,
             name: 'Publisher 1',
-            country: 'Brazil'
+            country: 'Brazil',
           },
           type: {
             id: 1,
-            descrption: 'Type Test'
+            descrption: 'Type Test',
           },
           tags: [
             {
               id: 1,
-              description: 'Tag Test'
+              description: 'Tag Test',
             },
             {
               id: 2,
-              description: 'Tag Test 2'
+              description: 'Tag Test 2',
             },
           ],
           authors: [
@@ -235,16 +236,16 @@ describe('LoanService', () => {
               name: 'New Author name',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
             },
             {
               id: 2,
               name: 'New Author name 2',
               birth_date: new Date('2000-01-01'),
               death_date: new Date('2025-01-01'),
-              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-            }
-          ]
+              bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+            },
+          ],
         },
         person: {
           id: 2,
@@ -257,10 +258,10 @@ describe('LoanService', () => {
           street: 'Rua Marechal Deodoro',
           number: '1280',
           obs: 'Observação aqui',
-          email: "bruno.f.bevilaqua@gmail.com",
-          phone: "49912345678"
-        }
-      }
+          email: 'bruno.f.bevilaqua@gmail.com',
+          phone: '49912345678',
+        },
+      },
     ];
     mockLoanService.findAll.mockResolvedValue(mockLoanList);
 
@@ -273,22 +274,25 @@ describe('LoanService', () => {
       book: 0,
       person: 0,
       description: '',
-      returned: false
+      returned: false,
     };
     const result = await service.findAll(findLoanDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockLoanList);
-    expect(mockLoanService.findAll).toHaveBeenCalledWith({
-      limit: 2,
-      page: 1,
-      start_date: '',
-      end_date: '',
-      book: 0,
-      person: 0,
-      description: '',
-      returned: false
-    }, libraryId);
+    expect(mockLoanService.findAll).toHaveBeenCalledWith(
+      {
+        limit: 2,
+        page: 1,
+        start_date: '',
+        end_date: '',
+        book: 0,
+        person: 0,
+        description: '',
+        returned: false,
+      },
+      libraryId,
+    );
   });
 
   it('Should return a loan', async () => {
@@ -314,20 +318,20 @@ describe('LoanService', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -336,16 +340,16 @@ describe('LoanService', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -358,9 +362,9 @@ describe('LoanService', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     };
     mockLoanService.findOne.mockResolvedValue(mockLoan);
 
@@ -395,20 +399,20 @@ describe('LoanService', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -417,16 +421,16 @@ describe('LoanService', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       person: {
         id: 2,
@@ -439,41 +443,49 @@ describe('LoanService', () => {
         street: 'Rua Marechal Deodoro',
         number: '1280',
         obs: 'Observação aqui',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+      },
     };
     mockLoanService.update.mockResolvedValue(mockLoan);
 
     // Chama a edição do gênero
-    const result = await service.update(1, {
-      id: 1,
-      description: 'Novo empréstimo',
-      return_date: null,
-      must_return_date: null,
-      loan_date: new Date('2025-01-01'),
-      bookId: 1,
-      personId: 2
-    }, libraryId);
+    const result = await service.update(
+      1,
+      {
+        id: 1,
+        description: 'Novo empréstimo',
+        return_date: null,
+        must_return_date: null,
+        loan_date: new Date('2025-01-01'),
+        bookId: 1,
+        personId: 2,
+      },
+      libraryId,
+    );
 
     // Valida o retorno
     expect(result).toEqual(mockLoan);
-    expect(mockLoanService.update).toHaveBeenCalledWith(1, {
-      id: 1,
-      description: 'Novo empréstimo',
-      return_date: null,
-      must_return_date: null,
-      loan_date: new Date('2025-01-01'),
-      bookId: 1,
-      personId: 2
-    }, libraryId);
+    expect(mockLoanService.update).toHaveBeenCalledWith(
+      1,
+      {
+        id: 1,
+        description: 'Novo empréstimo',
+        return_date: null,
+        must_return_date: null,
+        loan_date: new Date('2025-01-01'),
+        bookId: 1,
+        personId: 2,
+      },
+      libraryId,
+    );
   });
 
   it('Should remove a loan', async () => {
     // Cria o mock de retorno e coloca no delete
     const mockDeleteLoan = {
       raw: [],
-      affected: 1
+      affected: 1,
     };
     mockLoanService.remove.mockResolvedValue(mockDeleteLoan);
 
@@ -497,23 +509,26 @@ describe('LoanService', () => {
       description: '',
       page: 1,
       limit: 2,
-      returned: false
-    }
+      returned: false,
+    };
 
     // Chama o count
     const result = await service.count(findLoanDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(1);
-    expect(mockLoanService.count).toHaveBeenCalledWith({
-      start_date: '',
-      end_date: '',
-      book: 0,
-      person: 0,
-      description: '',
-      page: 1,
-      limit: 2,
-      returned: false
-    }, libraryId);
+    expect(mockLoanService.count).toHaveBeenCalledWith(
+      {
+        start_date: '',
+        end_date: '',
+        book: 0,
+        person: 0,
+        description: '',
+        page: 1,
+        limit: 2,
+        returned: false,
+      },
+      libraryId,
+    );
   });
 });

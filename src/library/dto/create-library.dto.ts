@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, Length } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, Length } from 'class-validator';
 
 export class CreateLibraryDto {
   @ApiProperty({ example: 'Bevilaqua library', description: 'Library name.' })

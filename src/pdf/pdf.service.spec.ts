@@ -7,9 +7,7 @@ describe('PdfService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        { provide: PdfService, useValue: mockPdfService }
-      ],
+      providers: [{ provide: PdfService, useValue: mockPdfService }],
     }).compile();
 
     service = module.get<PdfService>(PdfService);

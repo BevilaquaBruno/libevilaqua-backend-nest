@@ -72,7 +72,10 @@ export class Book {
   authors: Author[];
 
   @ManyToOne(() => Library, { eager: false })
-  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_book' })
+  @JoinColumn({
+    name: 'libraryId',
+    foreignKeyConstraintName: 'FK_library_book',
+  })
   library?: Library;
 
   @Column({ select: false })

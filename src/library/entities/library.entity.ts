@@ -1,5 +1,12 @@
-import { LibraryUser } from "../../user/entities/library-user.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { LibraryUser } from '../../user/entities/library-user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Library {
@@ -9,7 +16,7 @@ export class Library {
   @Column()
   description: string;
 
-  @OneToMany(() => LibraryUser, libraryUser => libraryUser.library)
+  @OneToMany(() => LibraryUser, (libraryUser) => libraryUser.library)
   users: LibraryUser[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', select: false })

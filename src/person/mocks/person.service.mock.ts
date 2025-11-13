@@ -6,4 +6,4 @@ export const mockPersonService = {
   remove: jest.fn(),
   count: jest.fn(),
   findByDocument: jest.fn(),
-}
+};

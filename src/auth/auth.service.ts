@@ -11,19 +11,24 @@ import { PayloadAuthDto } from './dto/payload-auth.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(ResetToken) private resetTokenRepository: Repository<ResetToken>,
+    @InjectRepository(ResetToken)
+    private resetTokenRepository: Repository<ResetToken>,
     private userService: UserService,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
-  async signIn(email: string, password: string, isPasswordEncripted: boolean = false) {
+  async signIn(
+    email: string,
+    password: string,
+    isPasswordEncripted: boolean = false,
+  ) {
     // Localiza o usuário pelo e-mail
     const user = await this.userService.findByEmail(email);
 
     // Compara a senha informada com a senha do banco
     let isValid = true;
     if (isPasswordEncripted) {
-      isValid = (password == user.password) ? true : false;
+      isValid = password == user.password ? true : false;
     } else {
       isValid = await bcrypt.compare(password, user.password);
     }
@@ -36,7 +41,12 @@ export class AuthService {
   }
 
   generateLoginToken(user: User, libraryId: number) {
-    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: true, libraryId: libraryId };
+    const payload: PayloadAuthDto = {
+      username: user.email,
+      sub: user.id,
+      logged: true,
+      libraryId: libraryId,
+    };
     // Retorna um token com base no payload
     const token = this.jwtService.sign(payload);
     return {
@@ -45,7 +55,12 @@ export class AuthService {
   }
 
   generateResetToken(user: User, tokenType: 'E' | 'S', libraryId = 0) {
-    const payload: PayloadAuthDto = { username: user.email, sub: user.id, logged: false, libraryId: libraryId };
+    const payload: PayloadAuthDto = {
+      username: user.email,
+      sub: user.id,
+      logged: false,
+      libraryId: libraryId,
+    };
     const token = this.jwtService.sign(payload, { expiresIn: '12h' });
 
     this.resetTokenRepository.save({

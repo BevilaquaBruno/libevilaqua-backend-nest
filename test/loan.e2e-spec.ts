@@ -90,7 +90,7 @@ describe('loan E2E', () => {
 
     // Empréstimo 1
     loan1.bookId = book1.id;
-    loan1.personId = person1.id
+    loan1.personId = person1.id;
     const res1 = await registerLoan(app, token, loan1).expect(201);
     loan1.id = res1.body['id'];
 
@@ -102,7 +102,7 @@ describe('loan E2E', () => {
   });
 
   it('PATCH /loan - Update', async () => {
-    loan1.description = "Descrição do empréstimo 1 atualizada";
+    loan1.description = 'Descrição do empréstimo 1 atualizada';
     loan1.must_return_date = currentDate.add('3M').format('YYYY-MM-DD');
 
     await request(app.getHttpServer())
@@ -116,7 +116,8 @@ describe('loan E2E', () => {
         loan_date: loan1.loan_date,
         bookId: loan1.bookId,
         personId: loan1.personId,
-      }).expect(200);
+      })
+      .expect(200);
   });
 
   it('GET /loan - Get all', async () => {
@@ -134,7 +135,7 @@ describe('loan E2E', () => {
       type: type1,
       tags: [tag1],
       authors: [author1],
-    }
+    };
 
     const book2Completed = {
       id: book2.id,
@@ -150,7 +151,7 @@ describe('loan E2E', () => {
       type: type2,
       tags: [tag1, tag2],
       authors: [author1, author2],
-    }
+    };
 
     const loan1Completed = {
       id: loan1.id,
@@ -176,7 +177,7 @@ describe('loan E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect({
         data: [loan2Completed, loan1Completed],
-        count: 2
+        count: 2,
       });
   });
 
@@ -195,7 +196,7 @@ describe('loan E2E', () => {
       type: type1,
       tags: [tag1],
       authors: [author1],
-    }
+    };
 
     const loan1Completed = {
       id: loan1.id,
@@ -227,7 +228,7 @@ describe('loan E2E', () => {
       type: type1,
       tags: [tag1],
       authors: [author1],
-    }
+    };
 
     const loan1Completed = {
       id: loan1.id,
@@ -259,7 +260,7 @@ describe('loan E2E', () => {
       type: type2,
       tags: [tag1, tag2],
       authors: [author1, author2],
-    }
+    };
 
     const loan2Completed = {
       id: loan2.id,
@@ -283,7 +284,7 @@ describe('loan E2E', () => {
     await request(app.getHttpServer())
       .patch(`/loan/return/${loan1.id}`)
       .send({
-        return_date: moment().add('5days').format('YYYY-MM-DD')
+        return_date: moment().add('5days').format('YYYY-MM-DD'),
       })
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
@@ -300,7 +301,6 @@ describe('loan E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
-
 });
 
 export function registerLoan(app, token, loan) {
@@ -314,5 +314,5 @@ export function registerLoan(app, token, loan) {
       loan_date: loan.loan_date,
       bookId: loan.bookId,
       personId: loan.personId,
-    })
+    });
 }

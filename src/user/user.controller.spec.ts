@@ -18,7 +18,14 @@ import { Languages } from '../helpers/enum/Languages.enum';
 describe('UserController', () => {
   let controller: UserController;
   const libraryId = 1;
-  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
+  const req = {
+    user: {
+      libraryId: 1,
+      logged: true,
+      sub: 1,
+      username: 'bruno.f.bevilaqua@gmail.com',
+    },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,7 +35,7 @@ describe('UserController', () => {
         { provide: UserService, useValue: mockUserService },
         { provide: MailService, useValue: mockMailService },
         { provide: AuthService, useValue: mockAuthService },
-        { provide: LibraryService, useValue: mockLibraryService }
+        { provide: LibraryService, useValue: mockLibraryService },
       ],
     }).compile();
 
@@ -46,7 +53,7 @@ describe('UserController', () => {
       email: 'bbbevilaqua@gmail.com',
       password: '1234',
       verify_password: '1234',
-      language: Languages.EN
+      language: Languages.EN,
     };
 
     // Mocka o retorno
@@ -54,21 +61,31 @@ describe('UserController', () => {
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      language: Languages.EN
+      language: Languages.EN,
     });
-    mockLibraryService.findOne.mockResolvedValue({ id: 1, description: "Biblioteca um" });
-    mockUserService.createLibraryUser.mockResolvedValue({ id: 1, library: { id: 1 }, user: { id: 1 } })
+    mockLibraryService.findOne.mockResolvedValue({
+      id: 1,
+      description: 'Biblioteca um',
+    });
+    mockUserService.createLibraryUser.mockResolvedValue({
+      id: 1,
+      library: { id: 1 },
+      user: { id: 1 },
+    });
     const result = await controller.create(req, user);
 
     expect(result).toEqual({
       id: 1,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      language: Languages.EN
+      language: Languages.EN,
     });
     expect(mockUserService.create).toHaveBeenCalled();
     expect(mockLibraryService.findOne).toHaveBeenCalledWith(libraryId);
-    expect(mockUserService.createLibraryUser).toHaveBeenCalledWith(1, libraryId);
+    expect(mockUserService.createLibraryUser).toHaveBeenCalledWith(
+      1,
+      libraryId,
+    );
   });
 
   it('should return all users', async () => {
@@ -78,13 +95,13 @@ describe('UserController', () => {
         id: 1,
         name: 'Bruno Fernando',
         email: 'bbbevilaqua@gmail.com',
-        language: Languages.EN
+        language: Languages.EN,
       },
       {
         id: 2,
         name: 'Bruno Fernando',
         email: 'bbbevilaqua@gmail.com',
-        language: Languages.EN
+        language: Languages.EN,
       },
     ];
     const quantity = list.length;
@@ -96,7 +113,7 @@ describe('UserController', () => {
     // Cria a paginação e requisita
     const findDto: FindUserDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
 
     const result = await controller.findAll(
@@ -108,7 +125,7 @@ describe('UserController', () => {
     // Valida os retornos
     expect(result).toEqual({
       data: list,
-      count: quantity
+      count: quantity,
     });
     findDto.page--;
     expect(mockUserService.findAll).toHaveBeenCalledWith(findDto, libraryId);
@@ -120,7 +137,7 @@ describe('UserController', () => {
       id: 2,
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
-      language: Languages.EN
+      language: Languages.EN,
     };
 
     // Insere os mocks nos serviços
@@ -150,15 +167,23 @@ describe('UserController', () => {
     // Mocka o retorno no service e pega o resultado do controller
     mockUserService.update.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
-    mockLibraryService.findOne.mockResolvedValue({ id: 1, description: "Biblioteca um" })
+    mockLibraryService.findOne.mockResolvedValue({
+      id: 1,
+      description: 'Biblioteca um',
+    });
     mockUserService.findOne.mockResolvedValue(dto);
 
     const result = await controller.update(req, id.toString(), dto);
 
     expect(result).toEqual(dto);
-    expect(mockUserService.update).toHaveBeenCalledWith(id, { "id": 1, "email": "bbbevilaqua@gmail.com", "name": "Bruno Fernando Bevilaqua", "language": Languages.EN });
+    expect(mockUserService.update).toHaveBeenCalledWith(id, {
+      id: 1,
+      email: 'bbbevilaqua@gmail.com',
+      name: 'Bruno Fernando Bevilaqua',
+      language: Languages.EN,
+    });
     expect(mockLibraryService.findOne).toHaveBeenCalledWith(libraryId);
   });
 
@@ -169,13 +194,13 @@ describe('UserController', () => {
     // Mocka o resultado
     mockUserService.remove.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockUserService.findOne.mockResolvedValue({
       id: 1,
       name: 'Bruno Fernando Bevilaqua',
       email: 'bbbevilaqua@gmail.com',
-      language: Languages.EN
+      language: Languages.EN,
     });
 
     const result = await controller.remove(req, id.toString());

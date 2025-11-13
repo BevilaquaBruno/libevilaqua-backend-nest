@@ -51,7 +51,10 @@ export class Person {
   country: string;
 
   @ManyToOne(() => Library, { eager: false })
-  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_person' })
+  @JoinColumn({
+    name: 'libraryId',
+    foreignKeyConstraintName: 'FK_library_person',
+  })
   library?: Library;
 
   @Column({ select: false })

@@ -21,7 +21,7 @@ import { FindLoanDto } from './dto/find-loan.dto';
 export class LoanService {
   constructor(
     @InjectRepository(Loan) private loanServiceRepository: Repository<Loan>,
-  ) { }
+  ) {}
 
   create(createLoanDto: CreateLoanDto, libraryId: number) {
     return this.loanServiceRepository.save({
@@ -31,7 +31,7 @@ export class LoanService {
       return_date: createLoanDto.return_date,
       book: { id: createLoanDto.bookId },
       person: { id: createLoanDto.personId },
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
@@ -93,44 +93,50 @@ export class LoanService {
     return this.loanServiceRepository.findOne({
       where: {
         id: id,
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
   update(id: number, updateLoanDto: UpdateLoanDto, libraryId: number) {
-    return this.loanServiceRepository.update({
-      id: id,
-      libraryId: libraryId
-    }, {
-      description: updateLoanDto.description,
-      loan_date: updateLoanDto.loan_date,
-      must_return_date: updateLoanDto.must_return_date,
-      return_date: updateLoanDto.return_date,
-      book: { id: updateLoanDto.bookId },
-      person: { id: updateLoanDto.personId },
-    });
+    return this.loanServiceRepository.update(
+      {
+        id: id,
+        libraryId: libraryId,
+      },
+      {
+        description: updateLoanDto.description,
+        loan_date: updateLoanDto.loan_date,
+        must_return_date: updateLoanDto.must_return_date,
+        return_date: updateLoanDto.return_date,
+        book: { id: updateLoanDto.bookId },
+        person: { id: updateLoanDto.personId },
+      },
+    );
   }
 
   remove(id: number, libraryId: number) {
     return this.loanServiceRepository.delete({
       id: id,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
   returnBook(id: number, returnBookDto: ReturnBookDto, libraryId: number) {
-    return this.loanServiceRepository.update({
-      id: id,
-      libraryId: libraryId
-    }, returnBookDto);
+    return this.loanServiceRepository.update(
+      {
+        id: id,
+        libraryId: libraryId,
+      },
+      returnBookDto,
+    );
   }
 
   findLoanedBook(bookId: number, excludeId: number = null, libraryId: number) {
     let dynamicWhere: FindOptionsWhere<Loan> = {
       book: { id: bookId },
       return_date: IsNull(),
-      libraryId: libraryId
+      libraryId: libraryId,
     };
 
     if (null != excludeId) {
@@ -147,16 +153,20 @@ export class LoanService {
       where: {
         book: { id: bookId },
         return_date: IsNull(),
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
-  findLoanHistoryFromPerson(personId: number, findLoanHistoryDto: FindLoanHistoryDto, libraryId: number) {
+  findLoanHistoryFromPerson(
+    personId: number,
+    findLoanHistoryDto: FindLoanHistoryDto,
+    libraryId: number,
+  ) {
     return this.loanServiceRepository.find({
       where: {
         person: { id: personId },
-        libraryId: libraryId
+        libraryId: libraryId,
       },
       order: { return_date: 'ASC' },
       take: findLoanHistoryDto.limit,
@@ -214,11 +224,15 @@ export class LoanService {
     return query.getCount();
   }
 
-  findAndCountLoanHistoryFromPerson(personId: number,findLoanHistoryDto: FindLoanHistoryDto,libraryId: number) {
+  findAndCountLoanHistoryFromPerson(
+    personId: number,
+    findLoanHistoryDto: FindLoanHistoryDto,
+    libraryId: number,
+  ) {
     return this.loanServiceRepository.count({
       where: {
         person: { id: personId },
-        libraryId: libraryId
+        libraryId: libraryId,
       },
       take: findLoanHistoryDto.limit,
       skip: findLoanHistoryDto.page,

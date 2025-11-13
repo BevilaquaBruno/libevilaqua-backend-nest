@@ -11,14 +11,21 @@ import { FindPublisherDto } from './dto/find-publisher.dto';
 describe('PublisherController', () => {
   let controller: PublisherController;
   const libraryId = 1;
-  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
+  const req = {
+    user: {
+      libraryId: 1,
+      logged: true,
+      sub: 1,
+      username: 'bruno.f.bevilaqua@gmail.com',
+    },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PublisherController],
       providers: [
         { provide: JwtService, useValue: mockJwtService },
-        { provide: PublisherService, useValue: mockPublisherService }
+        { provide: PublisherService, useValue: mockPublisherService },
       ],
     }).compile();
 
@@ -33,21 +40,24 @@ describe('PublisherController', () => {
     // Cria o dto
     const publisher: CreatePublisherDto = {
       name: 'Editora cadastrada',
-      country: "Brasil"
+      country: 'Brasil',
     };
 
     // Mocka o retorno
     mockPublisherService.create.mockResolvedValue({
       id: 1,
-      ...publisher
+      ...publisher,
     });
     const result = await controller.create(req, publisher);
 
     expect(result).toEqual({
       id: 1,
-      ...publisher
+      ...publisher,
     });
-    expect(mockPublisherService.create).toHaveBeenCalledWith(publisher, libraryId);
+    expect(mockPublisherService.create).toHaveBeenCalledWith(
+      publisher,
+      libraryId,
+    );
   });
 
   it('should return all Publishers', async () => {
@@ -56,12 +66,12 @@ describe('PublisherController', () => {
       {
         id: 1,
         name: 'Editora cadastrada',
-        country: "Brasil"
+        country: 'Brasil',
       },
       {
         id: 2,
         name: 'Editora cadastrada',
-        country: "Brasil"
+        country: 'Brasil',
       },
     ];
     const quantity = list.length;
@@ -73,7 +83,7 @@ describe('PublisherController', () => {
     // Cria a paginação e requisita
     const findDto: FindPublisherDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
 
     const result = await controller.findAll(
@@ -85,10 +95,13 @@ describe('PublisherController', () => {
     // Valida os retornos
     expect(result).toEqual({
       data: list,
-      count: quantity
+      count: quantity,
     });
     findDto.page--;
-    expect(mockPublisherService.findAll).toHaveBeenCalledWith(findDto, libraryId);
+    expect(mockPublisherService.findAll).toHaveBeenCalledWith(
+      findDto,
+      libraryId,
+    );
   });
 
   it('Should return one publisher', async () => {
@@ -96,7 +109,7 @@ describe('PublisherController', () => {
     const publisher: UpdatePublisherDto = {
       id: 1,
       name: 'Editora cadastrada',
-      country: "Brasil"
+      country: 'Brasil',
     };
 
     // Insere os mocks nos serviços
@@ -117,20 +130,24 @@ describe('PublisherController', () => {
     const dto: UpdatePublisherDto = {
       id: 1,
       name: 'Editora cadastrada',
-      country: "Brasil"
+      country: 'Brasil',
     };
 
     // Mocka o retorno no service e pega o resultado do controller
     mockPublisherService.update.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockPublisherService.findOne.mockResolvedValue(dto);
 
     const result = await controller.update(req, id.toString(), dto);
 
     expect(result).toEqual(dto);
-    expect(mockPublisherService.update).toHaveBeenCalledWith(id, dto, libraryId);
+    expect(mockPublisherService.update).toHaveBeenCalledWith(
+      id,
+      dto,
+      libraryId,
+    );
   });
 
   it('Should remove a publisher', async () => {
@@ -140,12 +157,12 @@ describe('PublisherController', () => {
     // Mocka o resultado
     mockPublisherService.remove.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockPublisherService.findOne.mockResolvedValue({
       id: 1,
       name: 'Editora cadastrada',
-      country: "Brasil"
+      country: 'Brasil',
     });
 
     const result = await controller.remove(req, id.toString());

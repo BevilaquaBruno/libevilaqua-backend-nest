@@ -8,5 +8,5 @@ export class ReportDataDto {
     generated_by_author: string;
     headers?: string[];
     data: any;
-  }
+  };
 }

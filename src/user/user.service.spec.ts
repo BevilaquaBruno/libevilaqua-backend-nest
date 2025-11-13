@@ -29,7 +29,7 @@ describe('UserService', () => {
       email: 'bbbevilaqua@gmail.com',
       password: '1234',
       verify_password: '1234',
-      language: Languages.EN
+      language: Languages.EN,
     };
 
     const mockResolved: UpdateUserDto = {
@@ -40,9 +40,8 @@ describe('UserService', () => {
       password: '1234',
       verify_password: '1234',
       update_password: true,
-      current_password: '1234'
+      current_password: '1234',
     };
-
 
     // Coloca no resolve
     mockUserService.create.mockResolvedValue(mockResolved);
@@ -53,16 +52,16 @@ describe('UserService', () => {
       email: 'bbbevilaqua@gmail.com',
       language: Languages.EN,
       password: '1234',
-      verify_password: '1234'
+      verify_password: '1234',
     });
 
-    expect(result).toEqual(mockResolved)
+    expect(result).toEqual(mockResolved);
     expect(mockUserService.create).toHaveBeenCalledWith({
       name: 'Bruno Fernando',
       email: 'bbbevilaqua@gmail.com',
       language: Languages.EN,
       password: '1234',
-      verify_password: '1234'
+      verify_password: '1234',
     });
   });
 
@@ -80,20 +79,23 @@ describe('UserService', () => {
         name: 'Bruno Fernando',
         email: 'bbbevilaqua@gmail.com',
         language: Languages.EN,
-      }
+      },
     ];
     mockUserService.findAll.mockResolvedValue(mockList);
 
     // Cria a paginação e recebe o retorno;
     const findDto: FindUserDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
     const result = await service.findAll(findDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockList);
-    expect(mockUserService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
+    expect(mockUserService.findAll).toHaveBeenCalledWith(
+      { limit: 2, page: 1 },
+      libraryId,
+    );
   });
 
   it('Should return a user', async () => {
@@ -104,7 +106,7 @@ describe('UserService', () => {
       email: 'bbbevilaqua@gmail.com',
       language: Languages.EN,
       password: '1234',
-      verify_password: '1234'
+      verify_password: '1234',
     };
     mockUserService.findOne.mockResolvedValue(mock);
 
@@ -126,7 +128,7 @@ describe('UserService', () => {
       password: '1234',
       verify_password: '1234',
       update_password: false,
-      current_password: '1234'
+      current_password: '1234',
     };
     mockUserService.update.mockResolvedValue(mock);
 
@@ -139,7 +141,7 @@ describe('UserService', () => {
       password: '1234',
       verify_password: '1234',
       update_password: false,
-      current_password: '1234'
+      current_password: '1234',
     });
 
     // Valida o retorno
@@ -152,7 +154,7 @@ describe('UserService', () => {
       password: '1234',
       verify_password: '1234',
       update_password: false,
-      current_password: '1234'
+      current_password: '1234',
     });
   });
 
@@ -160,7 +162,7 @@ describe('UserService', () => {
     // Cria o mock de retorno e coloca no delete
     const mockDelete = {
       raw: [],
-      affected: 1
+      affected: 1,
     };
     mockUserService.remove.mockResolvedValue(mockDelete);
 
@@ -184,7 +186,6 @@ describe('UserService', () => {
     expect(mockUserService.count).toHaveBeenCalledWith(libraryId);
   });
 
-
   it('Should return one user with password', async () => {
     // Coloca um mock no count
     mockUserService.findOneWithPassword.mockResolvedValue({
@@ -206,7 +207,10 @@ describe('UserService', () => {
       password: 'senha-criptografada',
       language: Languages.EN,
     });
-    expect(mockUserService.findOneWithPassword).toHaveBeenCalledWith(1, libraryId);
+    expect(mockUserService.findOneWithPassword).toHaveBeenCalledWith(
+      1,
+      libraryId,
+    );
   });
 
   it('Should return user by email', async () => {
@@ -230,54 +234,82 @@ describe('UserService', () => {
       password: 'senha-criptografada',
       language: Languages.EN,
     });
-    expect(mockUserService.findByEmail).toHaveBeenCalledWith('bbbevilaqua@gmail.com');
+    expect(mockUserService.findByEmail).toHaveBeenCalledWith(
+      'bbbevilaqua@gmail.com',
+    );
   });
 
   it('Should return if user has library', async () => {
     // Coloca um mock no count
-    mockUserService.userHasLibrary.mockResolvedValue([[{
-      id: 1,
-      name: 'Bruno Fernando',
-      email: 'bbbevilaqua@gmail.com',
-      password: 'senha-criptografada',
-      language: Languages.EN,
-    }], 1]);
+    mockUserService.userHasLibrary.mockResolvedValue([
+      [
+        {
+          id: 1,
+          name: 'Bruno Fernando',
+          email: 'bbbevilaqua@gmail.com',
+          password: 'senha-criptografada',
+          language: Languages.EN,
+        },
+      ],
+      1,
+    ]);
 
     // Chama o count
     const result = await service.userHasLibrary(1, libraryId);
 
     // Valida os retornos
-    expect(result).toEqual([[{
-      id: 1,
-      name: 'Bruno Fernando',
-      email: 'bbbevilaqua@gmail.com',
-      password: 'senha-criptografada',
-      language: Languages.EN,
-    }], 1]);
+    expect(result).toEqual([
+      [
+        {
+          id: 1,
+          name: 'Bruno Fernando',
+          email: 'bbbevilaqua@gmail.com',
+          password: 'senha-criptografada',
+          language: Languages.EN,
+        },
+      ],
+      1,
+    ]);
     expect(mockUserService.userHasLibrary).toHaveBeenCalledWith(1, libraryId);
   });
 
   it('Should create a library user register', async () => {
     // Coloca um mock no count
-    mockUserService.createLibraryUser.mockResolvedValue({ library: { id: 1 }, user: { id: 1 } });
+    mockUserService.createLibraryUser.mockResolvedValue({
+      library: { id: 1 },
+      user: { id: 1 },
+    });
 
     // Chama o count
     const result = await service.createLibraryUser(1, libraryId);
 
     // Valida os retornos
     expect(result).toEqual({ library: { id: 1 }, user: { id: 1 } });
-    expect(mockUserService.createLibraryUser).toHaveBeenCalledWith(1, libraryId);
+    expect(mockUserService.createLibraryUser).toHaveBeenCalledWith(
+      1,
+      libraryId,
+    );
   });
 
   it('Should get a library user', async () => {
     // Coloca um mock no count
-    mockUserService.getLibraryUser.mockResolvedValue({ id: 1, library: { id: 1 }, user: { id: 1 }, email_verified_at: null });
+    mockUserService.getLibraryUser.mockResolvedValue({
+      id: 1,
+      library: { id: 1 },
+      user: { id: 1 },
+      email_verified_at: null,
+    });
 
     // Chama o count
     const result = await service.getLibraryUser(1, libraryId);
 
     // Valida os retornos
-    expect(result).toEqual({ id: 1, library: { id: 1 }, user: { id: 1 }, email_verified_at: null });
+    expect(result).toEqual({
+      id: 1,
+      library: { id: 1 },
+      user: { id: 1 },
+      email_verified_at: null,
+    });
     expect(mockUserService.getLibraryUser).toHaveBeenCalledWith(1, libraryId);
   });
 
@@ -285,7 +317,7 @@ describe('UserService', () => {
     // Coloca um mock no count
     mockUserService.setLibraryUserUnconfirmed.mockResolvedValue({
       raw: {},
-      affected: 1
+      affected: 1,
     });
 
     // Chama o count
@@ -294,8 +326,11 @@ describe('UserService', () => {
     // Valida os retornos
     expect(result).toEqual({
       raw: {},
-      affected: 1
+      affected: 1,
     });
-    expect(mockUserService.setLibraryUserUnconfirmed).toHaveBeenCalledWith(1, libraryId);
+    expect(mockUserService.setLibraryUserUnconfirmed).toHaveBeenCalledWith(
+      1,
+      libraryId,
+    );
   });
 });

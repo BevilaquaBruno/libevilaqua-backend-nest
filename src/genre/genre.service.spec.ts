@@ -24,24 +24,30 @@ describe('GenreService', () => {
   it('Should create a gente', async () => {
     // Cria o mock
     const mockGenre: CreateGenreDto = {
-      description: 'New Genre'
+      description: 'New Genre',
     };
 
     const mockGenreResolved: UpdateGenreDto = {
       id: 1,
-      ...mockGenre
-    }
+      ...mockGenre,
+    };
 
     // Coloca no resolve
     mockGenreService.create.mockResolvedValue(mockGenreResolved);
 
     // Chama e valida
-    const result = await service.create({
-      description: 'New Genre'
-    }, libraryId);
+    const result = await service.create(
+      {
+        description: 'New Genre',
+      },
+      libraryId,
+    );
 
-    expect(result).toEqual(mockGenreResolved)
-    expect(mockGenreService.create).toHaveBeenCalledWith({ description: 'New Genre' }, libraryId);
+    expect(result).toEqual(mockGenreResolved);
+    expect(mockGenreService.create).toHaveBeenCalledWith(
+      { description: 'New Genre' },
+      libraryId,
+    );
   });
 
   it('Should return a list with all genres', async () => {
@@ -49,32 +55,35 @@ describe('GenreService', () => {
     const mockGenreList = [
       {
         id: 1,
-        description: 'Genre 1'
+        description: 'Genre 1',
       },
       {
         id: 2,
-        description: 'Genre 2'
-      }
+        description: 'Genre 2',
+      },
     ];
     mockGenreService.findAll.mockResolvedValue(mockGenreList);
 
     // Cria a paginação e recebe o retorno;
     const findGenreDto: FindGenreDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
     const result = await service.findAll(findGenreDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockGenreList);
-    expect(mockGenreService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
+    expect(mockGenreService.findAll).toHaveBeenCalledWith(
+      { limit: 2, page: 1 },
+      libraryId,
+    );
   });
 
   it('Should return a genre', async () => {
     // Cria o mock do gênero
     const mockGenre = {
       id: 1,
-      description: 'This genre'
+      description: 'This genre',
     };
     mockGenreService.findOne.mockResolvedValue(mockGenre);
 
@@ -90,26 +99,34 @@ describe('GenreService', () => {
     // Cria o mock do gênero
     const mockGenre: UpdateGenreDto = {
       id: 1,
-      description: 'Update Genre'
+      description: 'Update Genre',
     };
     mockGenreService.update.mockResolvedValue(mockGenre);
 
     // Chama a edição do gênero
-    const result = await service.update(1, { id: 1, description: 'Update Genre' }, libraryId);
+    const result = await service.update(
+      1,
+      { id: 1, description: 'Update Genre' },
+      libraryId,
+    );
 
     // Valida o retorno
     expect(result).toEqual(mockGenre);
-    expect(mockGenreService.update).toHaveBeenCalledWith(1, {
-      id: 1,
-      description: 'Update Genre'
-    }, libraryId);
+    expect(mockGenreService.update).toHaveBeenCalledWith(
+      1,
+      {
+        id: 1,
+        description: 'Update Genre',
+      },
+      libraryId,
+    );
   });
 
   it('Should remove a genre', async () => {
     // Cria o mock de retorno e coloca no delete genre
     const mockDeleteGenre = {
       raw: [],
-      affected: 1
+      affected: 1,
     };
     mockGenreService.remove.mockResolvedValue(mockDeleteGenre);
 

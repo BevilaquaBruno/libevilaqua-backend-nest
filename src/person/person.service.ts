@@ -11,11 +11,11 @@ export class PersonService {
   constructor(
     @InjectRepository(Person)
     private personServiceRepository: Repository<Person>,
-  ) { }
+  ) {}
   create(createPersonDto: CreatePersonDto, libraryId: number) {
     return this.personServiceRepository.save({
       ...createPersonDto,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
@@ -33,37 +33,44 @@ export class PersonService {
     return this.personServiceRepository.findOne({
       where: {
         id: id,
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
   update(id: number, updatePersonDto: UpdatePersonDto, libraryId: number) {
-    return this.personServiceRepository.update({
-      id: id,
-      libraryId: libraryId
-    }, updatePersonDto);
+    return this.personServiceRepository.update(
+      {
+        id: id,
+        libraryId: libraryId,
+      },
+      updatePersonDto,
+    );
   }
 
   remove(id: number, libraryId: number) {
     return this.personServiceRepository.delete({
       id: id,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
   count(libraryId: number) {
     return this.personServiceRepository.count({
       where: {
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
-  findByDocument(document: string, excludeId: number = null, libraryId: number) {
+  findByDocument(
+    document: string,
+    excludeId: number = null,
+    libraryId: number,
+  ) {
     let dynamicWhere: FindOptionsWhere<Person> = {
       document: document,
-      libraryId: libraryId
+      libraryId: libraryId,
     };
 
     if (null != excludeId) {

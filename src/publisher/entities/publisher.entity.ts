@@ -21,7 +21,10 @@ export class Publisher {
   country: string;
 
   @ManyToOne(() => Library, { eager: false })
-  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_publisher' })
+  @JoinColumn({
+    name: 'libraryId',
+    foreignKeyConstraintName: 'FK_library_publisher',
+  })
   library?: Library;
 
   @Column({ select: false })

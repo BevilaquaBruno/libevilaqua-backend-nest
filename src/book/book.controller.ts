@@ -36,8 +36,8 @@ export class BookController {
     private readonly publisherService: PublisherService,
     private readonly typeService: TypeService,
     private readonly authorService: AuthorService,
-    private readonly tagService: TagService
-  ) { }
+    private readonly tagService: TagService,
+  ) {}
 
   // Cria um livro
   @UseGuards(AuthGuard)
@@ -46,7 +46,10 @@ export class BookController {
     const reqUser: PayloadAuthDto = req['user'];
 
     if (createBookDto.genre_id) {
-      const genreExists = await this.genreService.findOne(createBookDto.genre_id, reqUser.libraryId);
+      const genreExists = await this.genreService.findOne(
+        createBookDto.genre_id,
+        reqUser.libraryId,
+      );
 
       if (!genreExists) {
         throw new HttpException(
@@ -57,7 +60,10 @@ export class BookController {
     }
 
     if (createBookDto.publisher_id) {
-      const publisherExists = await this.publisherService.findOne(createBookDto.publisher_id, reqUser.libraryId);
+      const publisherExists = await this.publisherService.findOne(
+        createBookDto.publisher_id,
+        reqUser.libraryId,
+      );
 
       if (!publisherExists) {
         throw new HttpException(
@@ -68,7 +74,10 @@ export class BookController {
     }
 
     if (createBookDto.type_id) {
-      const typeExists = await this.typeService.findOne(createBookDto.type_id, reqUser.libraryId);
+      const typeExists = await this.typeService.findOne(
+        createBookDto.type_id,
+        reqUser.libraryId,
+      );
 
       if (!typeExists) {
         throw new HttpException(
@@ -79,7 +88,10 @@ export class BookController {
     }
 
     if (createBookDto.authors_id.length > 0) {
-      const authorsExists = await this.authorService.getAuthorList(createBookDto.authors_id, reqUser.libraryId);
+      const authorsExists = await this.authorService.getAuthorList(
+        createBookDto.authors_id,
+        reqUser.libraryId,
+      );
 
       if (authorsExists.length != createBookDto.authors_id.length) {
         throw new HttpException(
@@ -90,7 +102,10 @@ export class BookController {
     }
 
     if (createBookDto.tags_id.length > 0) {
-      const tagsExists = await this.tagService.getTagList(createBookDto.tags_id, reqUser.libraryId);
+      const tagsExists = await this.tagService.getTagList(
+        createBookDto.tags_id,
+        reqUser.libraryId,
+      );
 
       if (tagsExists.length != createBookDto.tags_id.length) {
         throw new HttpException(
@@ -101,7 +116,10 @@ export class BookController {
     }
 
     // Não tem outras validações além das contidas no DTO do livro, apenas cria ele
-    const newBook = await this.bookService.create(createBookDto, reqUser.libraryId);
+    const newBook = await this.bookService.create(
+      createBookDto,
+      reqUser.libraryId,
+    );
 
     return {
       id: newBook.id,
@@ -112,20 +130,128 @@ export class BookController {
   // Retorna todos os livros
   @UseGuards(AuthGuard)
   @Get()
-  @ApiQuery({ name: 'genres', required: false, example: '1', examples: { oneGenre: { summary: 'One genre', value: '1' }, moreGenres: { summary: 'Two Genres', value: '1,2' }}, description: 'Genre filter.', schema: { default: null }})
-  @ApiQuery({ name: 'tags', required: false, example: '1', examples: { oneTag: { summary: 'One tag', value: '1' }, moreTags: { summary: 'Two Tags', value: '1,2' }}, description: 'Tag filter.', schema: { default: null }})
-  @ApiQuery({ name: 'publishers', required: false, example: '1', examples: { onePublisher: { summary: 'One publisher', value: '1' }, morePublishers: { summary: 'Two Publishers', value: '1,2' }}, description: 'Publisher filter.', schema: { default: null }})
-  @ApiQuery({ name: 'types', required: false, example: '1', examples: { oneType: { summary: 'One type', value: '1' }, moreTypes: { summary: 'Two Types', value: '1,2' }}, description: 'Type filter.', schema: { default: null }})
-  @ApiQuery({ name: 'authors', required: false, example: '1', examples: { oneAuthor: { summary: 'One author', value: '1' }, moreAuthors: { summary: 'Two Authors', value: '1,2' }}, description: 'Author filter.', schema: { default: null }})
-  @ApiQuery({ name: 'release_year', required: false, example: '2025', description: 'Release year filter.', schema: { default: null } })
-  @ApiQuery({ name: 'number_pages', required: false, example: '1', examples: { oneNumberPage: { summary: 'One number_pages', value: '1' }, moreNumberPages: { summary: 'Two number pages', value: '1,2' }}, description: 'Number page filter.', schema: { default: null }})
-  @ApiQuery({ name: 'isbn', required: false, example: '9856434579234', description: 'ISBN filter.', schema: { default: null } })
-  @ApiQuery({ name: 'isbn', required: false, example: '9856434579234', description: 'ISBN filter.', schema: { default: null } })
-  @ApiQuery({ name: 'edition', required: false, example: '1', description: 'Edition number.', schema: { default: null } })
-  @ApiQuery({ name: 'title', required: false, example: 'Os Sertões', description: 'Book title.', schema: { default: null } })
-  @ApiQuery({ name: 'status', required: false, example: 'true', description: 'Book status.', schema: { default: null } })
-  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
-  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
+  @ApiQuery({
+    name: 'genres',
+    required: false,
+    example: '1',
+    examples: {
+      oneGenre: { summary: 'One genre', value: '1' },
+      moreGenres: { summary: 'Two Genres', value: '1,2' },
+    },
+    description: 'Genre filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'tags',
+    required: false,
+    example: '1',
+    examples: {
+      oneTag: { summary: 'One tag', value: '1' },
+      moreTags: { summary: 'Two Tags', value: '1,2' },
+    },
+    description: 'Tag filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'publishers',
+    required: false,
+    example: '1',
+    examples: {
+      onePublisher: { summary: 'One publisher', value: '1' },
+      morePublishers: { summary: 'Two Publishers', value: '1,2' },
+    },
+    description: 'Publisher filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'types',
+    required: false,
+    example: '1',
+    examples: {
+      oneType: { summary: 'One type', value: '1' },
+      moreTypes: { summary: 'Two Types', value: '1,2' },
+    },
+    description: 'Type filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'authors',
+    required: false,
+    example: '1',
+    examples: {
+      oneAuthor: { summary: 'One author', value: '1' },
+      moreAuthors: { summary: 'Two Authors', value: '1,2' },
+    },
+    description: 'Author filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'release_year',
+    required: false,
+    example: '2025',
+    description: 'Release year filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'number_pages',
+    required: false,
+    example: '1',
+    examples: {
+      oneNumberPage: { summary: 'One number_pages', value: '1' },
+      moreNumberPages: { summary: 'Two number pages', value: '1,2' },
+    },
+    description: 'Number page filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'isbn',
+    required: false,
+    example: '9856434579234',
+    description: 'ISBN filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'isbn',
+    required: false,
+    example: '9856434579234',
+    description: 'ISBN filter.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'edition',
+    required: false,
+    example: '1',
+    description: 'Edition number.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'title',
+    required: false,
+    example: 'Os Sertões',
+    description: 'Book title.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    example: 'true',
+    description: 'Book status.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: '1',
+    description: 'Page number.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: '10',
+    description: 'Limit of registers in the page.',
+    schema: { default: 5 },
+  })
   async findAll(
     @Req() req: Request,
     @Query('genres') genres: string,
@@ -212,16 +338,15 @@ export class BookController {
     if (undefined != isbn && '' != isbn) findBook.isbn = isbn;
 
     // Pega a edição
-    if (undefined != edition && '' != edition) findBook.edition = parseInt(edition);
+    if (undefined != edition && '' != edition)
+      findBook.edition = parseInt(edition);
 
     // Pega o título
     if (undefined != title && '' != title) findBook.title = title;
 
     if (undefined != status && '' != status) {
-      if ('true' == status)
-        findBook.status = true;
-      else
-        findBook.status = false;
+      if ('true' == status) findBook.status = true;
+      else findBook.status = false;
     }
 
     // Define a paginação
@@ -239,17 +364,19 @@ export class BookController {
   // Retorna um livro
   @UseGuards(AuthGuard)
   @Get(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Book id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Book id.',
+  })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta o livro, retorna se existe ou retorna erro
     const book: Book = await this.bookService.findOne(+id, reqUser.libraryId);
 
     if (null == book) {
-      throw new HttpException(
-        'book.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('book.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     return book;
@@ -258,20 +385,29 @@ export class BookController {
   // Atualiza o livro
   @UseGuards(AuthGuard)
   @Patch(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Book id.' })
-  async update(@Req() req: Request, @Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Book id.',
+  })
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateBookDto: UpdateBookDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o livro existe, se existe atualiza
     const book: Book = await this.bookService.findOne(+id, reqUser.libraryId);
     if (null == book) {
-      throw new HttpException(
-        'book.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('book.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     if (updateBookDto.genre_id) {
-      const genreExists = await this.genreService.findOne(updateBookDto.genre_id, reqUser.libraryId);
+      const genreExists = await this.genreService.findOne(
+        updateBookDto.genre_id,
+        reqUser.libraryId,
+      );
 
       if (!genreExists) {
         throw new HttpException(
@@ -282,7 +418,10 @@ export class BookController {
     }
 
     if (updateBookDto.publisher_id) {
-      const publisherExists = await this.publisherService.findOne(updateBookDto.publisher_id, reqUser.libraryId);
+      const publisherExists = await this.publisherService.findOne(
+        updateBookDto.publisher_id,
+        reqUser.libraryId,
+      );
 
       if (!publisherExists) {
         throw new HttpException(
@@ -293,7 +432,10 @@ export class BookController {
     }
 
     if (updateBookDto.type_id) {
-      const typeExists = await this.typeService.findOne(updateBookDto.type_id, reqUser.libraryId);
+      const typeExists = await this.typeService.findOne(
+        updateBookDto.type_id,
+        reqUser.libraryId,
+      );
 
       if (!typeExists) {
         throw new HttpException(
@@ -304,7 +446,10 @@ export class BookController {
     }
 
     if (updateBookDto.authors_id.length > 0) {
-      const authorsExists = await this.authorService.getAuthorList(updateBookDto.authors_id, reqUser.libraryId);
+      const authorsExists = await this.authorService.getAuthorList(
+        updateBookDto.authors_id,
+        reqUser.libraryId,
+      );
 
       if (authorsExists.length != updateBookDto.authors_id.length) {
         throw new HttpException(
@@ -315,7 +460,10 @@ export class BookController {
     }
 
     if (updateBookDto.tags_id.length > 0) {
-      const tagsExists = await this.tagService.getTagList(updateBookDto.tags_id, reqUser.libraryId);
+      const tagsExists = await this.tagService.getTagList(
+        updateBookDto.tags_id,
+        reqUser.libraryId,
+      );
 
       if (tagsExists.length != updateBookDto.tags_id.length) {
         throw new HttpException(
@@ -343,17 +491,19 @@ export class BookController {
   // Deleta um livro
   @UseGuards(AuthGuard)
   @Delete(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Book id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Book id.',
+  })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o livro existe
     const book: Book = await this.bookService.findOne(+id, reqUser.libraryId);
 
     if (null == book) {
-      throw new HttpException(
-        'book.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('book.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Deleta o livro, retorna com sucesso ou não

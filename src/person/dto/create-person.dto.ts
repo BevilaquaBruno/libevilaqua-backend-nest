@@ -11,13 +11,20 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePersonDto {
-  @ApiProperty({ example: 'Bruno Fernando Bevilaqua', description: 'Person name.' })
+  @ApiProperty({
+    example: 'Bruno Fernando Bevilaqua',
+    description: 'Person name.',
+  })
   @IsString({ message: 'person.name.invalid' })
   @IsNotEmpty({ message: 'person.name.required' })
   @Length(1, 250, { message: 'person.name.length_error' })
   name: string;
 
-  @ApiProperty({ example: '211.782.680-63', examples: ['211.782.680-63', '9875728495', null], description: 'Person document.' })
+  @ApiProperty({
+    example: '211.782.680-63',
+    examples: ['211.782.680-63', '9875728495', null],
+    description: 'Person document.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.document !== undefined &&
@@ -28,7 +35,11 @@ export class CreatePersonDto {
   @Length(1, 50, { message: 'person.document.length_error' })
   document: string;
 
-  @ApiProperty({ example: '89700-055', examples: ['89700-055', '62704-1234', null], description: 'Person Zip-Code.' })
+  @ApiProperty({
+    example: '89700-055',
+    examples: ['89700-055', '62704-1234', null],
+    description: 'Person Zip-Code.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.zip_code !== undefined &&
@@ -39,7 +50,11 @@ export class CreatePersonDto {
   @Length(1, 15, { message: 'person.zip_code.length_error' })
   zip_code: string;
 
-  @ApiProperty({ example: 'SC', examples: ['SC', null], description: 'Person state.' })
+  @ApiProperty({
+    example: 'SC',
+    examples: ['SC', null],
+    description: 'Person state.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.state !== undefined &&
@@ -50,7 +65,11 @@ export class CreatePersonDto {
   @Length(1, 30, { message: 'person.state.length_error' })
   state: string;
 
-  @ApiProperty({ example: 'Concórdia', examples: ['Concórdia', null], description: 'Person city.' })
+  @ApiProperty({
+    example: 'Concórdia',
+    examples: ['Concórdia', null],
+    description: 'Person city.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.city !== undefined &&
@@ -61,7 +80,11 @@ export class CreatePersonDto {
   @Length(1, 30, { message: 'person.city.length_error' })
   city: string;
 
-  @ApiProperty({ example: 'Bairro Presidentes', examples: ['Bairro Presidentes', null], description: 'Person district.' })
+  @ApiProperty({
+    example: 'Bairro Presidentes',
+    examples: ['Bairro Presidentes', null],
+    description: 'Person district.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.district !== undefined &&
@@ -72,7 +95,11 @@ export class CreatePersonDto {
   @Length(1, 100, { message: 'person.district.length_error' })
   district: string;
 
-  @ApiProperty({ example: 'Rua Costa e Silva', examples: ['Rua Costa e Silva', null], description: 'Person street.' })
+  @ApiProperty({
+    example: 'Rua Costa e Silva',
+    examples: ['Rua Costa e Silva', null],
+    description: 'Person street.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.street !== undefined &&
@@ -83,7 +110,11 @@ export class CreatePersonDto {
   @Length(1, 100, { message: 'person.street.length_error' })
   street: string;
 
-  @ApiProperty({ example: '1250', examples: ['1250', 'SN', 'S/N', null], description: 'Person number.' })
+  @ApiProperty({
+    example: '1250',
+    examples: ['1250', 'SN', 'S/N', null],
+    description: 'Person number.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.number !== undefined &&
@@ -97,7 +128,11 @@ export class CreatePersonDto {
   })
   number: string;
 
-  @ApiProperty({ example: 'Some text here', examples: ['Some text here', null], description: 'Person bio.' })
+  @ApiProperty({
+    example: 'Some text here',
+    examples: ['Some text here', null],
+    description: 'Person bio.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.obs !== undefined &&
@@ -108,7 +143,11 @@ export class CreatePersonDto {
   @Length(1, 500, { message: 'person.obs.length_error' })
   obs: string;
 
-  @ApiProperty({ example: 'temp@mail.com', examples: ['temp@mail.com', null], description: 'Person e-mail.' })
+  @ApiProperty({
+    example: 'temp@mail.com',
+    examples: ['temp@mail.com', null],
+    description: 'Person e-mail.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.email !== undefined &&
@@ -119,7 +158,11 @@ export class CreatePersonDto {
   @Length(7, 50, { message: 'person.email.length_error' })
   email: string;
 
-  @ApiProperty({ example: '+5511923456789', examples: ['+5511923456789', null], description: 'Person phone.' })
+  @ApiProperty({
+    example: '+5511923456789',
+    examples: ['+5511923456789', null],
+    description: 'Person phone.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.phone !== undefined &&
@@ -130,7 +173,11 @@ export class CreatePersonDto {
   @Length(1, 20, { message: 'person.phone.length_error' })
   phone: string;
 
-  @ApiProperty({ example: 'Brazil', examples: ['Brazil', 'Brasil', null], description: 'Person country.' })
+  @ApiProperty({
+    example: 'Brazil',
+    examples: ['Brazil', 'Brasil', null],
+    description: 'Person country.',
+  })
   @ValidateIf(
     (thisPerson) =>
       thisPerson.country !== undefined &&

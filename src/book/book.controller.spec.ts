@@ -21,7 +21,14 @@ import { UpdateBookDto } from './dto/update-book.dto';
 describe('BookController', () => {
   let controller: BookController;
   const libraryId = 1;
-  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
+  const req = {
+    user: {
+      libraryId: 1,
+      logged: true,
+      sub: 1,
+      username: 'bruno.f.bevilaqua@gmail.com',
+    },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -58,7 +65,7 @@ describe('BookController', () => {
       publisher_id: 1,
       type_id: 1,
       tags_id: [1, 2],
-      authors_id: [1, 2]
+      authors_id: [1, 2],
     };
 
     mockGenreService.findOne.mockResolvedValue({
@@ -68,11 +75,11 @@ describe('BookController', () => {
     mockPublisherService.findOne.mockResolvedValue({
       id: 1,
       name: 'Publisher 1',
-      country: 'Brazil'
+      country: 'Brazil',
     });
     mockTypeService.findOne.mockResolvedValue({
       id: 1,
-      descrption: 'Type Test'
+      descrption: 'Type Test',
     });
     mockAuthorService.getAuthorList.mockResolvedValue([
       {
@@ -80,46 +87,60 @@ describe('BookController', () => {
         name: 'New Author name',
         birth_date: new Date('2000-01-01'),
         death_date: new Date('2025-01-01'),
-        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
       },
       {
         id: 2,
         name: 'New Author name 2',
         birth_date: new Date('2000-01-01'),
         death_date: new Date('2025-01-01'),
-        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-      }
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+      },
     ]);
     mockTagService.getTagList.mockResolvedValue([
       {
         id: 1,
-        description: 'Tag Test'
+        description: 'Tag Test',
       },
       {
         id: 2,
-        description: 'Tag Test 2'
+        description: 'Tag Test 2',
       },
     ]);
 
     // Mocka o retorno no service e pega o resultado do controller
     mockBookService.create.mockResolvedValue({
       id: 1,
-      ...bookDto
+      ...bookDto,
     });
-
 
     // cria o livro
     const result = await controller.create(req, bookDto);
 
     expect(result).toEqual({
       id: 1,
-      ...bookDto
+      ...bookDto,
     });
-    expect(mockGenreService.findOne).toHaveBeenCalledWith(bookDto.genre_id, libraryId);
-    expect(mockPublisherService.findOne).toHaveBeenCalledWith(bookDto.publisher_id, libraryId);
-    expect(mockTypeService.findOne).toHaveBeenCalledWith(bookDto.type_id, libraryId);
-    expect(mockAuthorService.getAuthorList).toHaveBeenCalledWith(bookDto.authors_id, libraryId);
-    expect(mockTagService.getTagList).toHaveBeenCalledWith(bookDto.tags_id, libraryId);
+    expect(mockGenreService.findOne).toHaveBeenCalledWith(
+      bookDto.genre_id,
+      libraryId,
+    );
+    expect(mockPublisherService.findOne).toHaveBeenCalledWith(
+      bookDto.publisher_id,
+      libraryId,
+    );
+    expect(mockTypeService.findOne).toHaveBeenCalledWith(
+      bookDto.type_id,
+      libraryId,
+    );
+    expect(mockAuthorService.getAuthorList).toHaveBeenCalledWith(
+      bookDto.authors_id,
+      libraryId,
+    );
+    expect(mockTagService.getTagList).toHaveBeenCalledWith(
+      bookDto.tags_id,
+      libraryId,
+    );
     expect(mockBookService.create).toHaveBeenCalledWith(bookDto, libraryId);
   });
 
@@ -142,20 +163,20 @@ describe('BookController', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -164,16 +185,16 @@ describe('BookController', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
       },
       {
         id: 2,
@@ -191,20 +212,20 @@ describe('BookController', () => {
         publisher: {
           id: 1,
           name: 'Publisher 1',
-          country: 'Brazil'
+          country: 'Brazil',
         },
         type: {
           id: 1,
-          descrption: 'Type Test'
+          descrption: 'Type Test',
         },
         tags: [
           {
             id: 1,
-            description: 'Tag Test'
+            description: 'Tag Test',
           },
           {
             id: 2,
-            description: 'Tag Test 2'
+            description: 'Tag Test 2',
           },
         ],
         authors: [
@@ -213,17 +234,17 @@ describe('BookController', () => {
             name: 'New Author name',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
           },
           {
             id: 2,
             name: 'New Author name 2',
             birth_date: new Date('2000-01-01'),
             death_date: new Date('2025-01-01'),
-            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-          }
-        ]
-      }
+            bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+          },
+        ],
+      },
     ];
     const bookQuantity = mockResolvedBookList.length;
 
@@ -245,7 +266,7 @@ describe('BookController', () => {
       title: '',
       page: 1,
       limit: 2,
-      status: true
+      status: true,
     };
     const result = await controller.findAll(
       req,
@@ -266,7 +287,7 @@ describe('BookController', () => {
 
     expect(result).toEqual({
       data: mockResolvedBookList,
-      count: bookQuantity
+      count: bookQuantity,
     });
   });
 
@@ -288,20 +309,20 @@ describe('BookController', () => {
       publisher: {
         id: 1,
         name: 'Publisher 1',
-        country: 'Brazil'
+        country: 'Brazil',
       },
       type: {
         id: 1,
-        descrption: 'Type Test'
+        descrption: 'Type Test',
       },
       tags: [
         {
           id: 1,
-          description: 'Tag Test'
+          description: 'Tag Test',
         },
         {
           id: 2,
-          description: 'Tag Test 2'
+          description: 'Tag Test 2',
         },
       ],
       authors: [
@@ -310,16 +331,16 @@ describe('BookController', () => {
           name: 'New Author name',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
         },
         {
           id: 2,
           name: 'New Author name 2',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-        }
-      ]
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+        },
+      ],
     };
 
     // Insere os dados no mock
@@ -350,7 +371,7 @@ describe('BookController', () => {
       publisher_id: 1,
       type_id: 1,
       tags_id: [1, 2],
-      authors_id: [1, 2]
+      authors_id: [1, 2],
     };
     const book = {
       id: bookId,
@@ -367,20 +388,20 @@ describe('BookController', () => {
       publisher: {
         id: 1,
         name: 'Publisher 1',
-        country: 'Brazil'
+        country: 'Brazil',
       },
       type: {
         id: 1,
-        descrption: 'Type Test'
+        descrption: 'Type Test',
       },
       tags: [
         {
           id: 1,
-          description: 'Tag Test'
+          description: 'Tag Test',
         },
         {
           id: 2,
-          description: 'Tag Test 2'
+          description: 'Tag Test 2',
         },
       ],
       authors: [
@@ -389,16 +410,16 @@ describe('BookController', () => {
           name: 'New Author name',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
         },
         {
           id: 2,
           name: 'New Author name 2',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-        }
-      ]
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+        },
+      ],
     };
 
     mockGenreService.findOne.mockResolvedValue({
@@ -408,11 +429,11 @@ describe('BookController', () => {
     mockPublisherService.findOne.mockResolvedValue({
       id: 1,
       name: 'Publisher 1',
-      country: 'Brazil'
+      country: 'Brazil',
     });
     mockTypeService.findOne.mockResolvedValue({
       id: 1,
-      descrption: 'Type Test'
+      descrption: 'Type Test',
     });
     mockAuthorService.getAuthorList.mockResolvedValue([
       {
@@ -420,31 +441,31 @@ describe('BookController', () => {
         name: 'New Author name',
         birth_date: new Date('2000-01-01'),
         death_date: new Date('2025-01-01'),
-        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
       },
       {
         id: 2,
         name: 'New Author name 2',
         birth_date: new Date('2000-01-01'),
         death_date: new Date('2025-01-01'),
-        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-      }
+        bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+      },
     ]);
     mockTagService.getTagList.mockResolvedValue([
       {
         id: 1,
-        description: 'Tag Test'
+        description: 'Tag Test',
       },
       {
         id: 2,
-        description: 'Tag Test 2'
+        description: 'Tag Test 2',
       },
     ]);
 
     // Mocka o retorno no service e pega o resultado do controller
     mockBookService.update.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockBookService.findOne.mockResolvedValue(book);
 
@@ -473,20 +494,20 @@ describe('BookController', () => {
       publisher: {
         id: 1,
         name: 'Publisher 1',
-        country: 'Brazil'
+        country: 'Brazil',
       },
       type: {
         id: 1,
-        descrption: 'Type Test'
+        descrption: 'Type Test',
       },
       tags: [
         {
           id: 1,
-          description: 'Tag Test'
+          description: 'Tag Test',
         },
         {
           id: 2,
-          description: 'Tag Test 2'
+          description: 'Tag Test 2',
         },
       ],
       authors: [
@@ -495,25 +516,24 @@ describe('BookController', () => {
           name: 'New Author name',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text'
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text',
         },
         {
           id: 2,
           name: 'New Author name 2',
           birth_date: new Date('2000-01-01'),
           death_date: new Date('2025-01-01'),
-          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2'
-        }
-      ]
+          bio: 'This is the author bio, insert here a loooooooooooooooooooooooong text 2',
+        },
+      ],
     };
 
     // Mocka o resultado
     mockBookService.remove.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockBookService.findOne.mockResolvedValue(book);
-
 
     const result = await controller.remove(req, bookId.toString());
 

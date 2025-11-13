@@ -25,16 +25,19 @@ import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-erro
 @ApiDefaultErrorResponses()
 @Controller('type')
 export class TypeController {
-  constructor(private readonly typeService: TypeService) { }
+  constructor(private readonly typeService: TypeService) {}
 
   // Cria o tipo
   @UseGuards(AuthGuard)
   @Post()
   async create(@Req() req: Request, @Body() createTypeDto: CreateTypeDto) {
     const reqUser: PayloadAuthDto = req['user'];
-    
+
     // Cria o tipo
-    const newType = await this.typeService.create(createTypeDto, reqUser.libraryId);
+    const newType = await this.typeService.create(
+      createTypeDto,
+      reqUser.libraryId,
+    );
 
     return {
       id: newType.id,
@@ -45,9 +48,25 @@ export class TypeController {
   // Retorna uma lista de tipos
   @UseGuards(AuthGuard)
   @Get()
-  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
-  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
-  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: '1',
+    description: 'Page number.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: '10',
+    description: 'Limit of registers in the page.',
+    schema: { default: 5 },
+  })
+  async findAll(
+    @Req() req: Request,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findType: FindTypeDto = {
@@ -69,37 +88,49 @@ export class TypeController {
   // Retorna um tipo
   @UseGuards(AuthGuard)
   @Get(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Type id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Type id.',
+  })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
 
     // Verifica se o tipo existe e retorna
     const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type)
-      throw new HttpException(
-        'type.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('type.general.not_found', HttpStatus.NOT_FOUND);
     return type;
   }
 
   // Edita o tipo
   @UseGuards(AuthGuard)
   @Patch(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Type id.' })
-  async update(@Req() req: Request, @Param('id') id: string, @Body() updateTypeDto: UpdateTypeDto) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Type id.',
+  })
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateTypeDto: UpdateTypeDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o tipo existe
     const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type) {
-      throw new HttpException(
-        'type.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('type.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Atualiza o tipo
-    const updatedType = await this.typeService.update(+id, updateTypeDto, reqUser.libraryId);
+    const updatedType = await this.typeService.update(
+      +id,
+      updateTypeDto,
+      reqUser.libraryId,
+    );
     if (updatedType.affected == 1) {
       return {
         id: +id,
@@ -116,16 +147,18 @@ export class TypeController {
   // Exclui o tipo
   @UseGuards(AuthGuard)
   @Delete(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Type id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Type id.',
+  })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o tipo existe
     const type: Type = await this.typeService.findOne(+id, reqUser.libraryId);
     if (null == type) {
-      throw new HttpException(
-        'type.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('type.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Deleta o tipo e retorna ele

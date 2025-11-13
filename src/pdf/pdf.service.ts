@@ -25,7 +25,11 @@ export class PdfService {
       landscape: false,
     };
 
-    const html = await this.compileReport(data.template, data.data, data.layout);
+    const html = await this.compileReport(
+      data.template,
+      data.data,
+      data.layout,
+    );
     return this.generateWithCustomHtml(html, options);
   }
 
@@ -46,8 +50,10 @@ export class PdfService {
     return hbs.compile(finalTemplate)(data);
   }
 
-
-  private async generateWithCustomHtml(html: string, options: any): Promise<Buffer> {
+  private async generateWithCustomHtml(
+    html: string,
+    options: any,
+  ): Promise<Buffer> {
     const tempFilePath = path.join(process.cwd(), 'temp', `${uuid()}.hbs`);
 
     // salva o HTML num arquivo temporário
@@ -60,5 +66,4 @@ export class PdfService {
 
     return pdf;
   }
-
 }

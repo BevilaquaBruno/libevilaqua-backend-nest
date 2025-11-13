@@ -6,4 +6,4 @@ export const mockLibraryService = {
   remove: jest.fn(),
   count: jest.fn(),
   getLibrariesFromuser: jest.fn(),
-}
+};

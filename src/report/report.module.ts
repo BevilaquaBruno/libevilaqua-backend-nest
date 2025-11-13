@@ -28,19 +28,21 @@ import { Book } from '../book/entities/book.entity';
 import { BookService } from '../book/book.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([
-    Library,
-    Author,
-    Genre,
-    Person,
-    Publisher,
-    Tag,
-    Type,
-    User,
-    LibraryUser,
-    Loan,
-    Book,
-  ])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Library,
+      Author,
+      Genre,
+      Person,
+      Publisher,
+      Tag,
+      Type,
+      User,
+      LibraryUser,
+      Loan,
+      Book,
+    ]),
+  ],
   controllers: [ReportController],
   providers: [
     PdfService,
@@ -54,12 +56,18 @@ import { BookService } from '../book/book.service';
     UserService,
     LoanService,
     BookService,
-  ]
+  ],
 })
 export class ReportModule implements OnModuleInit {
   onModuleInit() {
     // Registra os partials
-    const partialsDir = path.join(process.cwd(), 'src', 'report', 'html', 'partials');
+    const partialsDir = path.join(
+      process.cwd(),
+      'src',
+      'report',
+      'html',
+      'partials',
+    );
     const files = fs.readdirSync(partialsDir);
 
     files.forEach((file) => {

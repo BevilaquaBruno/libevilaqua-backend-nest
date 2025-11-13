@@ -10,7 +10,7 @@ import { PayloadAuthDto } from './dto/payload-auth.dto';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) { }
+  constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // Pega a request e extrai o token do header
@@ -26,8 +26,7 @@ export class AuthGuard implements CanActivate {
       });
 
       // Se não for um token de login, não deixa prosseguir
-      if (!payload.logged)
-        throw new UnauthorizedException();
+      if (!payload.logged) throw new UnauthorizedException();
 
       // Coloca o user dentro do request pra ser usado na regra de negócio
       request['user'] = payload;

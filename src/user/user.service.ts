@@ -11,8 +11,9 @@ import { LibraryUser } from './entities/library-user.entity';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    @InjectRepository(LibraryUser) private libraryUserRepository: Repository<LibraryUser>,
-  ) { }
+    @InjectRepository(LibraryUser)
+    private libraryUserRepository: Repository<LibraryUser>,
+  ) {}
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
@@ -25,9 +26,9 @@ export class UserService {
       skip: findUser.page,
       where: {
         libraries: {
-          library: { id: libraryId }
-        }
-      }
+          library: { id: libraryId },
+        },
+      },
     });
   }
 
@@ -35,8 +36,8 @@ export class UserService {
     return this.userRepository.findOneBy({
       id: id,
       libraries: {
-        library: { id: libraryId }
-      }
+        library: { id: libraryId },
+      },
     });
   }
 
@@ -53,25 +54,29 @@ export class UserService {
       where: {
         id: id,
         libraries: {
-          library: { id: libraryId }
-        }
+          library: { id: libraryId },
+        },
       },
     });
   }
 
-  findByEmail(email: string, libraryId: number = null, excludeId: number = null) {
+  findByEmail(
+    email: string,
+    libraryId: number = null,
+    excludeId: number = null,
+  ) {
     // Pesquisa o usuário pelo e-mail, excluir um id
     let librariesWhere: {};
     if (libraryId) {
       librariesWhere = {
         libraries: {
-          library: { id: libraryId }
-        }
-      }
+          library: { id: libraryId },
+        },
+      };
     }
     let dynamicWhere: FindOptionsWhere<User> = {
       email: email,
-      ...librariesWhere
+      ...librariesWhere,
     };
 
     if (null != excludeId) {
@@ -87,7 +92,7 @@ export class UserService {
         name: true,
         email: true,
         password: true,
-        language: true
+        language: true,
       },
       where: dynamicWhere,
     });
@@ -105,19 +110,22 @@ export class UserService {
     return this.userRepository.count({
       where: {
         libraries: {
-          library: { id: libraryId }
-        }
-      }
+          library: { id: libraryId },
+        },
+      },
     });
   }
 
   updatePassword(id: number, password: string, libraryId: number) {
-    return this.userRepository.update({
-      id: id,
-      libraries: {
-        library: { id: libraryId }
-      }
-    }, { password: password });
+    return this.userRepository.update(
+      {
+        id: id,
+        libraries: {
+          library: { id: libraryId },
+        },
+      },
+      { password: password },
+    );
   }
 
   async confirmEmail(userId: number, libraryId: number) {
@@ -129,7 +137,9 @@ export class UserService {
     });
 
     if (!libraryUser) {
-      throw new NotFoundException('Relação entre usuário e biblioteca não encontrada');
+      throw new NotFoundException(
+        'Relação entre usuário e biblioteca não encontrada',
+      );
     }
 
     libraryUser.email_verified_at = new Date();
@@ -138,26 +148,37 @@ export class UserService {
   }
 
   userHasLibrary(userId: number, libraryId: number) {
-    return this.userRepository.findAndCountBy({ id: userId, libraries: { library: { id: libraryId } } });
+    return this.userRepository.findAndCountBy({
+      id: userId,
+      libraries: { library: { id: libraryId } },
+    });
   }
 
   createLibraryUser(userId: number, libraryId: number) {
-    return this.libraryUserRepository.save({ library: { id: libraryId }, user: { id: userId } });
+    return this.libraryUserRepository.save({
+      library: { id: libraryId },
+      user: { id: userId },
+    });
   }
 
   getLibraryUser(userId: number, libraryId: number) {
-    return this.libraryUserRepository.findOneBy({ library: { id: libraryId }, user: { id: userId } });
+    return this.libraryUserRepository.findOneBy({
+      library: { id: libraryId },
+      user: { id: userId },
+    });
   }
 
   setLibraryUserUnconfirmed(userId: number, libraryId: number) {
-    return this.libraryUserRepository.update({
-      library: {
-        id: libraryId
+    return this.libraryUserRepository.update(
+      {
+        library: {
+          id: libraryId,
+        },
+        user: {
+          id: userId,
+        },
       },
-      user: {
-        id: userId
-      }
-    }, { email_verified_at: null });
+      { email_verified_at: null },
+    );
   }
-
 }

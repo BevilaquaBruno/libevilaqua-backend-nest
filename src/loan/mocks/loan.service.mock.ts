@@ -10,4 +10,4 @@ export const mockLoanService = {
   findLoanHistoryFromPerson: jest.fn(),
   count: jest.fn(),
   findAndCountLoanHistoryFromPerson: jest.fn(),
-}
+};

@@ -29,9 +29,7 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
         path: path.join(process.cwd(), 'src', 'i18n'),
         watch: process.env.NODE_ENV !== 'test', // desativa watch em testes
       },
-      resolvers: [
-        new AcceptLanguageResolver()
-      ],
+      resolvers: [new AcceptLanguageResolver()],
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
@@ -40,7 +38,10 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
       port: Number(process.env['DB_PORT']),
       username: process.env['DB_USERNAME'],
       password: process.env['DB_PASSWORD'],
-      database: process.env.NODE_ENV === 'test' ? 'libevilaqua_test' : process.env['DB_DATABASE'],
+      database:
+        process.env.NODE_ENV === 'test'
+          ? 'libevilaqua_test'
+          : process.env['DB_DATABASE'],
       autoLoadEntities: true,
       synchronize: false,
       timezone: '-03:00',
@@ -59,10 +60,14 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
     LibraryModule,
     ReportModule,
   ],
-  providers: [MailService, PdfService, {
-    provide: APP_INTERCEPTOR,
-    useClass: I18nInterceptor,
-  }],
+  providers: [
+    MailService,
+    PdfService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: I18nInterceptor,
+    },
+  ],
   controllers: [],
 })
-export class AppModule { }
+export class AppModule {}

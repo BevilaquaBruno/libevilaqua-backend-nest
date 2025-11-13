@@ -1,4 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+  Req,
+  HttpException,
+  HttpStatus,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LibraryService } from './library.service';
 import { UpdateLibraryDto } from './dto/update-library.dto';
 import { AuthGuard } from '../auth/auth.guard';
@@ -9,18 +23,30 @@ import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-erro
 @ApiDefaultErrorResponses()
 @Controller('library')
 export class LibraryController {
-  constructor(private readonly libraryService: LibraryService) { }
+  constructor(private readonly libraryService: LibraryService) {}
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Library id.' })
-  async update(@Req() req: Request, @Param('id') id: string, @Body() updateLibraryDto: UpdateLibraryDto) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Library id.',
+  })
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateLibraryDto: UpdateLibraryDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     if (reqUser.libraryId.toString() != id) {
       throw new UnauthorizedException();
     }
     updateLibraryDto.id = reqUser.libraryId;
-    const libraryUpdated = await this.libraryService.update(reqUser.libraryId, updateLibraryDto);
+    const libraryUpdated = await this.libraryService.update(
+      reqUser.libraryId,
+      updateLibraryDto,
+    );
     if (libraryUpdated.affected == 1) {
       return {
         id: +id,
@@ -36,7 +62,12 @@ export class LibraryController {
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Library id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Library id.',
+  })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     if (reqUser.libraryId.toString() != id) {

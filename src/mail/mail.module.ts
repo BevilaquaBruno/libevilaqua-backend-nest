@@ -17,7 +17,12 @@ dotenv.config();
         },
       },
       defaults: {
-        from: '"'+process.env['APP_NAME']+'" <'+process.env['SMTP_USER']+'>',
+        from:
+          '"' +
+          process.env['APP_NAME'] +
+          '" <' +
+          process.env['SMTP_USER'] +
+          '>',
       },
       preview: false, // mostra no navegador (opcional)
     }),
@@ -25,4 +30,4 @@ dotenv.config();
   providers: [MailService],
   exports: [MailService],
 })
-export class MailModule { }
+export class MailModule {}

@@ -11,14 +11,21 @@ import { FindTypeDto } from './dto/find-type.dto';
 describe('TypeController', () => {
   let controller: TypeController;
   const libraryId = 1;
-  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
+  const req = {
+    user: {
+      libraryId: 1,
+      logged: true,
+      sub: 1,
+      username: 'bruno.f.bevilaqua@gmail.com',
+    },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TypeController],
       providers: [
         { provide: JwtService, useValue: mockJwtService },
-        { provide: TypeService, useValue: mockTypeService }
+        { provide: TypeService, useValue: mockTypeService },
       ],
     }).compile();
 
@@ -32,19 +39,19 @@ describe('TypeController', () => {
   it('Should create a new type', async () => {
     // Cria o dto
     const publisher: CreateTypeDto = {
-      description: 'Tipo cadastrado'
+      description: 'Tipo cadastrado',
     };
 
     // Mocka o retorno
     mockTypeService.create.mockResolvedValue({
       id: 1,
-      ...publisher
+      ...publisher,
     });
     const result = await controller.create(req, publisher);
 
     expect(result).toEqual({
       id: 1,
-      ...publisher
+      ...publisher,
     });
     expect(mockTypeService.create).toHaveBeenCalledWith(publisher, libraryId);
   });
@@ -54,11 +61,11 @@ describe('TypeController', () => {
     const list: UpdateTypeDto[] = [
       {
         id: 1,
-        description: 'Tipo cadastrado'
+        description: 'Tipo cadastrado',
       },
       {
         id: 2,
-        description: 'Tag nova cadastrada'
+        description: 'Tag nova cadastrada',
       },
     ];
     const quantity = list.length;
@@ -70,7 +77,7 @@ describe('TypeController', () => {
     // Cria a paginação e requisita
     const findDto: FindTypeDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
 
     const result = await controller.findAll(
@@ -82,7 +89,7 @@ describe('TypeController', () => {
     // Valida os retornos
     expect(result).toEqual({
       data: list,
-      count: quantity
+      count: quantity,
     });
     findDto.page--;
     expect(mockTypeService.findAll).toHaveBeenCalledWith(findDto, libraryId);
@@ -92,7 +99,7 @@ describe('TypeController', () => {
     // Cria um mock
     const publisher: UpdateTypeDto = {
       id: 1,
-      description: 'Tipo cadastrado'
+      description: 'Tipo cadastrado',
     };
 
     // Insere os mocks nos serviços
@@ -112,13 +119,13 @@ describe('TypeController', () => {
     const id = 1;
     const dto: UpdateTypeDto = {
       id: 1,
-      description: 'Tipo cadastrado'
+      description: 'Tipo cadastrado',
     };
 
     // Mocka o retorno no service e pega o resultado do controller
     mockTypeService.update.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockTypeService.findOne.mockResolvedValue(dto);
 
@@ -135,11 +142,11 @@ describe('TypeController', () => {
     // Mocka o resultado
     mockTypeService.remove.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockTypeService.findOne.mockResolvedValue({
       id: 1,
-      description: 'Tipo cadastrado'
+      description: 'Tipo cadastrado',
     });
 
     const result = await controller.remove(req, id.toString());
@@ -152,4 +159,3 @@ describe('TypeController', () => {
     expect(mockTypeService.remove).toHaveBeenCalledWith(id, libraryId);
   });
 });
-

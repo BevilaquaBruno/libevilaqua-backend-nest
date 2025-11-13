@@ -50,7 +50,9 @@ describe('AuthService', () => {
 
     // valida os retornos
     expect(result).toBe(true);
-    expect(mockUserService.findByEmail).toHaveBeenCalledWith('bruno.f.bevilaqua@gmail.com');
+    expect(mockUserService.findByEmail).toHaveBeenCalledWith(
+      'bruno.f.bevilaqua@gmail.com',
+    );
   });
 
   it('Should validate user with wrong e-mail and password', async () => {
@@ -65,8 +67,7 @@ describe('AuthService', () => {
 
     // Chama o signin com a senha errada
     await expect(
-      service.signIn('bruno.f.bevilaqua@gmail.com', 'senhaErrada')
+      service.signIn('bruno.f.bevilaqua@gmail.com', 'senhaErrada'),
     ).rejects.toThrow(UnauthorizedException);
   });
-
 });

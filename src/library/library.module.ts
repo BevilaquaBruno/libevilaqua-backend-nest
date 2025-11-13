@@ -8,6 +8,6 @@ import { Library } from './entities/library.entity';
   imports: [TypeOrmModule.forFeature([Library])],
   controllers: [LibraryController],
   providers: [LibraryService],
-  exports: [LibraryService]
+  exports: [LibraryService],
 })
 export class LibraryModule {}

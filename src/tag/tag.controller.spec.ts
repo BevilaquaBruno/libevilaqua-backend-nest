@@ -11,14 +11,21 @@ import { FindTagDto } from './dto/find-tag.dto';
 describe('TagController', () => {
   let controller: TagController;
   const libraryId = 1;
-  const req = { user: { libraryId: 1, logged: true, sub: 1, username: 'bruno.f.bevilaqua@gmail.com' } } as any;
+  const req = {
+    user: {
+      libraryId: 1,
+      logged: true,
+      sub: 1,
+      username: 'bruno.f.bevilaqua@gmail.com',
+    },
+  } as any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TagController],
       providers: [
         { provide: JwtService, useValue: mockJwtService },
-        { provide: TagService, useValue: mockTagService }
+        { provide: TagService, useValue: mockTagService },
       ],
     }).compile();
 
@@ -32,19 +39,19 @@ describe('TagController', () => {
   it('Should create a new tag', async () => {
     // Cria o dto
     const publisher: CreateTagDto = {
-      description: 'Tag cadastrada'
+      description: 'Tag cadastrada',
     };
 
     // Mocka o retorno
     mockTagService.create.mockResolvedValue({
       id: 1,
-      ...publisher
+      ...publisher,
     });
     const result = await controller.create(req, publisher);
 
     expect(result).toEqual({
       id: 1,
-      ...publisher
+      ...publisher,
     });
     expect(mockTagService.create).toHaveBeenCalledWith(publisher, libraryId);
   });
@@ -54,11 +61,11 @@ describe('TagController', () => {
     const list: UpdateTagDto[] = [
       {
         id: 1,
-        description: 'Tag cadastrada'
+        description: 'Tag cadastrada',
       },
       {
         id: 2,
-        description: 'Tag nova cadastrada'
+        description: 'Tag nova cadastrada',
       },
     ];
     const quantity = list.length;
@@ -70,7 +77,7 @@ describe('TagController', () => {
     // Cria a paginação e requisita
     const findDto: FindTagDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
 
     const result = await controller.findAll(
@@ -82,7 +89,7 @@ describe('TagController', () => {
     // Valida os retornos
     expect(result).toEqual({
       data: list,
-      count: quantity
+      count: quantity,
     });
     findDto.page--;
     expect(mockTagService.findAll).toHaveBeenCalledWith(findDto, libraryId);
@@ -92,7 +99,7 @@ describe('TagController', () => {
     // Cria um mock
     const publisher: UpdateTagDto = {
       id: 1,
-      description: 'Tag cadastrada'
+      description: 'Tag cadastrada',
     };
 
     // Insere os mocks nos serviços
@@ -112,13 +119,13 @@ describe('TagController', () => {
     const id = 1;
     const dto: UpdateTagDto = {
       id: 1,
-      description: 'Tag cadastrada'
+      description: 'Tag cadastrada',
     };
 
     // Mocka o retorno no service e pega o resultado do controller
     mockTagService.update.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockTagService.findOne.mockResolvedValue(dto);
 
@@ -135,11 +142,11 @@ describe('TagController', () => {
     // Mocka o resultado
     mockTagService.remove.mockResolvedValue({
       raw: [],
-      affected: 1
+      affected: 1,
     });
     mockTagService.findOne.mockResolvedValue({
       id: 1,
-      description: 'Tag cadastrada'
+      description: 'Tag cadastrada',
     });
 
     const result = await controller.remove(req, id.toString());

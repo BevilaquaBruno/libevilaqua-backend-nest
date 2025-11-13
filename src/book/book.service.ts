@@ -11,7 +11,7 @@ import { Book } from './entities/book.entity';
 export class BookService {
   constructor(
     @InjectRepository(Book) private bookServiceRepository: Repository<Book>,
-  ) { }
+  ) {}
   create(createBookDto: CreateBookDto, libraryId: number) {
     // Cria um padrão de inserção no banco para o livro - Validar futuramente para alterar o local desse padrão
     const tempCreateBookDto = {
@@ -21,7 +21,7 @@ export class BookService {
       genre: { id: createBookDto.genre_id },
       authors: [],
       tags: [],
-      libraryId: libraryId
+      libraryId: libraryId,
     };
 
     // Cria um padrão de inserção para os autores - Validar futuramente para alterar o local desse padrão
@@ -47,14 +47,14 @@ export class BookService {
     const query = this.bookServiceRepository
       .createQueryBuilder('book')
       .select([
-        "book.id",
-        "book.title",
-        "book.edition",
-        "book.isbn",
-        "book.number_pages",
-        "book.release_year",
-        "book.obs",
-        "book.status",
+        'book.id',
+        'book.title',
+        'book.edition',
+        'book.isbn',
+        'book.number_pages',
+        'book.release_year',
+        'book.obs',
+        'book.status',
       ])
       .leftJoinAndSelect('book.genre', 'genre')
       .leftJoinAndSelect('book.publisher', 'publisher')
@@ -114,8 +114,7 @@ export class BookService {
     if (findBook.title != null)
       query.andWhere({ title: Like(`%${findBook.title}%`) });
 
-    if (findBook.status != null)
-      query.andWhere({ status: findBook.status });
+    if (findBook.status != null) query.andWhere({ status: findBook.status });
 
     // Retorna a query ordenando pelo id decrescente
     return query
@@ -137,34 +136,34 @@ export class BookService {
         obs: true,
         genre: {
           id: true,
-          description: true
+          description: true,
         },
         publisher: {
           id: true,
           name: true,
-          country: true
+          country: true,
         },
         type: {
           id: true,
-          description: true
+          description: true,
         },
         tags: {
           id: true,
-          description: true
+          description: true,
         },
         authors: {
           id: true,
           name: true,
           birth_date: true,
           death_date: true,
-          bio: true
+          bio: true,
         },
         status: true,
       },
       where: {
         id: id,
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
@@ -213,7 +212,7 @@ export class BookService {
       .leftJoin('book.authors', 'authorsForFilter')
       .where('authorsForFilter.id IN (:...authors)', {
         authors: [findAuthorBooks.authorId],
-        libraryId: libraryId
+        libraryId: libraryId,
       })
       .take(findAuthorBooks.limit)
       .skip(findAuthorBooks.page)
@@ -283,14 +282,16 @@ export class BookService {
     if (findBook.title != null)
       query.andWhere({ title: Like(`%${findBook.title}%`) });
 
-    if (findBook.status != null)
-      query.andWhere({ status: findBook.status });
+    if (findBook.status != null) query.andWhere({ status: findBook.status });
 
     // Retorna a query ordenando pelo id decrescente
     return query.getCount();
   }
 
-  findAndCountBooksFromAuthor(findAuthorBooks: FindAuthorBooksDto, libraryId: number) {
+  findAndCountBooksFromAuthor(
+    findAuthorBooks: FindAuthorBooksDto,
+    libraryId: number,
+  ) {
     // Retorna todos os livros do autor
     return this.bookServiceRepository
       .createQueryBuilder('book')
@@ -302,7 +303,7 @@ export class BookService {
       .leftJoin('book.authors', 'authorsForFilter')
       .where('authorsForFilter.id IN (:...authors)', {
         authors: [findAuthorBooks.authorId],
-        libraryId: libraryId
+        libraryId: libraryId,
       })
       .take(findAuthorBooks.limit)
       .skip(findAuthorBooks.page)

@@ -4,5 +4,5 @@ export const mockTypeService = {
   findOne: jest.fn(),
   update: jest.fn(),
   remove: jest.fn(),
-  count: jest.fn()
-}
+  count: jest.fn(),
+};

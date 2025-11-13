@@ -33,8 +33,8 @@ describe('person E2E', () => {
   });
 
   it('PATCH /person - Update', async () => {
-    person1.name = "Pessoa 1 Atualizada";
-    person1.city = "Florianópolis";
+    person1.name = 'Pessoa 1 Atualizada';
+    person1.city = 'Florianópolis';
 
     await request(app.getHttpServer())
       .patch(`/person/${person1.id}`)
@@ -52,8 +52,9 @@ describe('person E2E', () => {
         obs: person1.obs,
         email: person1.email,
         phone: person1.phone,
-        country: person1.country
-      }).expect(200);
+        country: person1.country,
+      })
+      .expect(200);
   });
 
   it('GET /person - Get all', async () => {
@@ -62,7 +63,7 @@ describe('person E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect({
         data: [person2, person1],
-        count: 2
+        count: 2,
       });
   });
 
@@ -84,7 +85,6 @@ describe('person E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
-
 });
 
 export function registerPerson(app, token, person) {
@@ -104,6 +104,6 @@ export function registerPerson(app, token, person) {
       obs: person.obs,
       email: person.email,
       phone: person.phone,
-      country: person.country
-    })
+      country: person.country,
+    });
 }

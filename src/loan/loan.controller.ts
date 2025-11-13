@@ -36,7 +36,7 @@ export class LoanController {
     private readonly loanService: LoanService,
     private readonly bookService: BookService,
     private readonly personService: PersonService,
-  ) { }
+  ) {}
 
   // Cria um empréstimo
   @UseGuards(AuthGuard)
@@ -44,31 +44,28 @@ export class LoanController {
   async create(@Req() req: Request, @Body() createLoanDto: CreateLoanDto) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta o livro e retorna erro se não encontrado
-    const book: Book = await this.bookService.findOne(createLoanDto.bookId, reqUser.libraryId);
+    const book: Book = await this.bookService.findOne(
+      createLoanDto.bookId,
+      reqUser.libraryId,
+    );
     if (null == book) {
-      throw new HttpException(
-        'book.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('book.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Consulta a pessoa e retorna erro se não encontrada
     const person: Person = await this.personService.findOne(
       createLoanDto.personId,
-      reqUser.libraryId
+      reqUser.libraryId,
     );
     if (null == person) {
-      throw new HttpException(
-        'person.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('person.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Consulta se o livro já está emprestado
     const isBookLoaned = await this.loanService.findLoanedBook(
       createLoanDto.bookId,
       null,
-      reqUser.libraryId
+      reqUser.libraryId,
     );
     if (isBookLoaned[1] != 0) {
       throw new HttpException(
@@ -131,7 +128,10 @@ export class LoanController {
     }
 
     // Cria o empréstimo e retorna
-    const newLoan = await this.loanService.create(createLoanDto, reqUser.libraryId);
+    const newLoan = await this.loanService.create(
+      createLoanDto,
+      reqUser.libraryId,
+    );
 
     return {
       id: newLoan.id,
@@ -147,14 +147,66 @@ export class LoanController {
   // Retorna todos os empréstimos
   @UseGuards(AuthGuard)
   @Get()
-  @ApiQuery({ name: 'start_date', required: false, example: '2024-01-01', description: 'Start date to filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'end_date', required: false, example: '2024-31-12', description: 'End date to filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'book', required: false, example: '1', description: 'Book filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'person', required: false, example: '1', description: 'Person filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'description', required: false, example: '1', description: 'Description filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'returned', required: false, example: 'true', examples: { returned: {summary: 'Returned loans', value: 'true'}, notReturned: {summary: 'Pending loans', value: 'false'} }, description: 'Return or not filter loan.', schema: { default: null } })
-  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
-  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
+  @ApiQuery({
+    name: 'start_date',
+    required: false,
+    example: '2024-01-01',
+    description: 'Start date to filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'end_date',
+    required: false,
+    example: '2024-31-12',
+    description: 'End date to filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'book',
+    required: false,
+    example: '1',
+    description: 'Book filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'person',
+    required: false,
+    example: '1',
+    description: 'Person filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'description',
+    required: false,
+    example: '1',
+    description: 'Description filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'returned',
+    required: false,
+    example: 'true',
+    examples: {
+      returned: { summary: 'Returned loans', value: 'true' },
+      notReturned: { summary: 'Pending loans', value: 'false' },
+    },
+    description: 'Return or not filter loan.',
+    schema: { default: null },
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: '1',
+    description: 'Page number.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: '10',
+    description: 'Limit of registers in the page.',
+    schema: { default: 5 },
+  })
   async findAll(
     @Req() req: Request,
     @Query('start_date') start_date: string,
@@ -180,7 +232,8 @@ export class LoanController {
     };
 
     // Define os filtros com base no que veio na URL
-    if (undefined != start_date && '' != start_date) findLoan.start_date = start_date;
+    if (undefined != start_date && '' != start_date)
+      findLoan.start_date = start_date;
 
     if (undefined != end_date && '' != end_date) findLoan.end_date = end_date;
 
@@ -188,7 +241,8 @@ export class LoanController {
 
     if (undefined != person && '' != person) findLoan.person = parseInt(person);
 
-    if (undefined != description && '' != description) findLoan.description = description;
+    if (undefined != description && '' != description)
+      findLoan.description = description;
 
     /**
      * Valida o retorno do livr
@@ -197,10 +251,8 @@ export class LoanController {
      * returned = undefined - Todos os livros
      */
     if (undefined != returned && '' != returned)
-      if (returned == 'true')
-        findLoan.returned = true;
-      else
-        findLoan.returned = false;
+      if (returned == 'true') findLoan.returned = true;
+      else findLoan.returned = false;
 
     // Define a paginação
     findLoan.limit = limit == undefined ? 5 : parseInt(limit);
@@ -216,17 +268,19 @@ export class LoanController {
   // Retorna um empréstimo
   @UseGuards(AuthGuard)
   @Get(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Loan id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Loan id.',
+  })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
 
     // Verifica se existe o empréstimo e retorna
     const loan = await this.loanService.findOne(+id, reqUser.libraryId);
     if (loan === null) {
-      throw new HttpException(
-        'loan.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('loan.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     return loan;
@@ -235,32 +289,41 @@ export class LoanController {
   // Atualiza o empréstimo
   @UseGuards(AuthGuard)
   @Patch(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Loan id.' })
-  async update(@Req() req: Request, @Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Loan id.',
+  })
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateLoanDto: UpdateLoanDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o empréstimo existe
-    const currentLoan: Loan = await this.loanService.findOne(+id, reqUser.libraryId);
+    const currentLoan: Loan = await this.loanService.findOne(
+      +id,
+      reqUser.libraryId,
+    );
     if (null == currentLoan) {
-      throw new HttpException(
-        'loan.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('loan.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Consulta o livro e retorna erro se não encontrado
-    const book: Book = await this.bookService.findOne(updateLoanDto.bookId, reqUser.libraryId);
+    const book: Book = await this.bookService.findOne(
+      updateLoanDto.bookId,
+      reqUser.libraryId,
+    );
     if (null == book) {
-      throw new HttpException(
-        'book.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('book.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Consulta a pessoa e retorna erro se não encontrada
     if (null != updateLoanDto.personId) {
       const person: Person = await this.personService.findOne(
         updateLoanDto.personId,
-        reqUser.libraryId
+        reqUser.libraryId,
       );
       if (null == person) {
         throw new HttpException(
@@ -274,7 +337,7 @@ export class LoanController {
     const isBookLoaned = await this.loanService.findLoanedBook(
       updateLoanDto.bookId,
       +id,
-      reqUser.libraryId
+      reqUser.libraryId,
     );
     if (isBookLoaned[1] != 0) {
       throw new HttpException(
@@ -337,7 +400,11 @@ export class LoanController {
     }
 
     // Atualiza o empréstimo e retorna erro ou os dados do empréstimo
-    const updatedLoan = await this.loanService.update(+id, updateLoanDto, reqUser.libraryId);
+    const updatedLoan = await this.loanService.update(
+      +id,
+      updateLoanDto,
+      reqUser.libraryId,
+    );
     if (updatedLoan.affected == 1) {
       return {
         id: +id,
@@ -345,8 +412,14 @@ export class LoanController {
         loan_date: updateLoanDto.loan_date,
         must_return_date: updateLoanDto.must_return_date,
         return_date: updateLoanDto.return_date,
-        book: await this.bookService.findOne(updateLoanDto.bookId, reqUser.libraryId),
-        person: await this.personService.findOne(updateLoanDto.personId, reqUser.libraryId),
+        book: await this.bookService.findOne(
+          updateLoanDto.bookId,
+          reqUser.libraryId,
+        ),
+        person: await this.personService.findOne(
+          updateLoanDto.personId,
+          reqUser.libraryId,
+        ),
       };
     } else {
       throw new HttpException(
@@ -359,16 +432,18 @@ export class LoanController {
   // Deleta um empréstimo
   @UseGuards(AuthGuard)
   @Delete(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Loan id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Loan id.',
+  })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o empréstimo existe
     const loan: Loan = await this.loanService.findOne(+id, reqUser.libraryId);
     if (null == loan) {
-      throw new HttpException(
-        'loan.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('loan.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Deleta ou não o empréstimo
@@ -389,16 +464,22 @@ export class LoanController {
   // Retorna o livro (atualiza o returnd_date do empréstimo)
   @UseGuards(AuthGuard)
   @Patch('/return/:id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Loan id.' })
-  async return(@Req() req: Request, @Param('id') id: string, @Body() returnBookDto: ReturnBookDto) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Loan id.',
+  })
+  async return(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() returnBookDto: ReturnBookDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o empréstimo existe
     const loan: Loan = await this.loanService.findOne(+id, reqUser.libraryId);
     if (null == loan) {
-      throw new HttpException(
-        'loan.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('loan.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Verifica se o livro já foi devolvido ou não
@@ -428,7 +509,11 @@ export class LoanController {
     }
 
     // Atualiza o empréstimo com a data de retorno - Retorna o empréstimo ou erro
-    const bookUpdated = await this.loanService.returnBook(+id, returnBookDto, reqUser.libraryId);
+    const bookUpdated = await this.loanService.returnBook(
+      +id,
+      returnBookDto,
+      reqUser.libraryId,
+    );
     if (bookUpdated.affected == 1) {
       return {
         id: +id,
@@ -450,20 +535,25 @@ export class LoanController {
   // Retorna o empréstimo em aberto do livro
   @UseGuards(AuthGuard)
   @Get('/book/:bookId')
-  @ApiParam({ name: 'bookId', required: true, example: '1', description: 'Book id.' })
+  @ApiParam({
+    name: 'bookId',
+    required: true,
+    example: '1',
+    description: 'Book id.',
+  })
   async book(@Req() req: Request, @Param('bookId') bookId: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se o livro existe
     const book = await this.bookService.findOne(+bookId, reqUser.libraryId);
     if (book === null) {
-      throw new HttpException(
-        'book.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('book.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Consulta o empréstimo em aberto do livro
-    const loan = await this.loanService.findCurrentLoanFromBook(+bookId, reqUser.libraryId);
+    const loan = await this.loanService.findCurrentLoanFromBook(
+      +bookId,
+      reqUser.libraryId,
+    );
     if (loan === null)
       throw new HttpException(
         'loan.general.no_pending_loan_found',
@@ -475,16 +565,26 @@ export class LoanController {
   // Retorna o histórico de empréstimo da pessoa
   @UseGuards(AuthGuard)
   @Get('/person/:personId/history')
-  @ApiParam({ name: 'personId', required: true, example: '1', description: 'Person id.' })
-  async personHistory(@Req() req: Request, @Param('personId') personId: string, @Query('page') page: string, @Query('limit') limit: string) {
+  @ApiParam({
+    name: 'personId',
+    required: true,
+    example: '1',
+    description: 'Person id.',
+  })
+  async personHistory(
+    @Req() req: Request,
+    @Param('personId') personId: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe
-    const person = await this.personService.findOne(+personId, reqUser.libraryId);
+    const person = await this.personService.findOne(
+      +personId,
+      reqUser.libraryId,
+    );
     if (person === null) {
-      throw new HttpException(
-        'loan.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('loan.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Cria a paginação
@@ -503,12 +603,12 @@ export class LoanController {
       data: await this.loanService.findLoanHistoryFromPerson(
         +personId,
         findLoanHistory,
-        reqUser.libraryId
+        reqUser.libraryId,
       ),
       count: await this.loanService.findAndCountLoanHistoryFromPerson(
         +personId,
         findLoanHistory,
-        reqUser.libraryId
+        reqUser.libraryId,
       ),
     };
   }

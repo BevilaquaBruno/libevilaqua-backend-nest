@@ -10,11 +10,11 @@ import { FindGenreDto } from './dto/find-genre.dto';
 export class GenreService {
   constructor(
     @InjectRepository(Genre) private genreServiceRepository: Repository<Genre>,
-  ) { }
+  ) {}
   create(createGenreDto: CreateGenreDto, libraryId: number) {
     return this.genreServiceRepository.save({
       ...createGenreDto,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
@@ -28,7 +28,7 @@ export class GenreService {
       take: findGenre.limit,
       skip: findGenre.page,
       where: {
-        libraryId: libraryId
+        libraryId: libraryId,
       },
       order: { id: 'DESC' },
     });
@@ -38,34 +38,37 @@ export class GenreService {
     return this.genreServiceRepository.findOne({
       select: {
         id: true,
-        description: true
+        description: true,
       },
       where: {
         id: id,
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
   update(id: number, updateGenreDto: UpdateGenreDto, libraryId: number) {
-    return this.genreServiceRepository.update({
-      id: id,
-      libraryId: libraryId
-    }, updateGenreDto);
+    return this.genreServiceRepository.update(
+      {
+        id: id,
+        libraryId: libraryId,
+      },
+      updateGenreDto,
+    );
   }
 
   remove(id: number, libraryId: number) {
     return this.genreServiceRepository.delete({
       id: id,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
   count(libraryId: number) {
     return this.genreServiceRepository.count({
       where: {
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 }

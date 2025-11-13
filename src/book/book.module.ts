@@ -16,7 +16,7 @@ import { TagModule } from '../tag/tag.module';
     PublisherModule,
     TypeModule,
     AuthorModule,
-    TagModule
+    TagModule,
   ],
   controllers: [BookController],
   providers: [BookService],

@@ -31,7 +31,7 @@ export class AuthorController {
   constructor(
     private readonly authorService: AuthorService,
     private readonly bookService: BookService,
-  ) { }
+  ) {}
 
   // Cria um autor
   @UseGuards(AuthGuard)
@@ -71,7 +71,10 @@ export class AuthorController {
     }
 
     // Cria o autor e retorna ele cadastrado
-    const newAuthor = await this.authorService.create(createAuthorDto, reqUser.libraryId);
+    const newAuthor = await this.authorService.create(
+      createAuthorDto,
+      reqUser.libraryId,
+    );
     return {
       id: newAuthor.id,
       name: newAuthor.name,
@@ -84,9 +87,25 @@ export class AuthorController {
   // Retorna todos autores
   @UseGuards(AuthGuard)
   @Get()
-  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
-  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
-  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: '1',
+    description: 'Page number.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: '10',
+    description: 'Limit of registers in the page.',
+    schema: { default: 5 },
+  })
+  async findAll(
+    @Req() req: Request,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria o padrão de paginação e limite
     const findAuthor: FindAuthorDto = {
@@ -109,16 +128,21 @@ export class AuthorController {
   // Retorna um autor
   @UseGuards(AuthGuard)
   @Get(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Author id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Author id.',
+  })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Valida se o id retornado existe, retorna erro ou retorna o autor
-    const author: Author = await this.authorService.findOne(+id, reqUser.libraryId);
+    const author: Author = await this.authorService.findOne(
+      +id,
+      reqUser.libraryId,
+    );
     if (null == author)
-      throw new HttpException(
-        'author.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('author.general.not_found', HttpStatus.NOT_FOUND);
 
     return author;
   }
@@ -126,16 +150,25 @@ export class AuthorController {
   // Atualiza o autor
   @UseGuards(AuthGuard)
   @Patch(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Author id.' })
-  async update(@Req() req: Request, @Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Author id.',
+  })
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateAuthorDto: UpdateAuthorDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // valida se o id do autor existe
-    const author: Author = await this.authorService.findOne(+id, reqUser.libraryId);
+    const author: Author = await this.authorService.findOne(
+      +id,
+      reqUser.libraryId,
+    );
     if (null == author) {
-      throw new HttpException(
-        'author.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('author.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Valida a data de nascimento do autor, se existir
@@ -171,7 +204,11 @@ export class AuthorController {
     }
 
     // Atualiza o autor, retorna o autor ou retorna o erro
-    const updatedAuthor = await this.authorService.update(+id, updateAuthorDto, reqUser.libraryId);
+    const updatedAuthor = await this.authorService.update(
+      +id,
+      updateAuthorDto,
+      reqUser.libraryId,
+    );
     if (updatedAuthor.affected == 1) {
       return {
         id: +id,
@@ -191,33 +228,41 @@ export class AuthorController {
   // Deleta o autor
   @UseGuards(AuthGuard)
   @Delete(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Author id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Author id.',
+  })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o autor existe
-    const author: Author = await this.authorService.findOne(+id, reqUser.libraryId);
+    const author: Author = await this.authorService.findOne(
+      +id,
+      reqUser.libraryId,
+    );
     if (null == author) {
-      throw new HttpException(
-        'author.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('author.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Pesquisa um livro do autor, se ele tiver 1 livro, não deixa excluir
-    const books = await this.bookService.findBooksFromAuthor({
-      page: 1,
-      limit: 1,
-      authorId: +id
-    }, reqUser.libraryId);
+    const books = await this.bookService.findBooksFromAuthor(
+      {
+        page: 1,
+        limit: 1,
+        authorId: +id,
+      },
+      reqUser.libraryId,
+    );
     if (books.length > 0) {
-      throw new HttpException(
-        'author.general.has_books',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('author.general.has_books', HttpStatus.NOT_FOUND);
     }
 
     // Deleta o autor e retorna o sucesso ou erro
-    const deletedAuthor = await this.authorService.remove(+id, reqUser.libraryId);
+    const deletedAuthor = await this.authorService.remove(
+      +id,
+      reqUser.libraryId,
+    );
     if (deletedAuthor.affected == 1) {
       return {
         statusCode: 200,
@@ -235,22 +280,41 @@ export class AuthorController {
 
   @UseGuards(AuthGuard)
   @Get('/:authorId/books')
-  @ApiParam({ name: 'authorId', required: false, example: '1', description: 'Author id.', schema: { default: 1 } })
-  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
-  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
-  async books(@Req() req: Request,
+  @ApiParam({
+    name: 'authorId',
+    required: false,
+    example: '1',
+    description: 'Author id.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: '1',
+    description: 'Page number.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: '10',
+    description: 'Limit of registers in the page.',
+    schema: { default: 5 },
+  })
+  async books(
+    @Req() req: Request,
     @Param('authorId') authorId: string,
     @Query('page') page: string,
     @Query('limit') limit: string,
   ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Consulta se o autor existe
-    const author: Author = await this.authorService.findOne(+authorId, reqUser.libraryId);
+    const author: Author = await this.authorService.findOne(
+      +authorId,
+      reqUser.libraryId,
+    );
     if (null == author) {
-      throw new HttpException(
-        'author.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('author.general.not_found', HttpStatus.NOT_FOUND);
     }
 
     // Cria a paginação para a consulta
@@ -266,10 +330,13 @@ export class AuthorController {
     findAuthorBooks.page =
       page == undefined ? 0 : findAuthorBooks.limit * (parseInt(page) - 1);
 
-    const allBooks = await this.bookService.findAndCountBooksFromAuthor(findAuthorBooks, reqUser.libraryId);
+    const allBooks = await this.bookService.findAndCountBooksFromAuthor(
+      findAuthorBooks,
+      reqUser.libraryId,
+    );
     return {
       data: allBooks[0],
-      count: allBooks[1]
-    }
+      count: allBooks[1],
+    };
   }
 }

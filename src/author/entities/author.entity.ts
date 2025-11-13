@@ -27,7 +27,10 @@ export class Author {
   bio: string;
 
   @ManyToOne(() => Library, { eager: false })
-  @JoinColumn({ name: 'libraryId', foreignKeyConstraintName: 'FK_library_author' })
+  @JoinColumn({
+    name: 'libraryId',
+    foreignKeyConstraintName: 'FK_library_author',
+  })
   library?: Library;
 
   @Column({ select: false })

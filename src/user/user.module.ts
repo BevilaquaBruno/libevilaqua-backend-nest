@@ -12,9 +12,12 @@ import { LibraryService } from '../library/library.service';
 import { MailModule } from '../mail/mail.module';
 
 @Module({
-  imports: [MailModule, TypeOrmModule.forFeature([User, ResetToken, LibraryUser, Library])],
+  imports: [
+    MailModule,
+    TypeOrmModule.forFeature([User, ResetToken, LibraryUser, Library]),
+  ],
   controllers: [UserController],
   providers: [UserService, MailService, AuthService, LibraryService],
   exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {}

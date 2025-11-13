@@ -33,50 +33,56 @@ describe('PersonService', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
+      email: 'bruno.f.bevilaqua@gmail.com',
+      phone: '49912345678',
+      country: 'Brasil',
     };
 
     const mockResolved: UpdatePersonDto = {
       id: 1,
-      ...mock
-    }
+      ...mock,
+    };
 
     // Coloca no resolve
     mockPersonService.create.mockResolvedValue(mockResolved);
 
     // Chama e valida
-    const result = await service.create({
-      name: 'Bruno Fernando Bevilaqua',
-      document: '103.411.729-79',
-      zip_code: '889700-055',
-      state: 'SC',
-      city: 'Concórdia',
-      district: 'Linha São Paulo',
-      street: 'Rua Sérgio Galvan',
-      number: '15',
-      obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
-    }, libraryId);
+    const result = await service.create(
+      {
+        name: 'Bruno Fernando Bevilaqua',
+        document: '103.411.729-79',
+        zip_code: '889700-055',
+        state: 'SC',
+        city: 'Concórdia',
+        district: 'Linha São Paulo',
+        street: 'Rua Sérgio Galvan',
+        number: '15',
+        obs: 'Meu próprio cadastro',
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+        country: 'Brasil',
+      },
+      libraryId,
+    );
 
-    expect(result).toEqual(mockResolved)
-    expect(mockPersonService.create).toHaveBeenCalledWith({
-      name: 'Bruno Fernando Bevilaqua',
-      document: '103.411.729-79',
-      zip_code: '889700-055',
-      state: 'SC',
-      city: 'Concórdia',
-      district: 'Linha São Paulo',
-      street: 'Rua Sérgio Galvan',
-      number: '15',
-      obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
-    }, libraryId);
+    expect(result).toEqual(mockResolved);
+    expect(mockPersonService.create).toHaveBeenCalledWith(
+      {
+        name: 'Bruno Fernando Bevilaqua',
+        document: '103.411.729-79',
+        zip_code: '889700-055',
+        state: 'SC',
+        city: 'Concórdia',
+        district: 'Linha São Paulo',
+        street: 'Rua Sérgio Galvan',
+        number: '15',
+        obs: 'Meu próprio cadastro',
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+        country: 'Brasil',
+      },
+      libraryId,
+    );
   });
 
   it('Should return a list with all people', async () => {
@@ -93,9 +99,9 @@ describe('PersonService', () => {
         street: 'Rua Sérgio Galvan',
         number: '15',
         obs: 'Meu próprio cadastro',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678",
-        country: "Brasil"
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+        country: 'Brasil',
       },
       {
         id: 2,
@@ -108,23 +114,26 @@ describe('PersonService', () => {
         street: 'Rua Sérgio Galvan',
         number: '15',
         obs: 'Meu próprio cadastro',
-        email: "bruno.f.bevilaqua@gmail.com",
-        phone: "49912345678",
-        country: "Brasil"
-      }
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+        country: 'Brasil',
+      },
     ];
     mockPersonService.findAll.mockResolvedValue(mockList);
 
     // Cria a paginação e recebe o retorno;
     const findDto: FindPersonDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
     const result = await service.findAll(findDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockList);
-    expect(mockPersonService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
+    expect(mockPersonService.findAll).toHaveBeenCalledWith(
+      { limit: 2, page: 1 },
+      libraryId,
+    );
   });
 
   it('Should return a person', async () => {
@@ -139,9 +148,9 @@ describe('PersonService', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
+      email: 'bruno.f.bevilaqua@gmail.com',
+      phone: '49912345678',
+      country: 'Brasil',
     };
     mockPersonService.findOne.mockResolvedValue(mock);
 
@@ -166,53 +175,61 @@ describe('PersonService', () => {
       street: 'Rua Sérgio Galvan',
       number: '15',
       obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
+      email: 'bruno.f.bevilaqua@gmail.com',
+      phone: '49912345678',
+      country: 'Brasil',
     };
     mockPersonService.update.mockResolvedValue(mock);
 
     // Chama a edição do gênero
-    const result = await service.update(1, {
-      id: 1,
-      name: 'Bruno Fernando Bevilaqua',
-      document: '103.411.729-79',
-      zip_code: '889700-055',
-      state: 'SC',
-      city: 'Concórdia',
-      district: 'Linha São Paulo',
-      street: 'Rua Sérgio Galvan',
-      number: '15',
-      obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
-    }, libraryId);
+    const result = await service.update(
+      1,
+      {
+        id: 1,
+        name: 'Bruno Fernando Bevilaqua',
+        document: '103.411.729-79',
+        zip_code: '889700-055',
+        state: 'SC',
+        city: 'Concórdia',
+        district: 'Linha São Paulo',
+        street: 'Rua Sérgio Galvan',
+        number: '15',
+        obs: 'Meu próprio cadastro',
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+        country: 'Brasil',
+      },
+      libraryId,
+    );
 
     // Valida o retorno
     expect(result).toEqual(mock);
-    expect(mockPersonService.update).toHaveBeenCalledWith(1, {
-      id: 1,
-      name: 'Bruno Fernando Bevilaqua',
-      document: '103.411.729-79',
-      zip_code: '889700-055',
-      state: 'SC',
-      city: 'Concórdia',
-      district: 'Linha São Paulo',
-      street: 'Rua Sérgio Galvan',
-      number: '15',
-      obs: 'Meu próprio cadastro',
-      email: "bruno.f.bevilaqua@gmail.com",
-      phone: "49912345678",
-      country: "Brasil"
-    }, libraryId);
+    expect(mockPersonService.update).toHaveBeenCalledWith(
+      1,
+      {
+        id: 1,
+        name: 'Bruno Fernando Bevilaqua',
+        document: '103.411.729-79',
+        zip_code: '889700-055',
+        state: 'SC',
+        city: 'Concórdia',
+        district: 'Linha São Paulo',
+        street: 'Rua Sérgio Galvan',
+        number: '15',
+        obs: 'Meu próprio cadastro',
+        email: 'bruno.f.bevilaqua@gmail.com',
+        phone: '49912345678',
+        country: 'Brasil',
+      },
+      libraryId,
+    );
   });
 
   it('Should remove a person', async () => {
     // Cria o mock de retorno e coloca no delete
     const mockDelete = {
       raw: [],
-      affected: 1
+      affected: 1,
     };
     mockPersonService.remove.mockResolvedValue(mockDelete);
 

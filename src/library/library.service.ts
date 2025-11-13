@@ -9,8 +9,9 @@ import { FindLibraryDto } from './dto/find-library.dto';
 @Injectable()
 export class LibraryService {
   constructor(
-    @InjectRepository(Library) private libraryServiceRepository: Repository<Library>,
-  ) { }
+    @InjectRepository(Library)
+    private libraryServiceRepository: Repository<Library>,
+  ) {}
 
   create(createLibraryDto: CreateLibraryDto) {
     return this.libraryServiceRepository.save(createLibraryDto);
@@ -42,7 +43,7 @@ export class LibraryService {
 
   getLibrariesFromuser(userId: number) {
     return this.libraryServiceRepository.find({
-      where: { users: { user: { id: userId } } }
+      where: { users: { user: { id: userId } } },
     });
   }
 }

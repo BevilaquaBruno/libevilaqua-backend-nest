@@ -15,7 +15,7 @@ export class CreateValidationPipe extends ValidationPipe {
    * importante:
    * stopAtFirstError faz parar no primeiro erro, para evitar uma cadeia de mensagens para o usuário
    * exceptionFactory cria um padrão só de retorno, para igualar aos Throw new HttpException, só retorna uma mensagem, por isso o [0]
-   * 
+   *
    * Padrão definido:
    * {
    *  statusCode: 400,
@@ -43,10 +43,7 @@ export class CreateValidationPipe extends ValidationPipe {
           message = await this.i18n.translate(constraint, { lang });
         }
 
-        return new HttpException(
-          message,
-          HttpStatus.BAD_REQUEST,
-        );
+        return new HttpException(message, HttpStatus.BAD_REQUEST);
       },
     });
   }

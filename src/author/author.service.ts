@@ -11,12 +11,12 @@ export class AuthorService {
   constructor(
     @InjectRepository(Author)
     private authorServiceRepository: Repository<Author>,
-  ) { }
+  ) {}
 
   create(createAuthorDto: CreateAuthorDto, libraryId: number) {
     return this.authorServiceRepository.save({
       ...createAuthorDto,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
@@ -28,12 +28,12 @@ export class AuthorService {
         name: true,
         birth_date: true,
         bio: true,
-        death_date: true
+        death_date: true,
       },
       take: findAuthor.limit,
       skip: findAuthor.page,
       where: {
-        libraryId: libraryId
+        libraryId: libraryId,
       },
       order: { id: 'DESC' },
     });
@@ -43,30 +43,33 @@ export class AuthorService {
     return this.authorServiceRepository.findOne({
       where: {
         id: id,
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
   update(id: number, updateAuthorDto: UpdateAuthorDto, libraryId: number) {
-    return this.authorServiceRepository.update({
-      id: id,
-      libraryId: libraryId
-    }, updateAuthorDto);
+    return this.authorServiceRepository.update(
+      {
+        id: id,
+        libraryId: libraryId,
+      },
+      updateAuthorDto,
+    );
   }
 
   remove(id: number, libraryId: number) {
     return this.authorServiceRepository.delete({
       id: id,
-      libraryId: libraryId
+      libraryId: libraryId,
     });
   }
 
   count(libraryId: number) {
     return this.authorServiceRepository.count({
       where: {
-        libraryId: libraryId
-      }
+        libraryId: libraryId,
+      },
     });
   }
 
@@ -75,7 +78,7 @@ export class AuthorService {
       where: {
         id: In(author_id_list),
         libraryId: libraryId,
-      }
-    })
+      },
+    });
   }
 }

@@ -25,7 +25,7 @@ import { ApiDefaultErrorResponses } from '../common/decoratores/api-default-erro
 @ApiDefaultErrorResponses()
 @Controller('person')
 export class PersonController {
-  constructor(private readonly personService: PersonService) { }
+  constructor(private readonly personService: PersonService) {}
 
   // Cria uma pessoa
   @UseGuards(AuthGuard)
@@ -39,15 +39,21 @@ export class PersonController {
       const isPersonRegistered = await this.personService.findByDocument(
         createPersonDto.document,
         null,
-        reqUser.libraryId
+        reqUser.libraryId,
       );
       if (isPersonRegistered?.document != undefined) {
-        throw new HttpException('person.document.already_registered', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'person.document.already_registered',
+          HttpStatus.BAD_REQUEST,
+        );
       }
     }
 
     // Cria a pessoa
-    const newPerson: Person = await this.personService.create(createPersonDto, reqUser.libraryId);
+    const newPerson: Person = await this.personService.create(
+      createPersonDto,
+      reqUser.libraryId,
+    );
     const returnPerson: UpdatePersonDto = {
       id: newPerson.id,
       document: newPerson.document,
@@ -70,9 +76,25 @@ export class PersonController {
   // Retorna uma lista de pessoa
   @UseGuards(AuthGuard)
   @Get()
-  @ApiQuery({ name: 'page', required: false, example: '1', description: 'Page number.', schema: { default: 1 } })
-  @ApiQuery({ name: 'limit', required: false, example: '10', description: 'Limit of registers in the page.', schema: { default: 5 } })
-  async findAll(@Req() req: Request, @Query('page') page: string, @Query('limit') limit: string) {
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    example: '1',
+    description: 'Page number.',
+    schema: { default: 1 },
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: '10',
+    description: 'Limit of registers in the page.',
+    schema: { default: 5 },
+  })
+  async findAll(
+    @Req() req: Request,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Cria a paginação
     const findPerson: FindPersonDto = {
@@ -94,31 +116,40 @@ export class PersonController {
   // Retorna uma pessoa
   @UseGuards(AuthGuard)
   @Get(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Person id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Person id.',
+  })
   async findOne(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe - Retorna erro ou a pessoa
-    const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
+    const person: Person = await this.personService.findOne(
+      +id,
+      reqUser.libraryId,
+    );
     if (null == person)
-      throw new HttpException(
-        'person.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('person.general.not_found', HttpStatus.NOT_FOUND);
     return person;
   }
 
   // Atualiza uma pessoa
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async update(@Req() req: Request, @Param('id') id: string, @Body() updatePersonDto: UpdatePersonDto) {
+  async update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updatePersonDto: UpdatePersonDto,
+  ) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica e valida se a pessoa existe - Retorna erro se não
-    const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
+    const person: Person = await this.personService.findOne(
+      +id,
+      reqUser.libraryId,
+    );
     if (null == person)
-      throw new HttpException(
-        'person.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('person.general.not_found', HttpStatus.NOT_FOUND);
 
     // Valida o CPF
     if (updatePersonDto.document) {
@@ -126,15 +157,22 @@ export class PersonController {
       const isPersonRegistered = await this.personService.findByDocument(
         updatePersonDto.document,
         +id,
-        reqUser.libraryId
+        reqUser.libraryId,
       );
       if (isPersonRegistered?.document != undefined) {
-        throw new HttpException('person.document.already_registered', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'person.document.already_registered',
+          HttpStatus.BAD_REQUEST,
+        );
       }
     }
 
     // Atualiza a pessoa e retorna ela ou erro
-    const updatedPerson = await this.personService.update(+id, updatePersonDto, reqUser.libraryId);
+    const updatedPerson = await this.personService.update(
+      +id,
+      updatePersonDto,
+      reqUser.libraryId,
+    );
     if (updatedPerson.affected == 1) {
       const returnPerson: UpdatePersonDto = {
         id: +id,
@@ -164,19 +202,27 @@ export class PersonController {
   // Deleta uma pessoa
   @UseGuards(AuthGuard)
   @Delete(':id')
-  @ApiParam({ name: 'id', required: true, example: '1', description: 'Person id.' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    example: '1',
+    description: 'Person id.',
+  })
   async remove(@Req() req: Request, @Param('id') id: string) {
     const reqUser: PayloadAuthDto = req['user'];
     // Verifica se a pessoa existe e retorna erro
-    const person: Person = await this.personService.findOne(+id, reqUser.libraryId);
+    const person: Person = await this.personService.findOne(
+      +id,
+      reqUser.libraryId,
+    );
     if (null == person)
-      throw new HttpException(
-        'person.general.not_found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('person.general.not_found', HttpStatus.NOT_FOUND);
 
     // Deleta e pessoa, retorna sucess ou erro
-    const deletePerson = await this.personService.remove(+id, reqUser.libraryId);
+    const deletePerson = await this.personService.remove(
+      +id,
+      reqUser.libraryId,
+    );
 
     if (deletePerson.affected == 1) {
       return {

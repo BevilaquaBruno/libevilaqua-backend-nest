@@ -43,8 +43,8 @@ describe('author E2E', () => {
   });
 
   it('PATCH /author - Update', async () => {
-    author1.name = "Nome atualizado do primeiro autor";
-    author1.bio = "Bio atualizada";
+    author1.name = 'Nome atualizado do primeiro autor';
+    author1.bio = 'Bio atualizada';
 
     await request(app.getHttpServer())
       .patch(`/author/${author1.id}`)
@@ -53,8 +53,9 @@ describe('author E2E', () => {
         name: author1.name,
         birth_date: author1.birth_date,
         death_date: author1.death_date,
-        bio: author1.bio
-      }).expect(200);
+        bio: author1.bio,
+      })
+      .expect(200);
   });
 
   it('GET /author - Get all', async () => {
@@ -63,7 +64,7 @@ describe('author E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect({
         data: [author2, author1],
-        count: 2
+        count: 2,
       });
   });
 
@@ -88,7 +89,6 @@ describe('author E2E', () => {
 
   // O teste a seguir fica no arquivo de testes do livro
   //GET /author - Get all books
-
 });
 
 export function registerAuthor(app, token, author) {
@@ -99,6 +99,6 @@ export function registerAuthor(app, token, author) {
       name: author.name,
       birth_date: author.birth_date,
       death_date: author.death_date,
-      bio: author.bio
-    })
+      bio: author.bio,
+    });
 }

@@ -24,26 +24,32 @@ describe('TagService', () => {
   it('Should create a tag', async () => {
     // Cria o mock
     const mock: CreateTagDto = {
-      description: 'Tag description'
+      description: 'Tag description',
     };
 
     const mockResolved: UpdateTagDto = {
       id: 1,
-      ...mock
-    }
+      ...mock,
+    };
 
     // Coloca no resolve
     mockTagService.create.mockResolvedValue(mockResolved);
 
     // Chama e valida
-    const result = await service.create({
-      description: 'Tag description'
-    }, libraryId);
+    const result = await service.create(
+      {
+        description: 'Tag description',
+      },
+      libraryId,
+    );
 
-    expect(result).toEqual(mockResolved)
-    expect(mockTagService.create).toHaveBeenCalledWith({
-      description: 'Tag description'
-    }, libraryId);
+    expect(result).toEqual(mockResolved);
+    expect(mockTagService.create).toHaveBeenCalledWith(
+      {
+        description: 'Tag description',
+      },
+      libraryId,
+    );
   });
 
   it('Should return a list with all tags', async () => {
@@ -51,32 +57,35 @@ describe('TagService', () => {
     const mockList = [
       {
         id: 1,
-        description: 'Tag description'
+        description: 'Tag description',
       },
       {
         id: 2,
-        description: 'Tag description 2'
-      }
+        description: 'Tag description 2',
+      },
     ];
     mockTagService.findAll.mockResolvedValue(mockList);
 
     // Cria a paginação e recebe o retorno;
     const findDto: FindTagDto = {
       limit: 2,
-      page: 1
+      page: 1,
     };
     const result = await service.findAll(findDto, libraryId);
 
     // Valida os retornos
     expect(result).toEqual(mockList);
-    expect(mockTagService.findAll).toHaveBeenCalledWith({ limit: 2, page: 1 }, libraryId);
+    expect(mockTagService.findAll).toHaveBeenCalledWith(
+      { limit: 2, page: 1 },
+      libraryId,
+    );
   });
 
   it('Should return a tag', async () => {
     // Cria o mock
     const mock = {
       id: 1,
-      description: 'Tag description'
+      description: 'Tag description',
     };
     mockTagService.findOne.mockResolvedValue(mock);
 
@@ -92,29 +101,37 @@ describe('TagService', () => {
     // Cria o mock
     const mock: UpdateTagDto = {
       id: 1,
-      description: 'Tag description'
+      description: 'Tag description',
     };
     mockTagService.update.mockResolvedValue(mock);
 
     // Chama a edição do gênero
-    const result = await service.update(1, {
-      id: 1,
-      description: 'Tag description'
-    }, libraryId);
+    const result = await service.update(
+      1,
+      {
+        id: 1,
+        description: 'Tag description',
+      },
+      libraryId,
+    );
 
     // Valida o retorno
     expect(result).toEqual(mock);
-    expect(mockTagService.update).toHaveBeenCalledWith(1, {
-      id: 1,
-      description: 'Tag description'
-    }, libraryId);
+    expect(mockTagService.update).toHaveBeenCalledWith(
+      1,
+      {
+        id: 1,
+        description: 'Tag description',
+      },
+      libraryId,
+    );
   });
 
   it('Should remove a tag', async () => {
     // Cria o mock de retorno e coloca no delete
     const mockDelete = {
       raw: [],
-      affected: 1
+      affected: 1,
     };
     mockTagService.remove.mockResolvedValue(mockDelete);
 

@@ -20,7 +20,10 @@ describe('I18nFilter', () => {
   });
 
   it('should translate i18n key message', async () => {
-    const exception = new HttpException('user.email.invalid', HttpStatus.BAD_REQUEST);
+    const exception = new HttpException(
+      'user.email.invalid',
+      HttpStatus.BAD_REQUEST,
+    );
 
     const host = {
       switchToHttp: () => ({
@@ -33,11 +36,17 @@ describe('I18nFilter', () => {
 
     await filter.catch(exception, host);
 
-    expect(i18nService.translate).toHaveBeenCalledWith('user.email.invalid', expect.any(Object));
+    expect(i18nService.translate).toHaveBeenCalledWith(
+      'user.email.invalid',
+      expect.any(Object),
+    );
   });
 
   it('should not translate non-i18n message', async () => {
-    const exception = new HttpException('Already translated message', HttpStatus.BAD_REQUEST);
+    const exception = new HttpException(
+      'Already translated message',
+      HttpStatus.BAD_REQUEST,
+    );
 
     const host = {
       switchToHttp: () => ({

@@ -33,14 +33,15 @@ describe('type E2E', () => {
   });
 
   it('PATCH /type - Update', async () => {
-    type1.description = "Tipo 1 atualizado";
+    type1.description = 'Tipo 1 atualizado';
 
     await request(app.getHttpServer())
       .patch(`/type/${type1.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-        description: type1.description
-      }).expect(200);
+        description: type1.description,
+      })
+      .expect(200);
   });
 
   it('GET /type - Get all', async () => {
@@ -49,7 +50,7 @@ describe('type E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect({
         data: [type2, type1],
-        count: 2
+        count: 2,
       });
   });
 
@@ -71,7 +72,6 @@ describe('type E2E', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
   });
-
 });
 
 export function registerType(app, token, type) {
@@ -79,6 +79,6 @@ export function registerType(app, token, type) {
     .post(`/type`)
     .set('Authorization', `Bearer ${token}`)
     .send({
-      description: type.description
-    })
+      description: type.description,
+    });
 }
