@@ -116,15 +116,8 @@ export class UserService {
     });
   }
 
-  updatePassword(id: number, password: string, libraryId: number) {
-    return this.userRepository.update(
-      {
-        id: id,
-        libraries: {
-          library: { id: libraryId },
-        },
-      },
-      { password: password },
+  updatePassword(id: number, password: string) {
+    return this.userRepository.update(id, { password },
     );
   }
 

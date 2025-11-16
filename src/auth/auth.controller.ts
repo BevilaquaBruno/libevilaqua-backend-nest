@@ -247,8 +247,7 @@ export class AuthController {
       );
       const updatedUser = await this.userService.updatePassword(
         user.id,
-        encriptedPasword,
-        currentUser.libraryId,
+        encriptedPasword
       );
       if (updatedUser.affected == 1) {
         // Atualiza o token como used
