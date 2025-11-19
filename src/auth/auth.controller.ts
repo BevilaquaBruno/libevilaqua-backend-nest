@@ -55,6 +55,7 @@ export class AuthController {
         id: user.id,
         name: user.name,
         email: user.email,
+        language: user.language,
         password: await this.jwtService.sign(
           { password: user.password },
           { expiresIn: '5m' },
