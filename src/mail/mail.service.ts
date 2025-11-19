@@ -14,7 +14,7 @@ export class MailService {
 
   async sendUserConfirmation(user: User, token: string, libraryName: string) {
     const url =
-      process.env['FRONT_END_URL'] + `/confirmar-acesso?token=${token}`;
+      process.env['FRONT_END_URL'] + `/confirmar-acesso?token=${token}&email=${user.email}`;
     const template = readFileSync(
       this.getTemplatePath(
         user.language + '/sendUserConfirmation.template.html',
