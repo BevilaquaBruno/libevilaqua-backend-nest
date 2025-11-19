@@ -11,6 +11,7 @@ import {
   HttpStatus,
   Query,
   Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -35,7 +36,7 @@ export class UserController {
     private readonly mailService: MailService,
     private readonly authService: AuthService,
     private readonly libraryService: LibraryService,
-  ) {}
+  ) { }
 
   // Cria o usuário
   @UseGuards(AuthGuard)
@@ -137,14 +138,6 @@ export class UserController {
       );
     }
 
-    const newLibrary = await this.libraryService.create(createLibraryDto);
-    if (!newLibrary) {
-      throw new HttpException(
-        'library.general.register_error',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
     // Valida se o usuário (email) já existe, se existe retorna erro
     const userAlreadyExists = await this.userService.findByEmail(
       createUserDto.email,
@@ -153,9 +146,26 @@ export class UserController {
     let currentUser: User | null = null;
     if (userAlreadyExists?.id != undefined) {
       currentUser = userAlreadyExists;
+      const isPasswordCorrect = await this.authService.signIn(
+        createUserDto.email,
+        createUserDto.password,
+        false
+      );
+
+      if(!isPasswordCorrect){
+        throw new UnauthorizedException();
+      }
     } else {
       createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
       currentUser = await this.userService.create(createUserDto);
+    }
+
+    const newLibrary = await this.libraryService.create(createLibraryDto);
+    if (!newLibrary) {
+      throw new HttpException(
+        'library.general.register_error',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     if (!currentUser) {
