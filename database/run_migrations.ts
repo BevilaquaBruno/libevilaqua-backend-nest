@@ -20,7 +20,7 @@ import { CreateResetTokenTable1760897406985 } from './migrations/1760897406985-C
 dotenv.config();
 
 export const AppDataSource = new DataSource({
-  type: 'mysql',
+  type: 'postgres',
   host: process.env['DB_HOST'],
   port: Number(process.env['DB_PORT']),
   username: process.env['DB_USERNAME'],
@@ -43,4 +43,7 @@ export const AppDataSource = new DataSource({
     CreateResetTokenTable1760897406985,
   ],
   migrationsTableName: 'migrations',
+  extra: {
+    options: '-c timezone=America/Sao_Paulo',
+  }
 });

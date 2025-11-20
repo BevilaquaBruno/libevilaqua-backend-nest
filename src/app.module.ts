@@ -33,7 +33,7 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: process.env['DB_HOST'],
       port: Number(process.env['DB_PORT']),
       username: process.env['DB_USERNAME'],
@@ -44,7 +44,13 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
           : process.env['DB_DATABASE'],
       autoLoadEntities: true,
       synchronize: false,
-      timezone: '-03:00',
+      ssl:
+        process.env.NODE_ENV === 'production'
+          ? { rejectUnauthorized: false }
+          : false,
+      extra: {
+        options: '-c timezone=America/Sao_Paulo',
+      }
     }),
     UserModule,
     AuthModule,
@@ -70,4 +76,4 @@ import { I18nInterceptor } from './i18n/i18n.interceptor';
   ],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule { }
